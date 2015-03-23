@@ -12,16 +12,7 @@ opts{1}.nonlinearity.name = 'modulus';
 % Options for scattering along time
 opts{2}.time.handle = @gammatone_1d;
 opts{2}.time.max_scale = Inf;
-opts{2}.time.max_Q = 1;
 opts{2}.time.U_log2_oversampling = 2;
-
-% Options for scattering along chromas
-opts{2}.gamma.invariance = 'bypassed';
-
-% Options for scattering along octaves
-opts{2}.j.handle = @poisson_1d;
-opts{2}.j.invariance = 'bypassed';
-opts{2}.j.mother_xi = 0.50;
 
 % Build scattering "architectures", i.e. filter banks and nonlinearities
 archs = setup(opts);

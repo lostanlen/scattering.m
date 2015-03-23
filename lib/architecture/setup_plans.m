@@ -53,6 +53,7 @@ for layer = 2:nLayers
                     field.size = root_plan.spec.size;
                 end
                 field.dimension = previous_plan.behavior.output_dimension;
+                field.handle = default(field,'handle',@gammatone_1d);
                 field.output_dimension = ...
                     field.dimension + (layer==2) + (signal_dimension==2);
                 field.subscripts = root_plan.behavior.subscripts;
@@ -77,6 +78,7 @@ for layer = 2:nLayers
                 % 4 octaves of octave filtering by default
                 field.T = default(field,'T',4);
                 field.dimension = banks{end}.behavior.dimension+1;
+                field.handle = default(field,'handle',@poisson_1d);
                 field.is_spinned = enforce(field,'is_spinned',true);
                 field.has_multiple_support = ...
                     enforce(field,'has_multiple_support',true);

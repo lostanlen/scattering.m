@@ -1,0 +1,8 @@
+/*.tar.gz
+/tmp
+/usr
+/Make-user
+
+*.m~
+
+.DS_Store

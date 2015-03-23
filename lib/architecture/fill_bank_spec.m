@@ -57,7 +57,7 @@ switch func2str(spec.handle)
     case 'poisson_1d'
         spec.decay_factor = default(opt,'decay_factor',0.2);
         spec.has_real_ft = false;
-        spec.mother_xi = default(opt,'mother_xi',0.25);
+        spec.mother_xi = default(opt,'mother_xi',0.50);
 end
 
 if ~spec.has_real_ft
