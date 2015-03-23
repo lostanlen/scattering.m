@@ -16,7 +16,7 @@ A minimal script to run the toolbox is the following:
     archs = setup(opts);
     [S,U,Y] = propagate(signal,archs);
 
-The only compulsory field in ``opts`` is ``size``, the number of samples in ``signal`.
+The only compulsory field in ``opts`` is ``size``, the number of samples in ``signal``.
 
 
 .. * :ref: 'manual'
