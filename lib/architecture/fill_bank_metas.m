@@ -50,7 +50,7 @@ switch handle_string
             bandwidths = resolutions ./ bank_spec.max_Q;
         end
         scales = 4 * mother_xi ./ bandwidths;
-    case 'poisson_1d'
+    case 'RLC_1d'
         % TODO : review these parameters
         assert(bank_spec.max_Q==1);
         quality_factors = ones(size(resolutions));
