@@ -6,4 +6,3 @@ else
     value = structure.(field);
 end
 end
-
