@@ -88,7 +88,7 @@ Gammatone wavelet
 
 	\psi(t) = \left((-\alpha + \mathrm{i} \xi) t^{N-1} + (N-1) t^{N-2}\right) \exp(-\alpha \times t) \times \exp(2\mathrm{i} \pi \xi t) 
 
-Observe that, by this definition, the wavelet modulus :math:`\vert\psi(t)\vert` reaches its maximum *after* :math:`t=0`. In practice, we translate the resulting function in time in order to match the peak at exactly :math:`t=0`. We also add a phase term such that the real part also reaches its maximum at exactly :math:`t=0.
+Observe that, by this definition, the wavelet modulus :math:`\vert\psi(t)\vert` reaches its maximum *after* :math:`t=0`. In practice, we translate the resulting function in time in order to match the peak at exactly :math:`t=0`. We also add a phase term such that the real part also reaches its maximum at exactly :math:`t=0`.
 
 Poisson wavelet
 +++++++++++++++
