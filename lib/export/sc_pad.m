@@ -1,4 +1,4 @@
-function padded_tensor = multivariable_pad(tensor,variables)
+function padded_tensor = sc_pad(tensor,variables)
 %% Initialization
 nVariables = length(variables);
 tensor_sizes = size(tensor);
