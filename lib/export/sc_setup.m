@@ -1,4 +1,4 @@
-function architectures = setup(opts)
+function architectures = sc_setup(opts)
 %%
 plans = setup_plans(opts);
 nLayers = length(plans);

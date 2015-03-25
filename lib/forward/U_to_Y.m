@@ -12,7 +12,7 @@ is_U_single_scattered = nVariables_to_transform==1 && ...
 if is_U_single_scattered
     layer_Y{1+0} = initialize_Y(layer_U,banks);
     layer_Y{1+0} = perform_ft(layer_Y{1+0},banks{1}.behavior.key);
-    layer_Y{1+1} = scatter(layer_Y{1+0},banks{1});
+    layer_Y{1+1} = scatter_signal(layer_Y{1+0},banks{1});
     return;
 end
 
@@ -35,10 +35,10 @@ for variable_index = 1:nVariables_to_transform
             continue;
         end
         if is_scattered
-            next_sub_Y{cell_index} = scatter(cell_Y,bank);
+            next_sub_Y{cell_index} = scatter_signal(cell_Y,bank);
         end
         if is_blurred
-            next_sub_Y{nCells+cell_index} = blur(cell_Y,bank);
+            next_sub_Y{nCells+cell_index} = blur_signal(cell_Y,bank);
         end
         if bank.behavior.U.is_bypassed
             next_sub_Y{2*nCells+cell_index} = cell_Y;

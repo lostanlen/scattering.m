@@ -29,7 +29,7 @@ end
 if isempty(padding_variables)
     layer_Y1 = layer_U;
 else
-    padding_handle = @(x) multivariable_pad(x,padding_variables);
+    padding_handle = @(x) sc_pad(x,padding_variables);
     layer_Y1.data = dispatch_unary_handle(padding_handle,layer_U.data);
     layer_Y1.keys = layer_U.keys;
     layer_Y1.variable_tree = variable_tree;
