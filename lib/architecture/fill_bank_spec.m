@@ -5,7 +5,7 @@ spec.T = default(opt,'T',min(spec.size));
 spec.nFilters_per_octave = default(opt,'nFilters_per_octave',1);
 spec.max_scale = default(opt,'max_scale',spec.T);
 spec.max_Q = default(opt,'max_Q',spec.nFilters_per_octave);
-spec.J = log2(spec.T);
+spec.J = enforce(opt,'J',log2(spec.T));
 signal_dimension = length(spec.size);
 if signal_dimension==1
     nOrientations = 1;
