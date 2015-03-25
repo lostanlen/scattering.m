@@ -29,10 +29,10 @@ import os
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
+ #   'sphinx.ext.intersphinx',
+#    'sphinx.ext.todo',
+#    'sphinx.ext.coverage',
+#    'sphinx.ext.mathjax',
 #    'sphinxcontrib.matlab',
 ]
 

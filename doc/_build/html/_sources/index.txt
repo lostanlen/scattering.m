@@ -121,7 +121,7 @@ A RLC circuit consists of a resistor R, an inductor L and a capacitor C. In an u
 .. math::
 
 	\psi(t)=\left\{ \begin{array}{c}
-			\exp(-\alpha t)\times\exp(2\mathrm{i}\xi t)\text{ if }t>0\\
+			\exp(-\alpha t)\times\exp(2\mathrm{i}\xi t)\text{ if }t\geq0\\
 			0 \text{ otherwise}
 			\end{array}\right.
  
