@@ -1,8 +1,8 @@
-function poissons = poisson_1d(metas,spec)
+function RLCs = poisson_1d(metas,spec)
 resolutions = [metas.resolution];
 nGammas = length(resolutions);
 original_length = spec.size;
-poissons = zeros(original_length,nGammas);
+RLCs = zeros(original_length,nGammas);
 nPeriods = 1 + spec.periodization_extent;
 mother_range_start = 0;
 mother_range_end = nPeriods*original_length - 1;
@@ -16,13 +16,13 @@ for gamma = 1:nGammas
     range = mother_range * resolution;
     laplace_frequency = 1i * mother_xi - decay_factor;
     exponential = exp(2*pi*laplace_frequency*range);
-    poisson = sqrt(resolution) * exponential;
-    expanded_poisson = reshape(poisson,original_length,nPeriods);
+    RLC = sqrt(resolution) * exponential;
+    expanded_RLC = reshape(poisson,original_length,nPeriods);
     if is_ift_flipped
         % Hermitian symmetry
-        poissons([1,end:-1:2],gamma) = conj(sum(expanded_poisson,2));
+        RLCs([1,end:-1:2],gamma) = conj(sum(expanded_poisson,2));
     else
-        poissons(:,gamma) = sum(expanded_poisson,2);
+        RLCs(:,gamma) = sum(expanded_poisson,2);
     end
 end
 end

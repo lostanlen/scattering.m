@@ -75,7 +75,7 @@
 <li><a class="reference internal" href="#wavelet-specifications">Wavelet specifications</a><ul>
 <li><a class="reference internal" href="#morlet-wavelet">Morlet wavelet</a></li>
 <li><a class="reference internal" href="#gammatone-wavelet">Gammatone wavelet</a></li>
-<li><a class="reference internal" href="#poisson-wavelet">Poisson wavelet</a></li>
+<li><a class="reference internal" href="#rlc-wavelet">RLC wavelet</a></li>
 </ul>
 </li>
 </ul>
@@ -139,7 +139,7 @@ By default, <code class="docutils literal"><span class="pre">T</span></code> is 
 <div class="section" id="quality-factor">
 <h3>Quality factor<a class="headerlink" href="#quality-factor" title="Permalink to this headline">¶</a></h3>
 <p>The quality factor <code class="docutils literal"><span class="pre">max_Q</span></code> of a band-pass filter is defined as the ratio of its center frequency by its bandwidth. Consequently, for a given center frequency, increasing the quality factor will decrease the bandwidth proportionnally, hence yielding a &#8220;sharper&#8221; band-pass filter in the frequency domain. This increase in frequency sharpness comes at the cost of increasing the support of the filter in the time domain, which may prevent the representation to distinguish consecutive events.</p>
-<p>All the wavelets in a filter bank share the same quality factor: this is why we refer to it as a constant-Q filter bank. Note that this toolbox also allows variable-Q filter banks in order to cope with time support limitations (see section below). This is why the quality factor is <a href="#id1"><span class="problematic" id="id2">``</span></a>max_Q`.</p>
+<p>All the wavelets in a filter bank share the same quality factor: this is why we refer to it as a constant-Q filter bank. Note that this toolbox also allows variable-Q filter banks in order to cope with time support limitations (see section below). This is why the quality factor is <code class="docutils literal"><span class="pre">max_Q</span></code>.</p>
 <p>Typical values for the first order in audio range from 4 to 16.
 Typical values for the second order along time are 1 or 2.
 In the context of multivariable scattering, the value 1 is strongly recommended for any derived variable.</p>
@@ -165,20 +165,38 @@ Setting <code class="docutils literal"><span class="pre">max_scale</span> <span 
 <h2>Wavelet specifications<a class="headerlink" href="#wavelet-specifications" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="morlet-wavelet">
 <h3>Morlet wavelet<a class="headerlink" href="#morlet-wavelet" title="Permalink to this headline">¶</a></h3>
+<p>The ubiquitous Morlet wavelet, also named Gabor wavelet, is proved to have optimal time-frequency Heisenberg uncertainty (see Mallat&#8217;s wavelet tour, Theorem 2.6). It is defined as the product of a Gaussian bell curve of variance <span class="math">\(\sigma\)</span> by a sine wave of frequency <span class="math">\(\xi\)</span>.</p>
 <div class="math">
 \[\psi(t) = \exp\left( - \dfrac{t^2}{2 \sigma^2} \right) \times \exp(2\mathrm{i} \pi \xi t)+ \varepsilon(t)\]</div>
-<p>where <span class="math">\(\varepsilon(t)\)</span> is a low-frequency corrective term to ensures that the wavelet <span class="math">\(\psi(t)\)</span> has zero mean.</p>
+<p>The function <span class="math">\(\varepsilon(t)\)</span> is a low-frequency corrective term to ensure that the wavelet <span class="math">\(\psi(t)\)</span> has zero mean. Remarkably, the Morlet wavelet also has a Gaussian profile in the frequency domain.</p>
+<div class="math">
+\[\hat{\psi}(\omega) = \sigma \exp(- \sigma^2 \omega^2) + \hat{\varepsilon}(\omega)\]</div>
+<p>Since the Gaussian bell curve is symmetric, the Morlet wavelet transform modulus not sensitive to reversal of the <span class="math">\(t\)</span> axis. Yet, our perception of time is strongly asymmetric : therefore, for second-order auditory scattering along time, one should prefer the asymmetric Gammatone wavelet (see below) instead of the Morlet wavelet. The Morlet wavelet is well suited to transforms along log-scales <span class="math">\(\gamma\)</span>.</p>
 </div>
 <div class="section" id="gammatone-wavelet">
 <h3>Gammatone wavelet<a class="headerlink" href="#gammatone-wavelet" title="Permalink to this headline">¶</a></h3>
+<p>Because of their temporal asymmetry and near-optimal uncertainty properties, Gammatone filters are widely used in auditory models. They are defined as the product of a monomial of degree <span class="math">\(N\)</span>, an exponential decay of attenuation <span class="math">\(\alpha\)</span>, and a sine wave of frequency <span class="math">\(\xi\)</span>.</p>
+<p>We define a Gammatone wavelet by taking the first derivative of the Gammatone function, and replacing the <span class="math">\(\sin(2\pi \xi t)\)</span> by <span class="math">\(\exp(2\mathrm{i} \pi \xi t)\)</span>. By doing this, we ensure that the resulting function has zero mean and is analytic (see Venkitaraman et al. 2013). The expression of the Gammatone wavelet in the time domain is:</p>
 <div class="math">
-\[\psi(t) = \left((-\alpha + \mathrm{i} \xi) t^{N-1} + (N-1) t^{N-2}\right) \exp(-\alpha \times t) \times \exp(2\mathrm{i} \pi \xi t)\]</div>
+\[\psi(t) =
+\left((-\alpha + \mathrm{i} \xi) t^{N-1} +
+(N-1) t^{N-2}\right) \exp(-\alpha t) \times \exp(2\mathrm{i} \pi \xi t)\]</div>
+<p>In the Fourier domain:</p>
+<div class="math">
+\[\hat{\psi}(\omega) = \dfrac{\mathrm{i}\omega \times (N-1)!}{\left(\alpha + \mathrm{i} (\omega - 2 \pi \xi)\right)^N}\]</div>
+<p>The way to derive the attenuations <span class="math">\(\alpha\)</span> from the required quality factors is documented inside the code.</p>
 <p>Observe that, by this definition, the wavelet modulus <span class="math">\(\vert\psi(t)\vert\)</span> reaches its maximum <em>after</em> <span class="math">\(t=0\)</span>. In practice, we translate the resulting function in time in order to match the peak at exactly <span class="math">\(t=0\)</span>. We also add a phase term such that the real part also reaches its maximum at exactly <span class="math">\(t=0\)</span>.</p>
 </div>
-<div class="section" id="poisson-wavelet">
-<h3>Poisson wavelet<a class="headerlink" href="#poisson-wavelet" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="rlc-wavelet">
+<h3>RLC wavelet<a class="headerlink" href="#rlc-wavelet" title="Permalink to this headline">¶</a></h3>
+<p>A RLC circuit consists of a resistor R, an inductor L and a capacitor C. In an underdamped regime, the response of this circuit is a sine wave with an exponentially decaying profile. By setting the phase shift <span class="math">\(\varphi\)</span> to zero and taking the analytic part, we derive an analytic &#8220;RLC wavelet&#8221; of attenuation <span class="math">\(\alpha\)</span> and center frequency <span class="math">\(\xi\)</span>.</p>
 <div class="math">
-\[\psi(t) = \exp(-\alpha \times t) \times \exp(2\mathrm{i} \pi \xi t)\]</div>
+\[\begin{split}\psi(t)=\left\{ \begin{array}{c}
+                \exp(-\alpha t)\times\exp(2\mathrm{i}\xi t)\text{ if }t&gt;0\\
+                0 \text{ otherwise}
+                \end{array}\right.\end{split}\]</div>
+<p>This wavelet is rigorously causal (it is zero for <span class="math">\(t&lt;0\)</span>) and has a very fast decay in time, at the cost of an imprecise localization in frequency. These properties makes it adapted to wavelet transform across octaves, in the case of spiral scattering.</p>
+<p>As much as the Gammatone wavelet is the product of a Gamma probability density function by a sine wave, the RLC wavelet is the product of a Poisson density function by a sine wave. Consequently, the RLC wavelet could alternatively be named &#8220;Poisson wavelet&#8221;.</p>
 </div>
 </div>
 </div>

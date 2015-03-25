@@ -78,7 +78,7 @@ for layer = 2:nLayers
                 % 4 octaves of octave filtering by default
                 field.T = default(field,'T',4);
                 field.dimension = banks{end}.behavior.dimension+1;
-                field.handle = default(field,'handle',@poisson_1d);
+                field.handle = default(field,'handle',@RLC_1d);
                 field.is_spinned = enforce(field,'is_spinned',true);
                 field.has_multiple_support = ...
                     enforce(field,'has_multiple_support',true);
@@ -101,7 +101,7 @@ for layer = 2:nLayers
                     % It is better to have the impulsive part of the
                     % gammatone in the lower octaves
                     if strcmp(func2str(field.handle),'gammatone_1d') || ...
-                            strcmp(func2str(field.handle),'poisson_1d') 
+                            strcmp(func2str(field.handle),'RLC_1d') 
                         field.is_ift_flipped = ...
                             default(field,'is_ift_flipped',true);
                     end

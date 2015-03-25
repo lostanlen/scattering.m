@@ -54,7 +54,7 @@ switch func2str(spec.handle)
         spec.mother_xi = default(opt,'mother_xi',1 / (1+adjacency_ratio));
     case 'morlet_1d'
         spec.has_real_ft = true;
-    case 'poisson_1d'
+    case 'RLC_1d'
         spec.decay_factor = default(opt,'decay_factor',0.2);
         spec.has_real_ft = false;
         spec.mother_xi = default(opt,'mother_xi',0.50);
