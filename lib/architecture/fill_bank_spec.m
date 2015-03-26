@@ -54,7 +54,6 @@ switch func2str(spec.handle)
     case 'morlet_1d'
         spec.has_real_ft = true;
     case 'RLC_1d'
-        spec.decay_factor = default(opt,'decay_factor',0.2);
         spec.has_real_ft = false;
         spec.mother_xi = default(opt,'mother_xi',0.50);
 end
