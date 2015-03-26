@@ -43,7 +43,6 @@ switch func2str(spec.handle)
         spec.gammatone_order = default(opt,'gammatone_order',4);
         spec.cutoff_in_dB = default(opt,'cutoff_in_dB',3);
         spec.has_real_ft = false;
-        spec.is_analytic = default(opt,'is_analytic',false);
         % We want the higher center log-frequency in the filter bank, log(mother_xi),
         % to be right in between its mirror log(1-mother_xi), and the second higher
         % frequency log(2^(-1/N)*mother_xi), where N is the number of filters per
@@ -55,7 +54,6 @@ switch func2str(spec.handle)
     case 'morlet_1d'
         spec.has_real_ft = true;
     case 'RLC_1d'
-        spec.decay_factor = default(opt,'decay_factor',0.2);
         spec.has_real_ft = false;
         spec.mother_xi = default(opt,'mother_xi',0.50);
 end

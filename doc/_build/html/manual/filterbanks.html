@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Filter banks &mdash; Scattering.m 0.3 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Scattering.m 0.3 documentation" href="../index.html"/>
+        <link rel="prev" title="Scattering.m" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> Scattering.m</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Filter banks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#length-of-the-input-signal-compulsory">Length of the input signal (compulsory)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#amount-of-invariance-to-translation">Amount of invariance to translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quality-factor">Quality factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#maximum-scale">Maximum scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#number-of-filters-per-octave">Number of filters per octave</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#wavelet-specifications">Wavelet specifications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#morlet-wavelet">Morlet wavelet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gammatone-wavelet">Gammatone wavelet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rlc-wavelet">RLC wavelet</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Scattering.m</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Filter banks</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/manual/filterbanks.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="filter-banks">
+<h1>Filter banks<a class="headerlink" href="#filter-banks" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="length-of-the-input-signal-compulsory">
+<h2>Length of the input signal (compulsory)<a class="headerlink" href="#length-of-the-input-signal-compulsory" title="Permalink to this headline">¶</a></h2>
+<p>Before running <code class="docutils literal"><span class="pre">sc_setup</span></code>, it is compulsory so fill the <code class="docutils literal"><span class="pre">size</span></code> field with</p>
+<div class="highlight-python"><div class="highlight"><pre>opts{1}.time.size = length(signal);
+</pre></div>
+</div>
+<p>It must be a power of 2, which leads to optimally fast Fourier Transforms.
+If you have <code class="docutils literal"><span class="pre">K</span></code> signals of the same size <code class="docutils literal"><span class="pre">N</span></code>, consider stacking them into a <code class="docutils literal"><span class="pre">KxN</span></code> matrix. This wil automatically vectorize the computation and avoid high-level loop overhead.</p>
+<p>Under development is a more general architecture that automates padding to the next power of 2, and adapts to all sizes.</p>
+</div>
+<div class="section" id="amount-of-invariance-to-translation">
+<h2>Amount of invariance to translation<a class="headerlink" href="#amount-of-invariance-to-translation" title="Permalink to this headline">¶</a></h2>
+<p>The integer <code class="docutils literal"><span class="pre">T</span></code> is the amount of invariance to translation that you require. It must also be a power of 2.</p>
+<p>A typical value for second-order scattering of audio is <code class="docutils literal"><span class="pre">T=8192</span></code>, that is 370 ms at a sample rate of 22 kHz. A smaller <code class="docutils literal"><span class="pre">T</span></code> will not integrate full musical notes or full phonemes ; on the contrary, a bigger <code class="docutils literal"><span class="pre">T</span></code> will blur different notes/phonemes together.</p>
+<p>The number of octaves in the filter bank is equal to <code class="docutils literal"><span class="pre">J</span> <span class="pre">=</span> <span class="pre">log2(T)</span></code>.
+By default, <code class="docutils literal"><span class="pre">T</span></code> is set equal to <code class="docutils literal"><span class="pre">size</span></code> which means that the corresponding scattering representation <code class="docutils literal"><span class="pre">S</span></code> will be fully translation-invariant.</p>
+</div>
+<div class="section" id="quality-factor">
+<h2>Quality factor<a class="headerlink" href="#quality-factor" title="Permalink to this headline">¶</a></h2>
+<p>The quality factor <code class="docutils literal"><span class="pre">max_Q</span></code> of a band-pass filter is defined as the ratio of its center frequency by its bandwidth. Consequently, for a given center frequency, increasing the quality factor will decrease the bandwidth proportionnally, hence yielding a &#8220;sharper&#8221; band-pass filter in the frequency domain. This increase in frequency sharpness comes at the cost of increasing the support of the filter in the time domain, which may prevent the representation to distinguish consecutive events.</p>
+<p>All the wavelets in a filter bank share the same quality factor: this is why we refer to it as a constant-Q filter bank. Note that this toolbox also allows variable-Q filter banks in order to cope with time support limitations (see section below). This is why the quality factor is <code class="docutils literal"><span class="pre">max_Q</span></code>.</p>
+<p>Typical values for the first order in audio range from 4 to 16.
+Typical values for the second order along time are 1 or 2.
+In the context of multivariable scattering, the value 1 is strongly recommended for any derived variable.</p>
+<p>A quality factor of 1, corresponding to the so-called &#8216;dyadic&#8217; filter bank, is the default.</p>
+</div>
+<div class="section" id="maximum-scale">
+<h2>Maximum scale<a class="headerlink" href="#maximum-scale" title="Permalink to this headline">¶</a></h2>
+<p>Note that a potential drawback of the constant-Q filterbank is that the time support of the filters is unbounded at the low frequencies. In audio, it is undesirable that acoustic events more than 100 ms apart fall between the same first-order time bin. To address this issue, this toolbox provides a bound <code class="docutils literal"><span class="pre">max_scale</span></code> that restricts the time support, at the cost of decreasing locally the quality factor.</p>
+<p>For instance, for <code class="docutils literal"><span class="pre">max_Q</span> <span class="pre">=</span> <span class="pre">12</span></code> and a sample rate of 22 kHz, setting <code class="docutils literal"><span class="pre">max_scale</span> <span class="pre">=</span> <span class="pre">2048</span></code> (about 93 ms) will provide constant-Q filters for frequencies above Q/max_scale (about 130 Hz) and constant-bandwidth filters below that limit.
+Setting <code class="docutils literal"><span class="pre">max_scale</span> <span class="pre">=</span> <span class="pre">Inf</span></code> will remove the upper bound on the time support and will guarantee that the quality factor is indeed constant throughout the whole frequency range.</p>
+<p>By default, <code class="docutils literal"><span class="pre">max_scale</span></code> is set to <code class="docutils literal"><span class="pre">size</span></code>, which means that the time support is only limited by the size of the whole signal.</p>
+</div>
+<div class="section" id="number-of-filters-per-octave">
+<h2>Number of filters per octave<a class="headerlink" href="#number-of-filters-per-octave" title="Permalink to this headline">¶</a></h2>
+<p>The integer <code class="docutils literal"><span class="pre">nFilters_per_octave</span></code> specified the rational quantization of the <code class="docutils literal"><span class="pre">gamma</span></code> log-scale variable. In order to cover the whole frequency axis, it is compulsory to have</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nFilters_per_octave</span> <span class="o">&gt;</span> <span class="n">max_Q</span>
+</pre></div>
+</div>
+<p>The number of filters in the filter bank is equal to <code class="docutils literal"><span class="pre">nFilters_per_octave</span> <span class="pre">*</span> <span class="pre">log2(T)</span></code>. Henceforth, note that the computational complexity of the computation is linear in the number of filters per octave of each filter bank.</p>
+</div>
+</div>
+<div class="section" id="wavelet-specifications">
+<h1>Wavelet specifications<a class="headerlink" href="#wavelet-specifications" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="morlet-wavelet">
+<h2>Morlet wavelet<a class="headerlink" href="#morlet-wavelet" title="Permalink to this headline">¶</a></h2>
+<p>The ubiquitous Morlet wavelet, also named Gabor wavelet, is proved to have optimal time-frequency Heisenberg uncertainty (see Mallat&#8217;s wavelet tour, Theorem 2.6). It is defined as the product of a Gaussian bell curve of variance <span class="math">\(\sigma\)</span> by a sine wave of frequency <span class="math">\(\xi\)</span>.</p>
+<div class="math">
+\[\psi(t) = \exp\left( - \dfrac{t^2}{2 \sigma^2} \right) \times \exp(2\mathrm{i} \pi \xi t)+ \varepsilon(t)\]</div>
+<p>The function <span class="math">\(\varepsilon(t)\)</span> is a low-frequency corrective term to ensure that the wavelet <span class="math">\(\psi(t)\)</span> has zero mean. Remarkably, the Morlet wavelet also has a Gaussian profile in the frequency domain.</p>
+<div class="math">
+\[\hat{\psi}(\omega) = \sigma \exp(- \sigma^2 \omega^2) + \hat{\varepsilon}(\omega)\]</div>
+<p>Since the Gaussian bell curve is symmetric, the Morlet wavelet transform modulus not sensitive to reversal of the <span class="math">\(t\)</span> axis. Yet, our perception of time is strongly asymmetric : therefore, for second-order auditory scattering along time, one should prefer the asymmetric Gammatone wavelet (see below) instead of the Morlet wavelet. The Morlet wavelet is well suited to transforms along log-scales <span class="math">\(\gamma\)</span>.</p>
+</div>
+<div class="section" id="gammatone-wavelet">
+<h2>Gammatone wavelet<a class="headerlink" href="#gammatone-wavelet" title="Permalink to this headline">¶</a></h2>
+<p>Because of their temporal asymmetry and near-optimal uncertainty properties, Gammatone filters are widely used in auditory models. They are defined as the product of a monomial of degree <span class="math">\(N\)</span>, an exponential decay of attenuation <span class="math">\(\alpha\)</span>, and a sine wave of frequency <span class="math">\(\xi\)</span>.</p>
+<p>We define a Gammatone wavelet by taking the first derivative of the Gammatone function, and replacing the <span class="math">\(\sin(2\pi \xi t)\)</span> by <span class="math">\(\exp(2\mathrm{i} \pi \xi t)\)</span>. By doing this, we ensure that the resulting function has zero mean and is analytic (see Venkitaraman et al. 2013). The expression of the Gammatone wavelet in the time domain is:</p>
+<div class="math">
+\[\psi(t) =
+\left((-\alpha + \mathrm{i} \xi) t^{N-1} +
+(N-1) t^{N-2}\right) \exp(-\alpha t) \times \exp(2\mathrm{i} \pi \xi t)\]</div>
+<p>In the Fourier domain:</p>
+<div class="math">
+\[\hat{\psi}(\omega) = \dfrac{\mathrm{i}\omega \times (N-1)!}{\left(\alpha + \mathrm{i} (\omega - 2 \pi \xi)\right)^N}\]</div>
+<p>The way to derive the attenuations <span class="math">\(\alpha\)</span> from the required quality factors is documented inside the code.</p>
+<p>Observe that, by this definition, the wavelet modulus <span class="math">\(\vert\psi(t)\vert\)</span> reaches its maximum <em>after</em> <span class="math">\(t=0\)</span>. In practice, we translate the resulting function in time in order to match the peak at exactly <span class="math">\(t=0\)</span>. We also add a phase term such that the real part also reaches its maximum at exactly <span class="math">\(t=0\)</span>.</p>
+</div>
+<div class="section" id="rlc-wavelet">
+<h2>RLC wavelet<a class="headerlink" href="#rlc-wavelet" title="Permalink to this headline">¶</a></h2>
+<p>A RLC circuit consists of a resistor R, an inductor L and a capacitor C. In an underdamped regime, the response of this circuit is a sine wave with an exponentially decaying profile. By setting the phase shift <span class="math">\(\varphi\)</span> to zero and taking the analytic part, we derive an analytic &#8220;RLC wavelet&#8221; of attenuation <span class="math">\(\alpha\)</span> and center frequency <span class="math">\(\xi\)</span>.</p>
+<div class="math">
+\[\begin{split}\psi(t)=\left\{ \begin{array}{c}
+                \exp(-\alpha t)\times\exp(2\mathrm{i}\xi t)\text{ if }t\geq0\\
+                0 \text{ otherwise}
+                \end{array}\right.\end{split}\]</div>
+<p>This wavelet is rigorously causal (it is zero for <span class="math">\(t&lt;0\)</span>) and has a very fast decay in time, at the cost of an imprecise localization in frequency. These properties makes it adapted to wavelet transform across octaves, in the case of spiral scattering.</p>
+<p>As much as the Gammatone wavelet is the product of a Gamma probability density function by a sine wave, the RLC wavelet is the product of a Poisson density function by a sine wave. Consequently, the RLC wavelet could alternatively be named &#8220;Poisson wavelet&#8221;.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Scattering.m"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Vincent Lostanlen.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
