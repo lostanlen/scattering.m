@@ -30,8 +30,7 @@
   
 
   
-    <link rel="top" title="Scattering.m 0.3 documentation" href="../index.html"/>
-        <link rel="prev" title="Filter bank specifications" href="filter-bank-specifications.html"/> 
+    <link rel="top" title="Scattering.m 0.3 documentation" href="../index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -62,21 +61,7 @@
         
           
           
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="filter-bank-specifications.html">Filter bank specifications</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#length-of-the-input-signal-compulsory">Length of the input signal (compulsory)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#amount-of-invariance-to-translation">Amount of invariance to translation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#quality-factor">Quality factor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#maximum-scale">Maximum scale</a></li>
-<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#number-of-filters-per-octave">Number of filters per octave</a></li>
-</ul>
-</li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Wavelets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#morlet-wavelet">Morlet wavelet</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gammatone-wavelet">Gammatone wavelet</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rlc-wavelet">RLC wavelet</a></li>
-</ul>
-</li>
+              <ul class="simple">
 </ul>
 
           
@@ -121,11 +106,13 @@ Then, one has to contract <span class="math">\(\psi(\omega)\)</span> in the Four
 <p>In the time domain, the above is equivalent to</p>
 <div class="math">
 \[\psi_{\gamma}(t) = 2^{-\gamma} \psi(2^{-\gamma} t).\]</div>
-<p>In this section, we review three posssible shapes for the mother wavelet <span class="math">\(\psi\)</span>:
-1. The Morlet wavelet <cite>morlet_1d</cite>
-2. The Gammatone wavelet <cite>gammatone_1d</cite>
-3. The RLC wavelet (causal with exponential decay) <cite>RLC_1d</cite></p>
-<p>The default specifications are: Morlet</p>
+<p>In this section, we review three posssible shapes for the mother wavelet <span class="math">\(\psi\)</span>:</p>
+<ol class="arabic simple">
+<li>the Morlet wavelet <code class="docutils literal"><span class="pre">morlet_1d</span></code>,</li>
+<li>the Gammatone wavelet <code class="docutils literal"><span class="pre">gammatone_1d</span></code> and</li>
+<li>the RLC wavelet (causal with exponential decay) <code class="docutils literal"><span class="pre">RLC_1d</span></code>.</li>
+</ol>
+<p>The default specifications are: Gammatone when transforming over time, Morlet when transforming along chromas, RLC when transforming along octaves.</p>
 <div class="section" id="morlet-wavelet">
 <h2>Morlet wavelet<a class="headerlink" href="#morlet-wavelet" title="Permalink to this headline">¶</a></h2>
 <p>The ubiquitous Morlet wavelet, also named Gabor wavelet, is proved to have optimal time-frequency Heisenberg uncertainty (see Mallat&#8217;s wavelet tour <a class="reference internal" href="#mal08" id="id1">[Mal08]</a>, Theorem 2.6). It is defined as the product of a Gaussian bell curve of variance <span class="math">\(\sigma\)</span> by a sine wave of frequency <span class="math">\(\xi\)</span>.</p>
@@ -150,6 +137,10 @@ Then, one has to contract <span class="math">\(\psi(\omega)\)</span> in the Four
 \[\hat{\psi}(\omega) = \dfrac{\mathrm{i}\omega \times (N-1)!}{\left(\alpha + \mathrm{i} (\omega - 2 \pi \xi)\right)^N}\]</div>
 <p>Observe that, by this definition, the wavelet modulus <span class="math">\(\vert\psi(t)\vert\)</span> reaches its maximum <em>after</em> <span class="math">\(t=0\)</span>. In practice, we translate the resulting function in time in order to match the peak at exactly <span class="math">\(t=0\)</span>. We also add a phase term such that the real part also reaches its maximum at exactly <span class="math">\(t=0\)</span>.</p>
 <p>The integer <span class="math">\(N\)</span>, called <code class="docutils literal"><span class="pre">gammatone_order</span></code> in the specifications, is equal to <span class="math">\(4\)</span> by default. The bigger the <span class="math">\(N\)</span>, the more symmetric (hence &#8220;Morlet-like&#8221;) the wavelet will be. The attenuation parameter <span class="math">\(\alpha\)</span> is automatically inferred from the required quality factor, through a tedious closed-form equation.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Document that closed-form equation in the developer&#8217;s documentation.</p>
+</div>
 </div>
 <div class="section" id="rlc-wavelet">
 <h2>RLC wavelet<a class="headerlink" href="#rlc-wavelet" title="Permalink to this headline">¶</a></h2>
@@ -162,7 +153,7 @@ Then, one has to contract <span class="math">\(\psi(\omega)\)</span> in the Four
 <p>This wavelet is rigorously causal (it is zero for <span class="math">\(t&lt;0\)</span>) and has a very fast decay in time, at the cost of an imprecise localization in frequency. These properties makes it adapted to wavelet transform across octaves, in the case of spiral scattering.</p>
 <p>As much as the Gammatone wavelet is the product of a Gamma probability density function by a sine wave, the RLC wavelet is the product of a Poisson density function by a sine wave. Consequently, the RLC wavelet could alternatively be named &#8220;Poisson wavelet&#8221;. The attenuation parameter <span class="math">\(\alpha\)</span> is automatically inferred from the required quality factor, through the simple equation</p>
 <div class="math">
-\[`\alpha = \dfrac{\xi}{2Q}`.\]</div>
+\[\alpha = \dfrac{\xi}{2Q}.\]</div>
 <p>RLC wavelets are the default when transforming across octaves in a spiral scattering transform. Aside from the quality factor, it does not have any specific parameter.</p>
 <table class="docutils citation" frame="void" id="mal08" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
@@ -188,13 +179,6 @@ Then, one has to contract <span class="math">\(\psi(\omega)\)</span> in the Four
 
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="filter-bank-specifications.html" class="btn btn-neutral" title="Filter bank specifications"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

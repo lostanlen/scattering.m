@@ -1,4 +1,4 @@
-function [psis,phi,littlewood_paley_sum] = sc_disp_bank(bank,fieldname)
+function [psis,phi,littlewood_paley_sum] = display_bank(bank,fieldname)
 %% Default argument management
 if nargin<2
     fieldname = 'psis';

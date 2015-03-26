@@ -3,7 +3,6 @@ nLayers = length(opts);
 plans = cell(1,nLayers);
 if isfield(opts{1},'time') && ~isfield(opts{1},'space')
     root = 'time';
-    opts{1}.time = default_auditory(opts{1}.time);
 elseif ~isfield(opts{1},'time') && isfield(opts{1},'space')
     root = 'space';
 end

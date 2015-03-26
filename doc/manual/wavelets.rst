@@ -16,11 +16,13 @@ In the time domain, the above is equivalent to
 	\psi_{\gamma}(t) = 2^{-\gamma} \psi(2^{-\gamma} t).
 
 In this section, we review three posssible shapes for the mother wavelet :math:`\psi`:
-1. The Morlet wavelet `morlet_1d`
-2. The Gammatone wavelet `gammatone_1d`
-3. The RLC wavelet (causal with exponential decay) `RLC_1d`
 
-The default specifications are: Morlet 
+
+1. the Morlet wavelet ``morlet_1d``,
+2. the Gammatone wavelet ``gammatone_1d`` and
+3. the RLC wavelet (causal with exponential decay) ``RLC_1d``.
+
+The default specifications are: Gammatone when transforming over time, Morlet when transforming along chromas, RLC when transforming along octaves.
 
 
 Morlet wavelet
@@ -65,6 +67,8 @@ In the Fourier domain:
 Observe that, by this definition, the wavelet modulus :math:`\vert\psi(t)\vert` reaches its maximum *after* :math:`t=0`. In practice, we translate the resulting function in time in order to match the peak at exactly :math:`t=0`. We also add a phase term such that the real part also reaches its maximum at exactly :math:`t=0`.
 
 The integer :math:`N`, called ``gammatone_order`` in the specifications, is equal to :math:`4` by default. The bigger the :math:`N`, the more symmetric (hence "Morlet-like") the wavelet will be. The attenuation parameter :math:`\alpha` is automatically inferred from the required quality factor, through a tedious closed-form equation.
+
+.. todo:: Document that closed-form equation in the developer's documentation.
 
 RLC wavelet
 -----------

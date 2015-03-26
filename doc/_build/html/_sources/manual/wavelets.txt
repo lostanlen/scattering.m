@@ -16,11 +16,13 @@ In the time domain, the above is equivalent to
 	\psi_{\gamma}(t) = 2^{-\gamma} \psi(2^{-\gamma} t).
 
 In this section, we review three posssible shapes for the mother wavelet :math:`\psi`:
-1. The Morlet wavelet `morlet_1d`
-2. The Gammatone wavelet `gammatone_1d`
-3. The RLC wavelet (causal with exponential decay) `RLC_1d`
 
-The default specifications are: Morlet 
+
+1. the Morlet wavelet ``morlet_1d``,
+2. the Gammatone wavelet ``gammatone_1d`` and
+3. the RLC wavelet (causal with exponential decay) ``RLC_1d``.
+
+The default specifications are: Gammatone when transforming over time, Morlet when transforming along chromas, RLC when transforming along octaves.
 
 
 Morlet wavelet
@@ -66,6 +68,8 @@ Observe that, by this definition, the wavelet modulus :math:`\vert\psi(t)\vert` 
 
 The integer :math:`N`, called ``gammatone_order`` in the specifications, is equal to :math:`4` by default. The bigger the :math:`N`, the more symmetric (hence "Morlet-like") the wavelet will be. The attenuation parameter :math:`\alpha` is automatically inferred from the required quality factor, through a tedious closed-form equation.
 
+.. todo:: Document that closed-form equation in the developer's documentation.
+
 RLC wavelet
 -----------
 
@@ -84,7 +88,7 @@ This wavelet is rigorously causal (it is zero for :math:`t<0`) and has a very fa
 As much as the Gammatone wavelet is the product of a Gamma probability density function by a sine wave, the RLC wavelet is the product of a Poisson density function by a sine wave. Consequently, the RLC wavelet could alternatively be named "Poisson wavelet". The attenuation parameter :math:`\alpha` is automatically inferred from the required quality factor, through the simple equation
 
 .. math::
-	`\alpha = \dfrac{\xi}{2Q}`.
+	\alpha = \dfrac{\xi}{2Q}.
 
 RLC wavelets are the default when transforming across octaves in a spiral scattering transform. Aside from the quality factor, it does not have any specific parameter.
 
