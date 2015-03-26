@@ -32,7 +32,7 @@ extensions = [
  #   'sphinx.ext.intersphinx',
 #    'sphinx.ext.todo',
 #    'sphinx.ext.coverage',
-#    'sphinx.ext.mathjax',
+    'sphinx.ext.mathjax',
 #    'sphinxcontrib.matlab',
 ]
 
@@ -100,7 +100,7 @@ pygments_style = 'sphinx'
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
 
-primary_domain = 'mat'
+primary_domain = 'py'
 
 # If true, keep warnings as "system message" paragraphs in the built documents.
 #keep_warnings = False

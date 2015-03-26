@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Wavelets &mdash; Scattering.m 0.3 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Scattering.m 0.3 documentation" href="../index.html"/>
+        <link rel="prev" title="Filter bank specifications" href="filter-bank-specifications.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> Scattering.m</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="filter-bank-specifications.html">Filter bank specifications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#length-of-the-input-signal-compulsory">Length of the input signal (compulsory)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#amount-of-invariance-to-translation">Amount of invariance to translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#quality-factor">Quality factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#maximum-scale">Maximum scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#number-of-filters-per-octave">Number of filters per octave</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Wavelets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#morlet-wavelet">Morlet wavelet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gammatone-wavelet">Gammatone wavelet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rlc-wavelet">RLC wavelet</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Scattering.m</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Wavelets</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/manual/wavelets.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="wavelets">
+<h1>Wavelets<a class="headerlink" href="#wavelets" title="Permalink to this headline">¶</a></h1>
+<p>In order to build a wavelet filter bank, one starts from a single bandpass filter <span class="math">\(\psi(t)\)</span> named the <em>mother wavelet</em>.
+Then, one has to contract <span class="math">\(\psi(\omega)\)</span> in the Fourier domain by scaling factors <span class="math">\(2^{\gamma}\geq1\)</span> to derive a bank of band pass filters <span class="math">\(\widehat{\psi_{\gamma}}(\omega)\)</span> for different values of <span class="math">\(\gamma\)</span>:</p>
+<div class="math">
+\[\widehat{\psi_{\gamma}}(\omega) = \hat{\psi}(2^{\gamma} \omega).\]</div>
+<p>In the time domain, the above is equivalent to</p>
+<div class="math">
+\[\psi_{\gamma}(t) = 2^{-\gamma} \psi(2^{-\gamma} t).\]</div>
+<p>In this section, we review three posssible shapes for the mother wavelet <span class="math">\(\psi\)</span>:
+1. The Morlet wavelet <cite>morlet_1d</cite>
+2. The Gammatone wavelet <cite>gammatone_1d</cite>
+3. The RLC wavelet (causal with exponential decay) <cite>RLC_1d</cite></p>
+<p>The default specifications are: Morlet</p>
+<div class="section" id="morlet-wavelet">
+<h2>Morlet wavelet<a class="headerlink" href="#morlet-wavelet" title="Permalink to this headline">¶</a></h2>
+<p>The ubiquitous Morlet wavelet, also named Gabor wavelet, is proved to have optimal time-frequency Heisenberg uncertainty (see Mallat&#8217;s wavelet tour <a class="reference internal" href="#mal08" id="id1">[Mal08]</a>, Theorem 2.6). It is defined as the product of a Gaussian bell curve of variance <span class="math">\(\sigma\)</span> by a sine wave of frequency <span class="math">\(\xi\)</span>.</p>
+<div class="math">
+\[\psi(t) = \exp\left( - \dfrac{t^2}{2 \sigma^2} \right) \times \exp(2\mathrm{i} \pi \xi t)+ \varepsilon(t)\]</div>
+<p>The function <span class="math">\(\varepsilon(t)\)</span> is a low-frequency corrective term to ensure that the wavelet <span class="math">\(\psi(t)\)</span> has zero mean. Remarkably, the Morlet wavelet also has a Gaussian profile in the frequency domain.</p>
+<div class="math">
+\[\hat{\psi}(\omega) = \sigma \exp(- \sigma^2 \omega^2) + \hat{\varepsilon}(\omega)\]</div>
+<p>Since the Gaussian bell curve is symmetric, the Morlet wavelet transform modulus not sensitive to reversal of the <span class="math">\(t\)</span> axis. Yet, our perception of time is strongly asymmetric : therefore, for second-order auditory scattering along time, one should prefer the asymmetric Gammatone wavelet (see below) instead of the Morlet wavelet. The Morlet wavelet is well suited to transforms along log-scales <span class="math">\(\gamma\)</span>.</p>
+<p>When performing a joint time-frequency transform or spiral transform, the Morlet wavelet handle <cite>morlet_1d</cite> is the default for the transform along log-scales <span class="math">\(\gamma\)</span>. In many cases, it is sensible to use it for transforms along time as well. Aside from the quality factor, it does not have any specific parameter.</p>
+</div>
+<div class="section" id="gammatone-wavelet">
+<h2>Gammatone wavelet<a class="headerlink" href="#gammatone-wavelet" title="Permalink to this headline">¶</a></h2>
+<p>Because of their temporal asymmetry and near-optimal uncertainty properties, Gammatone filters are widely used in auditory models. They are defined as the product of a monomial of degree <span class="math">\(N\)</span>, an exponential decay of attenuation <span class="math">\(\alpha\)</span>, and a sine wave of frequency <span class="math">\(\xi\)</span>.</p>
+<p>We define a Gammatone wavelet by taking the first derivative of the Gammatone function, and replacing the <span class="math">\(\sin(2\pi \xi t)\)</span> by <span class="math">\(\exp(2\mathrm{i} \pi \xi t)\)</span>. By doing this, we ensure that the resulting function has zero mean and is analytic (see Venkitaraman et al. <a class="reference internal" href="#vas14" id="id2">[VAS14]</a>). The expression of the Gammatone wavelet in the time domain is:</p>
+<div class="math">
+\[\psi(t) =
+\left((-\alpha + \mathrm{i} \xi) t^{N-1} +
+(N-1) t^{N-2}\right) \exp(-\alpha t) \times \exp(2\mathrm{i} \pi \xi t)\]</div>
+<p>In the Fourier domain:</p>
+<div class="math">
+\[\hat{\psi}(\omega) = \dfrac{\mathrm{i}\omega \times (N-1)!}{\left(\alpha + \mathrm{i} (\omega - 2 \pi \xi)\right)^N}\]</div>
+<p>Observe that, by this definition, the wavelet modulus <span class="math">\(\vert\psi(t)\vert\)</span> reaches its maximum <em>after</em> <span class="math">\(t=0\)</span>. In practice, we translate the resulting function in time in order to match the peak at exactly <span class="math">\(t=0\)</span>. We also add a phase term such that the real part also reaches its maximum at exactly <span class="math">\(t=0\)</span>.</p>
+<p>The integer <span class="math">\(N\)</span>, called <code class="docutils literal"><span class="pre">gammatone_order</span></code> in the specifications, is equal to <span class="math">\(4\)</span> by default. The bigger the <span class="math">\(N\)</span>, the more symmetric (hence &#8220;Morlet-like&#8221;) the wavelet will be. The attenuation parameter <span class="math">\(\alpha\)</span> is automatically inferred from the required quality factor, through a tedious closed-form equation.</p>
+</div>
+<div class="section" id="rlc-wavelet">
+<h2>RLC wavelet<a class="headerlink" href="#rlc-wavelet" title="Permalink to this headline">¶</a></h2>
+<p>A RLC circuit consists of a resistor R, an inductor L and a capacitor C. In an underdamped regime, the response of this circuit is a sine wave with an exponentially decaying profile. By setting the phase shift <span class="math">\(\varphi\)</span> to zero and taking the analytic part, we derive an analytic &#8220;RLC wavelet&#8221; of attenuation <span class="math">\(\alpha\)</span> and center frequency <span class="math">\(\xi\)</span>.</p>
+<div class="math">
+\[\begin{split}\psi(t)=\left\{ \begin{array}{c}
+                \exp(-\alpha t)\times\exp(2\mathrm{i}\xi t)\text{ if }t\geq0\\
+                0 \text{ otherwise}
+                \end{array}\right.\end{split}\]</div>
+<p>This wavelet is rigorously causal (it is zero for <span class="math">\(t&lt;0\)</span>) and has a very fast decay in time, at the cost of an imprecise localization in frequency. These properties makes it adapted to wavelet transform across octaves, in the case of spiral scattering.</p>
+<p>As much as the Gammatone wavelet is the product of a Gamma probability density function by a sine wave, the RLC wavelet is the product of a Poisson density function by a sine wave. Consequently, the RLC wavelet could alternatively be named &#8220;Poisson wavelet&#8221;. The attenuation parameter <span class="math">\(\alpha\)</span> is automatically inferred from the required quality factor, through the simple equation</p>
+<div class="math">
+\[`\alpha = \dfrac{\xi}{2Q}`.\]</div>
+<p>RLC wavelets are the default when transforming across octaves in a spiral scattering transform. Aside from the quality factor, it does not have any specific parameter.</p>
+<table class="docutils citation" frame="void" id="mal08" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[Mal08]</a></td><td><ol class="first last upperalpha simple" start="19">
+<li>Mallat, A Wavelet Tour of Signal Processing, Third Edition: The Sparse Way, 3rd ed. Academic Press, 2008, p. 832.</li>
+</ol>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="vas14" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[VAS14]</a></td><td><ol class="first last upperalpha simple">
+<li>Venkitaraman, A. Adiga, and C. S. Seelamantula, “Auditory-motivated Gammatone wavelet transform,” Signal Processing, vol. 94, pp. 608–619, 2014.</li>
+</ol>
+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="filter-bank-specifications.html" class="btn btn-neutral" title="Filter bank specifications"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Vincent Lostanlen.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
