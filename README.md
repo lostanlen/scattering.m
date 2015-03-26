@@ -24,11 +24,11 @@ opts{2}.time = struct();
 % opts{3}.j = struct(); % j is the octave variable
 ```
 
-Run ``setup`` to build the scattering architectures, which consist of filter banks and a nonlinearity (complex modulus by default). Then run ``propagate`` to compute the scattering coefficients.
+Run ``sc_setup`` to build the scattering architectures, which consist of filter banks and a nonlinearity (complex modulus by default). Then run ``sc_propagate`` to compute the scattering coefficients.
 
 ```matlab
-archs = setup(opts);
-S = propagate(signal,archs);
+archs = sc_setup(opts);
+S = sc_propagate(signal,archs);
 ```
 
 If you want to change the default behavior, add specific fields to the empty structures in ``opts``. See the documentation for available parameters.
@@ -47,7 +47,7 @@ Now, start MATLAB and add the toolbox to your local path:
 addpath(genpath('path/to/scattering.m/lib'))
 ```
 
-and start building calling ``setup`` and ``propagate`` on your signals.
+and start calling ``sc_setup`` and ``sc_propagate`` on your signals.
 
 ## Documentation
 Documentation can be browsed on [Read The Docs](http://scatteringm.readthedocs.org/en/latest).
