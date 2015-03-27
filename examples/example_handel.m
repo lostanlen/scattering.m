@@ -1,3 +1,10 @@
+% In this script, we load a 8-second signal and perform second-order scattering
+% on it.
+% First, we display the "scalogram"
+% We display the "scattergram", that is, the energy of second-order coefficients
+% over time for a fixed modulation scale (here about 1 second), as a function of
+% the acoustic frequency.
+
 %% Load demo signal
 load handel;
 N = 65536; % length of signal must be a power of 2
