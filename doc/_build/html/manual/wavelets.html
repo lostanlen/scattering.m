@@ -30,7 +30,8 @@
   
 
   
-    <link rel="top" title="Scattering.m 0.3 documentation" href="../index.html"/> 
+    <link rel="top" title="Scattering.m 0.3 documentation" href="../index.html"/>
+        <link rel="prev" title="Filter bank specifications" href="filter-bank-specifications.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -61,7 +62,22 @@
         
           
           
-              <ul class="simple">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter-bank-specifications.html">Filter bank specifications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#length-of-the-input-signal-compulsory">Length of the input signal (compulsory)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#amount-of-invariance-to-translation">Amount of invariance to translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#quality-factor">Quality factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#maximum-scale">Maximum scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#number-of-filters-per-octave">Number of filters per octave</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Wavelets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#morlet-wavelet">Morlet wavelet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gammatone-wavelet">Gammatone wavelet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rlc-wavelet">RLC wavelet</a></li>
+</ul>
+</li>
 </ul>
 
           
@@ -137,10 +153,6 @@ Then, one has to contract <span class="math">\(\psi(\omega)\)</span> in the Four
 \[\hat{\psi}(\omega) = \dfrac{\mathrm{i}\omega \times (N-1)!}{\left(\alpha + \mathrm{i} (\omega - 2 \pi \xi)\right)^N}\]</div>
 <p>Observe that, by this definition, the wavelet modulus <span class="math">\(\vert\psi(t)\vert\)</span> reaches its maximum <em>after</em> <span class="math">\(t=0\)</span>. In practice, we translate the resulting function in time in order to match the peak at exactly <span class="math">\(t=0\)</span>. We also add a phase term such that the real part also reaches its maximum at exactly <span class="math">\(t=0\)</span>.</p>
 <p>The integer <span class="math">\(N\)</span>, called <code class="docutils literal"><span class="pre">gammatone_order</span></code> in the specifications, is equal to <span class="math">\(4\)</span> by default. The bigger the <span class="math">\(N\)</span>, the more symmetric (hence &#8220;Morlet-like&#8221;) the wavelet will be. The attenuation parameter <span class="math">\(\alpha\)</span> is automatically inferred from the required quality factor, through a tedious closed-form equation.</p>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Document that closed-form equation in the developer&#8217;s documentation.</p>
-</div>
 </div>
 <div class="section" id="rlc-wavelet">
 <h2>RLC wavelet<a class="headerlink" href="#rlc-wavelet" title="Permalink to this headline">¶</a></h2>
@@ -158,19 +170,13 @@ Then, one has to contract <span class="math">\(\psi(\omega)\)</span> in the Four
 <table class="docutils citation" frame="void" id="mal08" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[Mal08]</a></td><td><ol class="first last upperalpha simple" start="19">
-<li>Mallat, A Wavelet Tour of Signal Processing, Third Edition: The Sparse Way, 3rd ed. Academic Press, 2008, p. 832.</li>
-</ol>
-</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[Mal08]</a></td><td>Mallat, S. A Wavelet Tour of Signal Processing, Third Edition: The Sparse Way. 832 (Academic Press, 2008).</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="vas14" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[VAS14]</a></td><td><ol class="first last upperalpha simple">
-<li>Venkitaraman, A. Adiga, and C. S. Seelamantula, “Auditory-motivated Gammatone wavelet transform,” Signal Processing, vol. 94, pp. 608–619, 2014.</li>
-</ol>
-</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id2">[VAS14]</a></td><td>Venkitaraman, A., Adiga, A. &amp; Seelamantula, C. S. Auditory-motivated Gammatone wavelet transform. Signal Processing 94, 608–619 (2014).</td></tr>
 </tbody>
 </table>
 </div>
@@ -179,6 +185,13 @@ Then, one has to contract <span class="math">\(\psi(\omega)\)</span> in the Four
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="filter-bank-specifications.html" class="btn btn-neutral" title="Filter bank specifications"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
