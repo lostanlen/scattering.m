@@ -33,6 +33,7 @@ instead.
 .. toctree::
    :maxdepth: 1
 
+   manual/introduction
    manual/filter-bank-specifications
    manual/wavelets
 

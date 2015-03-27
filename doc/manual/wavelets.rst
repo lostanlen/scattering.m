@@ -25,6 +25,7 @@ In this section, we review three posssible shapes for the mother wavelet :math:`
 The default specifications are: Gammatone when transforming over time, Morlet when transforming along chromas, RLC when transforming along octaves.
 
 
+
 Morlet wavelet
 --------------
 
@@ -43,6 +44,7 @@ The function :math:`\varepsilon(t)` is a low-frequency corrective term to ensure
 Since the Gaussian bell curve is symmetric, the Morlet wavelet transform modulus not sensitive to reversal of the :math:`t` axis. Yet, our perception of time is strongly asymmetric : therefore, for second-order auditory scattering along time, one should prefer the asymmetric Gammatone wavelet (see below) instead of the Morlet wavelet. The Morlet wavelet is well suited to transforms along log-scales :math:`\gamma`.
 
 When performing a joint time-frequency transform or spiral transform, the Morlet wavelet handle `morlet_1d` is the default for the transform along log-scales :math:`\gamma`. In many cases, it is sensible to use it for transforms along time as well. Aside from the quality factor, it does not have any specific parameter.
+
 
 
 Gammatone wavelet
@@ -68,7 +70,9 @@ Observe that, by this definition, the wavelet modulus :math:`\vert\psi(t)\vert` 
 
 The integer :math:`N`, called ``gammatone_order`` in the specifications, is equal to :math:`4` by default. The bigger the :math:`N`, the more symmetric (hence "Morlet-like") the wavelet will be. The attenuation parameter :math:`\alpha` is automatically inferred from the required quality factor, through a tedious closed-form equation.
 
-.. todo:: Document that closed-form equation in the developer's documentation.
+.. TODO: Document the closed-form equation in the developer's documentation.
+
+
 
 RLC wavelet
 -----------
@@ -92,5 +96,7 @@ As much as the Gammatone wavelet is the product of a Gamma probability density f
 
 RLC wavelets are the default when transforming across octaves in a spiral scattering transform. Aside from the quality factor, it does not have any specific parameter.
 
-.. [Mal08] S. Mallat, A Wavelet Tour of Signal Processing, Third Edition: The Sparse Way, 3rd ed. Academic Press, 2008, p. 832.
-.. [VAS14] A. Venkitaraman, A. Adiga, and C. S. Seelamantula, “Auditory-motivated Gammatone wavelet transform,” Signal Processing, vol. 94, pp. 608–619, 2014.
+.. TODO: Document the equation \alpha = \xi / (2Q) in the developer's documentation.
+
+.. [Mal08] Mallat, S. A Wavelet Tour of Signal Processing, Third Edition: The Sparse Way. 832 (Academic Press, 2008).
+.. [VAS14] Venkitaraman, A., Adiga, A. & Seelamantula, C. S. Auditory-motivated Gammatone wavelet transform. Signal Processing 94, 608–619 (2014).

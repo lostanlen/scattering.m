@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction &mdash; Scattering.m 0.3 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Scattering.m 0.3 documentation" href="../index.html"/>
+        <link rel="next" title="Filter bank specifications" href="filter-bank-specifications.html"/>
+        <link rel="prev" title="Scattering.m" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> Scattering.m</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter-bank-specifications.html">Filter bank specifications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#length-of-the-input-signal-compulsory">Length of the input signal (compulsory)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#amount-of-invariance-to-translation">Amount of invariance to translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#quality-factor">Quality factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#maximum-scale">Maximum scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter-bank-specifications.html#number-of-filters-per-octave">Number of filters per octave</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="wavelets.html">Wavelets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="wavelets.html#morlet-wavelet">Morlet wavelet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wavelets.html#gammatone-wavelet">Gammatone wavelet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wavelets.html#rlc-wavelet">RLC wavelet</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Scattering.m</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/manual/introduction.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Originated in 2010 by Stéphane Mallat as &#8220;Recursive Interferometry&#8221; <a class="reference internal" href="#mal10" id="id1">[Mal10]</a>, the scattering representation aims at providing robust mid-level features for signal-based machine learning.</p>
+<p>It relies on the idea that an ideal representation for classification should verify the three following criteria:</p>
+<ol class="arabic simple">
+<li><strong>Invariance</strong> to translation: if the signal gets globally translated, the representation should not change.</li>
+<li><strong>Stability</strong> to small elastic deformations: if the signal get deformed, the representation should be deformed in a proportional way.</li>
+<li><strong>Discriminability</strong>: signals in different classes should be represented differently.</li>
+</ol>
+<p>Below is an informal review of the capacities of different signal descriptors in terms of these criteria.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="44%" />
+<col width="17%" />
+<col width="13%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head">Invariant</th>
+<th class="head">Stable</th>
+<th class="head">Discriminative</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>the signal itself</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>★ ★ ★</td>
+</tr>
+<tr class="row-odd"><td>moving average</td>
+<td>★ ★</td>
+<td>★ ★ ★</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>Fourier transform modulus</td>
+<td>★ ★ ★</td>
+<td>&nbsp;</td>
+<td>★ ★ ★</td>
+</tr>
+<tr class="row-odd"><td>wavelet transform modulus</td>
+<td>&nbsp;</td>
+<td>★</td>
+<td>★ ★ ★</td>
+</tr>
+<tr class="row-even"><td>constant-Q transform, MFCC</td>
+<td>★</td>
+<td>★ ★ ★</td>
+<td>★</td>
+</tr>
+<tr class="row-odd"><td>scattering transform</td>
+<td>★ ★</td>
+<td>★ ★ ★</td>
+<td>★ ★</td>
+</tr>
+</tbody>
+</table>
+<p>Invariance and stability can easily be achieved by averaging the signal over time, at the cost of a poor discriminability.
+Conversely, the modulus of the wavelet transform (called <em>scalogram</em>) is stable and discriminative, yet not invariant to translation.
+The classical constant-Q transform is equivalent to averaging the scalogram over uniform windows : that is a gain in invariance, yet a loss in discriminability.
+The rationale behing the scattering transform is to compensate for this averaging by recovering the fast variations in the scalogram as well. This is handled by means of another wavelet transform, so as to guarantee a good property of stability.</p>
+<table class="docutils citation" frame="void" id="mal10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[Mal10]</a></td><td>Mallat, S. Recursive interferometric representations. in European Signal Processing Conference 716–720 (2010).</td></tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="filter-bank-specifications.html" class="btn btn-neutral float-right" title="Filter bank specifications">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Scattering.m"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Vincent Lostanlen.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
