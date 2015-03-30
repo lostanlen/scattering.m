@@ -9,8 +9,7 @@ if iscell(sub_Y)
         for cell_index = 1:nCells
             if mask(cell_index)
                 vectorized_output{cell_index} = ...
-                    map_unary(nonlinearity_handle, ...
-                    sub_Y{cell_index}(:));
+                    map_unary(nonlinearity_handle,sub_Y{cell_index}(:));
             else
                 vectorized_output{cell_index} = [];
             end
