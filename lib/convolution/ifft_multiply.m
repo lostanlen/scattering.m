@@ -1,16 +1,16 @@
 function y = ifft_multiply(x_ft,filter_struct,log2_resampling,colons,subscripts)
-%% Selection of required resolution of filter
+%% Definition of x_sizes
 if length(subscripts)>1
     error('Fourier-based filtering not ready in dimension >1');
 end
 input_sizes = size(x_ft);
 x_sizes = input_sizes(subscripts);
 
-%% Loading of filter according to the required resolution
+%% Loading of filter
 filter_ft = filter_struct.ft;
 filter_start = filter_struct.ft_start;
 
-%% Trimming of x if needed
+%% Trimming of x_ft if needed
 y_sizes = pow2(x_sizes,log2_resampling);
 pos_range_start = max(1,filter_start);
 x_end = x_sizes/2;
@@ -36,7 +36,7 @@ x_range = cat(2,neg_x_range,pos_x_range);
 colons.subs{subscripts} = x_range;
 trimmed_x_ft = subsref(x_ft,colons);
 
-%% Trimming of filter if needed
+%% Trimming of filter_ft if needed
 pos_filter_range = mod(pos_x_range - filter_start,filter_sizes) + 1;
 unbounded_neg_filter_range = ...
     neg_x_range - filter_start + max(filter_sizes-x_sizes,0);
@@ -45,8 +45,10 @@ filter_range = cat(2,neg_filter_range,pos_filter_range);
 colons.subs{subscripts} = filter_range;
 trimmed_filter_ft = subsref(filter_ft,colons);
 
-%% Product between non-negligible Fourier coefficients of x and filter
+%% Product between non-negligible Fourier coefficients of x_ft and filter_ft
 sub_y_ft = bsxfun(@times,trimmed_x_ft,trimmed_filter_ft);
+
+%% Assignment of product to zero-allocated y_ft
 y_tensor_sizes = size(x_ft);
 y_tensor_sizes(subscripts) = y_sizes;
 y = zeros(y_tensor_sizes);
