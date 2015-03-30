@@ -4,8 +4,7 @@ if iscell(data)
     if isempty(data)
         return;
     end
-    data_sizes = drop_trailing(size(data));
-    nCells = prod(data_sizes);
+    nCells = numel(data);
     if iscell(data{1})
         for cell_index = 1:nCells
             data{cell_index} = ...
