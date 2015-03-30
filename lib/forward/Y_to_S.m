@@ -59,6 +59,4 @@ for variable_index = start_index:nVariables_to_transform
         %layer_S = pool_signal(layer_S,pooling);
     end
 end
-
-%% TODO: unpadding
 end
