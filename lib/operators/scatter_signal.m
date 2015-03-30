@@ -1,8 +1,8 @@
 function next_sub_Y = scatter_signal(sub_Y,bank)
-%% Cell-wise dispatch
+%% Cell-wise map
 if iscell(sub_Y)
     scatter_handle = @(x) scatter_signal(x,bank);
-    next_sub_Y = dispatch_unary_handle(scatter_handle,sub_Y);
+    next_sub_Y = map_unary(scatter_handle,sub_Y);
     return;
 end
 

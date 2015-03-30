@@ -1,6 +1,6 @@
-function data = dispatch_unary_handle(unary_handle,data)
+function data = map_unary(unary_handle,data)
 if iscell(data)
-    %% Handle dispatch along cells (recursive call)
+    %% Handle map along cells (recursive call)
     if isempty(data)
         return;
     end
@@ -9,7 +9,7 @@ if iscell(data)
     if iscell(data{1})
         for cell_index = 1:nCells
             data{cell_index} = ...
-                dispatch_unary_handle(unary_handle,data{cell_index});
+                map_unary(unary_handle,data{cell_index});
         end
     else
         for cell_index = 1:nCells

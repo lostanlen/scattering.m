@@ -1,8 +1,8 @@
 function next_sub_Y = blur_signal(sub_Y,bank)
-%% Cell-wise dispatch
+%% Cell-wise map
 if iscell(sub_Y)
     blur_handle = @(x) blur_signal(x,bank);
-    next_sub_Y = dispatch_unary_handle(blur_handle,sub_Y);
+    next_sub_Y = map_unary(blur_handle,sub_Y);
     return;
 end
 

@@ -1,5 +1,5 @@
 function data_ft = reshape_spiral(data_ft,bank)
-%% Cell-wise dispatch
+%% Cell-wise map
 data_ft_sizes = size(data_ft);
 if iscell(data_ft)
     data_ft_sizes = size(data_ft);
