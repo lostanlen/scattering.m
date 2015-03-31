@@ -47,11 +47,11 @@ for variable_index = start_index:nVariables_to_transform
                 cat(2,replicate_colon(start_index-1),[1,3]);
             sub_layer_S = subsref(layer_S,subsref_structure);
             sub_layer_S = perform_ft(sub_layer_S,bank.behavior.key);
-            sub_layer_S = blur_signal(sub_layer_S,bank);
+            sub_layer_S = blur_Y(sub_layer_S,bank);
             layer_S = subsasgn(layer_S,subsref_structure,sub_layer_S);
         else
             layer_S = perform_ft(layer_S,bank.behavior.key);
-            layer_S = blur_signal(layer_S,bank);
+            layer_S = blur_Y(layer_S,bank);
         end
     elseif bank.behavior.S.is_pooled
         error('Nonlinear pooling not ready yet');
