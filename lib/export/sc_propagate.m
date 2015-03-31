@@ -1,4 +1,4 @@
-function [S,U,Y] = propagate(signal,archs)
+function [S,U,Y] = sc_propagate(signal,archs)
 %% Initialization of networks S, U and Y.
 % S and U are zero-based ; Y is one-based.
 nLayers = length(archs);
