@@ -14,7 +14,7 @@ try
 catch err;
     if strcmp(err.identifier,'MATLAB:nonExistentField') && ...
             strcmp(get_suffix(bank.behavior.key),'j')
-        sub_Y = make_spiral(sub_Y,bank);
+        sub_Y = roll_spiral(sub_Y,bank);
         variable_tree = sub_Y.variable_tree;
         [sibling,uncle] = get_relatives(bank.behavior.key,variable_tree);
     else
