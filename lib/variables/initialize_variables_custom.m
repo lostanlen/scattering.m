@@ -1,5 +1,4 @@
-function [variable_tree,keys] = ...
-    initialize_variables_custom(original_sizes,names)
+function U0 = initialize_variables_custom(original_sizes,names)
 variable_tree = struct();
 nNames = length(names);
 keys{1+0} = cell(1,nNames);
@@ -18,4 +17,10 @@ while nItems<nDimensions
     keys{1+0}{variable.subscripts} = variable_key;
     nItems = nItems + length(subscripts);
 end
+ranges{1+0} = arrayfun(@(x) [1,1,original_sizes(x)],'UniformOutput',false);
+
+%% Output storage
+U0.keys = keys;
+U0.ranges = ranges;
+U0.variable_tree = variable_tree;
 end
