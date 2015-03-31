@@ -23,5 +23,6 @@ end
 %% Use last bank to compute last layer S
 % Note that the last banks are used to compute penultimate layer S
 % (see loop above) as well as last layer S.
-Y{1+nLayers}{1+0} = initialize_Y(U{1+nLayers},arch.banks);S{1+nLayers} = Y_to_S(Y{1+nLayers},arch);
+Y{1+nLayers}{1+0} = initialize_Y(U{1+nLayers},arch.banks);
+S{1+nLayers} = Y_to_S(Y{1+nLayers},arch);
 end
