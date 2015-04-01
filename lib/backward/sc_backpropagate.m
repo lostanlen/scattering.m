@@ -1,17 +1,17 @@
 function [dsignal,dS,dU,dY] = sc_backpropagate(target_S,S,U,Y,archs)
-% Pointwise substraction
+%% Pointwise substraction
 dS = sc_substract(target_S,S);
 
-% Initialization of dU and dY
+%% Initialization of dU and dY
 nLayers = length(archs);
 dU = cell(1,1+nLayers);
 dY = cell(1,1+nLayers);
 
-% Backpropagation of last layer
+%% Backpropagation of last layer
 dY{end} = dS_backto_dY(dS{end},archs{end});
 dU{end} = dY_backto_dU(dY{end});
 
-% Backpropagation cascade
+%% Backpropagation cascade
 for layer = nLayers:-1:1
     arch = archs{layer};
     layer_Y_end = Y{layer}{end};
@@ -23,5 +23,6 @@ for layer = nLayers:-1:1
     dU{1+previous_layer} = dY_backto_dU(dY{layer});
 end
 
+%% Return difference in signal domain
 dsignal = dU{1+0}.data;
 end
