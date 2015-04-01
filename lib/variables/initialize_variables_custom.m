@@ -4,6 +4,7 @@ nNames = length(names);
 keys{1+0} = cell(1,nNames);
 name_index = 0;
 nItems = 0;
+nDimensions = length(drop_trailing(original_sizes));
 while nItems<nDimensions
     name_index = name_index + 1;
     name = names{name_index};
@@ -17,7 +18,8 @@ while nItems<nDimensions
     keys{1+0}{variable.subscripts} = variable_key;
     nItems = nItems + length(subscripts);
 end
-ranges{1+0} = arrayfun(@(x) [1,1,original_sizes(x)],'UniformOutput',false);
+ranges{1+0} = ...
+    arrayfun(@(x) [1,1,original_sizes(x)],1:nDimensions,'UniformOutput',false);
 
 %% Output storage
 U0.keys = keys;

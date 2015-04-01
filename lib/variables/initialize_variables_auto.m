@@ -1,11 +1,7 @@
 function U0 = initialize_variables_auto(tensor_sizes)
 %% Size sorting and dimension inference
 [sorted_sizes,sorting_indices] = sort(tensor_sizes,'descend');
-if length(tensor_sizes)==2 && sorted_sizes(2)==1
-    nDimensions = 1;
-else
-    nDimensions = length(tensor_sizes);
-end
+nDimensions = length(drop_trailing(tensor_sizes));
 
 %% Signal variable inference 
 variable_tree = struct();
@@ -28,7 +24,11 @@ signal_variable.subscripts = signal_subscripts;
 signal_key.(signal_head_name) = cell(1,1);
 variable_tree = set_leaf(variable_tree,signal_key,signal_variable);
 keys{1+0}{signal_variable.subscripts} = signal_key;
-signal_ranges = cellfun(@(x) [1,1,x],'UniformOutput',false);
+signal_ranges = cell(1,signal_dimension);
+for signal_dimension_index = 1:signal_dimension
+    signal_ranges{sorting_indices(signal_dimension_index)} = ...
+        [1,1,sorted_sizes(signal_dimension_index)];
+end
 ranges{1+0}(signal_variable.subscripts) = signal_ranges;
 
 if nDimensions==(signal_dimension+1)
