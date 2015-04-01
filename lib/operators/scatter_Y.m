@@ -39,6 +39,8 @@ if isempty(uncle)
             next_sub_Y.data = secondborn_scatter(sub_Y.data_ft, ...
                 bank,sibling_level_counter);
         else
+            % TODO: write function sibling_scatter
+            % This is needed for third-order scattering
             next_sub_Y.data = sibling_scatter(sub_Y.data_ft, ...
                 bank,sibling_level_counter);
         end
@@ -53,4 +55,5 @@ end
 is_scatter = true;
 [next_sub_Y.keys,next_sub_Y.variable_tree] = ...
     update_variables(keys,variable_tree,bank,is_scatter,sibling,uncle);
+%next_sub_Y.ranges = update_ranges(ranges,keys,variable_tree,)
 end
