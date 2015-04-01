@@ -1,4 +1,10 @@
-function y = ifft_multiply(x_ft,filter_struct,log2_resampling,colons,subscripts)
+function y_ft = ...
+    multiply_fft(x_ft,filter_struct,log2_resampling,colons,subscripts,y_ft)
+%% In-place Fourier transform
+for subscript = subscripts
+    x_ft = fft(x_ft,[],subscript);
+end
+
 %% Definition of x_sizes
 if length(subscripts)>1
     error('Fourier-based filtering not ready in dimension >1');
@@ -45,21 +51,13 @@ filter_range = cat(2,neg_filter_range,pos_filter_range);
 colons.subs{subscripts} = filter_range;
 trimmed_filter_ft = subsref(filter_ft,colons);
 
-%% Product between non-negligible Fourier coefficients of x_ft and filter_ft
-sub_y_ft = bsxfun(@times,trimmed_x_ft,trimmed_filter_ft);
-
-%% Assignment of product to zero-allocated y_ft
-y_tensor_sizes = size(x_ft);
-y_tensor_sizes(subscripts) = y_sizes;
-y = zeros(y_tensor_sizes);
+%% Product between x_ft and filter_xt, and reduction into sub_y_ft
 neg_y_range_start = neg_range_start + y_sizes - x_sizes;
 neg_y_range_end = neg_range_end + y_sizes - x_sizes;
 y_range = cat(2,neg_y_range_start:neg_y_range_end,pos_x_range);
 colons.subs{subscripts} = y_range;
-y = subsasgn(y,colons,sub_y_ft);
+sub_y_ft = subsref(y_ft,colons) + bsxfun(@times,trimmed_x_ft,trimmed_filter_ft);
 
-%% In-place inverse Fourier transform
-for subscript = subscripts
-    y = ifft(y,[],subscript);
-end
+%% Update of the accumulator y_ft
+y_ft = subsasgn(y_ft,colons,sub_y_ft);
 end

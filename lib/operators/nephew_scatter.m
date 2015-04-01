@@ -1,7 +1,7 @@
 function data = ...
     nephew_scatter(data_ft,bank,sibling,uncle,uncle_level_counter)
 if uncle_level_counter>0
-    % TODO: dispatch explicitly
+    % TODO: map explicitly
     return;
 end
 

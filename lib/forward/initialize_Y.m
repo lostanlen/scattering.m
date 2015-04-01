@@ -1,8 +1,8 @@
 function layer_Y1 = initialize_Y(layer_U,layer_banks)
-%% Cell-wise dispatch
+%% Cell-wise map
 if iscell(layer_U)
     initialization_handle = @(x) initialize_Y(x,layer_banks);
-    layer_Y1 = dispatch_unary_handle(initialization_handle,layer_U);
+    layer_Y1 = map_unary(initialization_handle,layer_U);
     return;
 end
 
@@ -30,7 +30,7 @@ if isempty(padding_variables)
     layer_Y1 = layer_U;
 else
     padding_handle = @(x) sc_pad(x,padding_variables);
-    layer_Y1.data = dispatch_unary_handle(padding_handle,layer_U.data);
+    layer_Y1.data = map_unary(padding_handle,layer_U.data);
     layer_Y1.keys = layer_U.keys;
     layer_Y1.variable_tree = variable_tree;
 end

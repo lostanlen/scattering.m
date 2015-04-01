@@ -1,5 +1,5 @@
 function data = firstborn_scatter(data_ft,bank,level_counter)
-%% Deep dispatch across levels
+%% Deep map across levels
 input_sizes = drop_trailing(size(data_ft));
 if level_counter>0
     nCousins = numel(data_ft);

@@ -12,11 +12,11 @@ opts{1}.time.U_log2_oversampling = Inf;
 opts{1}.time.nFilters_per_octave = 16;
 opts{1}.time.T = 256;
 opts{1}.time.max_scale = 1024;
-archs = setup(opts);
+archs = sc_setup(opts);
 archs{1}.banks{1}.behavior.U.is_blurred = false;
 
 %% Computation of wavelet modulus
-[~,U] = propagate(signal,archs);
+[~,U] = sc_propagate(signal,archs);
 
 %% Scalogram extraction
 downsampling = 64; % the lower, the more spirals in the spiralogram

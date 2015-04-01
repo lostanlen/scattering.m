@@ -1,5 +1,5 @@
 function layer_U = apply_nonlinearity(nonlinearity,sub_Y,mask)
-%% Cell-wise dispatch
+%% Cell-wise map
 if iscell(sub_Y)
     data_sizes = size(sub_Y);
     nCells = prod(data_sizes);
@@ -9,8 +9,7 @@ if iscell(sub_Y)
         for cell_index = 1:nCells
             if mask(cell_index)
                 vectorized_output{cell_index} = ...
-                    dispatch_unary_handle(nonlinearity_handle, ...
-                    sub_Y{cell_index}(:));
+                    map_unary(nonlinearity_handle,sub_Y{cell_index}(:));
             else
                 vectorized_output{cell_index} = [];
             end
@@ -32,12 +31,12 @@ end
 
 %%
 if nonlinearity.is_modulus
-    layer_U.data = dispatch_unary_handle(@abs,sub_Y.data);
+    layer_U.data = map_unary(@abs,sub_Y.data);
 elseif nonlinearity.is_uniform_log
     log_handle = @(x) log1p(abs(x)/nonlinearity.denominator);
-    layer_U.data = dispatch_unary_handle(log_handle,sub_Y.data);
+    layer_U.data = map_unary(log_handle,sub_Y.data);
 elseif nonlinearity.is_custom
-    layer_U.data = dispatch_unary_handle(nonlinearity.handle,sub_Y.data);
+    layer_U.data = map_unary(nonlinearity.handle,sub_Y.data);
 end
 
 %%

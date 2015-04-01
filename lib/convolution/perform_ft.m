@@ -1,9 +1,9 @@
 function sub_Y = perform_ft(sub_Y,key)
-%% Cell-wise dispatch
+%% Cell-wise map
 if iscell(sub_Y)
     % TODO: avoid resorting to anonymous handle
     perform_ft_handle = @(x) perform_ft(x,key);
-    sub_Y = dispatch_unary_handle(perform_ft_handle,sub_Y);
+    sub_Y = map_unary(perform_ft_handle,sub_Y);
     return;
 end
 if isfield(sub_Y,'data_ft')
@@ -24,7 +24,7 @@ if variable.level>0
     downgrading_handle = @(x) downgrade(x,subscripts);
     nLevels = length(sub_Y.keys) - 1;
     level_counter = nLevels - variable.level;
-    sub_Y.data = dispatch_hierarchic_handle(downgrading_handle, ...
+    sub_Y.data = map_hierarchic_handle(downgrading_handle, ...
         sub_Y.data,level_counter);
     nTensor_dimensions = length(sub_Y.keys{1});
     nSubscripts = length(subscripts);
@@ -41,7 +41,7 @@ end
 %% Multidimensional FFT
 % TODO: avoid resorting to an anonymous handle
 fft_handle = @(x) multidimensional_fft(x,variable.subscripts);
-sub_Y.data_ft = dispatch_unary_handle(fft_handle,sub_Y.data);
+sub_Y.data_ft = map_unary(fft_handle,sub_Y.data);
 
 %% Update of variable tree and keys array
 sub_Y.variable_tree = set_leaf(sub_Y.variable_tree,key,variable);

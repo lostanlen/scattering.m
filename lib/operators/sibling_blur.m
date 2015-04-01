@@ -1,5 +1,5 @@
 function data = sibling_blur(data_ft,bank,sibling_level_counter)
-%% Deep dispatch across levels
+%% Deep map across levels
 if sibling_level_counter>0
     next_sibling_level_counter = sibling_level_counter - 1;
     data_sizes = size(data_ft);
