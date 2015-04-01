@@ -1,5 +1,4 @@
-function layer_dY = ...
-    backpropagate_layer(layer_dS,layer_dU,layer_Y_end,layer_U,arch)
+function layer_dY = backpropagate_layer(layer_dS,layer_dU,layer_Y,layer_U,arch)
 %% Initialization
 banks = arch.banks;
 nonlinearity = arch.nonlinearity;
@@ -8,7 +7,7 @@ layer_dY = cell(1+nVariables_to_transform,1);
 
 %% Backpropagation of nonlinearity in dU
 layer_dY{end} = ...
-    backpropagate_nonlinearity(nonlinearity,layer_dU,layer_Y_end,layer_U);
+    backpropagate_nonlinearity(nonlinearity,layer_dU,layer_Y,layer_U);
 
 %% Multi-variable case : iterated one-variable backpropagation
 for variable_index = nVariables_to_transform:-1:2

@@ -18,7 +18,7 @@ catch err;
         variable_tree = sub_Y.variable_tree;
         [sibling,uncle] = get_relatives(bank.behavior.key,variable_tree);
     else
-        rethrow(err);
+        throw(err);
     end
 end
 variable = get_leaf(variable_tree,bank.behavior.key);
