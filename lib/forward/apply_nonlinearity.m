@@ -40,6 +40,7 @@ elseif nonlinearity.is_custom
 end
 
 %%
-layer_U.variable_tree = sub_Y.variable_tree;
 layer_U.keys = sub_Y.keys;
+layer_U.ranges = sub_Y.ranges;
+layer_U.variable_tree = sub_Y.variable_tree;
 end
