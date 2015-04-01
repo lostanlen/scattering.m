@@ -14,12 +14,12 @@ dU{end} = dY_backto_dU(dY{end});
 % Backpropagation cascade
 for layer = nLayers:-1:1
     arch = archs{layer};
-    layer_Y = Y{layer};
+    layer_Y_end = Y{layer}{end};
     layer_U = U{1+layer};
     layer_dU = dU{1+layer};
     previous_layer = layer - 1;
     layer_dS = dS{1+previous_layer};
-    dY{layer} = backpropagate_layer(layer_dS,layer_dU,layer_Y,layer_U,arch);
+    dY{layer} = backpropagate_layer(layer_dS,layer_dU,layer_Y_end,layer_U,arch);
     dU{1+previous_layer} = dY_backto_dU(dY{layer});
 end
 
