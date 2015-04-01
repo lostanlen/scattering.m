@@ -9,12 +9,12 @@ mother_range_end = nPeriods*original_length - 1;
 mother_range = (mother_range_start:mother_range_end).';
 is_ift_flipped = spec.is_ift_flipped;
 mother_xi = spec.mother_xi;
-attenuation_factor = mother_xi / (2*[metas.quality_factor]);
+attenuation_factors = mother_xi ./ (2*[metas.quality_factor]);
 % This loop can be parallelized
 for gamma = 1:nGammas
     resolution = resolutions(gamma);
     range = mother_range * resolution;
-    laplace_frequency = 1i * mother_xi - attenuation_factor;
+    laplace_frequency = 1i * mother_xi - attenuation_factors(gamma);
     exponential = exp(2*pi*laplace_frequency*range);
     RLC = sqrt(resolution) * exponential;
     expanded_RLC = reshape(RLC,original_length,nPeriods);
