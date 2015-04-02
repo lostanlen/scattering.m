@@ -18,40 +18,31 @@ catch err;
         variable_tree = sub_Y.variable_tree;
         [sibling,uncle] = get_relatives(bank.behavior.key,variable_tree);
     else
-        throw(err);
+        rethrow(err);
     end
 end
-
-%% Blurring with phi
 % Adaptation of the number of colons in bank_behavior if necessary.
 % This is especially needed at the last layer.
 nColons = length(sub_Y.keys{1+0});
-if nColons==6
-    disp(nColons);
-end
 bank.behavior.colons = substruct('()',replicate_colon(nColons));
 
+%% Blurring
 if isempty(uncle)
     if isempty(sibling)
-        level_counter = length(keys)-1 - 1;
-        bank = firstborn_blur_bank(bank);
-        next_sub_Y.data = firstborn_blur(sub_Y.data_ft, ...
-            bank,level_counter);
+        [next_sub_Y.data,next_sub_Y.ranges] = ...
+            firstborn_blur(sub_Y.data_ft,bank,sub_Y.ranges);
     else
-        sibling_level_counter = length(keys)-1 - sibling.level;
-        bank = sibling_blur_bank(bank,sibling);
         if sibling.is_firstborn
-            next_sub_Y.data = secondborn_blur(sub_Y.data_ft, ...
-                bank,sibling_level_counter);
+            [next_sub_Y.data,next_sub_Y.ranges] = ...
+                secondborn_blur(sub_Y.data_ft,bank,sub_Y.ranges,sibling);
         else
-            next_sub_Y.data = sibling_blur(sub_Y.data_ft, ...
-                bank,sibling_level_counter);
+            [next_sub_Y.data,next_sub_Y.ranges] = ...
+                sibling_blur(sub_Y.data_ft,bank,sub_Y.ranges,sibling);
         end
     end
 else
-    uncle_level_counter = length(keys)-1 - uncle.level;
-    next_sub_Y.data = nephew_blur(sub_Y.data_ft, ...
-        bank,sibling,uncle,uncle_level_counter);
+    [next_sub_Y.data,next_sub_Y.ranges] = ...
+                nephew_blur(sub_Y.data_ft,bank,sub_Y.ranges,sibling,uncle);
 end
 
 %% Update of variable tree and keys array
