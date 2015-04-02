@@ -1,36 +1,45 @@
-function data = firstborn_blur(data_ft,bank,level_counter)
+function [data,ranges] = firstborn_blur(data_ft,bank,ranges)
 %% Deep map across levels
+level_counter = length(ranges) - 1;
 input_sizes = drop_trailing(size(data_ft),1);
 if level_counter>0
-    nCousins = numel(data_ft);
-    data = cell(nCousins,1);
-    for cousin = 1:nCousins
-        data{cousin} = ...
-            firstborn_blur(data_ft{cousin},bank,level_counter-1);
-    end
-    if length(input_sizes)>1
-        data = reshape(data,input_sizes);
+    nNodes = numel(data_ft);
+    data = cell([input_sizes,1]);
+    for node = 1:nNodes
+        % Recursive call
+        ranges_node = get_ranges_node(ranges,node);
+        [data{node},ranges_node] = ...
+            firstborn_blur(data_ft{node},bank,ranges_node);
+        ranges = set_ranges_node(ranges,ranges_node,node);
     end
     return;
-elseif level_counter==0
-    if ~isnumeric(data_ft)
-        nCousins = prod(input_sizes);
-    end
 end
 
-%% Loading
-log2_resampling = bank.log2_resamplings;
-phi = bank.phi;
-colons = bank.behavior.colons;
-subscripts = bank.behavior.subscripts;
-is_deepest = level_counter<0;
-is_numeric = isnumeric(data_ft);
-is_spiraled = isfield(bank.behavior,'spiral') && ...
-    ~strcmp(get_suffix(bank.behavior.key),'j');
+%% Selection of signal-adapted support for the filter bank
+bank_behavior = bank.behavior;
+subscripts = bank_behavior.subscripts;
+signal_range = ranges{1+0}(:,subscripts);
+signal_log2_support = nextpow2(min(signal_range(end,:)-signal_range(1,:))+1);
+support_index = log2(bank.spec.size) - signal_log2_support + 1;
+phi = bank.phi{support_index};
+
+%% Definition of resampling factor
+critical_log2_sampling = 1 - log2(bank.spec.T);
+log2_oversampling = bank_behavior.S.log2_oversampling;
+log2_resampling = critical_log2_sampling + log2_oversampling;
+
+%% Update of ranges at zeroth level (tensor level)
+ranges{1+0}(2,subscripts) = pow2(-log2_resampling);
+
+%% Initialization
+colons = bank_behavior.colons;
+is_spiraled = isfield(bank_behavior,'spiral') && ...
+    ~strcmp(get_suffix(bank_behavior.key),'j');
 
 %% Assignment preparation if spiraling is required
 if is_spiraled
-    spiral = bank.behavior.spiral;
+    % TODO: update ranges in this conditional statement
+    spiral = bank_behavior.spiral;
     output_sizes = input_sizes;
     resampled_sizes = ...
         pow2(output_sizes(subscripts),log2_resampling);
@@ -53,34 +62,16 @@ if is_spiraled
 end
 
 %% Blurring implementations
-if is_numeric && ~is_spiraled
+if ~is_spiraled
     data = ifft_multiply(data_ft,phi,log2_resampling,colons,subscripts);
-end
-
-if is_numeric && is_spiraled
+else
     data = zeros(output_sizes);
     data = subsasgn(data,subsasgn_structure, ...
         ifft_multiply(data_ft,phi,log2_resampling,colons,subscripts));
 end
 
-if ~is_numeric && ~is_spiraled
-    data = cell([input_sizes,1]);
-    for cousin = 1:nCousins
-        data{cousin} = map_filter(data_ft{cousin},phi, ...
-            log2_resampling,bank.behavior);
-    end
-end
-
-% TODO: implement ~is_numeric && is_spiraled
-% need to write a specific map_filter for the blurring operator
-% as well as a specific prepare_assignment (see conditional branch above)
-%% Spiraling
+%% Spiraling if required
 if is_spiraled
     data = reshape(data,spiraled_sizes);
-end
-
-%% Reshaping
-if ~is_deepest && ~is_numeric
-    data = reshape(data,[input_sizes,1]);
 end
 end
