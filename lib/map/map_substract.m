@@ -83,7 +83,7 @@ if length(minuend.keys)>1
                     set_leaf(minuend_cell,key,minuend_variable);
             end
             subtrahend_cell.data = subtrahend.data{cell_index};
-            % The recursive call is here
+            % Recursive call
             difference_cell = map_substract(minuend_cell,subtrahend_cell);
             difference.data{cell_index} = difference_cell.data;
         end
@@ -98,7 +98,7 @@ if length(minuend.keys)>1
             minuend_cell.variable_tree = ...
                 set_leaf(minuend_cell.variable_tree,key,minuend_variable);
             subtrahend_cell.data = subtrahend.data{cell_index};
-            % The recursive call is here
+            % Recursive call
             difference_cell = map_substract(minuend_cell,subtrahend_cell);
             difference.data{cell_index} = difference_cell.data;
         end
