@@ -8,6 +8,7 @@ end
 
 %% Variable loading
 keys = sub_Y.keys;
+ranges = sub_Y.ranges;
 variable_tree = sub_Y.variable_tree;
 try
     [sibling,uncle] = get_relatives(bank.behavior.key,variable_tree);
@@ -28,32 +29,26 @@ bank.behavior.colons.subs = replicate_colon(length(keys{1+0}));
 %% Scattering
 if isempty(uncle)
     if isempty(sibling)
-        level_counter = length(keys)-1 - 1;
-        bank = firstborn_scatter_bank(bank);
-        next_sub_Y.data = firstborn_scatter(sub_Y.data_ft, ...
-            bank,level_counter);
+        [next_sub_Y.data,next_sub_Y.ranges] = ...
+            firstborn_scatter(sub_Y.data_ft,bank,ranges);
     else
-        sibling_level_counter = length(keys)-1 - (sibling.level+1);
-        bank = sibling_scatter_bank(bank,sibling);
         if sibling.is_firstborn
-            next_sub_Y.data = secondborn_scatter(sub_Y.data_ft, ...
-                bank,sibling_level_counter);
+            [next_sub_Y.data,next_sub_Y.ranges] = ...
+                secondborn_scatter(sub_Y.data_ft,bank,ranges,sibling);
         else
             % TODO: write function sibling_scatter
             % This is needed for third-order scattering
-            next_sub_Y.data = sibling_scatter(sub_Y.data_ft, ...
-                bank,sibling_level_counter);
+            [next_sub_Y.data,next_sub_Y.ranges] = ...
+                sibling_scatter(sub_Y.data_ft,bank,ranges,sibling);
         end
     end
 else
-    uncle_level_counter = length(keys)-1 - uncle.level;
-    next_sub_Y.data = nephew_scatter(sub_Y.data_ft, ...
-        bank,sibling,uncle,uncle_level_counter);
+    [next_sub_Y.data,next_sub_Y.ranges] = ...
+        nephew_scatter(sub_Y.data_ft,bank,ranges,sibling,uncle);
 end
 
 %% Update of variable tree and keys array
 is_scatter = true;
 [next_sub_Y.keys,next_sub_Y.variable_tree] = ...
     update_variables(keys,variable_tree,bank,is_scatter,sibling,uncle);
-%next_sub_Y.ranges = update_ranges(ranges,keys,variable_tree,)
 end
