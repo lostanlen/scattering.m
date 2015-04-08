@@ -28,16 +28,17 @@ support_index = log2(bank.spec.size) - signal_log2_support + 1;
 psis = bank.psis{support_index};
 
 %% Selection of filter indices ("gammas")
-sibling_gamma_range = collect_range(sibling.behavior.gamma_bounds);
-sibling_bandwidths = [sibling.metas(sibling_gamma_range).bandwidth];
+sibling_gammas = collect_range(sibling.behavior.gamma_bounds);
+sibling_bandwidths = [sibling.metas(sibling_gammas).bandwidth];
 sibling_mask_factor = bank_behavior.sibling_mask_factor;
 bank_metas = bank.metas;
 nGammas = length(bank_metas);
 for gamma = nGammas:-1:1
     resolution = bank_metas(gamma).resolution;
-    max_sibling_gamma = ...
+    max_sibling_gamma_index = ...
         find(resolution < sibling_mask_factor*sibling_bandwidths,1,'last');
-    if ~isempty(max_sibling_gamma)
+    if ~isempty(max_sibling_gamma_index)
+        max_sibling_gamma = sibling_gammas(max_sibling_gamma_index);
         bank.metas(gamma).max_sibling_gamma = max_sibling_gamma;
         nFilters_per_octave = sibling.spec.nFilters_per_octave;
         bank.metas(gamma).max_sibling_j = ...
@@ -48,7 +49,6 @@ for gamma = nGammas:-1:1
 end
 gamma_bounds = bank_behavior.gamma_bounds;
 gamma_range = [max(gamma_bounds(1),1+gamma),1,min(gamma_bounds(2),nGammas)].';
-sibling_gammas = [sibling.metas.gamma];
 sibling_log2_samplings = - log2(cellfun(@(x) x(2,subscripts),ranges{1+0}));
 log2_oversampling = bank_behavior.U.log2_oversampling;
 log2_factor = ceil(log2(sibling_mask_factor));
@@ -70,7 +70,7 @@ for enabled_index = 1:nEnabled_gammas
     log2_resolution = enabled_meta.log2_resolution;
     unbounded_log2_sampling = log2_resolution + log2_oversampling;
     log2_samplings(enabled_index) = min(unbounded_log2_sampling,log2_factor);
-    bank.metas(enabled_index).log2_sampling = log2_samplings(enabled_index);
+    bank.metas(gamma).log2_sampling = log2_samplings(enabled_index);
     log2_resamplings{enabled_index} = log2_samplings(enabled_index) -  ...
         sibling_log2_samplings(1:nUnmasked_indices);
 end
@@ -106,7 +106,6 @@ if nData_dimensions>1
 end
 
 %% Update of ranges at zeroth level (tensor level)
-ranges = sub_Y.ranges;
 input_zeroth_range = ranges{1+0}{1};
 output_zeroth_range = ...
     cat(2,input_zeroth_range,zeros(3,1+(bank.spec.nThetas>1)));
