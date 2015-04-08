@@ -1,18 +1,17 @@
-function data = ...
-    nephew_scatter(data_ft,bank,sibling,uncle,uncle_level_counter)
+function [data,ranges] = nephew_scatter(data_ft,bank,ranges,sibling,uncle)
 if uncle_level_counter>0
     % TODO: map explicitly
     return;
 end
 
 %%
-data_ft_sizes = drop_trailing(size(data_ft),1);
+input_sizes = drop_trailing(size(data_ft),1);
 uncle_subscript = uncle.subscripts;
-nUncle_gammas = data_ft_sizes(uncle_subscript);
-nData_dimensions = length(data_ft_sizes);
+nUncle_gammas = input_sizes(uncle_subscript);
+nData_dimensions = length(input_sizes);
 if nData_dimensions>1
     cousin_subscripts = find((1:nData_dimensions)~=uncle_subscript);
-    cousin_sizes = data_ft_sizes(cousin_subscripts);
+    cousin_sizes = input_sizes(cousin_subscripts);
     nCousins = prod(cousin_sizes);
     if uncle.subscripts(1)>1
         permuted_subscripts = [uncle_subscript,cousin_subscripts];
