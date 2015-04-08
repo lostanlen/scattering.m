@@ -1,11 +1,20 @@
 function [data,ranges] = nephew_scatter(data_ft,bank,ranges,sibling,uncle)
-if uncle_level_counter>0
-    % TODO: map explicitly
+%% Deep map across levels
+level_counter = length(ranges) - 1 - uncle.level;
+input_sizes = drop_trailing(size(data_ft),1);
+if level_counter>0
+    data = cell([input_sizes,1]);
+    for node = 1:numel(data_ft)
+        node_ranges = get_ranges_node(ranges,node);
+        % Recursive call
+        [data{node},ranges_node] = ...
+            nephew_scatter(data_ft{node},bank,node_ranges,sibling,uncle);
+        ranges = set_ranges_node(ranges,ranges_node,node);
+    end
     return;
 end
 
-%%
-input_sizes = drop_trailing(size(data_ft),1);
+%% If data is multidimensional, reshape it to a matrix
 uncle_subscript = uncle.subscripts;
 nUncle_gammas = input_sizes(uncle_subscript);
 nData_dimensions = length(input_sizes);
@@ -18,51 +27,28 @@ if nData_dimensions>1
         data_ft = permute(data_ft,permuted_subscripts);
     end
     data_ft = transpose(reshape(data_ft,[nUncle_gammas,nCousins]));
-    level_counter = 0;
 else
     nCousins = 1;
-    % TODO: write generic code for this
-    switch uncle.level
-        case 1
-            level_counter = -1;
-        case 2
-            level_counter = 0;
-    end
 end
 data = cell(nUncle_gammas,nCousins);
 
-suffix_name = get_suffix(bank.behavior.key);
-switch suffix_name
-    case 'gamma'
-        log2_supports = ...
-            nextpow2(bank.spec.T/2 + [uncle.metas.max_sibling_gamma]);
-    case 'j'
-        log2_supports = ...
-            nextpow2(bank.spec.T/2 + [uncle.metas.max_sibling_j]);
+%% Fallback to firstborn_scatter and secondborn_scatter
+if nData_dimensions>1
+    error('nephew_scatter for multiple variables at uncle level not ready yet');
 end
-support_indices = log2(bank.spec.size) - log2_supports + 1;
 
-%%
-% Caution: lowest values of uncle_index may bring empty banks if their
-% max_sibling_gammas is below the bank.metas.scale(1);
+% TODO : bypass this when cattering across octaves
+input_ranges = ranges;
+ranges = {ranges{1:(end-1)},{},ranges{end}};
 for uncle_index = 1:nUncle_gammas
-    nephew_bank = bank;
-    nephew_bank.psis = bank.psis(support_indices(uncle_index));
-    nephew_bank.metas = nephew_bank.metas(1:length(nephew_bank.psis{1}));
+    ranges_node = get_ranges_node(input_ranges,uncle_index);
     if isempty(sibling)
-        nephew_bank = firstborn_scatter_bank(nephew_bank,uncle);
-        if nData_dimensions==1
-            data{uncle_index} = ...
-                firstborn_scatter(data_ft{uncle_index}, ...
-                nephew_bank,level_counter);
-        else
-            data{uncle_index} = ...
-                firstborn_scatter(data_ft(uncle_index,:), ...
-                nephew_bank,level_counter);
-        end
+        [data{uncle_index},ranges_node] = ...
+            firstborn_scatter(data_ft{uncle_index},bank,ranges_node);
     else
-        % This is needed e.g. for second-order scattering along gamma
-        error('sibling scattering not ready yet in nephew_scatter')
+        [data{uncle_index},ranges_node] = ...
+            secondborn_scatter(data_ft{uncle_index},bank,ranges_node,sibling);
     end
+    ranges = set_ranges_node(ranges,ranges_node,uncle_index);
 end
 end
