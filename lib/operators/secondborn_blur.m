@@ -65,6 +65,9 @@ ranges{1+0}(2,subscripts) = pow2(-log2_sampling);
 
 %% Update of ranges at first level (gamma level)
 ranges{1+1}(:,sibling_subscript) = [];
+if isempty(ranges{1+1})
+    ranges = ranges(1+0);
+end
 
 %% Initialization
 ref_colons = bank_behavior.colons;
