@@ -26,7 +26,6 @@ for gamma_index = 1:nEnabled_gammas
     if is_spiraling
         resliced_sizes = output_sizes{gamma_index}(spiral.subscript);
         nChromas = pow2(spiral.nChromas,log2_resampling);
-        assert(~mod(nChromas,1));
         nOctaves = pow2(nextpow2(spiral.octave_padding_length + ...
             resliced_sizes/nChromas)-1);
         nPadded_gammas = nChromas * nOctaves;
