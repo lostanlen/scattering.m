@@ -1,15 +1,14 @@
 function [data,ranges] = firstborn_scatter(data_ft,bank,ranges)
 %% Deep map across levels
-% TODO: check this in the case of spiral scattering
 level_counter = length(ranges) - 2;
-input_sizes = drop_trailing(size(data_ft));
+input_sizes = drop_trailing(size(data_ft),1);
 if level_counter>0
     data = cell([input_sizes,1]);
     for node = 1:numel(data_ft)
-        node_ranges = get_ranges_node(ranges,node);
+        ranges_node = get_ranges_node(ranges,node);
         % Recursive call
         [data{node},ranges_node] = ...
-            firstborn_scatter(data_ft{node},bank,node_ranges,sibling);
+            firstborn_scatter(data_ft{node},bank,ranges_node,sibling);
         ranges = set_ranges_node(ranges,ranges_node,node);
     end
     return;
@@ -53,15 +52,45 @@ is_numeric = isnumeric(data_ft);
 is_oriented = nThetas>1;
 
 %% Update of ranges at zeroth level (tensor level)
-zeroth_level_ranges = ranges{1+0};
+overhead_zeroth_ranges = ranges{1+0};
 if is_oriented
     theta_range = [1,1,bank_spec.nThetas].';
-    zeroth_level_ranges = cat(2,zeroth_level_ranges,theta_range);
+    overhead_zeroth_ranges = cat(2,overhead_zeroth_ranges,theta_range);
 end
 ranges{1+0} = cell(1,nEnabled_gammas);
+is_spiraled = isfield(bank_behavior,'spiral');
+if is_spiraled
+    nChromas = bank_behavior.spiral.nChromas;
+    octave_padding_length = bank_behavior.spiral.octave_padding_length;
+    spiral_subscript = bank_behavior.spiral.subscript;
+    if isequal(subscripts,spiral_subscript)
+        resampled_nChromas = nChromas;
+    end
+end
 for gamma_index = 1:nEnabled_gammas
-    zeroth_level_ranges(2,subscripts) = pow2(-log2_resamplings(gamma_index));
-    ranges{1+0}{gamma_index} = zeroth_level_ranges;
+    local_zeroth_ranges = overhead_zeroth_ranges;
+    log2_resampling = log2_resamplings(gamma_index);
+    local_zeroth_ranges(2,subscripts) = pow2(-log2_resampling);
+    if is_spiraled
+        resliced_size = size(data_ft,spiral_subscript);
+        if isequal(subscripts,spiral_subscript)
+            resampled_nChromas = pow2(nChromas,log2_resampling);
+        end
+        nOctaves = pow2(nextpow2(octave_padding_length + ...
+            resliced_size/resampled_nChromas) - 1);
+        first_father = local_zeroth_ranges(1,spiral_subscript);
+        local_zeroth_ranges(1,spiral_subscript) = ...
+            1 + mod(first_father-1,nChromas);
+        local_zeroth_ranges(3,spiral_subscript) = ...
+            local_zeroth_ranges(1,spiral_subscript) + nChromas - 1;
+        first_octave = 1 + floor(first_father/nChromas);
+        octave_range = [first_octave;1;first_octave+nOctaves-1];
+        local_zeroth_ranges = ...
+            [local_zeroth_ranges(:,1:(spiral_subscript)), ...
+            octave_range, ...
+            local_zeroth_ranges(:,(spiral_subscript+1:end))];
+    end
+    ranges{1+0}{gamma_index} = local_zeroth_ranges;
 end
 
 %% Update of ranges at first level (gamma level)
@@ -99,7 +128,6 @@ if ~is_deepest && is_numeric && ~is_oriented
     end
 end
 
-
 %% D&DO. Deepest and Deepest Oriented
 % e.g. scattering along j in 1d
 % e.g. scattering along gamma in 2d (after scattering in space)
@@ -130,10 +158,9 @@ end
 
 
 %% Definition of assignment structures for NO. and DNO.
-is_spiraled = isfield(bank.behavior,'spiral');
 if is_numeric && (is_oriented || is_spiraled)
     [output_sizes,subsasgn_structures,spiraled_sizes] = ...
-        prepare_assignment(input_sizes,log2_resamplings,bank.behavior,nThetas);
+        prepare_assignment(input_sizes,log2_resamplings,bank_behavior,nThetas);
 end
 
 %% DNO. Deepest, Numeric, Oriented
