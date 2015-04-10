@@ -1,6 +1,6 @@
 function [data,ranges] = sibling_blur(data_ft,bank,ranges,sibling)
 %% Deep map across levels
-level_counter = length(ranges) - 2;
+level_counter = length(ranges) - sibling.level - 2;
 input_sizes = drop_trailing(size(data_ft),1);
 if level_counter>0
     nNodes = numel(data_ft);
@@ -27,7 +27,7 @@ support_index = log2(bank.spec.size) - signal_log2_support + 1;
 phi = bank.phi{support_index};
 
 %% Definition of resampling factors
-sibling_gammas = collect_range(ranges{1+1}(:,sibling.subscripts));
+sibling_gammas = collect_range(ranges{end}(:,sibling.subscripts));
 log2_resolutions = [sibling.metas(sibling_gammas).log2_resolution];
 sibling_log2_oversampling = sibling.behavior.U.log2_oversampling;
 log2_factor = sibling.behavior.sibling_mask_factor;

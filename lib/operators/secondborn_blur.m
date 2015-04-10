@@ -1,6 +1,6 @@
 function [data,ranges] = secondborn_blur(data_ft,bank,ranges,sibling)
 %% Deep map across levels
-level_counter = length(ranges) - 2;
+level_counter = length(ranges) - sibling.level - 2;
 input_sizes = drop_trailing(size(data_ft),1);
 if level_counter>0
     nNodes = numel(data_ft);

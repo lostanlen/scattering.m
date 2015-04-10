@@ -117,11 +117,6 @@ for enabled_index = 1:nEnabled_gammas
     min_sibling_gamma = ranges{1+1}(1,sibling_subscript);
     max_sibling_gamma = min(ranges{1+1}(3,sibling_subscript), ...
         bank.metas(gamma).max_sibling_gamma);
-    if isfield(bank_behavior,'gamma_padding_length');
-        max_sibling_gamma = min_sibling + ...
-            pow2(nextpow2((max_sibling_gamma-min_sibling_gamma + 1 + ...
-            bank_behavior.gamma_padding_length)));
-    end
     output_zeroth_range(:,nData_dimensions+1) = ...
         [min_sibling_gamma,1,max_sibling_gamma].';
     if bank.spec.nThetas>1
@@ -141,17 +136,17 @@ if bank.spec.nThetas==1
     data_slice = cell(1,nCousins);
     % This loop can be parallelized
     for enabled_index = 1:nEnabled_gammas
-        % Inference of downsampled size for transformed variable
+        % Definition of downsampled size for transformed variable
         local_log2_resamplings = log2_resamplings{enabled_index};
         nSibling_gammas = length(local_log2_resamplings);
         log2_sampling = log2_samplings(enabled_index);
         local_tensor_sizes = tensor_sizes;
         local_tensor_sizes(subscripts) = signal_sizes * pow2(log2_sampling);
-        % Inference of padded size for downgraded sibling gamma_1
+        % Definition of padded size for downgraded sibling gamma_1
         if is_sibling_padded
             local_tensor_sizes(downgraded_sibling_subscript) = ...
                 pow2(nextpow2(nSibling_gammas+ ...
-                bank.behavior.gamma_padding_length));
+                    bank_behavior.gamma_padding_length));
         else
             local_tensor_sizes(downgraded_sibling_subscript) = ...
                 nSibling_gammas;
