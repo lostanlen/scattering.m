@@ -37,17 +37,21 @@ if nData_dimensions>1
     error('nephew_scatter for multiple variables at uncle level not ready yet');
 end
 
-% TODO : bypass this when cattering across octaves
 input_ranges = ranges;
-ranges = {ranges{1:(end-1)},{},ranges{end}};
+if length(ranges)<3
+    ranges = {ranges{1:(end-1)},{},ranges{end}};
+end
 for uncle_index = 1:nUncle_gammas
     ranges_node = get_ranges_node(input_ranges,uncle_index);
     if isempty(sibling)
         [data{uncle_index},ranges_node] = ...
             firstborn_scatter(data_ft{uncle_index},bank,ranges_node);
-    else
+    elseif sibling.is_firstborn
         [data{uncle_index},ranges_node] = ...
             secondborn_scatter(data_ft{uncle_index},bank,ranges_node,sibling);
+    else
+        [data{uncle_index},ranges_node] = ...
+            sibling_scatter(data_ft{uncle_index},bank,ranges_node,sibling);
     end
     ranges = set_ranges_node(ranges,ranges_node,uncle_index);
 end
