@@ -15,15 +15,24 @@ if level_counter>0
 elseif level_counter==0 && ~isnumeric(data_ft)
     nCousins = prod(input_sizes);
     data_ft = reshape(data_ft,[nCousins,1]);
+else
+    nCousins = 1;
 end
 
 %% Selection of signal-adapted support for the filter bank
 bank_behavior = bank.behavior;
+colons = bank_behavior.colons;
+bank_spec = bank.spec;
+nThetas = bank_spec.nThetas;
 subscripts = bank_behavior.subscripts;
-signal_range = ranges{1+0}(:,subscripts);
+signal_range = get_signal_range(ranges{1+0},subscripts);
 signal_log2_support = nextpow2(min(signal_range(end,:)-signal_range(1,:)+1));
 support_index = log2(bank.spec.size) - signal_log2_support + 1;
 psis = bank.psis{support_index};
+is_deepest = level_counter<0;
+is_numeric = isnumeric(data_ft);
+is_oriented = nThetas>1;
+
 
 %% Selection of filter indices ("gammas")
 gamma_lower_bound = max(bank_behavior.gamma_bounds(1),1);
@@ -43,22 +52,17 @@ log2_oversampling = bank_behavior.U.log2_oversampling;
 log2_resamplings = ...
     min(log2_oversampling + [bank.metas(gammas).log2_resolution].', 0);
 
-%% Data structure initialization
-colons = bank_behavior.colons;
-bank_spec = bank.spec;
-nThetas = bank_spec.nThetas;
-is_deepest = level_counter<0;
-is_numeric = isnumeric(data_ft);
-is_oriented = nThetas>1;
-
 %% Update of ranges at zeroth level (tensor level)
-overhead_zeroth_ranges = ranges{1+0};
+if is_deepest
+    overhead_zeroth_ranges = ranges(1+0);
+else
+    overhead_zeroth_ranges = ranges{1+0};
+end
 if is_oriented
     theta_range = [1,1,bank_spec.nThetas].';
-    overhead_zeroth_ranges = cat(2,overhead_zeroth_ranges,theta_range);
 end
-ranges{1+0} = cell(1,nEnabled_gammas);
-is_spiraled = isfield(bank_behavior,'spiral');
+is_spiraled = isfield(bank_behavior,'spiral') && ...
+    ~strcmp(get_suffix(bank_behavior.key),'j');
 if is_spiraled
     nChromas = bank_behavior.spiral.nChromas;
     octave_padding_length = bank_behavior.spiral.octave_padding_length;
@@ -67,34 +71,43 @@ if is_spiraled
         resampled_nChromas = nChromas;
     end
 end
-for gamma_index = 1:nEnabled_gammas
-    local_zeroth_ranges = overhead_zeroth_ranges;
-    log2_resampling = log2_resamplings(gamma_index);
-    local_zeroth_ranges(2,subscripts) = pow2(-log2_resampling);
-    if is_spiraled
-        resliced_size = size(data_ft,spiral_subscript);
-        if isequal(subscripts,spiral_subscript)
-            resampled_nChromas = pow2(nChromas,log2_resampling);
+ranges{1+0} = cell(nCousins,nEnabled_gammas);
+for cousin_index = 1:nCousins
+    for gamma_index = 1:nEnabled_gammas
+        local_zeroth_ranges = overhead_zeroth_ranges{cousin_index};
+        log2_resampling = log2_resamplings(gamma_index);
+        local_zeroth_ranges(2,subscripts) = pow2(-log2_resampling);
+        if is_spiraled
+            resliced_size = size(data_ft,spiral_subscript);
+            if isequal(subscripts,spiral_subscript)
+                resampled_nChromas = pow2(nChromas,log2_resampling);
+            end
+            nOctaves = pow2(nextpow2(octave_padding_length + ...
+                resliced_size/resampled_nChromas) - 1);
+            first_father = local_zeroth_ranges(1,spiral_subscript);
+            local_zeroth_ranges(1,spiral_subscript) = ...
+                1 + mod(first_father-1,nChromas);
+            local_zeroth_ranges(3,spiral_subscript) = ...
+                local_zeroth_ranges(1,spiral_subscript) + nChromas - 1;
+            first_octave = 1 + floor(first_father/nChromas);
+            octave_range = [first_octave;1;first_octave+nOctaves-1];
+            local_zeroth_ranges = ...
+                [local_zeroth_ranges(:,1:(spiral_subscript)), ...
+                octave_range, ...
+                local_zeroth_ranges(:,(spiral_subscript+1:end))];
         end
-        nOctaves = pow2(nextpow2(octave_padding_length + ...
-            resliced_size/resampled_nChromas) - 1);
-        first_father = local_zeroth_ranges(1,spiral_subscript);
-        local_zeroth_ranges(1,spiral_subscript) = ...
-            1 + mod(first_father-1,nChromas);
-        local_zeroth_ranges(3,spiral_subscript) = ...
-            local_zeroth_ranges(1,spiral_subscript) + nChromas - 1;
-        first_octave = 1 + floor(first_father/nChromas);
-        octave_range = [first_octave;1;first_octave+nOctaves-1];
-        local_zeroth_ranges = ...
-            [local_zeroth_ranges(:,1:(spiral_subscript)), ...
-            octave_range, ...
-            local_zeroth_ranges(:,(spiral_subscript+1:end))];
+        if is_oriented
+            local_zeroth_ranges = cat(2,local_zeroth_ranges,theta_range);
+        end
+        ranges{1+0}{cousin_index,gamma_index} = local_zeroth_ranges;
     end
-    ranges{1+0}{gamma_index} = local_zeroth_ranges;
+end
+if ~is_deepest && length(input_sizes)>1
+    ranges{1+0} = reshape(ranges{1+0},[input_sizes,nEnabled_gammas]);
 end
 
 %% Update of ranges at first level (gamma level)
-if length(ranges)==1
+if is_deepest
     ranges{1+1} = zeros(3,0);
 end
 ranges{1+1} = cat(2,ranges{1+1},gamma_range);
