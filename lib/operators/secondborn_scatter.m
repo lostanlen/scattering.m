@@ -28,7 +28,12 @@ support_index = log2(bank.spec.size) - signal_log2_support + 1;
 psis = bank.psis{support_index};
 
 %% Selection of filter indices ("gammas")
-sibling_gammas = collect_range(sibling.behavior.gamma_bounds);
+sibling_gamma_lower_bound = max(sibling.behavior.gamma_bounds(1),1);
+sibling_gamma_upper_bound = ...
+    min(sibling.behavior.gamma_bounds(2),length(sibling.metas));
+sibling_gamma_range = ...
+    [sibling_gamma_lower_bound,1,sibling_gamma_upper_bound].';
+sibling_gammas = collect_range(sibling_gamma_range);
 sibling_bandwidths = [sibling.metas(sibling_gammas).bandwidth];
 sibling_mask_factor = bank_behavior.sibling_mask_factor;
 bank_metas = bank.metas;
@@ -48,11 +53,11 @@ for gamma = nGammas:-1:1
     end
 end
 gamma_bounds = bank_behavior.gamma_bounds;
-gamma_range = [max(gamma_bounds(1),1+gamma),1,min(gamma_bounds(2),nGammas)].';
+sibling_gamma_range = [max(gamma_bounds(1),1+gamma),1,min(gamma_bounds(2),nGammas)].';
 sibling_log2_samplings = - log2(cellfun(@(x) x(2,subscripts),ranges{1+0}));
 log2_oversampling = bank_behavior.U.log2_oversampling;
 log2_factor = ceil(log2(sibling_mask_factor));
-gammas = collect_range(gamma_range);
+gammas = collect_range(sibling_gamma_range);
 nEnabled_gammas = length(gammas);
 if nEnabled_gammas<1
     data = [];
@@ -127,7 +132,7 @@ end
 
 %% Update of ranges at first level (gamma level)
 ranges{1+1}(:,sibling_subscript) = [];
-ranges{1+1} = cat(2,ranges{1+1},gamma_range);
+ranges{1+1} = cat(2,ranges{1+1},sibling_gamma_range);
 
 %%
 if bank.spec.nThetas==1

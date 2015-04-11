@@ -27,7 +27,7 @@ for gamma_index = 1:nEnabled_gammas
         resliced_sizes = output_sizes{gamma_index}(spiral.subscript);
         nChromas = pow2(spiral.nChromas,log2_resampling);
         nOctaves = pow2(nextpow2(spiral.octave_padding_length + ...
-            resliced_sizes/nChromas)-1);
+            resliced_sizes/nChromas));
         nPadded_gammas = nChromas * nOctaves;
         output_sizes{gamma_index}(spiral.subscript) = nPadded_gammas;
         subsasgn_structures{gamma_index}.subs{spiral.subscript} = ...

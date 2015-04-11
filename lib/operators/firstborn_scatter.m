@@ -83,7 +83,7 @@ for cousin_index = 1:nCousins
                 resampled_nChromas = pow2(nChromas,log2_resampling);
             end
             nOctaves = pow2(nextpow2(octave_padding_length + ...
-                resliced_size/resampled_nChromas) - 1);
+                resliced_size/nChromas));
             first_father = local_zeroth_ranges(1,spiral_subscript);
             local_zeroth_ranges(1,spiral_subscript) = ...
                 1 + mod(first_father-1,nChromas);
