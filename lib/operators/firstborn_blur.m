@@ -38,27 +38,37 @@ is_spiraled = isfield(bank_behavior,'spiral') && ...
 
 %% Assignment preparation if spiraling is required
 if is_spiraled
-    % TODO: update ranges in this conditional statement
     spiral = bank_behavior.spiral;
+    nChromas = spiral.nChromas;
     output_sizes = input_sizes;
-    resampled_sizes = ...
-        pow2(output_sizes(subscripts),log2_resampling);
+    resampled_sizes = pow2(output_sizes(subscripts),log2_resampling);
     output_sizes(subscripts) = resampled_sizes;
     resliced_sizes = output_sizes(spiral.subscript);
-    nChromas = pow2(spiral.nChromas,log2_resampling);
-    assert(~mod(nChromas,1));
+    resampled_nChromas = pow2(nChromas,log2_resampling);
     nOctaves = pow2(nextpow2(spiral.octave_padding_length + ...
-        resliced_sizes/nChromas)-1);
-    nPadded_gammas = nChromas * nOctaves;
+        resliced_sizes/resampled_nChromas)-1);
+    nPadded_gammas = resampled_nChromas * nOctaves;
     output_sizes(spiral.subscript) = nPadded_gammas;
     spiraled_sizes = ...
         [output_sizes(1:(spiral.subscript-1)), ...
-        nChromas,nOctaves, ...
+        resampled_nChromas,nOctaves, ...
         output_sizes((spiral.subscript+1):end)];
     subsasgn_structure.type = '()';
     subsasgn_structure.subs = replicate_colon(1+length(input_sizes));
     subsasgn_structure.subs(subscripts) = ...
         arrayfun(@(x) 1:x,resampled_sizes,'UniformOutput',false);
+    zeroth_ranges = ranges{1+0};
+    first_father = zeroth_ranges(1,spiral.subscript);
+    zeroth_ranges(1,spiral.subscript) = 1 + mod(first_father-1,nChromas);
+    zeroth_ranges(3,spiral.subscript) = ...
+        zeroth_ranges(1,spiral.subscript) + nChromas - 1;
+    first_octave = 1 + floor(first_father/nChromas);
+    octave_range = [first_octave;1;first_octave+nOctaves-1];
+    zeroth_ranges = ...
+        [zeroth_ranges(:,1:(spiral.subscript)), ...
+        octave_range, ...
+        zeroth_ranges(:,(spiral.subscript+1:end))];
+    ranges(1+0) = {zeroth_ranges};
 end
 
 %% Blurring implementations
