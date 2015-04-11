@@ -25,10 +25,12 @@ colons = bank_behavior.colons;
 bank_spec = bank.spec;
 nThetas = bank_spec.nThetas;
 subscripts = bank_behavior.subscripts;
-signal_range = get_signal_range(ranges{1+0},subscripts);
-signal_log2_support = nextpow2(min(signal_range(end,:)-signal_range(1,:)+1));
-support_index = log2(bank.spec.size) - signal_log2_support + 1;
-psis = bank.psis{support_index};
+support_index = 1 + log2(bank.spec.size/get_signal_support(data_ft,subscripts));
+try
+  psis = bank.psis{support_index};
+catch err
+    disp(err);
+end
 is_deepest = level_counter<0;
 is_numeric = isnumeric(data_ft);
 is_oriented = nThetas>1;
@@ -67,9 +69,6 @@ if is_spiraled
     nChromas = bank_behavior.spiral.nChromas;
     octave_padding_length = bank_behavior.spiral.octave_padding_length;
     spiral_subscript = bank_behavior.spiral.subscript;
-    if isequal(subscripts,spiral_subscript)
-        resampled_nChromas = nChromas;
-    end
 end
 ranges{1+0} = cell(nCousins,nEnabled_gammas);
 for cousin_index = 1:nCousins
@@ -79,9 +78,6 @@ for cousin_index = 1:nCousins
         local_zeroth_ranges(2,subscripts) = pow2(-log2_resampling);
         if is_spiraled
             resliced_size = size(data_ft,spiral_subscript);
-            if isequal(subscripts,spiral_subscript)
-                resampled_nChromas = pow2(nChromas,log2_resampling);
-            end
             nOctaves = pow2(nextpow2(octave_padding_length + ...
                 resliced_size/nChromas));
             first_father = local_zeroth_ranges(1,spiral_subscript);
