@@ -1,4 +1,4 @@
-function [difference_data,difference_ranges] = substract_layers( ...
+function [difference_data,difference_ranges] = substract_data( ...
     minuend_data,minuend_ranges,subtrahend_data,subtrahend_ranges,min_size)
 %% Initialization of ranges
 top_minuend_ranges = minuend_ranges{end};
@@ -78,21 +78,16 @@ if length(minuend_ranges)>1
     for node = 1:numel(minuend_data)
         minuend_ranges_node = get_ranges_node(minuend_ranges,node);
         subtrahend_ranges_node = get_ranges_node(subtrahend_ranges,node);
-        [difference_data{node},difference_ranges_node] = substract_layers( ...
+        [difference_data{node},difference_ranges_node] = substract_data( ...
             minuend_data{node},minuend_ranges_node, ...
             subtrahend_data{node},subtrahend_ranges_node);
         difference_ranges = ...
             set_ranges_node(difference_ranges,difference_ranges_node,node);
     end
 else
-%% Subscripted reference and pointwise substraction
-try
+    %% Subscripted reference and pointwise substraction
     difference_data = ...
         subsref(minuend_data,minuend_substruct) - ...
         subsref(subtrahend_data,minuend_substruct);
-catch err
-    disp(err);
 end
-end
-
 end
