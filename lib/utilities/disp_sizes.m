@@ -1,6 +1,6 @@
 function disp_sizes(cell_array)
 %%
-if ndims(cell_array)>2
+if ~ismatrix(cell_array)
     disp(cell_array);
     return;
 end
@@ -36,7 +36,7 @@ for row = 1:nRows
             small_string = num2str(number);
             nBlanks = nCharacters(subscript) - length(small_string);
             big_string = ...
-                [big_string,'x',blanks(nBlanks),small_string];
+                cat(2,big_string,'x',blanks(nBlanks),small_string);
         end
         strings{row,column} = [big_string,' ',classes{row,column},']'];
     end
