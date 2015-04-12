@@ -58,7 +58,6 @@ else
     nPadded_gammas = nSibling_gammas;
 end
 ranges{1+0} = cat(2,ranges{1+0}{1},ranges{1+1}(:,sibling_subscript));
-ranges{1+0}(3,end) = ranges{1+0}(1,end) + (nPadded_gammas-1);
 ranges{1+0}(2,subscripts) = pow2(-log2_sampling);
 
 %% Update of ranges at first level (gamma level)
