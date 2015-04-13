@@ -17,12 +17,13 @@ end
 %% Loop over enabled gammas
 if is_deepest && is_oriented
     % e.g. 2d scattering
+    % e.g. scattering along j after blurring along gamma
     theta_range = [1;1;nThetas];
     local_size = cat(2,data_size,nThetas);
     local_range = cat(2,ranges{1+0},theta_range);
     for gamma_index = 1:nEnabled_gammas
         log2_resampling = enabled_log2_resamplings(gamma_index);
-        local_size(subscripts) = pow2(data_size(subscripts,log2_resampling));
+        local_size(subscripts) = pow2(data_size(subscripts),log2_resampling);
         output_sizes{gamma_index} = local_size;
         zeroth_ranges{gamma_index} = local_range;
         zeroth_ranges{gamma_index}(2,subscripts) = ...
