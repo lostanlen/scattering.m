@@ -2,7 +2,7 @@ function [output_sizes,zeroth_ranges] = prepare_firstborn_scatter_nospiral( ...
     input_size,enabled_log2_resamplings,subscripts,nThetas,ranges)
 %% Initialization of outputs
 nEnabled_gammas = length(enabled_log2_resamplings);
-is_deepest = iscell(input_size);
+is_deepest = ~iscell(input_size);
 is_oriented = nThetas>1;
 if is_deepest
     output_sizes = cell(nEnabled_gammas,1);
@@ -28,15 +28,17 @@ if is_deepest && is_oriented
         zeroth_ranges{gamma_index}(2,subscripts) = ...
             pow2(local_range(2,subscripts),-log2_resampling);
     end
+    return
 elseif is_deepest && ~is_oriented
     % e.g. 1d scattering
     output_sizes = []; % pre-allocation is not needed in this case
     for gamma_index = 1:nEnabled_gammas
         log2_resampling = enabled_log2_resamplings(gamma_index);
         zeroth_ranges{gamma_index} = ranges{1+0};
-        zeroth_ranges{gamma_index}(subscripts) = ...
+        zeroth_ranges{gamma_index}(2,subscripts) = ...
             pow2(ranges{1+0}(2,subscripts),-log2_resampling);
     end
+    return
 elseif ~is_deepest && is_oriented
     % e.g. scattering along gamma in joint time-frequency scattering
     % e.g. scattering along j in spiral scattering
