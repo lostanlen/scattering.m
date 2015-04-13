@@ -16,9 +16,14 @@ subsasgn_structure = minuend_substruct;
 
 %% Iterated loop over zeroth-level subscripts
 for subscript = 1:nSubscripts
-    % Definition of step
+    % Special case when ranges are the same
     minuend_range = top_minuend_ranges(:,subscript);
     subtrahend_range = top_subtrahend_ranges(:,subscript);
+    if isequal(minuend_range,subtrahend_range)
+        continue
+    end
+    
+    % Definition of step
     if minuend_range(2)~=subtrahend_range(2)
         error('minuend and subtrahend have different samplings');
     end
