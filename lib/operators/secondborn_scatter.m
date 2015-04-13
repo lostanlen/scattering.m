@@ -22,7 +22,8 @@ end
 %% Selection of signal-adapted support for the filter bank
 bank_behavior = bank.behavior;
 subscripts = bank_behavior.subscripts;
-support_index = 1 + log2(bank.spec.size/get_signal_support(data_ft,subscripts));
+signal_support = get_signal_support(data_ft,ranges,subscripts);
+support_index = 1 + log2(bank.spec.size/signal_support);
 psis = bank.psis{support_index};
 
 %% Selection of filter indices ("gammas")

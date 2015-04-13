@@ -11,7 +11,7 @@ if level_counter>0
             firstborn_scatter(data_ft{node},bank,ranges_node,sibling);
         ranges = set_ranges_node(ranges,ranges_node,node);
     end
-    return;
+    return
 elseif level_counter==0
     is_deepest = false;
     nCousins = prod(input_size);
@@ -26,11 +26,12 @@ end
 
 %% Selection of signal-adapted support for the filter bank
 bank_behavior = bank.behavior;
-colons = bank_behavior.colons;
 bank_spec = bank.spec;
 nThetas = bank_spec.nThetas;
+colons = bank_behavior.colons;
 subscripts = bank_behavior.subscripts;
-support_index = 1 + log2(bank.spec.size/get_signal_support(data_ft,subscripts));
+signal_support = get_signal_support(data_ft,ranges,subscripts);
+support_index = 1 + log2(bank.spec.size/signal_support);
 psis = bank.psis{support_index};
 is_oriented = nThetas>1;
 is_spiraled = isfield(bank_behavior,'spiral') && ...
