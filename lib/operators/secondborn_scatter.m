@@ -22,7 +22,7 @@ end
 %% Selection of signal-adapted support for the filter bank
 bank_behavior = bank.behavior;
 subscripts = bank_behavior.subscripts;
-support_index = 1 + log2(bank.spec.size/get_signal_support(data_ft,subscripts));;
+support_index = 1 + log2(bank.spec.size/get_signal_support(data_ft,subscripts));
 psis = bank.psis{support_index};
 
 %% Selection of filter indices ("gammas")
@@ -51,7 +51,8 @@ for gamma = nGammas:-1:1
     end
 end
 gamma_bounds = bank_behavior.gamma_bounds;
-sibling_gamma_range = [max(gamma_bounds(1),1+gamma),1,min(gamma_bounds(2),nGammas)].';
+sibling_gamma_range = ...
+    [max(gamma_bounds(1),1+gamma),1,min(gamma_bounds(2),nGammas)].';
 sibling_log2_samplings = - log2(cellfun(@(x) x(2,subscripts),ranges{1+0}));
 log2_oversampling = bank_behavior.U.log2_oversampling;
 log2_factor = ceil(log2(sibling_mask_factor));
