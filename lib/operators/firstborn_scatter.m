@@ -15,9 +15,13 @@ if level_counter>0
 elseif level_counter==0
     is_deepest = false;
     nCousins = prod(input_size);
+    data_size = cellfun(@size,data_ft,'UniformOutput',false);
+    input_dimension = length(drop_trailing(data_size{1}));
     data_ft = reshape(data_ft,[nCousins,1]);
 else
     is_deepest = true;
+    data_size = input_size;
+    input_dimension = length(drop_trailing(data_size));
 end
 
 %% Selection of signal-adapted support for the filter bank
@@ -41,17 +45,18 @@ nEnabled_gammas = length(gammas);
 
 %% Definition of resampling factors
 log2_oversampling = bank_behavior.U.log2_oversampling;
-log2_resamplings = ...
+enabled_log2_resamplings = ...
     min(log2_oversampling + [bank.metas(gammas).log2_resolution].', 0);
 
 %% Assignment preparation and update of ranges
 if is_spiraled
-    [output_sizes,subsasgn_structures,spiraled_sizes,ranges{1+0}] = ...
+    spiral = bank_behavior.spiral;
+    [output_sizes,ranges{1+0},subsasgn_structures,spiraled_sizes] = ...
         prepare_firstborn_scatter_spiral( ...
-        input_size,enabled_log2_resamplings,subscripts,nThetas,ranges,spiral);
+        data_size,enabled_log2_resamplings,subscripts,nThetas,ranges,spiral);
 else
     [output_sizes,ranges{1+0}] = prepare_firstborn_scatter_nospiral( ...
-        input_size,enabled_log2_resamplings,subscripts,nThetas,ranges);
+        data_size,enabled_log2_resamplings,subscripts,nThetas,ranges);
 end
 if is_deepest
     ranges{1+1} = gamma_range;
@@ -66,7 +71,7 @@ if is_deepest && ~is_oriented && ~is_spiraled
     data = cell(nEnabled_gammas,1);
     for gamma_index = 1:nEnabled_gammas
         psi = psis(gammas(gamma_index));
-        log2_resampling = log2_resamplings(gamma_index);
+        log2_resampling = enabled_log2_resamplings(gamma_index);
         data{gamma_index} = ifft_multiply(data_ft,psi, ...
             log2_resampling,colons,subscripts);
     end
@@ -79,15 +84,15 @@ end
 % e.g. scattering along j after blurring (or bypassing) gamma
 if is_deepest && is_oriented && ~is_spiraled
     data = cell(nEnabled_gammas,1);
-    subsasgn_structure = substruct('()',replicate_colon(length(input_size)+1));
+    subsasgn_structure = substruct('()',replicate_colon(input_dimension+1));
     for gamma_index = 1:nEnabled_gammas
-        log2_resampling = log2_resamplings(gamma_index);
+        log2_resampling = enabled_log2_resamplings(gamma_index);
         y = zeros(output_sizes{gamma_index});
         for theta = 1:nThetas
             psi = psis(gammas(gamma_index),theta);
             subsasgn_structure.subs{end} = theta;
             y = subsasgn(y,subsasgn_structure, ...
-                ifft_multiply(data_ft,psi,log2_resampling,colons,subscripts);
+                ifft_multiply(data_ft,psi,log2_resampling,colons,subscripts));
         end
         data{gamma_index} = y;
     end
@@ -100,7 +105,7 @@ if is_deepest && is_oriented
     data = cell(nEnabled_gammas,1);
     for gamma_index = 1:nEnabled_gammas
         subsasgn_structure = subsasgn_structures{gamma_index};
-        log2_resampling = log2_resamplings(gamma_index);
+        log2_resampling = enabled_log2_resamplings(gamma_index);
         y = zeros(output_sizes{gamma_index});
         for theta = 1:nThetas
             psi = psis(gammas(gamma_index),theta);
@@ -119,11 +124,11 @@ end
 % e.g. scattering along theta in roto-translation scattering
 if ~is_deepest && is_oriented && ~is_spiraled
     data = cell(nCousins,nEnabled_gammas);
-    subsasgn_structure = substruct('()',replicate_colon(length(input_size)+1));
+    subsasgn_structure = substruct('()',replicate_colon(input_dimension+1));
     for cousin = 1:nCousins
         x_ft = data_ft{cousin};
         for gamma_index = 1:nEnabled_gammas
-            log2_resampling = log2_resammplings(gamma_index);
+            log2_resampling = enabled_log2_resamplings(gamma_index);
             output_size = output_sizes{cousin,gamma_index};
             data{cousin,gamma_index} = zeros(output_size);
             for theta = 1:nThetas
