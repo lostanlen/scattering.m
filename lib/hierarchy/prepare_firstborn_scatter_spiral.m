@@ -59,7 +59,7 @@ if is_deepest && is_oriented
         
         % Definition of ranges
         first_chroma = 1 + mod(first_father,nChromas);
-        last_chroma = first_chroma + nChromas;
+        last_chroma = first_chroma + nChromas - 1;
         first_octave = 1 + floor(first_father/nChromas);
         spiral_range = [first_chroma;pow2(-log2_resampling);last_chroma];
         octave_range = [first_octave;1;first_octave+unpadded_nOctaves-1];
