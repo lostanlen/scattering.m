@@ -10,7 +10,7 @@ if nargin<5
 end
 
 %% Initialization of subsref/subsasgn structures
-minuend_substruct = substruct('()',cell(1,nSubscripts));
+minuend_substruct = substruct('()',replicate_colon(nSubscripts));
 subtrahend_substruct = minuend_substruct;
 subsasgn_structure = minuend_substruct;
 
