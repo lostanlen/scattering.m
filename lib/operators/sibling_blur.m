@@ -15,7 +15,7 @@ if level_counter>0
     if length(input_sizes)>1
         data = reshape(data,input_sizes);
     end
-    return;
+    return
 end
 
 %% Selection of signal-adapted support for the filter bank
