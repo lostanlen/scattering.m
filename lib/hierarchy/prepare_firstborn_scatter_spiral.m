@@ -22,11 +22,15 @@ end
 %% Loop over enabled gammas
 if is_deepest && is_oriented
     % e.g. scattering along gamma while spiraling for next variable
+    
+    % Definition of number of octaves
     nSubscripts = length(input_size);
     overhead_subsasgn_structure = substruct('()',replicate_colon(1+nSubscripts));
     spiral_range = ranges{1+0}(:,spiral_subscript);
-    unpadded_nOctaves = ceil((spiral_range(3)-spiral_range(1)) / nChromas);
+    unpadded_nOctaves = ceil((spiral_range(3)-spiral_range(1)+1) / nChromas);
     padded_nOctaves = pow2(nextpow2(unpadded_nOctaves + octave_padding_length));
+    
+    % Initialization of ranges
     theta_range = [1;1;nThetas];
     local_size = cat(2,input_size,nThetas);
     local_range = cat(2,ranges{1+0}(:,1:spiral_subscript), ...
@@ -37,27 +41,29 @@ if is_deepest && is_oriented
         % Definition of output sizes
         output_sizes{gamma_index} = local_size;
         log2_resampling = enabled_log2_resamplings(gamma_index);
-        resampled_nChromas = pow2(nChromas,log2_resampling);
+        resampling = pow2(log2_resampling);
+        resampled_nChromas = nChromas * resampling;
         nPadded_gammas = resampled_nChromas * padded_nOctaves;
         output_sizes{gamma_index}(spiral_subscript) = nPadded_gammas;
         
         % Definition of subsasgn structure
+        resampled_length = local_size(subscripts) * resampling;
         subsasgn_structures{gamma_index} = overhead_subsasgn_structure;
-        resampled_length = pow2(local_size(subscripts),log2_resampling);
         subsasgn_structures{gamma_index}.subs{subscripts} =  1:resampled_length;
         
         % Definition of spiraled size
         spiraled_sizes{gamma_index} = ...
-            [output_sizes{gamma_index}(1:(spiral_subscript-1)), ...
+            cat(2,output_sizes{gamma_index}(1:(spiral_subscript-1)), ...
             resampled_nChromas,padded_nOctaves, ...
-            output_sizes{gamma_index}((spiral_subscript+1):end)];
+            output_sizes{gamma_index}((spiral_subscript+1):end));
         
         % Definition of ranges
-        first_chroma = 1 + mod(first_father,resampled_nChromas);
-        first_octave = 1 + floor(first_father/resampled_nChromas);
+        first_chroma = 1 + mod(first_father,nChromas);
+        last_chroma = first_chroma + nChromas;
+        first_octave = 1 + floor(first_father/nChromas);
+        spiral_range = [first_chroma;pow2(-log2_resampling);last_chroma];
         octave_range = [first_octave;1;first_octave+unpadded_nOctaves-1];
-        local_range(2,subscripts) = pow2(-log2_resampling);
-        local_range(1,spiral_subscript) = first_chroma;
+        local_range(:,spiral_subscript) = spiral_range;
         local_range(:,spiral_subscript+1) = octave_range;
         zeroth_ranges{gamma_index} = local_range;
     end
