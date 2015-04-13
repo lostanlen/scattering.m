@@ -21,8 +21,7 @@ end
 %% Selection of signal-adapted support for the filter bank
 bank_behavior = bank.behavior;
 subscripts = bank_behavior.subscripts;
-signal_log2_support =
-support_index = log2(bank.spec.size/get_signal_support(data_ft,subscripts);) + 1;
+support_index = log2(bank.spec.size/get_signal_support(data_ft,subscripts)) + 1;
 phi = bank.phi{support_index};
 
 %% Definition of resampling factors
