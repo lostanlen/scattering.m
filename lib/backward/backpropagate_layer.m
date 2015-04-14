@@ -10,7 +10,7 @@ layer_dY = cell(1+nVariables_to_transform,1);
 layer_dY{end} = ...
     backpropagate_nonlinearity(nonlinearity,layer_dU,layer_Y{end},layer_U);
 
-%% Multi-variable case : iterated one-variable backpropagation
+%% Multi-variable case: iterated one-variable backpropagation
 for variable_index = nVariables_to_transform:-1:2
     bank = banks{variable_index};
     sub_dY = layer_dY{1+variable_index};
@@ -18,6 +18,7 @@ for variable_index = nVariables_to_transform:-1:2
     previous_sub_dY = cell(nCells,1);
     for cell_index = 1:nCells
         cell_dY = dual_blur_dY(sub_dY{nCells+cell_index},bank);
+        cell_dY = copy_metadata(layer_Y{variable_index}{cell_index},cell_dY);
         cell_dY = dual_scatter_dY(sub_dY{cell_index},bank,cell_dY);
         previous_sub_dY{cell_index} = cell_dY;
     end
