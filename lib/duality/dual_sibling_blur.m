@@ -21,8 +21,8 @@ end
 %% Selection of signal-adapted support for the filter bank
 bank_behavior = bank.behavior;
 subscripts = bank_behavior.subscripts;
-signal_support = get_signal_support(data_ft,ranges,subscripts);
+signal_support = get_signal_support(data,ranges,subscripts);
 support_index = log2(bank.spec.size/signal_support) + 1;
-dual_phi = bank.dual_phi;
+dual_phi = bank.dual_phi{support_index};
 
 end
