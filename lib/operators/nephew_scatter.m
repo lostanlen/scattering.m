@@ -14,7 +14,7 @@ if level_counter>0
     return;
 end
 
-%% If data is multidimensional, reshape it to a matrix
+%% If data is multidimensional, reshaping to a matrix
 uncle_subscript = uncle.subscripts;
 nUncle_gammas = input_sizes(uncle_subscript);
 nData_dimensions = length(input_sizes);
@@ -32,14 +32,15 @@ else
 end
 data = cell(nUncle_gammas,nCousins);
 
-%% Fallback to firstborn_scatter and secondborn_scatter
-if nData_dimensions>1
-    error('nephew_scatter for multiple variables at uncle level not ready yet');
-end
-
+%% Uncle upgrading in ranges
 input_ranges = ranges;
 if length(ranges)<3
     ranges = {ranges{1:(end-1)},{},ranges{end}};
+end
+
+%% Fallback to firstborn_scatter and secondborn_scatter
+if nData_dimensions>1
+    error('nephew_scatter for multiple variables at uncle level not ready yet');
 end
 for uncle_index = 1:nUncle_gammas
     ranges_node = get_ranges_node(input_ranges,uncle_index);
