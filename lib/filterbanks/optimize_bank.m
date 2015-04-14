@@ -88,15 +88,11 @@ for support_index = 2:nSupports
         end
         smaller_bank(lambda) = smaller_filter;
     end
-    try
     if is_bank
         optimized_banks{support_index} = ...
             reshape(smaller_bank,smaller_nGammas,nThetas);
     else
         optimized_banks{support_index} = smaller_bank;
-    end
-    catch err
-        disp(err);
     end
 end
 end

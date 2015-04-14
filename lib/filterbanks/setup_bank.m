@@ -44,10 +44,11 @@ if bank.spec.has_duals
     if bank.spec.domain.is_ft
         % If the wavelets are complex in the Fourier domain (e.g.
         % Gammatones), we do in-place conjugation to compute the duals.
-        if ~has_real_ft
+        if ~bank.spec.has_real_ft
             psi_fts = conj(psi_fts);
         end
-        dual_psi_fts = bsxfun(@rdivide,psi_fts,energy_sum);
+        symmetrized_energy_sum = (energy_sum + energy_sum(end:-1:1)) / 2;
+        dual_psi_fts = bsxfun(@rdivide,psi_fts,symmetrized_energy_sum);
     else
         dual_psi_fts = [];
     end
@@ -57,12 +58,12 @@ if bank.spec.has_duals
     else
         dual_psi_ifts = [];
     end
-    bank.dual_psis = optimize_bank(dual_psi_ifts,dual_psi_fts,bank);
+    bank.dual_psis = optimize_bank(dual_psi_fts,dual_psi_ifts,bank);
     % Since the low-pass filter phi is symmetric by design, phi_ft is real.
     % Thus, we don't have to conjugate phi_ft to have dual_phi_ft.
     dual_phi_ft = bsxfun(@rdivide,phi_ft,energy_sum);
     dual_phi = multidimensional_ifft(dual_phi_ft,1:signal_dimension);
-    bank.dual_phi = optimize_bank(dual_phi,dual_phi_ft,bank);
+    bank.dual_phi = optimize_bank(dual_phi_ft,dual_phi,bank);
 end
 
 %% Alphanumeric ordering of field names

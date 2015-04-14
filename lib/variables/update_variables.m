@@ -10,7 +10,7 @@ elseif sibling.is_firstborn
     if sibling.subscripts>length(keys{1+1})
         % This needs to decrement the subscripts of depth-one variables
         % whose subscript is above sibling_subscript
-        error('middle-subscript second-born downgrading not ready yet');
+        error('middle-subscript first-born downgrading not ready yet');
     end
     sibling_key = keys{1+1}{sibling_subscript};
     keys{1+0}{end+1} = sibling_key;

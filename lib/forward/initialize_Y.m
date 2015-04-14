@@ -32,6 +32,7 @@ else
     padding_handle = @(x) sc_pad(x,padding_variables);
     layer_Y1.data = map_unary(padding_handle,layer_U.data);
     layer_Y1.keys = layer_U.keys;
+    layer_Y1.ranges = layer_U.ranges;
     layer_Y1.variable_tree = variable_tree;
 end
 end
