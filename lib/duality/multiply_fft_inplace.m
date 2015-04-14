@@ -1,4 +1,5 @@
-function y_ft = multiply_fft(x_ft,filter_struct,log2_resampling,colons,subscripts)
+function y_ft = multiply_fft_inplace(x_ft,filter_struct, ...
+    log2_resampling,colons,subscripts,y_ft)
 %% In-place Fourier transform
 for subscript = subscripts
     x_ft = fft(x_ft,[],subscript);
