@@ -5,11 +5,11 @@ if iscell(layer_minuend)
     for cell_index = 1:nCells
         minuend_cell = layer_minuend{cell_index};
         if isempty(minuend_cell)
-            continue;
+            continue
         end
         subtrahend_cell = layer_subtrahend{cell_index};
         if isempty(subtrahend_cell)
-            continue;
+            continue
         end
         layer_dS{cell_index} = substract_layer(minuend_cell,subtrahend_cell);
     end
