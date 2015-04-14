@@ -8,7 +8,7 @@ if level_counter>0
         ranges_node = get_ranges_node(ranges,node);
         % Recursive call
         [data{node},ranges_node] = ...
-            firstborn_scatter(data_ft{node},bank,ranges_node,sibling);
+            firstborn_scatter(data_ft{node},bank,ranges_node);
         ranges = set_ranges_node(ranges,ranges_node,node);
     end
     return
