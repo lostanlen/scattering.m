@@ -1,5 +1,4 @@
 function [difference_data,difference_ranges] = substract_data( ...
-    minuend_data,minuend_ranges,subtrahend_data,subtrahend_ranges,min_size)
 %% Initialization of ranges
 top_minuend_ranges = minuend_ranges{end};
 top_subtrahend_ranges = subtrahend_ranges{end};
