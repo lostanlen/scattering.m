@@ -26,7 +26,7 @@ catch err
     end
 end
 variable = get_leaf(variable_tree,bank.behavior.key);
-% Subscripts and colons are updated according to the network
+% Subscripts and colons are updated according to the network structure
 bank.behavior.subscripts = variable.subscripts;
 bank.behavior.colons.subs = replicate_colon(length(keys{1+0}));
 
