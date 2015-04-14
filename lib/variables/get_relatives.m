@@ -13,7 +13,7 @@ if isempty(tail)
         sibling = [];
     end
     uncle = [];
-    return;
+    return
 end
 tail_head_name_cell = fieldnames(tail);
 tail_head_name = tail_head_name_cell{1};
@@ -36,7 +36,7 @@ if isempty(tail_tail)
     else
         sibling = [];
     end
-    return;
+    return
 end
 [sibling,uncle] = get_relatives(key,variable_tree_tail);
 end
