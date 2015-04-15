@@ -30,6 +30,7 @@ end
 
 %% Backpropagation of blurring/pooling operator in dS
 layer_dY{1+0} = dS_backto_dY(layer_dS,arch);
+layer_dY{1+0} = copy_metadata(layer_Y{1+0},layer_dY{1+0});
 
 %% Backpropagation of first variable
 layer_dY{1+0} = dual_scatter_dY(layer_dY{1+1},banks{1},layer_dY{1+0});
