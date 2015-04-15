@@ -9,7 +9,7 @@ if level_counter>0
         % Recursive call
         ranges_node = get_ranges_node(ranges,node);
         [data_ft{node},ranges_node] = ...
-            sibling_blur(data{node},bank,ranges_node,sibling);
+            dual_sibling_blur(data{node},bank,ranges_node,sibling);
         ranges = set_ranges_node(ranges,ranges_node,node);
     end
     if length(input_sizes)>1
@@ -17,12 +17,51 @@ if level_counter>0
     end
     return
 end
+if length(input_sizes)>1
+    error('multiple subscripts at sibling level not ready in dual_sibling_blur');
+end
 
 %% Selection of signal-adapted support for the filter bank
 bank_behavior = bank.behavior;
+colons = bank_behavior.colons;
 subscripts = bank_behavior.subscripts;
 signal_support = get_signal_support(data,ranges,subscripts);
 support_index = log2(bank.spec.size/signal_support) + 1;
 dual_phi = bank.dual_phi{support_index};
 
+%% Selection of sibling indices ("gammas")
+is_deepest = (sibling.level==1);
+nThetas = size(dual_phi,2);
+is_oriented = nThetas>1;
+sibling_subscript = sibling.subscripts;
+sibling_gamma_range = ranges{end}(:,sibling_subscript);
+sibling_gammas = collect_range(sibling_gamma_range);
+nSibling_gammas = length(sibling_gammas);
+
+%% Definition of resampling factors
+critical_log2_sampling = 1 - bank.spec.J;
+S_log2_oversampling = bank_behavior.S.log2_oversampling;
+log2_sampling = critical_log2_sampling + S_log2_oversampling;
+U_log2_oversampling = sibling.behavior.U.log2_oversampling;
+sibling_resolutions = [sibling.metas(sibling_gammas).resolution].';
+sibling_log2_samplings = min(sibling_resolutions+U_log2_oversampling,0);
+log2_resamplings = sibling_log2_samplings - log2_sampling;
+
+%% Dual-blurring implementations
+data_ft = cell([input_sizes,1]);
+%% []. Normal
+% e.g. dual-blurring in time after joint time-frequency scattering
+% e.g. dual-blurring in time after spiral scattering
+if ~is_deepest && ~is_oriented
+end
+
+%% D. Deepest
+% e.g. dual-blurring in time after plain second-order scattering
+if is_deepest && ~is_oriented
+    for sibling_index = 1:nSibling_gammas
+        log2_resampling = log2_resamplings(sibling_index);
+        data_ft{sibling_index} = ...
+            multiply_fft(data{sibling_index},log2_resampling,colons,subscripts);
+    end
+end
 end
