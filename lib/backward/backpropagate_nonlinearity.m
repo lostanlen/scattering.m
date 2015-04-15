@@ -5,9 +5,11 @@ if iscell(layer_dU)
     nCells = numel(layer_dU);
     layer_dY_end = cell(size(layer_dU));
     for cell_index = 1:nCells
-        layer_dY_end{cell_index} = ...
-            backpropagate_nonlinearity(nonlinearity, ...
-            layer_dU{cell_index},layer_dY_end{cell_index},layer_U{cell_index});
+        if ~isempty(layer_dU{cell_index})
+            layer_dY_end{cell_index} = backpropagate_nonlinearity( ...
+                nonlinearity,layer_dU{cell_index},layer_Y_end{cell_index}, ...
+                layer_U{cell_index});
+        end
     end
     return
 end
