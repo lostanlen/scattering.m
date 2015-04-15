@@ -5,7 +5,7 @@ dS = sc_substract(target_S,S);
 %% Initialization of dU and dY
 nLayers = length(archs);
 dU = cell(1,1+nLayers);
-dY = cell(1,1+nLayers);
+dY = cell(1,nLayers);
 
 %% Backpropagation of last layer
 dU{end} = dS_backto_dY(dS{end},archs{end});
