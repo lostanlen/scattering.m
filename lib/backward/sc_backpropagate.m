@@ -20,7 +20,7 @@ for layer = nLayers:-1:1
     previous_layer = layer - 1;
     layer_dS = dS{1+previous_layer};
     dY{layer} = backpropagate_layer(layer_dS,layer_dU,layer_Y,layer_U,arch);
-    dU{1+previous_layer} = dY_backto_dU(dY{layer});
+    dU{1+previous_layer} = dY_backto_dU(dY{layer}{1});
 end
 
 %% Return difference in signal domain
