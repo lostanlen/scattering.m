@@ -1,7 +1,7 @@
 function previous_sub_dY = dual_blur_dY(sub_dY,bank)
 %% Cell-wise map
 if iscell(sub_dY)
-    blur_handle = @(x) blur_Y(x,bank);
+    blur_handle = @(x) dual_blur_dY(x,bank);
     previous_sub_dY = map_unary(blur_handle,sub_dY);
     return
 end
@@ -9,28 +9,19 @@ end
 %% Variable loading
 keys = sub_dY.keys;
 variable_tree = sub_dY.variable_tree;
-try
-    sibling = get_relatives(bank.behavior.key,variable_tree);
-catch err
-    if strcmp(err.identifier,'MATLAB:nonExistentField') && ...
-            strcmp(get_suffix(bank.behavior.key),'j')
-        sub_dY = unroll_spiral(sub_dY,bank);
-        variable_tree = sub_dY.variable_tree;
-        sibling = get_relatives(bank.behavior.key,variable_tree);
-    else
-        rethrow(err);
-    end
-end
+sibling = get_relatives(bank.behavior.key,variable_tree);
 variable = get_leaf(variable_tree,bank.behavior.key);
+
+% Subscripts and colons are updated according to the network structure
 bank.behavior.subscripts = variable.subscripts;
 bank.behavior.colons = substruct('()',replicate_colon(length(keys{1+0})));
 
-%% Blurring
+%% Dual blurring
 if isempty(sibling)
     previous_sub_dY.data_ft = ...
         dual_firstborn_blur(sub_dY.data,bank,sub_dY.ranges);
-elseif sibling.is_firstborn
-    previous_sub_dY.data_ft= ...
+elseif sibling.nSiblings==0
+    previous_sub_dY.data_ft = ...
         dual_secondborn_blur(sub_dY.data,bank,sub_dY.ranges,sibling);
 else
     previous_sub_dY.data_ft = ...

@@ -8,7 +8,7 @@ if level_counter>0
         ranges_node = get_ranges_node(ranges,node);
         % Recursive call
         [data{node},ranges_node] = ...
-            firstborn_scatter(data_ft{node},bank,ranges_node,sibling);
+            firstborn_scatter(data_ft{node},bank,ranges_node);
         ranges = set_ranges_node(ranges,ranges_node,node);
     end
     return
@@ -45,9 +45,9 @@ gammas = collect_range(gamma_range);
 nEnabled_gammas = length(gammas);
 
 %% Definition of resampling factors
+enabled_log2_samplings = [bank.metas(gammas).log2_resolution].';
 log2_oversampling = bank_behavior.U.log2_oversampling;
-enabled_log2_resamplings = ...
-    min(log2_oversampling + [bank.metas(gammas).log2_resolution].', 0);
+enabled_log2_resamplings = min(enabled_log2_samplings + log2_oversampling, 0);
 
 %% Assignment preparation and update of ranges
 if is_spiraled

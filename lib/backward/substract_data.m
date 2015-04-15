@@ -1,5 +1,5 @@
 function [difference_data,difference_ranges] = substract_data( ...
-    minuend_data,minuend_ranges,subtrahend_data,subtrahend_ranges)
+    minuend_data,subtrahend_data,minuend_ranges,subtrahend_ranges)
 %% Range intersection at top level
 difference_ranges = cell(size(minuend_ranges));
 [difference_ranges{end},minuend_substruct,subtrahend_substruct] = ...
@@ -8,8 +8,12 @@ difference_ranges = cell(size(minuend_ranges));
 %% Recursive substraction across levels
 if length(minuend_ranges)>1
     % Subscripted reference
-    minuend_data = subsref(minuend_data,minuend_substruct);
-    subtrahend_data = subsref(subtrahend_data,subtrahend_substruct);
+    if any(cellfun(@isnumeric,minuend_substruct.subs))
+        minuend_data = subsref(minuend_data,minuend_substruct);
+    end
+    if any(cellfun(@isnumeric,subtrahend_substruct.subs))
+        subtrahend_data = subsref(subtrahend_data,subtrahend_substruct);
+    end
     
     % Difference initialization
     difference_data = cell(size(minuend_data));

@@ -12,7 +12,7 @@ if level_counter>0
             secondborn_blur(data_ft{node},bank,ranges_node,sibling);
         ranges = set_ranges_node(ranges,ranges_node,node);
     end
-    return;
+    return
 end
 
 %% Selection of signal-adapted support for the filter bank
@@ -68,16 +68,14 @@ if isempty(ranges{1+1})
 end
 
 %% Initialization
-ref_colons = bank_behavior.colons;
+colons = bank_behavior.colons;
 data = cell([nCousins,1]);
 first_input_sizes = drop_trailing(size(data_ft{1}));
 nInput_dimensions = length(first_input_sizes);
-asgn_colons.type = '()';
-asgn_colons.subs = replicate_colon(nInput_dimensions+1);
 tensor_sizes = [first_input_sizes, nPadded_gammas];
 tensor_sizes(subscripts) = bank.spec.size * pow2(log2_sampling);
 tensor_sizes(end) = nPadded_gammas;
-local_subsasgn_structure = asgn_colons;
+local_subsasgn_structure = substruct('()',replicate_colon(nInput_dimensions+1));
 local_tensor = zeros(tensor_sizes);
 
 %% Blurring implementation
@@ -90,7 +88,7 @@ for cousin_index = 1:nCousins
         local_tensor = subsasgn(local_tensor, ...
             local_subsasgn_structure, ...
             ifft_multiply(local_data_ft,phi, ...
-            log2_resampling,ref_colons,subscripts));
+            log2_resampling,colons,subscripts));
     end
     data{cousin_index} = local_tensor;
 end

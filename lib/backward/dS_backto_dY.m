@@ -1,4 +1,4 @@
-function layer_dY = dS_backto_dY(layer_dS,arch)
+function layer_dY_1 = dS_backto_dY(layer_dS,arch)
 %% Initialization
 nVariables_to_transform = length(arch.banks);
 banks = arch.banks;
@@ -10,11 +10,11 @@ while banks{start_index}.behavior.S.is_bypassed
 end
 layer_dY{start_index} = dual_blur_dY(layer_dS,banks{start_index});
 layer_dY{start_index} = ...
-    perform_ift(layer_dY{start_index},banks{start_index}.behavior.key);
+    perform_ift(layer_dY{start_index},banks{start_index}.behavior.subscripts);
 
 %% Multi-variable case : iterated one-variable backpropagation
 % Wrapping the for loop inside an if statement yields an easy speed gain
-if start_index1
+if start_index>1
     for variable_index = (start_index-1):-1:1
         bank = banks{variable_index};
         layer_dY{variable_index} = ...
@@ -23,4 +23,7 @@ if start_index1
         layer_dY{variable_index} = perform_ift(layer_dY{variable_index},key);
     end
 end
+
+%% Output assignment
+layer_dY_1 = layer_dY{1+0};
 end

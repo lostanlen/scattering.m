@@ -52,6 +52,7 @@ for layer = 2:nLayers
                     field.size = root_plan.spec.size;
                 end
                 field.dimension = previous_plan.behavior.output_dimension;
+                field.is_U_blurred = false;
                 field.handle = default(field,'handle',@gammatone_1d);
                 field.output_dimension = ...
                     field.dimension + (layer==2) + (signal_dimension==2);

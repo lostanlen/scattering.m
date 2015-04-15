@@ -4,10 +4,10 @@ if iscell(sub_Y)
     % TODO: avoid resorting to anonymous handle
     perform_ft_handle = @(x) perform_ft(x,key);
     sub_Y = map_unary(perform_ft_handle,sub_Y);
-    return;
+    return
 end
 if isfield(sub_Y,'data_ft')
-    return;
+    return
 end
 
 %% Variable loading
@@ -36,13 +36,11 @@ if variable.level>0
     end
     variable.level = 0;
     variable.padding = parse_padding('zero');
+    sub_Y.variable_tree = set_leaf(sub_Y.variable_tree,key,variable);
 end
 
 %% Multidimensional FFT
 % TODO: avoid resorting to an anonymous handle
 fft_handle = @(x) multidimensional_fft(x,variable.subscripts);
 sub_Y.data_ft = map_unary(fft_handle,sub_Y.data);
-
-%% Update of variable tree and keys array
-sub_Y.variable_tree = set_leaf(sub_Y.variable_tree,key,variable);
 end

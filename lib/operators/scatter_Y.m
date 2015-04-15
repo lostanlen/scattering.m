@@ -11,11 +11,14 @@ keys = sub_Y.keys;
 ranges = sub_Y.ranges;
 variable_tree = sub_Y.variable_tree;
 try
+    % Loading of relative variables (next sibling and uncle) if they exist
     [sibling,uncle] = get_relatives(bank.behavior.key,variable_tree);
-catch err;
+catch err
+    % On-the-fly spiraling if the variable j is not found
     if strcmp(err.identifier,'MATLAB:nonExistentField') && ...
             strcmp(get_suffix(bank.behavior.key),'j')
         sub_Y = roll_spiral(sub_Y,bank);
+        % Update of variable tree and relative variables
         variable_tree = sub_Y.variable_tree;
         [sibling,uncle] = get_relatives(bank.behavior.key,variable_tree);
     else
@@ -23,6 +26,7 @@ catch err;
     end
 end
 variable = get_leaf(variable_tree,bank.behavior.key);
+% Subscripts and colons are updated according to the network structure
 bank.behavior.subscripts = variable.subscripts;
 bank.behavior.colons.subs = replicate_colon(length(keys{1+0}));
 
@@ -31,16 +35,12 @@ if isempty(uncle)
     if isempty(sibling)
         [next_sub_Y.data,next_sub_Y.ranges] = ...
             firstborn_scatter(sub_Y.data_ft,bank,ranges);
+    elseif sibling.nSiblings==0
+        [next_sub_Y.data,next_sub_Y.ranges] = ...
+            secondborn_scatter(sub_Y.data_ft,bank,ranges,sibling);
     else
-        if sibling.is_firstborn
-            [next_sub_Y.data,next_sub_Y.ranges] = ...
-                secondborn_scatter(sub_Y.data_ft,bank,ranges,sibling);
-        else
-            % TODO: write function sibling_scatter
-            % This is needed for third-order scattering
-            [next_sub_Y.data,next_sub_Y.ranges] = ...
-                sibling_scatter(sub_Y.data_ft,bank,ranges,sibling);
-        end
+        [next_sub_Y.data,next_sub_Y.ranges] = ...
+            sibling_scatter(sub_Y.data_ft,bank,ranges,sibling);
     end
 else
     [next_sub_Y.data,next_sub_Y.ranges] = ...
