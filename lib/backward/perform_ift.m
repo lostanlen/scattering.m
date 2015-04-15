@@ -1,7 +1,7 @@
 function sub_Y = perform_ift(sub_Y,subscripts)
 %% Cell-wise map
 if iscell(sub_Y)
-    perform_ft_handle = @(x) perform_ft(x,subscripts);
+    perform_ft_handle = @(x) perform_ift(x,subscripts);
     sub_Y = map_unary(perform_ft_handle,sub_Y);
     return
 end
