@@ -4,7 +4,7 @@ function dY_data = ...
 [~,dU_substruct,Y_substruct] = intersect_ranges(dU_ranges,Y_ranges);
 
 %% Recursive product-and-quotient across levels
-if length(minuend_ranges)>1
+if length(dU_ranges)>1
     % Subscripted reference
     dU_data = subsref(dU_data,dU_substruct);
     Y_data = subsref(Y_data,Y_substruct);
