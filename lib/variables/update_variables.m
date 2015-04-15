@@ -3,7 +3,7 @@ function [keys,variable_tree] = ...
 key = bank.behavior.key;
 if isempty(sibling)
     gamma_level = 1;
-elseif length(sibling.nSiblings)==1
+elseif sibling.nSiblings==1
     % Downgrade first-born sibling
     gamma_level = 1;
     sibling_subscript = sibling.subscripts;

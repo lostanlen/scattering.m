@@ -20,7 +20,7 @@ bank.behavior.colons = substruct('()',replicate_colon(length(keys{1+0})));
 if isempty(sibling)
     previous_sub_dY.data_ft = ...
         dual_firstborn_blur(sub_dY.data,bank,sub_dY.ranges);
-elseif length(sibling.nSiblings)==1
+elseif sibling.nSiblings==1
     previous_sub_dY.data_ft = ...
         dual_secondborn_blur(sub_dY.data,bank,sub_dY.ranges,sibling);
 else
