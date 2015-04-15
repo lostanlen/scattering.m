@@ -8,7 +8,7 @@ branch = variable_tree.(head_name){head_relative_depth};
 if isempty(tail)
     if isfield(branch,'gamma')
         sibling = branch.gamma{end}.leaf;
-        sibling.nSiblings = (length(branch.gamma)==1);
+        sibling.nSiblings = length(branch.gamma);
     else
         sibling = [];
     end
