@@ -11,10 +11,13 @@ end
 keys = sub_Y.keys;
 ranges = sub_Y.ranges;
 variable_tree = sub_Y.variable_tree;
-[sibling,uncle] = dual_get_relatives(bank.behavior.key,variable_tree);
+[sibling,uncle,gamma_variable] = ...
+    dual_get_relatives(bank.behavior.key,variable_tree);
 variable = get_leaf(variable_tree,bank.behavior.key);
 
 % Subscripts and colons are updated according to the network structure
+bank.behavior.gamma_subscript = gamma_variable.subscripts;
+bank.behavior.gamma_level = gamma_variable.level;
 bank.behavior.subscripts = variable.subscripts;
 bank.behavior.colons.subs = replicate_colon(length(keys{1+0}));
 
@@ -22,7 +25,7 @@ bank.behavior.colons.subs = replicate_colon(length(keys{1+0}));
 if isempty(uncle)
     if isempty(sibling)
         previous_sub_dY.data_ft = ...
-            dual_firstborn_scatter(sub_Y.data,bank,ranges,sibling, ...
+            dual_firstborn_scatter(sub_Y.data,bank,ranges, ...
             previous_sub_dY.data_ft,previous_sub_dY.ranges);
     elseif sibling.nSiblings==0
         previous_sub_dY.data_ft = ...

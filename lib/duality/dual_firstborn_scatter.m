@@ -1,5 +1,4 @@
-function data_ft = ...
-    dual_firstborn_scatter(data,bank,ranges,sibling,data_ft,ranges_out)
+function data_ft = dual_firstborn_scatter(data,bank,ranges,data_ft,ranges_out)
 %% Deep map across levels
 level_counter = length(ranges) - 2;
 input_size = drop_trailing(size(data),1);
@@ -16,8 +15,7 @@ support_index = log2(bank.spec.size/signal_support) + 1;
 dual_psis = bank.dual_psis{support_index};
 
 %% Dual-scattering implementations
-sibling_subscript = sibling.subscripts;
-gamma_range = ranges{end}(:,sibling_subscript);
+gamma_range = ranges{end}(:,bank_behavior.gamma_subscript);
 gammas = collect_range(gamma_range);
 nGammas = length(gammas);
 nThetas = size(dual_psis,2);
@@ -38,6 +36,7 @@ if is_unspiraled
 end
 
 %% D. Deepest
+% e.g. dual-scattering along time
 if is_deepest && ~is_oriented
     for gamma_index = 1:nGammas
         gamma = gammas(gamma_index);
