@@ -2,7 +2,7 @@ function data = map_unary(unary_handle,data)
 if iscell(data)
     %% Handle map along cells (recursive call)
     if isempty(data)
-        return;
+        return
     end
     nCells = numel(data);
     if iscell(data{1})
