@@ -21,11 +21,11 @@ bank.behavior.colons.subs = replicate_colon(length(keys{1+0}));
 %% Dual scattering
 if isempty(uncle)
     switch sibling.nSiblings
-        case 1
+        case 0
             previous_sub_dY.data_ft = ...
                 dual_firstborn_scatter(sub_Y.data,bank,ranges,sibling, ...
                 previous_sub_dY.data_ft,previous_sub_dY.ranges);
-        case 2
+        case 1
             previous_sub_dY.data_ft = ...
                 dual_secondborn_scatter(sub_Y.data,bank,ranges,sibling, ...
                 previous_sub_dY.data_ft,previous_sub_dY.ranges);

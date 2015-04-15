@@ -1,7 +1,7 @@
 function dY_data = ...
     dU_times_Y_over_U(dU_data,Y_data,U_data,dU_ranges,Y_ranges)
 %% Range intersection at top level
-[~,dU_substruct,Y_substruct] = intersect_ranges(dU_ranges,Y_ranges);
+[~,dU_substruct,Y_substruct] = intersect_ranges(dU_ranges{end},Y_ranges{end});
 
 %% Recursive product-and-quotient across levels
 if length(dU_ranges)>1
