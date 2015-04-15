@@ -22,7 +22,7 @@ critical_log2_sampling = 1 - bank.spec.J;
 S_log2_oversampling = bank_behavior.S.log2_oversampling;
 U_log2_oversampling = sibling.behavior.U.log2_oversampling;
 sibling_subscript = sibling.subscripts;
-gammas = collect_range(ranges{1+0}(:,sibling_subscript));
+gammas = collect_range(ranges{end}(:,sibling_subscript));
 log2_samplings = ...
     min(U_log2_oversampling + [sibling.metas(gammas).log2_resolution].', 0);
 log2_resamplings = ...
