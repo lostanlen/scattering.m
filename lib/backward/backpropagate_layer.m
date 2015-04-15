@@ -24,8 +24,8 @@ for variable_index = nVariables_to_transform:-1:2
     end
     routing_sizes = repmat(3,1,variable_index);
     layer_dY{variable_index} = reshape(previous_sub_dY,routing_sizes);
-    key = bank.behavior.key;
-    layer_dY{variable_index} = perform_ift(layer_dY{variable_index},key);
+    subscripts = bank.behavior.subscripts;
+    layer_dY{variable_index} = perform_ift(layer_dY{variable_index},subscripts);
 end
 
 %% Backpropagation of blurring/pooling operator in dS
@@ -33,5 +33,5 @@ layer_dY{1+0} = dS_backto_dY(layer_dS,arch);
 
 %% Backpropagation of first variable
 layer_dY{1+0} = dual_scatter_dY(layer_dY{1+1},banks{1},layer_dY{1+0});
-layer_dY{1+0} = perform_ift(layer_dY{1+0},banks{1}.behavior.key);
+layer_dY{1+0} = perform_ift(layer_dY{1+0},banks{1}.behavior.subscripts);
 end
