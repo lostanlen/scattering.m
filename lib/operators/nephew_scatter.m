@@ -47,7 +47,7 @@ for uncle_index = 1:nUncle_gammas
     if isempty(sibling)
         [data{uncle_index},ranges_node] = ...
             firstborn_scatter(data_ft{uncle_index},bank,ranges_node);
-    elseif sibling.is_firstborn
+    elseif length(sibling.nSiblings)==1
         [data{uncle_index},ranges_node] = ...
             secondborn_scatter(data_ft{uncle_index},bank,ranges_node,sibling);
     else
