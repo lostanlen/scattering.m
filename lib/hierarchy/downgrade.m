@@ -25,5 +25,6 @@ tensor_subs = replicate_colon(length(tensor_sizes));
 data_subs = ...
     arrayfun(@(x) 1:x,data_sizes(subscripts),'UniformOutput',false);
 subsref_structure.subs = cat(1,tensor_subs,data_subs);
-data_downgraded = {subsasgn(target,subsref_structure,[data{:}])};
+target = subsasgn(target,subsref_structure,[data{:}]);
+data_downgraded = {target};
 end
