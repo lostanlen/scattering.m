@@ -1,6 +1,6 @@
-function data_ft = dual_firstborn_blur(data,bank,ranges,sibling)
+function data_ft = dual_firstborn_blur(data,bank,ranges)
 %% Deep map across levels
-level_counter = length(ranges) - sibling.level - 2;
+level_counter = length(ranges) - 1;
 input_sizes = drop_trailing(size(data),1);
 if level_counter>0
     nNodes = numel(data);
@@ -9,7 +9,7 @@ if level_counter>0
         % Recursive call
         ranges_node = get_ranges_node(ranges,node);
         [data_ft{node},ranges_node] = ...
-            dual_firstborn_blur(data{node},bank,ranges_node,sibling);
+            dual_firstborn_blur(data{node},bank,ranges_node);
         ranges = set_ranges_node(ranges,ranges_node,node);
     end
     if length(input_sizes)>1
@@ -20,6 +20,7 @@ end
 
 %% Selection of signal-adapted support for the filter bank
 bank_behavior = bank.behavior;
+colons = bank_behavior.colons;
 subscripts = bank_behavior.subscripts;
 signal_support = get_signal_support(data,ranges,subscripts);
 support_index = log2(bank.spec.size/signal_support) + 1;
