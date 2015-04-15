@@ -43,8 +43,8 @@ critical_log2_sampling = 1 - bank.spec.J;
 S_log2_oversampling = bank_behavior.S.log2_oversampling;
 log2_sampling = critical_log2_sampling + S_log2_oversampling;
 U_log2_oversampling = sibling.behavior.U.log2_oversampling;
-sibling_resolutions = [sibling.metas(sibling_gammas).resolution].';
-sibling_log2_samplings = min(sibling_resolutions+U_log2_oversampling,0);
+sibling_log2_resolutions = [sibling.metas(sibling_gammas).log2_resolution].';
+sibling_log2_samplings = min(sibling_log2_resolutions+U_log2_oversampling,0);
 log2_resamplings = sibling_log2_samplings - log2_sampling;
 
 %% Dual-blurring implementations
@@ -60,8 +60,8 @@ end
 if is_deepest && ~is_oriented
     for sibling_index = 1:nSibling_gammas
         log2_resampling = log2_resamplings(sibling_index);
-        data_ft{sibling_index} = ...
-            multiply_fft(data{sibling_index},log2_resampling,colons,subscripts);
+        data_ft{sibling_index} = multiply_fft( ...
+            data{sibling_index},dual_phi,log2_resampling,colons,subscripts);
     end
 end
 end
