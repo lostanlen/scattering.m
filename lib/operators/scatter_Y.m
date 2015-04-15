@@ -35,7 +35,7 @@ if isempty(uncle)
     if isempty(sibling)
         [next_sub_Y.data,next_sub_Y.ranges] = ...
             firstborn_scatter(sub_Y.data_ft,bank,ranges);
-    elseif sibling.nSiblings==1
+    elseif sibling.nSiblings==0
         [next_sub_Y.data,next_sub_Y.ranges] = ...
             secondborn_scatter(sub_Y.data_ft,bank,ranges,sibling);
     else
