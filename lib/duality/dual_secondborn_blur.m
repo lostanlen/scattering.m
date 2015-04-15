@@ -20,11 +20,11 @@ dual_phi = bank.dual_phi{support_index};
 %% Definition of resampling factors
 critical_log2_sampling = 1 - bank.spec.J;
 S_log2_oversampling = bank_behavior.S.log2_oversampling;
-U_log2_oversampling = bank_behavior.U.log2_oversampling;
+U_log2_oversampling = sibling.behavior.U.log2_oversampling;
 sibling_subscript = sibling.subscripts;
 gammas = collect_range(ranges{1+0}(:,sibling_subscript));
 log2_samplings = ...
-    min(U_log2_oversampling + [bank.metas(gammas).log2_resolution].', 0);
+    min(U_log2_oversampling + [sibling.metas(gammas).log2_resolution].', 0);
 log2_resamplings = ...
     log2_samplings - (critical_log2_sampling+S_log2_oversampling);
 nGammas = length(gammas);
