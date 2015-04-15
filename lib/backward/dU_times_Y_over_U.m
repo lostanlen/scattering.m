@@ -6,10 +6,10 @@ function dY_data = ...
 %% Recursive product-and-quotient across levels
 if length(dU_ranges)>1
     % Subscripted reference
-    if any(cellfun(@isnumeric,dU_substruct))
+    if any(cellfun(@isnumeric,dU_substruct.subs))
         dU_data = subsref(dU_data,dU_substruct);
     end
-    if any(cellfun(@isnumeric,Y_substruct))
+    if any(cellfun(@isnumeric,Y_substruct.subs))
         Y_data = subsref(Y_data,Y_substruct);
         U_data = subsref(U_data,Y_substruct);
     end
