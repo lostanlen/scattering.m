@@ -8,8 +8,7 @@ dU = cell(1,1+nLayers);
 dY = cell(1,1+nLayers);
 
 %% Backpropagation of last layer
-dY{end} = dS_backto_dY(dS{end},archs{end});
-dU{end} = dY{end}{1};
+dU{end} = dS_backto_dY(dS{end},archs{end});
 dU{end} = copy_metadata(U{end},dU{end});
 
 %% Backpropagation cascade
