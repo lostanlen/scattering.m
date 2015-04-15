@@ -8,8 +8,12 @@ difference_ranges = cell(size(minuend_ranges));
 %% Recursive substraction across levels
 if length(minuend_ranges)>1
     % Subscripted reference
-    minuend_data = subsref(minuend_data,minuend_substruct);
-    subtrahend_data = subsref(subtrahend_data,subtrahend_substruct);
+    if any(cellfun(@isnumeric,minuend_substruct))
+        minuend_data = subsref(minuend_data,minuend_substruct);
+    end
+    if any(cellfun(@isnumeric,subtrahend_substruct))
+        subtrahend_data = subsref(subtrahend_data,subtrahend_substruct);
+    end
     
     % Difference initialization
     difference_data = cell(size(minuend_data));
