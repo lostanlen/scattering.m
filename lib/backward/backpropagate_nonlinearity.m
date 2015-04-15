@@ -21,4 +21,7 @@ end
 layer_dY_end.data = dU_times_Y_over_U( ...
     layer_dU.data,layer_Y_end.data,layer_U.data, ...
     layer_dU.ranges,layer_Y_end.ranges);
+
+%% Copy metadata
+layer_dY_end = copy_metadata(layer_Y_end,layer_dY_end);
 end
