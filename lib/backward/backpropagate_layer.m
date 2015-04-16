@@ -17,6 +17,9 @@ for variable_index = nVariables_to_transform:-1:2
     nCells = 3^(variable_index-1);
     previous_sub_dY = cell(nCells,1);
     for cell_index = 1:nCells
+        if isempty(sub_dY{cell_index})
+            continue
+        end
         cell_dY = dual_blur_dY(sub_dY{nCells+cell_index},bank);
         cell_dY = copy_metadata(layer_Y{variable_index}{cell_index},cell_dY);
         cell_dY = dual_scatter_dY(sub_dY{cell_index},bank,cell_dY);
