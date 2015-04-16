@@ -33,7 +33,7 @@ if isempty(tail_tail)
     else
         uncle = [];
     end
-    if isfield(nranch_branch,'gamma')
+    if isfield(branch_branch,'gamma')
         gamma_variable = branch_branch.gamma{end}.leaf;
         if length(branch_branch.gamma)>1
             sibling = branch_branch.gamma{end-1}.leaf;
