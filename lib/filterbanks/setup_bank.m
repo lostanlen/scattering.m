@@ -61,7 +61,7 @@ if bank.spec.has_duals
     bank.dual_psis = optimize_bank(dual_psi_fts,dual_psi_ifts,bank);
     % Since the low-pass filter phi is symmetric by design, phi_ft is real.
     % Thus, we don't have to conjugate phi_ft to have dual_phi_ft.
-    dual_phi_ft = bsxfun(@rdivide,phi_ft,energy_sum);
+    dual_phi_ft = bsxfun(@rdivide,phi_ft,symmetrized_energy_sum);
     dual_phi = multidimensional_ifft(dual_phi_ft,1:signal_dimension);
     bank.dual_phi = optimize_bank(dual_phi_ft,dual_phi,bank);
 end

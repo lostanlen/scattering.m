@@ -30,6 +30,6 @@ if length(dU_ranges)>1
 else
     %% Subscripted reference and pointwise substraction
     dY_data = subsref(dU_data,dU_substruct) .* ...
-        (subsref(Y_data,Y_substruct) ./ subsref(U_data,Y_substruct));
+        subsref(Y_data,Y_substruct) ./ (eps()+subsref(U_data,Y_substruct));
 end
 end

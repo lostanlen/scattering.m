@@ -56,7 +56,7 @@ if is_deepest && ~is_oriented
         data_ft_out = multiply_fft_inplace(data_in{gamma_index},dual_psis(gamma), ...
             log2_resampling,colons,subscripts,data_ft_out);
     end
-    data_out = multidimensional_fft(data_ft_out,subscripts);
+    data_out = multidimensional_ifft(data_ft_out,subscripts);
     return
 end
 

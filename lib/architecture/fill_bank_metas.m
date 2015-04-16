@@ -44,10 +44,10 @@ switch handle_string
             resolution_extrema = [resolutions(1),elbow_resolution];
             bandwidths(1:elbow_gamma) = interp1(resolution_extrema, ...
                 bandwidth_extrema,resolutions(1:elbow_gamma));
-            quality_factors = resolutions ./ bandwidths;
+            quality_factors = max(resolutions ./ bandwidths,1);
         else
             quality_factors = repmat(bank_spec.max_Q,1,nGammas);
-            bandwidths = resolutions ./ bank_spec.max_Q;
+            bandwidths = max(resolutions ./ bank_spec.max_Q,1);
         end
         scales = 4 * mother_xi ./ bandwidths;
     case 'RLC_1d'
