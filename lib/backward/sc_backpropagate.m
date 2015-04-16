@@ -1,7 +1,4 @@
-function [dsignal,dS,dU,dY] = sc_backpropagate(target_S,S,U,Y,archs)
-%% Pointwise substraction
-dS = sc_substract(target_S,S);
-
+function [dsignal,dS,dU,dY] = sc_backpropagate(dS,U,Y,archs)
 %% Initialization of dU and dY
 nLayers = length(archs);
 dU = cell(1,1+nLayers);
