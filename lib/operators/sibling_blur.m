@@ -65,7 +65,7 @@ for cousin_index = 1:nCousins
     for sibling_index = 1:nSibling_gammas
         log2_resampling = log2_resamplings(sibling_index);
         local_data_ft = data_ft{sibling_index,cousin_index};
-        data_slice{sibling_index} = map_filter(local_data_ft,phi, ...
+        data_slice{sibling_index} = map_ifft_multiply(local_data_ft,phi, ...
             log2_resampling,bank_behavior);
     end
     data(:,cousin_index) = data_slice;
