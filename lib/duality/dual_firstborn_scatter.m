@@ -1,18 +1,19 @@
-function data_ft = dual_firstborn_scatter(data,bank,ranges,data_ft,ranges_out)
+function data_out = ...
+    dual_firstborn_scatter(data_in,bank,ranges,data_ft_out,ranges_out)
 %% Deep map across levels
 level_counter = length(ranges) - 2;
-input_size = drop_trailing(size(data),1);
+input_size = drop_trailing(size(data_in),1);
 if level_counter>0
-    nNodes = numel(data);
+    nNodes = numel(data_in);
     for node = 1:nNodes
         % Recursive call
         ranges_node = get_ranges_node(ranges,node);
         ranges_out_node = get_ranges_node(ranges_out,node);
-        data_ft{node} = dual_firstborn_scatter(data{node}, ...
-            bank,ranges_node,data_ft{node},ranges_out_node);
+        data_out{node} = dual_firstborn_scatter(data_in{node}, ...
+            bank,ranges_node,data_ft_out{node},ranges_out_node);
     end
     if length(input_size)>1
-        data_ft = reshape(data_ft,input_size);
+        data_out = reshape(data_out,input_size);
     end
     return
 end
@@ -21,7 +22,7 @@ end
 bank_behavior = bank.behavior;
 colons = bank_behavior.colons;
 subscripts = bank_behavior.subscripts;
-signal_support = get_signal_support(data,ranges,subscripts);
+signal_support = get_signal_support(data_in,ranges,subscripts);
 support_index = log2(bank.spec.size/signal_support) + 1;
 dual_psis = bank.dual_psis{support_index};
 
@@ -47,12 +48,41 @@ if is_unspiraled
 end
 
 %% D. Deepest
-% e.g. dual-scattering along time
+% e.g. along time
 if is_deepest && ~is_oriented
     for gamma_index = 1:nGammas
         gamma = gammas(gamma_index);
         log2_resampling = enabled_log2_resamplings(gamma_index);
-        data_ft = multiply_fft_inplace(data{gamma_index},dual_psis(gamma), ...
-            log2_resampling,colons,subscripts,data_ft);
+        data_ft_out = multiply_fft_inplace(data_in{gamma_index},dual_psis(gamma), ...
+            log2_resampling,colons,subscripts,data_ft_out);
     end
+    data_out = multidimensional_fft(data_ft_out,subscripts);
+    return
+end
+
+%% DO. Deepest, Oriented
+% e.g. along gamma variable
+if is_deepest && is_oriented
+    % In-place multiply-add in Fourier domain
+    for gamma_index = 1:nGammas
+        gamma = gammas(gamma_index);
+        log2_resampling = enabled_log2_resamplings(gamma_index);
+        for theta = 1:nThetas
+            dual_psi = dual_psis(gamma,theta);
+            colons.subs{end} = theta;
+            data_ft_out = multiply_fft_inplace(data_in{gamma_index},dual_psi, ...
+                log2_resampling,colons,subscripts,data_ft_out);
+        end
+    end
+    % Inverse Fourier transform
+    data_out = multidimensional_ifft(data_ft_out,subscripts);
+    
+    % Upadding
+    output_dimension = ndims(data_out);
+    nUnpadded_gammas = ...
+        ranges_out{1+0}(3,subscripts) - ranges_out{1+0}(1,subscripts) + 1;
+    subsref_structure = substruct('()',replicate_colon(output_dimension));
+    subsref_structure.subs{subscripts} = 1:nUnpadded_gammas;
+    data_out = subsref(data_out,subsref_structure);
+    return
 end

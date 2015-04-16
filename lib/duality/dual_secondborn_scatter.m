@@ -1,12 +1,12 @@
-function data_ft = ...
-    dual_secondborn_scatter(data,bank,ranges,sibling,data_ft,ranges_out)
+function data_out = ...
+    dual_secondborn_scatter(data_in,bank,ranges,sibling,data_ft_out,ranges_out)
 level_counter = length(ranges)-2;
 
 %% Selection of signal-adapted support to the filter bank
 bank_behavior = bank.behavior;
 colons = bank_behavior.colons;
 subscripts = bank_behavior.subscripts;
-signal_support = get_signal_support(data,ranges,subscripts);
+signal_support = get_signal_support(data_in,ranges,subscripts);
 support_index = log2(bank.spec.size/signal_support) + 1;
 dual_psis = bank.dual_psis{support_index};
 
@@ -43,8 +43,9 @@ if is_deepest && ~is_oriented
     sibling_out_ranges = ranges_out{end}(:,1);
     out_sibling_gammas = collect_range(sibling_out_ranges);
     nOut_sibling_gammas = length(out_sibling_gammas);
+    data_out = cell(size(data_in));
     for out_sibling_index = 1:nOut_sibling_gammas
-        local_data_ft = data_ft{out_sibling_index};
+        local_data_ft = data_ft_out{out_sibling_index};
         sibling_gamma = out_sibling_gammas(out_sibling_index);
         enabled_gammas = find(sibling_matrix(sibling_gamma,:));
         nEnabled_gammas = length(enabled_gammas);
@@ -60,13 +61,13 @@ if is_deepest && ~is_oriented
                     ranges{1+0}{in_gamma_index}(:,sibling_subscript);
                 in_sibling_index = search_range(sibling_in_range,sibling_gamma);
                 subsref_structure.subs{sibling_subscript} = in_sibling_index;
-                local_data = ...
-                    subsref(data{in_gamma_index},subsref_structure);
+                local_data = subsref(data_in{in_gamma_index},subsref_structure);
                 local_data_ft = multiply_fft_inplace(local_data,dual_psi, ...
                     log2_resampling,colons,subscripts,local_data_ft);
             end
         end
-        data_ft{out_sibling_index} = local_data_ft;
+        data_out{out_sibling_index} = ...
+            multidimensional_ifft(local_data_ft,subscripts);
     end
 end
 %% D.O. Oriented
