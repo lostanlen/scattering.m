@@ -42,6 +42,18 @@ x_range = cat(2,neg_x_range,pos_x_range);
 colons.subs{subscripts} = x_range;
 trimmed_x_ft = subsref(x_ft,colons);
 
+%% If any non-transformed subscripts are not colons, replace them by colons
+% This is useful for back-propagation of joint-time frequency scattering :
+% (dual_firstborn_scatter, deepest-oriented case).
+% Indeed, the subsref picks the right theta::gamma simultaneously with the
+% frequency range over the gamma variable.
+non_transformed_subscripts = 1:length(colons.subs);
+non_transformed_subscripts(subscripts) = [];
+if ~isempty(non_transformed_subscripts)
+    colons.subs(non_transformed_subscripts) = ...
+        replicate_colon(length(non_transformed_subscripts));
+end
+
 %% Trimming of filter_ft if needed
 pos_filter_range = mod(pos_x_range - filter_start,filter_sizes) + 1;
 unbounded_neg_filter_range = ...
