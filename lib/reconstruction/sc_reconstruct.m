@@ -1,4 +1,4 @@
-function [signal,summary] = reconstruct(target_S,archs, ...
+function [signal,summary] = sc_reconstruct(target_S,archs, ...
     reconstruction_opt,nIterations,initial_signal)
 %% Default argument handling
 signal_sizes = [archs{1}.banks{1}.spec.size,1];
@@ -28,10 +28,6 @@ end
 
 %% Iterated reconstruction
 for iteration = 0:nIterations-1
-    iteration
-    plot(signal);
-    drawnow;
-    
     %% Scattering propagation
     [S,U,Y] = sc_propagate(signal,archs);
     
