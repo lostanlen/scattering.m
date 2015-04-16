@@ -4,6 +4,7 @@ function [normalizers,psi_energy_sum] = ...
 signal_dimension = length(bank_spec.size);
 gamma_subscript = signal_dimension + 1;
 theta_subscript = signal_dimension + 2;
+% This is faster than abs(raw_psi_fts).^2 since it has not intermediate sqrt
 raw_energies = real(raw_psi_fts).^2 + imag(raw_psi_fts).^2;
 raw_sum = sum(sum(raw_energies,gamma_subscript),theta_subscript);
 
