@@ -11,14 +11,7 @@ mother_range_end = (original_length/2-1) + periodization/2;
 mother_range = (mother_range_start:mother_range_end).';
 
 %% Definition of center frequency xi and variance sigma
-% We want the higher center log-frequency in the filter bank, log(mother_xi),
-% to be right in between its mirror log(1-mother_xi), and the second higher
-% frequency log(2^(-1/N)*mother_xi), where N is the number of filters per
-% octave.  Hence the required equality;
-% log(1-mother_xi) - log(mother_xi) =  log(2)/N
-% of which we easily derive the following formula.
-adjacency_ratio = 2^(1/bank_spec.nFilters_per_octave);
-mother_xi = 1 / (1+adjacency_ratio);
+mother_xi = bank_spec.mother_xi;
 resolutions = [bank_metas.resolution];
 
 % We want the squared modulus of each Gabor filter psi_lambda to cross
