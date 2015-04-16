@@ -3,7 +3,18 @@ function data_ft = dual_firstborn_scatter(data,bank,ranges,data_ft,ranges_out)
 level_counter = length(ranges) - 2;
 input_size = drop_trailing(size(data),1);
 if level_counter>0
-    error('level_counter>0 in dual_firstborn_scatter not ready');
+    nNodes = numel(data);
+    for node = 1:nNodes
+        % Recursive call
+        ranges_node = get_ranges_node(ranges,node);
+        ranges_out_node = get_ranges_node(ranges_out,node);
+        data_ft{node} = dual_firstborn_scatter(data{node}, ...
+            bank,ranges_node,data_ft{node},ranges_out_node);
+    end
+    if length(input_size)>1
+        data_ft = reshape(data_ft,input_size);
+    end
+    return
 end
 
 %% Selection of signal-adapted support to the filter bank
