@@ -3,7 +3,7 @@ if ~iscell(x)
     %% Map gamma filtering across thetas
     colons = bank_behavior.colons;
     subscripts = bank_behavior.subscripts;
-    y_ft = ifft_multiply(x,filter_struct,log2_resampling,colons,subscripts);
+    y_ft = multiply_fft(x,filter_struct,log2_resampling,colons,subscripts);
 else
     %% Map gamma filtering across cells
     input_sizes = drop_trailing(size(x));
@@ -19,7 +19,7 @@ else
         subscripts = bank_behavior.subscripts;
         for cell_index = 1:nCells
             y_ft{cell_index} = ...
-                ifft_multiply(x{cell_index},filter_struct, ...
+                multiply_fft(x{cell_index},filter_struct, ...
                 log2_resampling,colons,subscripts);
         end
     end
