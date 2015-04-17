@@ -23,6 +23,7 @@ if reconstruction_opt.is_verbose
     max_nDigits = 1 + floor(log10(nIterations));
     sprintf_format = ['%',num2str(max_nDigits),'d'];
 end
+[target_norm,layer_target_norms] = sc_norm(target_S);
 
 %% Iterated reconstruction
 for iteration = 0:nIterations-1
@@ -37,12 +38,11 @@ for iteration = 0:nIterations-1
         mod_iteration = mod(iteration,reconstruction_opt.verbosity_period);
         if mod_iteration==0
             pretty_iteration = sprintf(sprintf_format,iteration);
-            [loss,layer_distances] = sc_norm(delta_S);
+            [absolute_loss,layer_absolute_distances] = sc_norm(delta_S);
+            relative_loss = 100 * absolute_loss / target_norm;
+            layer_distances = 100 * layer_absolute_distances ./ layer_target_norms;
             pretty_distances = num2str(layer_distances,'%8.2f%%');
-            if reconstruction_opt.is_regularized
-                loss = loss + reconstruction_opt.regularizer * norm(signal);
-            end
-            pretty_loss = sprintf('%.2f%%',loss);
+            pretty_loss = sprintf('%.2f%%',relative_loss);
             iteration_string = ['it = ',pretty_iteration,'  ;  '];
             distances_string = ...
                 ['S_m distances = [ ',pretty_distances, ' ]  ;  '];
@@ -95,10 +95,10 @@ end
 %% Make summary
 % TODO : summarize bank structure with only specs and behaviors
 if nargout>1
-    delta_S = cascade_substract(target_S,S);
-    summary.distances = S_norm(delta_S);
+    delta_S = sc_substract(target_S,S);
+    summary.distances = sc_norm(delta_S);
     summary.reconstruction_opt = reconstruction_opt;
-    [summary.S,summary.U] = cascade_propagate(signal,archs);
+    [summary.S,summary.U] = sc_propagate(signal,archs);
     summary.signal = signal;
 end
 end
