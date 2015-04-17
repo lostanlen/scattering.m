@@ -43,7 +43,7 @@ if is_deepest && ~is_oriented
     sibling_out_ranges = ranges_out{end}(:,1);
     out_sibling_gammas = collect_range(sibling_out_ranges);
     nOut_sibling_gammas = length(out_sibling_gammas);
-    data_out = cell(size(data_in));
+    data_out = cell(size(data_ft_out));
     for out_sibling_index = 1:nOut_sibling_gammas
         local_data_ft = data_ft_out{out_sibling_index};
         sibling_gamma = out_sibling_gammas(out_sibling_index);
@@ -53,8 +53,8 @@ if is_deepest && ~is_oriented
             for enabled_gamma_index = 1:nEnabled_gammas
                 enabled_gamma = enabled_gammas(enabled_gamma_index);
                 dual_psi = dual_psis(enabled_gamma);
-                log2_resampling = log2_samplings(enabled_gamma) - ...
-                    sibling_log2_samplings(sibling_gamma);
+                log2_resampling = sibling_log2_samplings(sibling_gamma) - ...
+                    log2_samplings(enabled_gamma);
                 gamma_in_range = ranges{1+1}(:,1);
                 in_gamma_index = search_range(gamma_in_range,enabled_gamma);
                 sibling_in_range = ...
