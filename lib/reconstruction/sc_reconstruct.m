@@ -18,8 +18,6 @@ end
 signal = initial_signal;
 if reconstruction_opt.method.is_momentum
     signal_update = zeros(signal_sizes);
-elseif reconstruction_opt.method.is_BFGS
-    BFGS = initialize_BFGS(signal_sizes);
 end
 if reconstruction_opt.is_verbose
     max_nDigits = 1 + floor(log10(nIterations));
@@ -39,13 +37,10 @@ for iteration = 0:nIterations-1
         mod_iteration = mod(iteration,reconstruction_opt.verbosity_period);
         if mod_iteration==0
             pretty_iteration = sprintf(sprintf_format,iteration);
-            distances = S_norm(delta_S);
-            pretty_distances = num2str(distances,'%8.2f%%');
+            [loss,layer_distances] = sc_norm(delta_S);
+            pretty_distances = num2str(layer_distances,'%8.2f%%');
             if reconstruction_opt.is_regularized
-                loss = norm(distances) + ...
-                    reconstruction_opt.regularizer * norm(signal);
-            else
-                loss = norm(distances);
+                loss = loss + reconstruction_opt.regularizer * norm(signal);
             end
             pretty_loss = sprintf('%.2f%%',loss);
             iteration_string = ['it = ',pretty_iteration,'  ;  '];
