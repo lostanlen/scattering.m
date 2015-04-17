@@ -19,7 +19,7 @@ Below is an informal review of the capacities of different signal descriptors in
 +----------------------------+-----------+--------+----------------+
 | moving average             | ★ ★       | ★ ★ ★  |                |
 +----------------------------+-----------+--------+----------------+
-| Fourier transform modulus  | ★ ★ ★     |        | ★ ★ ★          |
+| Fourier transform modulus  | ★ ★ ★     |        | ★              |
 +----------------------------+-----------+--------+----------------+
 | wavelet transform modulus  |           | ★      | ★ ★ ★          |
 +----------------------------+-----------+--------+----------------+
