@@ -42,7 +42,6 @@ if nargout==0
     ColorSet = zeros(nLambdas,3);
     ColorSet(:,1) = logspace(-1,0,nLambdas).';
     ColorSet(:,3) = logspace(0,-1,nLambdas).';
-    set(gcf,'WindowStyle','docked');
     is_held = false;
     for lambda = 1:nLambdas
         if is_held

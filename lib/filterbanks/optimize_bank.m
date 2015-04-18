@@ -50,7 +50,7 @@ overhead_colons.subs = replicate_colon(nTensor_dimensions);
 for support_index = 2:nSupports
     bigger_bank = optimized_banks{support_index-1};
     if length(drop_trailing(size(bigger_bank(1).ft)))<length(bank.spec.size)
-        return;
+        return
     end
     downsampling = pow2(support_index-1);
     support = bank.spec.size / downsampling;

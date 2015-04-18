@@ -15,9 +15,6 @@ scalogram = cell2mat(scalogram_cells);
 
 %% Show matrix
 if nargout==0
-    % hot_colormap = hot();
-    % reverse_hot_colormap = hot_colormap(end:-1:1,:);
-    % colormap(reverse_hot_colormap);
     imagesc(scalogram);
 end
 end

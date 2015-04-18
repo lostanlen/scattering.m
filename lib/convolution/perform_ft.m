@@ -16,28 +16,7 @@ variable = branch.leaf;
 
 %% Unpadding and upgrading
 % This is needed e.g. for 3rd-order joint scattering along gamma and gamma2
-% sub_Y = upgrade(sub_Y,variable)
-
-%% Downgrading and padding
-if variable.level>0
-    subscripts = variable.subscripts;
-    downgrading_handle = @(x) downgrade(x,subscripts);
-    nLevels = length(sub_Y.keys) - 1;
-    level_counter = nLevels - variable.level;
-    sub_Y.data = map_hierarchic_handle(downgrading_handle, ...
-        sub_Y.data,level_counter);
-    nTensor_dimensions = length(sub_Y.keys{1});
-    nSubscripts = length(subscripts);
-    for subscript_index = 1:nSubscripts
-        sub_Y.keys{1+variable.level}{subscripts(subscript_index)} = [];
-        new_subscript = nTensor_dimensions + subscript_index;
-        sub_Y.keys{1}{new_subscript} = key;
-        variable.subscripts(subscript_index) = new_subscript;
-    end
-    variable.level = 0;
-    variable.padding = parse_padding('zero');
-    sub_Y.variable_tree = set_leaf(sub_Y.variable_tree,key,variable);
-end
+% sub_Y = sc_upgrade(sub_Y,variable)
 
 %% Multidimensional FFT
 % TODO: avoid resorting to an anonymous handle

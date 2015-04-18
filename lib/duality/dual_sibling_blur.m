@@ -31,8 +31,6 @@ dual_phi = bank.dual_phi{support_index};
 
 %% Selection of sibling indices ("gammas")
 is_deepest = (sibling.level==1);
-nThetas = size(dual_phi,2);
-is_oriented = nThetas>1;
 sibling_subscript = sibling.subscripts;
 sibling_gamma_range = ranges{end}(:,sibling_subscript);
 sibling_gammas = collect_range(sibling_gamma_range);
@@ -50,14 +48,20 @@ log2_resamplings = sibling_log2_samplings - log2_sampling;
 %% Dual-blurring implementations
 data_ft = cell([input_sizes,1]);
 %% []. Normal
-% e.g. dual-blurring in time after joint time-frequency scattering
-% e.g. dual-blurring in time after spiral scattering
-if ~is_deepest && ~is_oriented
+% e.g. after joint time-frequency scattering, scattered over gamma
+% e.g. after spiral scattering
+if ~is_deepest
+    for sibling_index = 1:nSibling_gammas
+        log2_resampling = log2_resamplings(sibling_index);
+        data_ft{sibling_index} = map_multiply_fft(data{sibling_index}, ...
+            dual_phi,log2_resampling,bank_behavior);
+    end
 end
 
 %% D. Deepest
-% e.g. dual-blurring in time after plain second-order scattering
-if is_deepest && ~is_oriented
+% e.g. after plain second-order scattering
+% e.g. after joint-time frequency scattering, blurred over gamma
+if is_deepest
     for sibling_index = 1:nSibling_gammas
         log2_resampling = log2_resamplings(sibling_index);
         data_ft{sibling_index} = multiply_fft( ...

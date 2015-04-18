@@ -1,5 +1,5 @@
 function shoot_spiral_video(S1,directory)
-if nargin<4
+if nargin<2
     directory = 'spiral_video_frames';
 end
 %%

@@ -1,8 +1,0 @@
-function dropped_sizes = drop_trailing(sizes)
-if length(data_sizes)==2 && data_sizes(2)==1
-    data_sizes = data_sizes(1);
-    if data_sizes(1)==1
-        data_sizes = [];
-    end
-end
-end

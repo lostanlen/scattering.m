@@ -1,19 +1,17 @@
 function data_ft = dual_firstborn_blur(data,bank,ranges)
 %% Deep map across levels
 level_counter = length(ranges) - 1;
-input_sizes = drop_trailing(size(data),1);
+input_size = drop_trailing(size(data),1);
 if level_counter>0
     nNodes = numel(data);
     data_ft = cell(nNodes,1);
     for node = 1:nNodes
         % Recursive call
         ranges_node = get_ranges_node(ranges,node);
-        [data_ft{node},ranges_node] = ...
-            dual_firstborn_blur(data{node},bank,ranges_node);
-        ranges = set_ranges_node(ranges,ranges_node,node);
+        data_ft{node} = dual_firstborn_blur(data{node},bank,ranges_node);
     end
-    if length(input_sizes)>1
-        data_ft = reshape(data_ft,input_sizes);
+    if length(input_size)>1
+        data_ft = reshape(data_ft,input_size);
     end
     return
 end

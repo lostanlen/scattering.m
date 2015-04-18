@@ -20,6 +20,7 @@ end
 spec.is_spinned = default(opt,'is_spinned',false);
 nSpins = 1 + spec.is_spinned;
 spec.nThetas = nSpins * nOrientations;
+spec.cutoff_in_dB = default(opt,'cutoff_in_dB',3);
 spec.has_duals = default(opt,'has_duals',false);
 spec.has_mr_output = default(opt,'has_mr_output',true);
 spec.has_multiple_support = default(opt,'has_multiple_support',false);
@@ -31,6 +32,14 @@ if spec.is_double_precision
 else
     epsilon = eps(single(1));
 end
+% We want the higher center log-frequency in the filter bank, log(mother_xi),
+% to be right in between its mirror log(1-mother_xi), and the second higher
+% frequency log(2^(-1/N)*mother_xi), where N is the number of filters per
+% octave.  Hence the required equality;
+% log(1-mother_xi) - log(mother_xi) =  log(2)/N
+% of which we easily derive the following formula.
+adjacency_ratio = 2^(1/spec.nFilters_per_octave);
+spec.mother_xi = default(opt,'mother_xi',1 / (1+adjacency_ratio));
 spec.trim_threshold = default(opt,'trim_threshold',epsilon);
 spec.domain.is_ft = default(opt,'is_domain_ft',true);
 spec.domain.is_ift = default(opt,'is_domain_ift',false);
@@ -45,21 +54,11 @@ end
 switch func2str(spec.handle)
     case 'gammatone_1d'
         spec.gammatone_order = default(opt,'gammatone_order',4);
-        spec.cutoff_in_dB = default(opt,'cutoff_in_dB',3);
         spec.has_real_ft = false;
-        % We want the higher center log-frequency in the filter bank, log(mother_xi),
-        % to be right in between its mirror log(1-mother_xi), and the second higher
-        % frequency log(2^(-1/N)*mother_xi), where N is the number of filters per
-        % octave.  Hence the required equality;
-        % log(1-mother_xi) - log(mother_xi) =  log(2)/N
-        % of which we easily derive the following formula.
-        adjacency_ratio = 2^(1/spec.nFilters_per_octave);
-        spec.mother_xi = default(opt,'mother_xi',1 / (1+adjacency_ratio));
     case 'morlet_1d'
         spec.has_real_ft = true;
     case 'RLC_1d'
         spec.has_real_ft = false;
-        spec.mother_xi = default(opt,'mother_xi',0.50);
     otherwise
         disp(spec);
         error('Unknown wavelet handle in "bank.spec".');

@@ -64,6 +64,7 @@ for layer = 2:nLayers
                 % 1 octave of chroma filtering by default
                 field.T = default(field,'T',pow2(nextpow2(nChromas)));
                 field.dimension = banks{end}.behavior.output_dimension + 1;
+                field.invariance = default(field,'invariance','bypassed');
                 field.is_spinned = enforce(field,'is_spinned',true);
                 field.has_multiple_support = ...
                     enforce(field,'has_multiple_support',true);
@@ -79,6 +80,7 @@ for layer = 2:nLayers
                 field.T = default(field,'T',4);
                 field.dimension = banks{end}.behavior.dimension+1;
                 field.handle = default(field,'handle',@RLC_1d);
+                field.invariance = default(field,'invariance','bypassed');
                 field.is_spinned = enforce(field,'is_spinned',true);
                 field.has_multiple_support = ...
                     enforce(field,'has_multiple_support',true);

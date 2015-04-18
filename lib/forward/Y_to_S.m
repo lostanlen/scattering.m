@@ -43,8 +43,9 @@ for variable_index = start_index:nVariables_to_transform
     if bank.behavior.S.is_blurred
         if iscell(layer_S)
             subsref_structure.type = '()';
-            subsref_structure.subs = ...
-                cat(2,replicate_colon(start_index-1),[1,3]);
+            subsref_structure.subs = cat(2, ...
+                replicate_colon(start_index-1),[1,3], ...
+                replicate_colon(nVariables_to_transform-start_index));
             sub_layer_S = subsref(layer_S,subsref_structure);
             sub_layer_S = perform_ft(sub_layer_S,bank.behavior.key);
             sub_layer_S = blur_Y(sub_layer_S,bank);

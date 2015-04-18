@@ -29,14 +29,13 @@ phi = bank.phi{support_index};
 sibling_gammas = collect_range(ranges{end}(:,sibling.subscripts));
 log2_resolutions = [sibling.metas(sibling_gammas).log2_resolution];
 sibling_log2_oversampling = sibling.behavior.U.log2_oversampling;
-log2_factor = sibling.behavior.sibling_mask_factor;
+log2_factor = log2(sibling.behavior.sibling_mask_factor);
 sibling_log2_samplings = ...
     min(log2_resolutions+sibling_log2_oversampling,log2_factor);
 critical_log2_sampling = 1 - bank.spec.J;
-log2_sampling = sibling_log2_oversampling + critical_log2_sampling;
-critical_log2_resamplings = critical_log2_sampling - sibling_log2_samplings;
 log2_oversampling = bank_behavior.S.log2_oversampling;
-log2_resamplings = log2_oversampling + critical_log2_resamplings;
+log2_sampling = log2_oversampling + critical_log2_sampling;
+log2_resamplings = log2_sampling - sibling_log2_samplings;
 
 %% Update of ranges at zeroth level (tensor level)
 ranges{1+0} = update_range_step(ranges{1+0},log2_sampling,subscripts);
@@ -65,7 +64,7 @@ for cousin_index = 1:nCousins
     for sibling_index = 1:nSibling_gammas
         log2_resampling = log2_resamplings(sibling_index);
         local_data_ft = data_ft{sibling_index,cousin_index};
-        data_slice{sibling_index} = map_filter(local_data_ft,phi, ...
+        data_slice{sibling_index} = map_ifft_multiply(local_data_ft,phi, ...
             log2_resampling,bank_behavior);
     end
     data(:,cousin_index) = data_slice;

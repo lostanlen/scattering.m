@@ -19,8 +19,9 @@ if start_index>1
         bank = banks{variable_index};
         layer_dY{variable_index} = ...
             dual_blur_dY(layer_dY{variable_index+1},bank);
-        key = bank.behavior.key;
-        layer_dY{variable_index} = perform_ift(layer_dY{variable_index},key);
+        subscripts = bank.behavior.subscripts;
+        layer_dY{variable_index} = ...
+            perform_ift(layer_dY{variable_index},subscripts);
     end
 end
 
