@@ -26,7 +26,7 @@ if nVariables_to_transform>1
         layer_Y_out{variable_index} = reshape(previous_sub_dY,routing_sizes);
     end
     layer_Y_out{1+1} = layer_Y_out{1+1}{1};
-    layer_Y_out{1+0} = layer_Y_out{1+0}{1};
+    layer_Y_in{1+0} = layer_Y_in{1+0}{1};
 end
 
 %% Inversion of blurring operator in dS
@@ -34,6 +34,6 @@ layer_Y_out{1+0} = dS_backto_dY(layer_S,arch);
 
 %% Inversion of first-variable scattering operator
 layer_Y_out{1+0} = copy_metadata(layer_Y_in{1+0},layer_Y_out{1+0});
-layer_Y_out{1+0} = dual_scatter_dY(layer_Y_in{1+1},banks{1},layer_Y_out{1+0});
+layer_Y_out{1+0} = dual_scatter_dY(layer_Y_out{1+1},banks{1},layer_Y_out{1+0});
 end
 

@@ -34,7 +34,7 @@ data = cell(nUncle_gammas,nCousins);
 
 %% Uncle upgrading in ranges
 input_ranges = ranges;
-if length(ranges)<3
+if length(ranges)==2
     ranges = {ranges{1:(end-1)},{},ranges{end}};
 end
 

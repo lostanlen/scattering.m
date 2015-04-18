@@ -48,20 +48,20 @@ for gamma = nGammas:-1:1
         bank.metas(gamma).max_sibling_j = ...
             1 + floor((max_sibling_gamma-1) / nFilters_per_octave);
     else
-        break;
+        break
     end
 end
 gamma_bounds = bank_behavior.gamma_bounds;
-sibling_gamma_range = ...
+gamma_range = ...
     [max(gamma_bounds(1),1+gamma),1,min(gamma_bounds(2),nGammas)].';
 sibling_log2_samplings = - log2(cellfun(@(x) x(2,subscripts),ranges{1+0}));
 log2_oversampling = bank_behavior.U.log2_oversampling;
 log2_factor = ceil(log2(sibling_mask_factor));
-gammas = collect_range(sibling_gamma_range);
+gammas = collect_range(gamma_range);
 nEnabled_gammas = length(gammas);
 if nEnabled_gammas<1
     data = [];
-    return;
+    return
 end
 
 %% Definition of resampling factors
@@ -132,7 +132,7 @@ end
 
 %% Update of ranges at first level (gamma level)
 ranges{1+1}(:,sibling_subscript) = [];
-ranges{1+1} = cat(2,ranges{1+1},sibling_gamma_range);
+ranges{1+1} = cat(2,ranges{1+1},gamma_range);
 
 %%
 if bank.spec.nThetas==1
@@ -158,7 +158,7 @@ if bank.spec.nThetas==1
         end
         % Initialization of input tensor, band-pass filter, and output slice
         local_tensor = zeros(local_tensor_sizes);
-        local_psi = psis(enabled_index);
+        local_psi = psis(gammas(enabled_index));
         local_subsasgn_structure = asgn_colons;
         local_data_slice = data_slice;
         % Computationally intensive loop
