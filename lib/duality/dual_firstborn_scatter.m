@@ -2,9 +2,10 @@ function data_out = ...
     dual_firstborn_scatter(data_in,bank,ranges,data_ft_out,ranges_out)
 %% Deep map across levels
 level_counter = length(ranges) - 2;
-input_size = drop_trailing(size(data_in),1);
+input_size = size(data_in);
 if level_counter>0
-    nNodes = numel(data_in);
+    nNodes = prod(input_size);
+    data_out = cell(input_size);
     for node = 1:nNodes
         % Recursive call
         ranges_node = get_ranges_node(ranges,node);

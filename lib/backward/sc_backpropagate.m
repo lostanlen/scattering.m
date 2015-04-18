@@ -1,4 +1,4 @@
-function [dsignal,dS,dU,dY] = sc_backpropagate(dS,U,Y,archs)
+function [dsignal,dU,dY] = sc_backpropagate(dS,U,Y,archs)
 %% Initialization of dU and dY
 nLayers = length(archs);
 dU = cell(1,1+nLayers);
