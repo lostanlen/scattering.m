@@ -22,5 +22,8 @@ end
 spin_multiplier = 1 + ~bank_spec.is_spinned;
 energy_sum = psi_energy_sum;
 energy_sum(half_support) = max(psi_energy_sum(half_support),spin_multiplier);
+if bank_spec.is_spinned
+    energy_sum(symmetric_support) = energy_sum(half_support);
+end
 energy_sum(1+0) = spin_multiplier;
 end
