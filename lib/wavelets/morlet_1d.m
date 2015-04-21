@@ -21,7 +21,8 @@ resolutions = [bank_metas.resolution];
 quality_factors = [bank_metas.quality_factor];
 quality_ratios = 2.^(-1./quality_factors);
 FWHMs = (1-quality_ratios)./(1+quality_ratios) * mother_xi;
-frequential_sigmas = FWHMs / sqrt(log(2));
+cutoff = 10^(-spec.cutoff_in_dB/20);
+frequential_sigmas = FWHMs * sqrt(2*log(cutoff));
 spatial_sigmas = 1./(2*pi*frequential_sigmas);
 
 %% Computation of Morlet wavelets in the time domain
