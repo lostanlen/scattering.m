@@ -10,16 +10,17 @@ while nItems<nDimensions
     name = names{name_index};
     items = strfind(names,name);
     subscripts = find(~cellfun(@isempty,items));
-    variable_key.(name) = {};
-    variable.level = 0;
-    variable.original_sizes = original_sizes(subscripts);
-    variable.subscripts = subscripts;
+    variable_key = struct();
+    variable_key.(name) = cell(1,1);
+    variable = struct('level',0, ...
+        'original_sizes',original_sizes(subscripts),'subscripts',subscripts);
     variable_tree = set_leaf(variable_tree,variable_key,variable);
     keys{1+0}{variable.subscripts} = variable_key;
     nItems = nItems + length(subscripts);
 end
-ranges{1+0} = ...
-    arrayfun(@(x) [1,1,original_sizes(x)],1:nDimensions,'UniformOutput',false);
+cell_ranges = ...
+    arrayfun(@(x) [1;1;original_sizes(x)],1:nDimensions,'UniformOutput',false);
+ranges{1+0} = cell2mat(cell_ranges);
 
 %% Output storage
 U0.keys = keys;

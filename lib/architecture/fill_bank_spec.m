@@ -13,6 +13,8 @@ spec.J = enforce(opt,'J',log2(spec.T));
 signal_dimension = length(spec.size);
 if signal_dimension==1
     nOrientations = 1;
+    spec.chunk_overlap_size = ...
+        default(opt,'chunk_overlap_size',min(spec.T,spec.max_scale));
 elseif signal_dimension==2
     spec.nOrientations = default(opt,'nOrientations',8);
     nOrientations = spec.nOrientations;

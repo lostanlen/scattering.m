@@ -21,7 +21,7 @@ resolutions = [bank_metas.resolution];
 quality_factors = [bank_metas.quality_factor];
 quality_ratios = 2.^(-1./quality_factors);
 FWHMs = (1-quality_ratios)./(1+quality_ratios) * mother_xi;
-cutoff = 10^(-spec.cutoff_in_dB/20);
+cutoff = 2;
 frequential_sigmas = FWHMs * sqrt(2*log(cutoff));
 spatial_sigmas = 1./(2*pi*frequential_sigmas);
 

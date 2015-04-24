@@ -26,7 +26,7 @@ if iscell(sub_Y)
         end
     end
     layer_U = reshape(vectorized_output,data_sizes);
-    return;
+    return
 end
 
 %%
