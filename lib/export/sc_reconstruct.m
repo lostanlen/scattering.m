@@ -67,7 +67,7 @@ for iteration = 0:nIterations-1
     %% Regularization if required
     if reconstruction_opt.is_regularized
         delta_signal = ...
-            delta_signal + reconstruction_opt.regularizer * signal;
+            delta_signal + 2 * reconstruction_opt.regularizer * signal;
     end
     
     %% Signal update may be plain gradient descent, momentum-based or BFGS

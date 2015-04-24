@@ -1,11 +1,34 @@
-function U0 = initialize_U(tensor,variable_names)
-if nargin<3
+function U0 = initialize_U(tensor,first_bank,variable_names)
+%%
+bank_spec = first_bank.spec;
+bank_behavior = first_bank.behavior;
+chunk_signal_size = bank_spec.size;
+tensor_size = size(tensor);
+subscripts = bank_behavior.subscripts;
+unpadded_signal_size = tensor_size(subscripts);
+nChunks = ceil(unpadded_signal_size./chunk_signal_size);
+if nChunks>1
+    padded_signal_size = nChunks * bank_spec.size;
+    padding_signal_size = padded_signal_size - unpadded_signal_size;
+    padding_size = tensor_size;
+    padding_size(subscripts) = padding_signal_size;
+    padding_zeros = zeros(padding_size);
+    tensor = cat(subscripts,tensor,padding_zeros);
+    chunked_tensor_size = cat(2,tensor_size(1:(subscripts-1)), ...
+        chunk_signal_size,nChunks,tensor_size((subscripts+1):end));
+    tensor = reshape(tensor,chunked_tensor_size);
+    if length(chunked_tensor_size)==2
+        variable_names = {'time','chunk'};
+    elseif length(chunked_tensor_size)==3
+        variable_names = {'time','chunk','channel'};
+    end
+    U0 = initialize_variables_custom(chunked_tensor_size,variable_names);
+elseif nargin<3
     %% Automatic variable inference (for 1D and 2D only)
-    tensor_sizes = size(tensor);
-    U0 = initialize_variables_auto(tensor_sizes);
+    U0 = initialize_variables_auto(tensor_size);
 else
     %% Custom pattern matching of variable names
-    U0 = initialize_variables_custom(variable_names);
+    U0 = initialize_variables_custom(tensor_size,variable_names);
 end
 
 %% Data storage and unpadding tree initialization

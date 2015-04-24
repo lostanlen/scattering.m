@@ -1,4 +1,7 @@
-function shoot_spiral_video(S1,directory)
+function shoot_spiral_video(S1,directory,color_map)
+if nargin<3
+    color_map = rev_gray();
+end
 if nargin<2
     directory = 'spiral_video_frames';
 end
@@ -12,10 +15,9 @@ gamma_variable = get_leaf(S1.variable_tree,gamma_key);
 gamma_subscript = gamma_variable.subscripts;
 nPitches = size(S1.data,gamma_subscript);
 
-value_matrix = ceil(64 * S1.data/max(S1.data(:)));
+value_matrix = ceil(64 * max(S1.data,0)/max(S1.data(:)));
 value_matrix(~value_matrix) = 1;
 value_matrix = fliplr(int8(value_matrix));
-color_map = rev_hot();
 
 %%
 nOrientations = gamma_variable.spec.nFilters_per_octave;

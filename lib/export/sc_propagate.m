@@ -6,7 +6,7 @@ S = cell(1,1+nLayers);
 U = cell(1,1+nLayers);
 Y = cell(1,1+nLayers);
 
-U{1+0} = initialize_U(signal);
+U{1+0} = initialize_U(signal,archs{1}.banks{1});
 
 %% Propagation cascade
 for layer = 1:nLayers
