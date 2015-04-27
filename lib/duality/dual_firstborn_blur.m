@@ -30,21 +30,22 @@ log2_oversampling = bank_behavior.S.log2_oversampling;
 log2_resampling = - (critical_log2_sampling + log2_oversampling);
 
 %% Assignment preparation and update of ranges
-is_spiraled = isfield(bank_behavior,'spiral') && ...
+is_unspiraled = isfield(bank_behavior,'spiral') && ...
     ~strcmp(get_suffix(bank_behavior.key),'gamma');
 
-if is_spiraled
-    error('spiraling in dual_firstborn_blur not ready yet');
-end
-
 %% Dual-blurring implementations
-if ~is_spiraled
+if ~is_unspiraled
     %% []. Normal
     data_ft = multiply_fft(data,dual_phi,log2_resampling,colons,subscripts);
 else
-    %% S. Spiraled
-    data_ft = subsasgn(zeros(output_size),subsasgn_structure, ...
-        multiply_fft(data,phi,log2_resampling,colons,subscripts));
-    data_ft = reshape(data_ft,spiraled_size);
+    %% S. unSpiraled
+    data_ft = multiply_fft(data,dual_phi,log2_resampling,colons,subscripts);
+    output_size = size(data_ft);
+    spiral_subscript = bank_behavior.spiral.subscript;
+    unspiraled_size = [ ...
+        output_size(1:(spiral_subscript-1)), ...
+        output_size(spiral_subscript)*output_size(spiral_subscript+1), ...
+        output_size((spiral_subscript+2):end)];
+    data_ft = reshape(data_ft,unspiraled_size);
 end
 end
