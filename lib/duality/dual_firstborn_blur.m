@@ -29,16 +29,24 @@ critical_log2_sampling = 1 - log2(bank.spec.T);
 log2_oversampling = bank_behavior.S.log2_oversampling;
 log2_resampling = - (critical_log2_sampling + log2_oversampling);
 
-%% Assignment preparation and update of ranges
-is_unspiraled = isfield(bank_behavior,'spiral') && ...
-    ~strcmp(get_suffix(bank_behavior.key),'gamma');
-
 %% Dual-blurring implementations
+% Note that we only need to unspiral in the phi branch along gamma, since the
+% psi branch along gamma will be unspiraled afterwards in
+% dual_firstborn_scatter.
+is_psi_along_gamma = isequal(ranges{1}(:,end),[1;1;2]);
+is_unspiraled = isfield(bank_behavior,'spiral') && ...
+    ~strcmp(get_suffix(bank_behavior.key),'gamma') && ~is_psi_along_gamma;
+
+%% []. Normal
+% e.g. along time, gamma, 2d space, theta etc.
 if ~is_unspiraled
-    %% []. Normal
     data_ft = multiply_fft(data,dual_phi,log2_resampling,colons,subscripts);
-else
-    %% S. unSpiraled
+    return
+end
+
+%% S. unSpiraled
+% e.g. along j
+if is_unspiraled
     data_ft = multiply_fft(data,dual_phi,log2_resampling,colons,subscripts);
     output_size = size(data_ft);
     spiral_subscript = bank_behavior.spiral.subscript;
@@ -47,5 +55,6 @@ else
         output_size(spiral_subscript)*output_size(spiral_subscript+1), ...
         output_size((spiral_subscript+2):end)];
     data_ft = reshape(data_ft,unspiraled_size);
+    return
 end
 end
