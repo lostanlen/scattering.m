@@ -3,7 +3,7 @@ function [signal,reconstruction_opt] = ...
 %% Regularization if required
 if reconstruction_opt.is_regularized
     delta_signal = ...
-        delta_signal + 2 * reconstruction_opt.regularizer * signal;
+        delta_signal - 2 * reconstruction_opt.regularizer * signal;
 end
 
 %% Signal update
