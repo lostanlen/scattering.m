@@ -16,9 +16,7 @@ end
 
 %% Initialization
 signal = initial_signal;
-if reconstruction_opt.method.is_momentum
-    reconstruction_opt.signal_update = zeros(signal_sizes);
-end
+reconstruction_opt.signal_update = zeros(signal_sizes);
 if reconstruction_opt.is_verbose
     max_nDigits = 1 + floor(log10(nIterations));
     sprintf_format = ['%',num2str(max_nDigits),'d'];
@@ -27,6 +25,7 @@ reconstruction_opt.learning_rate = reconstruction_opt.initial_learning_rate;
 [target_norm,layer_target_norms] = sc_norm(target_S);
 [S,U,Y] = sc_propagate(signal,archs);
 delta_S = sc_substract(target_S,S);
+previous_signal = signal;
 previous_loss = sc_norm(delta_S);
 delta_signal = sc_backpropagate(delta_S,U,Y,archs);
 
@@ -35,7 +34,7 @@ iteration = 0;
 while iteration < nIterations
     %% Signal update
     [signal,reconstruction_opt] = ...
-        update_reconstruction(signal,delta_signal,reconstruction_opt);
+        update_reconstruction(previous_signal,delta_signal,reconstruction_opt);
     
     %% Scattering propagation
     [S,U,Y] = sc_propagate(signal,archs);
@@ -49,11 +48,16 @@ while iteration < nIterations
         reconstruction_opt.learning_rate = ...
             reconstruction_opt.bold_driver_brake * ...
             reconstruction_opt.learning_rate;
+        reconstruction_opt.signal_update = ...
+            reconstruction_opt.bold_driver_brake * ...
+            reconstruction_opt.signal_update;
         continue
     end
     
     %% If loss has decreased, step confirmation and bold driver "acceleration"
     iteration = iteration + 1;
+    previous_signal = signal;
+    previous_loss = loss;
     reconstruction_opt.learning_rate = ...
         reconstruction_opt.bold_driver_accelerator * ...
         reconstruction_opt.learning_rate;
@@ -76,9 +80,9 @@ while iteration < nIterations
             disp([iteration_string,distances_string,loss_string]);
         end
     end
-    if reconstruction_opt.is_spectrum_displayed
+    if reconstruction_opt.is_signal_displayed
         mod_iteration = ...
-            mod(iteration,reconstruction_opt.spectrum_display_period);
+            mod(iteration,reconstruction_opt.signal_display_period);
         if mod_iteration==0
             plot(signal);
             drawnow;
