@@ -43,7 +43,7 @@ archs = sc_setup(opts);
 t = 32768;
 j1 = 4;
 chroma1 = 8;
-gamma2 = 8;
+gamma2 = 9;
 
 % psi-psi case
 psipsi_data = U{1+2}{1,1,1}.data{gamma2};
@@ -103,10 +103,10 @@ for gammachroma_index = 1:width_offset
     gamma_height = 1 + height_offset;
     gamma_width = gammachroma_index;
     multiplier = prod(ranges(ranges(2,2:end)));
-    portrait(gamma_height,gamma_width) = 1/multiplier * ...
+    portrait(gamma_height,gamma_width) = multiplier * ...
         tensor(time_index,chroma_index,octave_index,1,1);
     gamma_width = portrait_width - gammachroma_index + 1;
-    portrait(gamma_height,gamma_width) = 1/multiplier * ...
+    portrait(gamma_height,gamma_width) = multiplier * ...
         tensor(time_index,chroma_index,octave_index,2,1);
 end
 
@@ -125,11 +125,11 @@ for gammaheight_index = 1:height_offset
     gamma_width = 1 + width_offset;
     gamma_height = gammaheight_index;
     multiplier = prod(ranges(2,2:end));
-    portrait(gamma_height,gamma_width) = 1/multiplier * ...
+    portrait(gamma_height,gamma_width) = multiplier * ...
         tensor(time_index,chroma_index,octave_index,1,1);
     
     gamma_height = portrait_height - gammaheight_index + 1;
-    portrait(gamma_height,gamma_width) = 1/multiplier * ...
+    portrait(gamma_height,gamma_width) = multiplier * ...
         tensor(time_index,chroma_index,octave_index,2,1);
 end
 
@@ -141,7 +141,7 @@ time_index = 1 + floor((t-ranges(1,1))/ranges(2,1));
 chroma_index = 1 + floor((chroma1-ranges(1,2)) / ranges(2,2));
 octave_index = 1 + floor((j1-ranges(1,3)) / ranges(2,3));
 multiplier = prod(ranges(2,2:end));
-portrait(1+height_offset,1+width_offset) = 1/multiplier * ...
+portrait(1+height_offset,1+width_offset) = multiplier * ...
     phiphi_data(time_index,chroma_index,octave_index);
 
 % display
