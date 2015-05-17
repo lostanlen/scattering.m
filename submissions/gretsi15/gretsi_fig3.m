@@ -22,7 +22,7 @@ file_path = fullfile('submissions','gretsi15','lion.wav');
 signal = audioread_compat(file_path);
 
 % Compute scattering transform of signal
-[S,U,Y] = propagate(signal,archs);
+[S,U,Y] = sc_propagate(signal,archs);
  
 %%
 % Extract a block of second-order "spiral" coefficients
