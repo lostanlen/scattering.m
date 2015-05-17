@@ -167,8 +167,8 @@ line(axis_x,axis_y,axis_z,'Color','k','LineWidth',1.2);
 
 line(spiral_x,spiral_y,spiral_z,'Color',color_gray);
 
+%% Export
 axis off;
 axis equal;
 view([0 34]);
-%%
 export_fig dafx_fig1.png -transparent

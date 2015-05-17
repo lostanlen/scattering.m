@@ -7,10 +7,10 @@ glissando_period = N / sample_rate; % in seconds
 
 time_samples = linspace(0,(N-1)/sample_rate,N).';
 tau = glissando_period/log(2) * pow2(time_samples/glissando_period);
-partials = 0:(nPartials-1);
-operand_matrix = bsxfun(@times,2.^partials,tau);
-partials = sin(2*pi*f0*operand_matrix);
-shepardrisset_glissando = sum(partials,2);
+partial_indices = 0:(nPartials-1);
+phase_matrix = bsxfun(@times,2.^partial_indices,tau);
+partials = sin(2*pi*f0*phase_matrix);
+shepardrisset_glissando = sum(partial_indices,2);
 
 %% Build scattering "architectures", i.e. filter banks and nonlinearities
 opts{1}.time.size = N;
@@ -144,7 +144,8 @@ multiplier = prod(ranges(2,2:end));
 portrait(1+height_offset,1+width_offset) = multiplier * ...
     phiphi_data(time_index,chroma_index,octave_index);
 
-% display
+%% Export
 colormap rev_gray;
 imagesc(portrait);
 axis off
+export_fig dafx_fig2.png -transparent
