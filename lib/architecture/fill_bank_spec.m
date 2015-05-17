@@ -42,6 +42,7 @@ end
 % of which we easily derive the following formula.
 adjacency_ratio = 2^(1/spec.nFilters_per_octave);
 spec.mother_xi = default(opt,'mother_xi',1 / (1+adjacency_ratio));
+spec.phi_bw_multiplier = default(opt,'phi_bw_multiplier',2);
 spec.trim_threshold = default(opt,'trim_threshold',epsilon);
 spec.domain.is_ft = default(opt,'is_domain_ft',true);
 spec.domain.is_ift = default(opt,'is_domain_ift',false);
