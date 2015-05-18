@@ -16,31 +16,61 @@ end
 
 %% Initialization
 signal = initial_signal;
-if reconstruction_opt.method.is_momentum
-    signal_update = zeros(signal_sizes);
-end
+reconstruction_opt.signal_update = zeros(signal_sizes);
 if reconstruction_opt.is_verbose
     max_nDigits = 1 + floor(log10(nIterations));
     sprintf_format = ['%',num2str(max_nDigits),'d'];
 end
+reconstruction_opt.learning_rate = reconstruction_opt.initial_learning_rate;
 [target_norm,layer_target_norms] = sc_norm(target_S);
+[S,U,Y] = sc_propagate(signal,archs);
+delta_S = sc_substract(target_S,S);
+previous_signal = signal;
+previous_loss = sc_norm(delta_S);
+delta_signal = sc_backpropagate(delta_S,U,Y,archs);
 
 %% Iterated reconstruction
-for iteration = 0:nIterations-1
+iteration = 0;
+while iteration < nIterations
+    %% Signal update
+    [signal,reconstruction_opt] = ...
+        update_reconstruction(previous_signal,delta_signal,reconstruction_opt);
+    
     %% Scattering propagation
     [S,U,Y] = sc_propagate(signal,archs);
     
     %% Measurement of distance to target in the scattering domain
     delta_S = sc_substract(target_S,S);
     
+    %% If loss has increased, step retraction and bold driver "brake"
+    [loss,layer_absolute_distances] = sc_norm(delta_S);
+    if loss>previous_loss
+        reconstruction_opt.learning_rate = ...
+            reconstruction_opt.bold_driver_brake * ...
+            reconstruction_opt.learning_rate;
+        reconstruction_opt.signal_update = ...
+            reconstruction_opt.bold_driver_brake * ...
+            reconstruction_opt.signal_update;
+        continue
+    end
+    
+    %% If loss has decreased, step confirmation and bold driver "acceleration"
+    iteration = iteration + 1;
+    previous_signal = signal;
+    previous_loss = loss;
+    reconstruction_opt.learning_rate = ...
+        reconstruction_opt.bold_driver_accelerator * ...
+        reconstruction_opt.learning_rate;
+    delta_signal = sc_backpropagate(delta_S,U,Y,archs);
+    
     %% Pretty-printing of scattering distances and loss function
     if reconstruction_opt.is_verbose
         mod_iteration = mod(iteration,reconstruction_opt.verbosity_period);
         if mod_iteration==0
             pretty_iteration = sprintf(sprintf_format,iteration);
-            [absolute_loss,layer_absolute_distances] = sc_norm(delta_S);
-            relative_loss = 100 * absolute_loss / target_norm;
-            layer_distances = 100 * layer_absolute_distances ./ layer_target_norms;
+            relative_loss = 100 * loss / target_norm;
+            layer_distances = ...
+                100 * layer_absolute_distances ./ layer_target_norms;
             pretty_distances = num2str(layer_distances,'%8.2f%%');
             pretty_loss = sprintf('%.2f%%',relative_loss);
             iteration_string = ['it = ',pretty_iteration,'  ;  '];
@@ -50,45 +80,13 @@ for iteration = 0:nIterations-1
             disp([iteration_string,distances_string,loss_string]);
         end
     end
-    if reconstruction_opt.is_spectrum_displayed
+    if reconstruction_opt.is_signal_displayed
         mod_iteration = ...
-            mod(iteration,reconstruction_opt.spectrum_display_period);
+            mod(iteration,reconstruction_opt.signal_display_period);
         if mod_iteration==0
             plot(signal);
-            %spectrum = abs(fft(signal));
-            %plot(spectrum);
             drawnow;
         end
-    end
-    
-    %% Backpropagation of measured delta to the signal domain
-    delta_signal = sc_backpropagate(delta_S,U,Y,archs);
-    
-    %% Regularization if required
-    if reconstruction_opt.is_regularized
-        delta_signal = ...
-            delta_signal + 2 * reconstruction_opt.regularizer * signal;
-    end
-    
-    %% Signal update may be plain gradient descent, momentum-based or BFGS
-    if reconstruction_opt.method.is_plain
-        signal = signal + reconstruction_opt.learning_rate * delta_signal;
-    elseif reconstruction_opt.method.is_momentum
-        signal_update = reconstruction_opt.momentum * signal_update + ...
-            reconstruction_opt.learning_rate * delta_signal;
-        signal = signal + signal_update;
-    elseif reconstruction_otp.method.is_BFGS
-        BFGS = update_BFGS(BFGS,delta_signal);
-        signal = signal + BFGS.s;
-    end
-    
-    %% Soft thresholding if required
-    if reconstruction_opt.is_thresholded
-        trespassing_signal = (signal<reconstruction_opt.target_min) - ...
-            (signal>reconstruction_opt.target_max);
-        soft_thresholding_signal = abs(signal) .* trespassing_signal * ...
-            reconstruction_opt.soft_thresholding_factor;
-        signal = signal + soft_thresholding_signal;
     end
 end
 

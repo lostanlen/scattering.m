@@ -15,7 +15,7 @@ opts{2}.gamma.invariance = 'bypassed';
 opts{2}.gamma.U_log2_oversampling = Inf;
 
 % Options for scattering along octaves
-opts{2}.j.handle = @poisson_1d;
+opts{2}.j.handle = @rlc_1d;
 opts{2}.j.invariance = 'bypassed';
 opts{2}.j.mother_xi = 0.33;
 opts{2}.j.decay_factor = 1/4;

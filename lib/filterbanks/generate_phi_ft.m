@@ -7,7 +7,8 @@ signal_dimension = length(bank_spec.size);
 original_sizes = bank_spec.size;
 switch signal_dimension
     case 1
-        half_support_length = original_sizes/bank_spec.T;
+        half_support_length = ...
+            bank_spec.phi_bw_multiplier/2 * original_sizes/bank_spec.T;
         half_support = 2:half_support_length;
         symmetric_support = original_sizes + 1 - half_support + 1;
         sqrt_truncated_remainder = sqrt(remainder(half_support));

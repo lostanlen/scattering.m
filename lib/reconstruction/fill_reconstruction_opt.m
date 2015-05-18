@@ -4,20 +4,14 @@ if nargin<1
 end
 
 %% Method
-reconstruction_opt.method_string = ...
-    default(reconstruction_opt,'method_string','momentum');
-reconstruction_opt.learning_rate = ...
-    default(reconstruction_opt,'learning_rate',0.1);
-switch reconstruction_opt.method_string
-    case 'plain'
-        reconstruction_opt.method.is_plain = true;
-        reconstruction_opt.method.is_momentum = false;
-    case 'momentum'
-        reconstruction_opt.method.is_plain = false;
-        reconstruction_opt.method.is_momentum = true;
-        reconstruction_opt.momentum = ...
-            default(reconstruction_opt,'momentum',0.9);
-end
+reconstruction_opt.initial_learning_rate = ...
+    default(reconstruction_opt,'initial_learning_rate',0.1);
+reconstruction_opt.momentum = ...
+    default(reconstruction_opt,'momentum',0.9);
+reconstruction_opt.bold_driver_accelerator = ...
+    default(reconstruction_opt,'bold_driver_accelerator',1.1);
+reconstruction_opt.bold_driver_brake = ...
+    default(reconstruction_opt,'bold_driver_brake',0.5);
 
 %% Regularization
 reconstruction_opt.is_regularized = ...
@@ -45,13 +39,13 @@ if reconstruction_opt.is_verbose && ...
     reconstruction_opt.verbosity_period = 10;
 end
 
-%% Spectrum display
-reconstruction_opt.is_spectrum_displayed = ...
-    default(reconstruction_opt,'is_spectrum_displayed', ...
-    isfield(reconstruction_opt,'spectrum_display_period'));
-if reconstruction_opt.is_spectrum_displayed
-    reconstruction_opt.spectrum_display_period = ...
-        default(reconstruction_opt,'spectrum_display_period',10);
+%% Signal display
+reconstruction_opt.is_signal_displayed = ...
+    default(reconstruction_opt,'is_signal_displayed', ...
+    isfield(reconstruction_opt,'signal_display_period'));
+if reconstruction_opt.is_signal_displayed
+    reconstruction_opt.signal_display_period = ...
+        default(reconstruction_opt,'signal_display_period',10);
 end
 
 %% Alphanumeric ordering of field names
