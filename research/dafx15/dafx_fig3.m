@@ -1,16 +1,20 @@
-%% Generate Shepard-Risset glissando
+%% Generate Shepard pagoda
 sample_rate = 44100;
 f0 = 20; % "fundamental" frequency, in Hz
 nPartials = 10;
 N = 65536; % number of samples
-glissando_period = N / sample_rate; % in seconds
+pagoda_speed = 4 * N/sample_rate; % in octaves per second
+gaussian_variance = 1;
 
 time_samples = linspace(0,(N-1)/sample_rate,N).';
-tau = glissando_period/log(2) * pow2(time_samples/glissando_period);
 partial_indices = 0:(nPartials-1);
-phase_matrix = bsxfun(@times,2.^partial_indices,tau);
+phase_matrix = bsxfun(@times,2.^partial_indices,time_samples);
 partials = sin(2*pi*f0*phase_matrix);
-shepardrisset_glissando = sum(partial_indices,2);
+
+amplitude_matrix = ...
+    bsxfun(@minus,time_samples*pagoda_speed,partial_indices);
+amplitudes = exp(- amplitude_matrix.^2 / (2*gaussian_variance.^2));
+shepard_pagoda = sum(amplitudes .* partials,2);
 
 %% Build scattering "architectures", i.e. filter banks and nonlinearities
 opts{1}.time.size = N;
@@ -29,15 +33,21 @@ opts{2}.gamma.U_log2_oversampling = Inf;
 
 % Options for scattering along octaves
 opts{2}.j.invariance = 'bypassed';
-opts{2}.j.T = 4;
+opts{2}.j.T = 8;
 opts{2}.j.handle = @morlet_1d;
-opts{2}.j.mother_xi = 0.4;
 opts{2}.j.cutoff_in_dB = 5;
+opts{2}.j.phi_bw_multiplier = 1;
 % Build scattering "architectures", i.e. filter banks and nonlinearities
 archs = sc_setup(opts);
 
 %% Compute spiral scattering transform of signal
-[S,U,Y] = sc_propagate(shepardrisset_glissando,archs);
+[S,U,Y] = sc_propagate(shepard_pagoda,archs);
+
+%% Display scalogram
+display_scalogram(U{1+1});
+colormap rev_gray;
+axis off;
+export_fig dafx_fig3a.png -transparent
 
 %%
 t = 32768;
@@ -144,8 +154,9 @@ multiplier = prod(ranges(2,2:end));
 portrait(1+height_offset,1+width_offset) = multiplier * ...
     phiphi_data(time_index,chroma_index,octave_index);
 
-%% Export
+% Export
 colormap rev_gray;
 imagesc(portrait);
 axis off
-export_fig dafx_fig2.png -transparent
+%%
+export_fig dafx_fig3b.png -transparent

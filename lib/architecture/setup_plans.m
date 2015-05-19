@@ -109,7 +109,7 @@ for layer = 2:nLayers
                     end
                 end
             case 'nonlinearity'
-                continue;
+                continue
         end
         bank.behavior = fill_bank_behavior(field);
         bank.spec = fill_bank_spec(field);

@@ -1,3 +1,4 @@
+%% Build scattering "architectures", i.e. filterbanks and nonlinearities
 N = 16384;
 
 % Options for scalogram
@@ -14,18 +15,16 @@ opts{2}.time.handle = @gammatone_1d;
 opts{2}.time.max_scale = Inf;
 opts{2}.time.U_log2_oversampling = 2;
 
-% Build scattering "architectures", i.e. filter banks and nonlinearities
 archs = setup(opts);
 
-% Load audio file
+%% Computation of spiral scattering
 file_path = fullfile('submissions','gretsi15','lion.wav');
 signal = audioread_compat(file_path);
 
 % Compute scattering transform of signal
 [S,U,Y] = sc_propagate(signal,archs);
- 
-%%
-% Extract a block of second-order "spiral" coefficients
+
+%% Coefficient extraction
 time_scale = 6;
 chroma_scale = 4;
 octave_scale = 2;
@@ -40,29 +39,24 @@ gamma_range = 1:size(scattergram,2);
 scattergram = abs(scattergram(time_range,gamma_range,:,:));
 normalizer = max(max(max(scattergram(:))));
 scattergram = 64 * scattergram / normalizer;
-hot_colormap = hot();
-reverse_hot_colormap = hot_colormap(end:-1:1,:);
 
-%%
+%% Rendering and export of all four quadrants
 figure(1);
 image(scattergram(:,:,1,1).');
-axis off; colormap(reverse_hot_colormap);
-export_fig raw_fig3a.png -transparent
+axis off; colormap rev_hot;
+% export_fig raw_fig3a.png -transparent
 
-%%
 figure(2);
 image(scattergram(:,:,1,2).');
-axis off; colormap(reverse_hot_colormap);
-export_fig raw_fig3b.png -transparent
+axis off; colormap rev_hot;
+% export_fig raw_fig3b.png -transparent
 
-%%
 figure(3);
 image(scattergram(:,:,2,1).');
-axis off; colormap(reverse_hot_colormap);
-export_fig raw_fig3c.png -transparent
+axis off; colormap rev_hot;
+% export_fig raw_fig3c.png -transparent
 
-%%
 figure(4);
 image(scattergram(:,:,2,2).');
-axis off; colormap(reverse_hot_colormap);
-export_fig raw_fig3d.png -transparent
+axis off; colormap rev_hot;
+% export_fig raw_fig3d.png -transparent
