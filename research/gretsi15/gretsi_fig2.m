@@ -1,9 +1,15 @@
+% Reproduit la figure 2a de la soumission au GRETSI 2015
+% Vincent Lostanlen, Stéphane Mallat.
+% "Transformée de scattering en spirale temps-chroma-octave"
+
+%% Construction of scattering architectures, i.e. filterbanks and nonlinearities
+% Number of samples
 N = 16384;
 
 % Options for scalogram
 opts{1}.time.size = N;
 opts{1}.time.nFilters_per_octave = 16;
- 
+
 % Options for scattering along time
 opts{2}.time.handle = @gammatone_1d;
 opts{2}.time.max_scale = Inf;
@@ -23,6 +29,7 @@ opts{2}.j.mother_xi = 0.5;
 % Build scattering "architectures", i.e. filter banks and nonlinearities
 archs = sc_setup(opts);
 
+%% Computation of spiral scattering
 %% We start by computing an empty scalogram
 signal = zeros(N,1);
 U{1+0} = initialize_U(signal);
@@ -32,20 +39,18 @@ U{1+1} = Y_to_U(Y{1}{end},archs{1});
 % We put a Dirac peak
 U{1+1}.data{round(end/3)}(end/2) = 1;
 
-% We compute the spiral scattering transform
+% We compute the spiral scattering transform without modulus nonlinearity
 Y{2} = U_to_Y(U{1+1},archs{2});
 
-% Options for figure rendering
-hot_colormap = hot();
-reverse_hot_colormap = hot_colormap(end:-1:1,:);
-
-%% Figure 2a
+%% Visualization
+% Settings for alpha, beta and gamma (see paper) are here
 time_scale = 10;
 chroma_scale = 1;
 octave_scale = 2;
 chroma_sign = 2;
 octave_sign = 1;
 
+% Coefficient extraction in a 2d
 spiral_scattergram = ...
     Y{2}{1+3}{1,1,1}.data{time_scale}{chroma_scale,octave_scale};
 sizes = size(spiral_scattergram);
@@ -56,7 +61,11 @@ spiral_scattergram = real(spiral_scattergram(:,gamma_range,:,:));
 spiral_scattergram(abs(spiral_scattergram)<1e-4) = 0;
 normalizer = max(abs(spiral_scattergram(:)));
 spiral_scattergram = 32 + 32 * spiral_scattergram/normalizer;
-colormap(reverse_hot_colormap);
+
+% Display
+colormap rev_hot;
 image(spiral_scattergram(:,:,chroma_sign,octave_sign)');
 axis off;
-%export_fig raw_fig2a.png -transparent
+
+%% Export
+%export_fig gretsi_fig2a.png -transparent
