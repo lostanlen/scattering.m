@@ -10,7 +10,7 @@ tau = glissando_period/log(2) * pow2(time_samples/glissando_period);
 partial_indices = 0:(nPartials-1);
 phase_matrix = bsxfun(@times,2.^partial_indices,tau);
 partials = sin(2*pi*f0*phase_matrix);
-shepardrisset_glissando = sum(partial_indices,2);
+shepardrisset_glissando = sum(partials,2);
 
 %% Build scattering "architectures", i.e. filter banks and nonlinearities
 opts{1}.time.size = N;
@@ -33,11 +33,18 @@ opts{2}.j.T = 4;
 opts{2}.j.handle = @morlet_1d;
 opts{2}.j.mother_xi = 0.4;
 opts{2}.j.cutoff_in_dB = 5;
+
 % Build scattering "architectures", i.e. filter banks and nonlinearities
 archs = sc_setup(opts);
 
 %% Compute spiral scattering transform of signal
 [S,U,Y] = sc_propagate(shepardrisset_glissando,archs);
+
+%% Display scalogram
+display_scalogram(U{1+1});
+colormap rev_gray;
+axis off;
+export_fig dafx_fig2a.png -transparent
 
 %%
 t = 32768;
@@ -148,4 +155,4 @@ portrait(1+height_offset,1+width_offset) = multiplier * ...
 colormap rev_gray;
 imagesc(portrait);
 axis off
-export_fig dafx_fig2.png -transparent
+export_fig dafx_fig2b.png -transparent

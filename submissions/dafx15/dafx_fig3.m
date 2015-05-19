@@ -43,6 +43,12 @@ archs = sc_setup(opts);
 %% Compute spiral scattering transform of signal
 [S,U,Y] = sc_propagate(shepard_pagoda,archs);
 
+%% Display scalogram
+display_scalogram(U{1+1});
+colormap rev_gray;
+axis off;
+export_fig dafx_fig3a.png -transparent
+
 %%
 t = 32768;
 j1 = 4;
@@ -153,4 +159,4 @@ colormap rev_gray;
 imagesc(portrait);
 axis off
 %%
-export_fig dafx_fig3.png -transparent
+export_fig dafx_fig3b.png -transparent
