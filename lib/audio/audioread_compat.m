@@ -8,7 +8,7 @@ switch nargin
             if strcmp(message,'MATLAB:UndefinedFunction')
                 [y,Fs] = wavread(file_path);
             else
-                throw(message);
+                rethrow(message);
             end
         end
     case 2
@@ -18,7 +18,7 @@ switch nargin
             if strcmp(message,'MATLAB:UndefinedFunction')
                 [y,Fs] = wavread(file_path,samples);
             else
-                throw(message);
+                rethrow(message);
             end
         end
     case 3
@@ -28,7 +28,7 @@ switch nargin
             if strcmp(message,'MATLAB:UndefinedFunction')
                 [y,Fs] = wavread(file_path,samples,dataType);
             else
-                throw(message);
+                rethrow(message);
             end
         end
 end
