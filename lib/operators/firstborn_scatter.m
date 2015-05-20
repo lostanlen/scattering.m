@@ -102,7 +102,7 @@ end
 
 %% DOS. Deepest, Oriented, Spiraled
 % e.g. scattering along gamma in spiral
-if is_deepest && is_oriented
+if is_deepest && is_oriented && is_spiraled
     data = cell(nEnabled_gammas,1);
     for gamma_index = 1:nEnabled_gammas
         subsasgn_structure = subsasgn_structures{gamma_index};
