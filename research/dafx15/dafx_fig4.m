@@ -35,4 +35,4 @@ axis off;
 
 
 %% Export
-% export_fig gretsi_fig3a.png -transparent
+export_fig dafx_fig4.png -transparent
