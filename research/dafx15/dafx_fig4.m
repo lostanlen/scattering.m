@@ -39,27 +39,27 @@ archs{1}.banks{1}.behavior.U.is_blurred = false;
 disp('done');
 %% Render scalogram
 full_scalogram = display_scalogram(U{1+1});
-xmin = 5000;
-xmax = 45000;
+xmin = 1;
+xmax = 60000;
 ymin = 30;
 ymax = 182;
 sub_scalogram = full_scalogram(ymin:ymax,xmin:xmax);
 
-multiplier = 50;
+multiplier = 200;
 log_scalogram = log1p(multiplier*sub_scalogram);
 
 imagesc(log_scalogram);
-colormap rev_gray;
+colormap rev_hot;
 axis off;
 
 %% Export scalogram
 export_fig dafx_fig4a.png -transparent
 
 %% %%
-t = 19000;
-j1 = 6;
+t = 13000;
+j1 = 8;
 chroma1 = 5;
-gamma2 = 7;
+gamma2 = 9;
 
 % psi-psi case
 psipsi_data = U{1+2}{1,1,1}.data{gamma2};
@@ -110,7 +110,7 @@ psiphi_level1_ranges = U{1+2}{1,1,2}.ranges{1+1}{gamma2};
 psiphi_level0_ranges = U{1+2}{1,1,2}.ranges{1+0}{gamma2};
 
 for gammachroma_index = 1:width_offset
-    tensor = psipsi_data{gammachroma_index};
+    tensor = psiphi_data{gammachroma_index};
     ranges = psiphi_level0_ranges{gammachroma_index};
     time_index = 1 + floor((t-ranges(1,1)) / ranges(2,1));
     chroma_index = 1 + floor((chroma1-ranges(1,2)) / ranges(2,2));
@@ -149,7 +149,6 @@ for gammaheight_index = 1:height_offset
         tensor(time_index,chroma_index,octave_index,2,1);
 end
 
-
 % phi-phi case
 phiphi_data = U{1+2}{1,2,2}.data{gamma2};
 ranges = U{1+2}{1,2,2}.ranges{1+0}{gamma2};
@@ -161,8 +160,9 @@ portrait(1+height_offset,1+width_offset) = multiplier * ...
     phiphi_data(time_index,chroma_index,octave_index);
 
 % Render
-colormap rev_gray;
+colormap rev_hot;
 imagesc(portrait);
+set(gca,'YDir','normal');
 axis off
 
 %% Export
@@ -170,10 +170,10 @@ export_fig dafx_fig4b.png -transparent
 
 %%
 %% %%
-t = 34000;
-j1 = 4;
+t = 41000;
+j1 = 5;
 chroma1 = 14;
-gamma2 = 7;
+gamma2 = 9;
 
 % psi-psi case
 psipsi_data = U{1+2}{1,1,1}.data{gamma2};
@@ -224,7 +224,7 @@ psiphi_level1_ranges = U{1+2}{1,1,2}.ranges{1+1}{gamma2};
 psiphi_level0_ranges = U{1+2}{1,1,2}.ranges{1+0}{gamma2};
 
 for gammachroma_index = 1:width_offset
-    tensor = psipsi_data{gammachroma_index};
+    tensor = psiphi_data{gammachroma_index};
     ranges = psiphi_level0_ranges{gammachroma_index};
     time_index = 1 + floor((t-ranges(1,1)) / ranges(2,1));
     chroma_index = 1 + floor((chroma1-ranges(1,2)) / ranges(2,2));
@@ -275,8 +275,9 @@ portrait(1+height_offset,1+width_offset) = multiplier * ...
     phiphi_data(time_index,chroma_index,octave_index);
 
 % Render
-colormap rev_gray;
+colormap rev_hot;
 imagesc(portrait);
+set(gca ,'YDir','normal');
 axis off
 
 %% Export
