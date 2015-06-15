@@ -14,6 +14,8 @@ layer_dY{end} = ...
 if nVariables_to_transform>1
     for variable_index = nVariables_to_transform:-1:2
         bank = banks{variable_index};
+        suffix_name = get_suffix(bank.behavior.key);
+        is_unspiraled = strcmp(suffix_name,'j');
         sub_dY = layer_dY{1+variable_index};
         nCells = 3^(variable_index-1);
         previous_sub_dY = cell(nCells,1);
@@ -24,6 +26,9 @@ if nVariables_to_transform>1
             cell_dY = dual_blur_dY(sub_dY{nCells+cell_index},bank);
             cell_dY = ...
                 copy_metadata(layer_Y{variable_index}{cell_index},cell_dY);
+            if is_unspiraled
+                cell_dY = unspiral_metadata(cell_dY);
+            end
             cell_dY = dual_scatter_dY(sub_dY{cell_index},bank,cell_dY);
             previous_sub_dY{cell_index} = cell_dY;
         end
