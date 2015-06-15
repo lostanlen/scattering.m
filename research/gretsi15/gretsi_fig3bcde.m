@@ -15,11 +15,18 @@ opts{2}.time.handle = @gammatone_1d;
 opts{2}.time.max_scale = Inf;
 opts{2}.time.U_log2_oversampling = 2;
 
-archs = setup(opts);
+% Options for scattering along log-frequencies
+opts{2}.gamma.invariance = 'bypassed';
+
+% Options for scattering along octaves
+opts{2}.j.handle = @RLC_1d;
+opts{2}.j.invariance = 'bypassed';
+opts{2}.j.mother_xi = 0.40;
+
+archs = sc_setup(opts);
 
 %% Computation of spiral scattering
-file_path = fullfile('submissions','gretsi15','lion.wav');
-signal = audioread_compat(file_path);
+signal = audioread_compat('lion.wav');
 
 % Compute scattering transform of signal
 [S,U,Y] = sc_propagate(signal,archs);
@@ -40,7 +47,7 @@ scattergram = abs(scattergram(time_range,gamma_range,:,:));
 normalizer = max(max(max(scattergram(:))));
 scattergram = 64 * scattergram / normalizer;
 
-%% Rendering and export of all four quadrants
+% Rendering and export of all four quadrants
 figure(1);
 image(scattergram(:,:,1,1).');
 axis off; colormap rev_hot;

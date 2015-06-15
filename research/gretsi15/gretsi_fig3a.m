@@ -1,6 +1,6 @@
 % Reproduit la figure 3a de la soumission au GRETSI 2015
-% Vincent Lostanlen, Stéphane Mallat.
-% "Transformée de scattering en spirale temps-chroma-octave"
+% Vincent Lostanlen, Stephane Mallat.
+% "Transformee de scattering en spirale temps-chroma-octave"
 
 %% Loading of target waveform
 signal = audioread_compat('lion.wav');

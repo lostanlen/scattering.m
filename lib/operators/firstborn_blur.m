@@ -26,7 +26,7 @@ phi = bank.phi{support_index};
 %% Definition of resampling factor
 critical_log2_sampling = 1 - log2(bank.spec.T);
 log2_oversampling = bank_behavior.S.log2_oversampling;
-log2_resampling = critical_log2_sampling + log2_oversampling;
+log2_resampling = min(critical_log2_sampling + log2_oversampling, 0);
 
 %% Assignment preparation and update of ranges
 is_spiraled = isfield(bank_behavior,'spiral') && ...
