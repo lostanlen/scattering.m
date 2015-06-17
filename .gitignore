@@ -6,3 +6,4 @@
 *.m~
 
 .DS_Store
+*.pkf
