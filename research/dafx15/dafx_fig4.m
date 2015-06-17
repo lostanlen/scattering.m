@@ -36,7 +36,7 @@ archs{1}.banks{1}.behavior.U.is_blurred = false;
 
 % Computation of wavelet modulus
 [S,U] = sc_propagate(signal,archs);
-disp('done');
+
 %% Render scalogram
 full_scalogram = display_scalogram(U{1+1});
 xmin = 1;

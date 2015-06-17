@@ -75,7 +75,12 @@ for layer = 2:nLayers
                 field.subscripts = banks{1}.behavior.dimension + 1;
                 banks{1}.behavior.gamma_padding_length = field.T / 2;
             case 'j'
-                nOctaves = plans{1}.banks{1}.spec.J;
+                gamma_bounds = plans{1}.banks{1}.behavior.gamma_bounds;
+                nGammas_bound = gamma_bounds(2) - gamma_bounds(1) + 1;
+                nFilters_per_octave = ...
+                    plans{1}.banks{1}.spec.nFilters_per_octave;
+                nOctaves_bound = ceil(nGammas_bound / nFilters_per_octave);
+                nOctaves = min(plans{1}.banks{1}.spec.J, nOctaves_bound);
                 % 4 octaves of octave filtering by default
                 field.T = default(field,'T',4);
                 field.dimension = banks{end}.behavior.dimension+1;
