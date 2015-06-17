@@ -31,6 +31,7 @@ delta_signal = sc_backpropagate(delta_S,U,Y,archs);
 
 %% Iterated reconstruction
 iteration = 0;
+tic();
 while iteration < nIterations
     %% Signal update
     [signal,reconstruction_opt] = ...
@@ -78,6 +79,8 @@ while iteration < nIterations
                 ['S_m distances = [ ',pretty_distances, ' ]  ;  '];
             loss_string = ['Loss = ',pretty_loss];
             disp([iteration_string,distances_string,loss_string]);
+            toc();
+            tic();
         end
     end
     if reconstruction_opt.is_signal_displayed
@@ -92,6 +95,7 @@ end
 
 %% Make summary
 % TODO : summarize bank structure with only specs and behaviors
+toc();
 if nargout>1
     delta_S = sc_substract(target_S,S);
     summary.distances = sc_norm(delta_S);
