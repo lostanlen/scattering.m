@@ -4,7 +4,7 @@
 start = 1;
 nSamples = 2^18 * 7/4;
 target_signal = original_waveform((start-1) + (1:nSamples));
-J = 16;
+J = 17;
 T = 2^J;
 
 %% Creation of wavelet filterbank
@@ -15,10 +15,6 @@ opts{1}.time.max_scale = 4096;
 opts{1}.time.has_duals = true;
 
 opts{2}.time.T = T;
-opts{2}.time.handle = @gammatone_1d;
-opts{2}.time.max_Q = 1;
-opts{2}.time.max_scale = Inf;
-opts{2}.time.nFilters_per_octave = 1;
 opts{2}.time.has_duals = true;
 
 opts{2}.gamma.invariance = 'bypassed';
@@ -29,12 +25,13 @@ opts{2}.j.invariance = 'bypassed';
 opts{2}.j.T = 4;
 opts{2}.j.phi_bw_multiplier = 1;
 opts{2}.j.has_duals = true;
+opts{2}.j.handle = @morlet_1d;
 
 archs = sc_setup(opts);
 archs{1}.banks{1}.behavior.U.is_blurred = false;
 
 %% Computation of invariant scattering coefficients
-target_S = sc_propagate(target_signal,archs);
+[target_S,target_U] = sc_propagate(target_signal,archs);
 
 %% Reconstruction
 rec_opt.verbosity_period = 1;

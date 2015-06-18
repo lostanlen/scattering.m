@@ -4,7 +4,7 @@
 start = 1;
 nSamples = 2^18 * 7/4;
 target_signal = original_waveform((start-1) + (1:nSamples));
-J = 16;
+J = 17;
 T = 2^J;
 
 %% Creation of wavelet filterbank
