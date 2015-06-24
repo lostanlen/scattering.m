@@ -28,8 +28,6 @@ opts{2}.j.T = 4;
 opts{2}.j.phi_bw_multiplier = 1;
 opts{2}.j.has_duals = true;
 opts{2}.j.handle = @morlet_1d;
-%opts{2}.j.handle = @gammatone_1d;
-%opts{2}.j.gammatone_order = 3;
 
 archs = sc_setup(opts);
 
@@ -63,3 +61,21 @@ rec_opt.bold_driver_brake = 0.5;
 spiral_summary = summary;
 save('accipiter_summary_spiral','spiral_summary');
 audiowrite('accipiter_spiral.wav',signal,sample_rate);
+
+%%
+multiplier = 100;
+colormap rev_gray;
+scalogram = display_scalogram(U{1+1});
+scalogram = scalogram(:,1:32768);
+scalogram = scalogram / max(scalogram(:));
+logscalogram = log(1+multiplier*scalogram);
+imagesc(logscalogram); drawnow;
+size_multiplier = 4;
+axis off;
+set(gcf,'Units','centimeters');
+set(gcf,'Position',[5.0 5.0 size_multiplier*8.6 size_multiplier*2.0])
+axis off;
+
+%%
+export_fig('accipiter_spiral.png','-transparent');
+    
