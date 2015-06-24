@@ -26,5 +26,5 @@ bank_behavior.sibling_mask_factor = default(opt,'sibling_mask_factor',1);
 if isfield(opt,'spiral')
     bank_behavior.spiral = opt.spiral;
 end
-bank_behavior.subscripts = opt.subscripts; % provided in caller parse_plans
+bank_behavior.subscripts = opt.subscripts; % provided in caller setup_plans
 end
