@@ -14,8 +14,13 @@ if nChunks>1
     padding_size(subscripts) = padding_signal_size;
     padding_zeros = zeros(padding_size);
     tensor = cat(subscripts,tensor,padding_zeros);
-    chunked_tensor_size = cat(2,tensor_size(1:(subscripts-1)), ...
-        chunk_signal_size,nChunks,tensor_size((subscripts+1):end));
+    if any(tensor_size((subscripts+1):end) ~= 1)
+        chunked_tensor_size = cat(2,tensor_size(1:(subscripts-1)), ...
+            chunk_signal_size,nChunks,tensor_size((subscripts+1):end));
+    else
+        chunked_tensor_size = ...
+            cat(2,tensor_size(1:(subscripts-1)),chunk_signal_size,nChunks);
+    end
     tensor = reshape(tensor,chunked_tensor_size);
     if length(chunked_tensor_size)==2
         variable_names = {'time','chunk'};

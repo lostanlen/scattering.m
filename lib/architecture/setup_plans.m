@@ -56,7 +56,8 @@ for layer = 2:nLayers
                 field.handle = default(field,'handle',@gammatone_1d);
                 field.output_dimension = ...
                     field.dimension + (layer==2) + (signal_dimension==2);
-                field.subscripts = root_plan.behavior.subscripts;
+                field.subscripts = ...
+                    default(field,'subscripts',root_plan.behavior.subscripts);
                 field.key.(root) = cell(1);
             case 'gamma'
                 nChromas = plans{1}.banks{1}.spec.nFilters_per_octave;
@@ -72,7 +73,8 @@ for layer = 2:nLayers
                 field.output_dimension = field.dimension + 1;
                 field.size = enforce(field,'size', ...
                     pow2(nextpow2(nGammas + field.T)));
-                field.subscripts = banks{1}.behavior.dimension + 1;
+                field.subscripts = ...
+                    default(field,'subscripts',banks{1}.behavior.dimension + 1);
                 banks{1}.behavior.gamma_padding_length = field.T / 2;
             case 'j'
                 nOctaves = plans{1}.banks{1}.spec.J;
@@ -88,7 +90,8 @@ for layer = 2:nLayers
                 field.output_dimension = field.dimension + 1;
                 field.size = enforce(field,'size', ...
                     pow2(nextpow2(nOctaves + field.T)));
-                field.subscripts = banks{1}.behavior.dimension + 2;
+                field.subscripts = ...
+                    default('subscripts',banks{1}.behavior.dimension + 2);
                 if isfield(opt,'gamma')
                     % Here we assume that the transformation along gamma is
                     % in second position
