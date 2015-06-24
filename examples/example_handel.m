@@ -27,6 +27,6 @@ display_scalogram(U{1+1});
 colormap hot;
 
 %% Display second-order spectrum at given scale
-modulation_scale_index = 10;
-scattergram = U{1+2}{1}.data{modulation_scale_index}.';
+modulation_scale_index = 8;
+scattergram = U{1+2}.data{modulation_scale_index}.';
 imagesc(scattergram);

@@ -1,6 +1,6 @@
 % Reproduit la figure 2a de la soumission au GRETSI 2015
-% Vincent Lostanlen, Stéphane Mallat.
-% "Transformée de scattering en spirale temps-chroma-octave"
+% Vincent Lostanlen, Stephane Mallat.
+% "Transformee de scattering en spirale temps-chroma-octave"
 
 %% Construction of scattering architectures, i.e. filterbanks and nonlinearities
 % Number of samples
@@ -30,9 +30,9 @@ opts{2}.j.mother_xi = 0.5;
 archs = sc_setup(opts);
 
 %% Computation of spiral scattering
-%% We start by computing an empty scalogram
+% We start by computing an empty scalogram
 signal = zeros(N,1);
-U{1+0} = initialize_U(signal);
+U{1+0} = initialize_U(signal,archs{1}.banks{1});
 Y{1} = U_to_Y(U{1+0},archs{1});
 U{1+1} = Y_to_U(Y{1}{end},archs{1});
 
@@ -64,7 +64,7 @@ spiral_scattergram = 32 + 32 * spiral_scattergram/normalizer;
 
 % Display
 colormap rev_hot;
-image(spiral_scattergram(:,:,chroma_sign,octave_sign)');
+image(spiral_scattergram(:,1:end/2,chroma_sign,octave_sign)');
 axis off;
 
 %% Export

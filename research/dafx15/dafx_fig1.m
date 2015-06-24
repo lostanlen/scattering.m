@@ -1,6 +1,7 @@
 nOctaves = 9;
 nChromas = 192;
 
+%%
 % Generate axis
 axis_begin = -3.5;
 axis_end = 1.5;
@@ -26,7 +27,7 @@ center_frequency = 100;
 sample_rate = 1000;
 duration = 0.5;
 amplitude_multiplier = 500;
-x_begin = -3;
+x_begin = -3.5;
 x_finish = -1;
 
 nSamples = sample_rate * duration;
@@ -134,6 +135,32 @@ abs_waveoctave_x = waveoctave_r .* cos(waveoctave_theta);
 abs_waveoctave_z = waveoctave_r .* sin(waveoctave_theta);
 abs_waveoctave_y = - abs(gammatone);
 
+% Generate thick dots for partials
+sphere_diameter = 0.05;
+[originalsphere_x,originalsphere_y,originalsphere_z] = sphere();
+sphere_x = originalsphere_x * sphere_diameter;
+sphere_y = originalsphere_y * sphere_diameter;
+sphere_z = originalsphere_z * sphere_diameter;
+clf;
+colormap rev_gray;
+
+nPartials = 32;
+f0_spiral_index = 208;
+
+for partial_index = 1:nPartials
+    spiral_index = f0_spiral_index + round(log2(partial_index)*nChromas);
+    partial_x = sphere_x - spiral_x(spiral_index);
+    partial_y = sphere_y - spiral_y(spiral_index);
+    partial_z = sphere_z - spiral_z(spiral_index);
+    partial_color = ones(size(partial_x)) / sqrt(partial_index);
+    hold on;
+    surf(partial_x,partial_y,partial_z,partial_color,'LineStyle','none');
+    hold off;
+end
+set(gca,'CLim',[0 1]);
+axis off;
+axis equal;
+
 % Render all curves
 color_blue = [0,87,231]/255;
 color_green = [0,135,68]/255;
@@ -167,8 +194,12 @@ line(axis_x,axis_y,axis_z,'Color','k','LineWidth',1.2);
 
 line(spiral_x,spiral_y,spiral_z,'Color',color_gray);
 
-%% Export
+%
+% Export
 axis off;
 axis equal;
 view([0 34]);
+zoom(3)
+
+%%
 export_fig dafx_fig1.png -transparent
