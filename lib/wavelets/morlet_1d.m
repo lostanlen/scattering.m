@@ -12,7 +12,6 @@ mother_range = (mother_range_start:mother_range_end).';
 
 %% Definition of center frequency xi and variance sigma
 mother_xi = bank_spec.mother_xi;
-resolutions = [bank_metas.resolution];
 
 % We want the squared modulus of each Gabor filter psi_lambda to cross
 % the filters psi_(lambda-1) and psi_(lambda+1) at half maximum. Hence the
