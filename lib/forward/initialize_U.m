@@ -1,5 +1,4 @@
 function U0 = initialize_U(tensor,first_bank,variable_names)
-%%
 bank_spec = first_bank.spec;
 bank_behavior = first_bank.behavior;
 chunk_signal_size = bank_spec.size;
@@ -17,23 +16,24 @@ if nChunks>1 && isequal(subscripts,[1])
     padding_signal_size = padded_signal_size - unpadded_signal_size;
     if any(padding_signal_size>0)
         padding_size = tensor_size;
-        padding_size(subscripts) = padding_signal_size;
+        padding_size(1) = padding_signal_size;
         padding_zeros = zeros(padding_size);
-        tensor = cat(subscripts,tensor,padding_zeros);
+        tensor = cat(1,tensor,padding_zeros);
     end
-    if any(tensor_size((subscripts+1):end) ~= 1)
-        chunked_tensor_size = cat(2,tensor_size(1:(subscripts-1)), ...
-            chunk_signal_size,nChunks,tensor_size((subscripts+1):end));
-    else
+    if any(tensor_size(2:end) ~= 1)
         chunked_tensor_size = ...
-            cat(2,tensor_size(1:(subscripts-1)),chunk_signal_size,nChunks);
+            [chunk_signal_size,nChunks,tensor_subscripts(2:end)];
+    else
+        chunked_tensor_size = [chunk_signal_size,nChunks];
     end
-    tensor = reshape(tensor,chunked_tensor_size);
-    if length(chunked_tensor_size)==2
-        variable_names = {'time','chunk'};
-    elseif length(chunked_tensor_size)==3
-        variable_names = {'time','chunk','channel'};
+    chunked_tensor = zeros(chunked_tensor_size);
+    for chunk_index = 1:nChunks
+        chunk_start = (chunk_index-1) * hop_signal_size + 1;
+        chunk_end = chunk_start + chunk_signal_size - 1;
+        chunked_tensor(chunk_index,:,:) = tensor(chunk_start:chunk_end,:);
     end
+    tensor = chunked_tensor;
+    variable_names = {'time','chunk'};
     U0 = initialize_variables_custom(chunked_tensor_size,variable_names);
 elseif nargin<3
     %% Automatic variable inference (for 1D and 2D only)
