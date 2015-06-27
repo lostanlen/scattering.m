@@ -7,7 +7,7 @@ tensor_size = size(tensor);
 subscripts = bank_behavior.subscripts;
 unpadded_signal_size = tensor_size(subscripts);
 nChunks = ceil(unpadded_signal_size./chunk_signal_size);
-if nChunks>1
+if nChunks>1 && length(tensor_size)<2
     padded_signal_size = nChunks * bank_spec.size;
     padding_signal_size = padded_signal_size - unpadded_signal_size;
     padding_size = tensor_size;
