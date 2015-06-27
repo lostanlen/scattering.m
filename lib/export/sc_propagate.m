@@ -12,7 +12,7 @@ U{1+0} = initialize_U(signal,archs{1}.banks{1});
 for layer = 1:nLayers
     arch = archs{layer};
     previous_layer = layer - 1;
-    % Scatter iteratively layer U to get sub-layers Y 
+    % Scatter iteratively layer U to get sub-layers Y
     Y{layer} = U_to_Y(U{1+previous_layer},arch);
     % Apply non-linearity to last sub-layer Y to get layer U
     U{1+layer} = Y_to_U(Y{layer}{end},arch);
@@ -25,4 +25,8 @@ end
 % (see loop above) as well as last layer S.
 Y{1+nLayers}{1+0} = initialize_Y(U{1+nLayers},arch.banks);
 S{1+nLayers} = Y_to_S(Y{1+nLayers},arch);
+
+%% Unchunk if necessary
+% S = sc_unchunk(S);
+
 end
