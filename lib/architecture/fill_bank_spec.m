@@ -1,23 +1,22 @@
 function spec = fill_bank_spec(opt)
 %% Management of default parameters
-spec.size = opt.size;
-spec.T = default(opt,'T',min(spec.size));
-if isfield(opt,'max_Q') && ~isempty(opt.max_Q)
-    spec.nFilters_per_octave = opt.max_Q;
-else
-    spec.nFilters_per_octave = default(opt,'nFilters_per_octave',1);
-end
-spec.max_scale = default(opt,'max_scale',spec.T);
-spec.max_Q = default(opt,'max_Q',spec.nFilters_per_octave);
+spec.T = opt.T;
 spec.J = enforce(opt,'J',log2(spec.T));
-signal_dimension = length(spec.size);
+spec.max_Q = default(opt,'max_Q',spec.nFilters_per_octave);
+spec.max_scale = default(opt,'max_scale',spec.T);
+spec.nFilters_per_octave = ...
+    default(opt,'max_Q',default(opt,'nFilters_per_octave',1));
+signal_dimension = 1; % to be replaced by conditional statement
 if signal_dimension==1
     nOrientations = 1;
-    spec.chunk_overlap_size = ...
-        default(opt,'chunk_overlap_size',min(spec.T,spec.max_scale));
 elseif signal_dimension==2
     spec.nOrientations = default(opt,'nOrientations',8);
     nOrientations = spec.nOrientations;
+end
+if isinf(spec.max_scale)
+    spec.size = default(opt,8*spec.T)
+else
+    spec.size = default(opt,'size',4*max(spec.T,spec.max_scale));
 end
 spec.is_spinned = default(opt,'is_spinned',false);
 nSpins = 1 + spec.is_spinned;
@@ -72,4 +71,3 @@ end
 %% Alphanumeric ordering of field names
 spec = orderfields(spec);
 end
-

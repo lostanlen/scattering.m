@@ -3,7 +3,7 @@ function U0 = initialize_variables_auto(tensor_sizes)
 [sorted_sizes,sorting_indices] = sort(tensor_sizes,'descend');
 nDimensions = length(drop_trailing(tensor_sizes));
 
-%% Signal variable inference 
+%% Signal variable inference
 variable_tree = struct();
 keys{1+0} = cell(1,nDimensions);
 ranges{1+0} = zeros(3,nDimensions);

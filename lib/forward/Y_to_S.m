@@ -4,7 +4,7 @@ nVariables_to_transform = length(arch.banks);
 banks = arch.banks;
 % This boolean is true at the last layer
 is_U_bypassed = (length(layer_Y)==1);
-% This boolean is true at the first layer (except for videos) 
+% This boolean is true at the first layer (except for videos)
 is_U_single_scattered = nVariables_to_transform==1 && ...
     banks{1}.behavior.U.is_scattered && ...
     ~banks{1}.behavior.U.is_blurred && ...
@@ -57,7 +57,7 @@ for variable_index = start_index:nVariables_to_transform
     elseif bank.behavior.S.is_pooled
         error('Nonlinear pooling not ready yet');
         %pooling = arch.poolings{variable_index};
-        %layer_S = pool_signal(layer_S,pooling);
+        %layer_S = pool_Y(layer_S,pooling);
     end
 end
 end
