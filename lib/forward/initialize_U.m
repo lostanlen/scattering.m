@@ -6,14 +6,21 @@ chunk_signal_size = bank_spec.size;
 tensor_size = size(tensor);
 subscripts = bank_behavior.subscripts;
 unpadded_signal_size = tensor_size(subscripts);
-nChunks = ceil(unpadded_signal_size./chunk_signal_size);
+if isinf(bank_spec.max_scale)
+    hop_signal_size = 2 * bank_spec.T;
+else
+    hop_signal_size = max_scale;
+end
+nChunks = ceil(unpadded_signal_size./hop_signal_size);
 if nChunks>1 && isequal(subscripts,[1])
     padded_signal_size = nChunks * bank_spec.size;
     padding_signal_size = padded_signal_size - unpadded_signal_size;
-    padding_size = tensor_size;
-    padding_size(subscripts) = padding_signal_size;
-    padding_zeros = zeros(padding_size);
-    tensor = cat(subscripts,tensor,padding_zeros);
+    if any(padding_signal_size>0)
+        padding_size = tensor_size;
+        padding_size(subscripts) = padding_signal_size;
+        padding_zeros = zeros(padding_size);
+        tensor = cat(subscripts,tensor,padding_zeros);
+    end
     if any(tensor_size((subscripts+1):end) ~= 1)
         chunked_tensor_size = cat(2,tensor_size(1:(subscripts-1)), ...
             chunk_signal_size,nChunks,tensor_size((subscripts+1):end));

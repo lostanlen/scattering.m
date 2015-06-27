@@ -3,7 +3,7 @@ function leaves = vectorize_tree(tree)
 names = fieldnames(tree);
 if isempty(names)
     leaves = [];
-    return;
+    return
 end
 
 %% Leaf switch
