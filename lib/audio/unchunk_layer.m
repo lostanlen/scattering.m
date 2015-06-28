@@ -12,6 +12,9 @@ if iscell(layer)
 else
     chunk_key.chunk = cell(1,1);
     chunk_variable = get_leaf(layer.variable_tree,chunk_key);
+    if isempty(chunk_variable)
+        return
+    end
     chunk_subscript = chunk_variable.subscripts;
     unchunked_layer = layer;
     unchunked_layer.data = unchunk_data(layer.data,chunk_subscript);
