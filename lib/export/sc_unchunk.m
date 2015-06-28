@@ -8,4 +8,3 @@ for layer_index = 0:nLayers-1
     unchunked_S{1+layer_index} = unchunk_layer(S{1+layer_index});
 end
 end
-
