@@ -12,7 +12,7 @@ Q = 8; % quality factor
 signal = y(1:N);
 
 %% Take default values for auditory transform
-opts{1} = default_auditory(length(signal),Fs,Q);
+opts{1} = default_auditory(N,Fs,Q);
 % This line adds a second-order transform on top
 opts{2}.time = struct();
 
