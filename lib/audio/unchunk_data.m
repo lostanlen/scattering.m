@@ -35,12 +35,8 @@ else
         lhs_end = lhs_start + chunk_signal_size/2 - 1;
         lhs_indices = lhs_start:lhs_end;
         subsasgn_structure.subs{1} = lhs_indices;
-        try
         unchunked_data = ...
             subsasgn(unchunked_data,subsasgn_structure,unpadded_chunk);
-        catch err
-            disp(err);
-        end
     end
 end
 end
