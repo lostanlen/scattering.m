@@ -27,6 +27,6 @@ Y{1+nLayers}{1+0} = initialize_Y(U{1+nLayers},arch.banks);
 S{1+nLayers} = Y_to_S(Y{1+nLayers},arch);
 
 %% Unchunk if necessary
-% S = sc_unchunk(S);
+S = sc_unchunk(S);
 
 end
