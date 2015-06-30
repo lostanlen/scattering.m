@@ -48,9 +48,8 @@ for layer = 2:nLayers
             case root
                 root_plan = plans{layer-1}.banks{1};
                 previous_plan = plans{layer-1}.banks{end};
-                if ~isfield(field,'size')
-                    field.size = root_plan.spec.size;
-                end
+                field.T = default(field,'T',root_plan.spec.T);
+                field.size = enforce(field,'size',root_plan.spec.size);
                 field.dimension = previous_plan.behavior.output_dimension;
                 field.is_U_blurred = false;
                 field.handle = default(field,'handle',@gammatone_1d);

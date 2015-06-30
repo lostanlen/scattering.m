@@ -12,7 +12,7 @@ else
     catch ME
         if strcmp(ME.identifier,'MATLAB:badsubscript')
             leaf = [];
-            return;
+            return
         else
             rethrow(ME);
         end

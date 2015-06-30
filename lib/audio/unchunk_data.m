@@ -13,6 +13,8 @@ if iscell(data)
 %% Data unchunking
 else
     data_size = size(data);
+    
+
     unchunked_size = ...
         [data_size(1:(chunk_subscript-2)), ...
         data_size(chunk_subscript-1) * data_size(chunk_subscript), ...
@@ -20,4 +22,3 @@ else
     unchunked_data = reshape(data,unchunked_size);
 end
 end
-

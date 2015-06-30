@@ -2,10 +2,10 @@ function spec = fill_bank_spec(opt)
 %% Management of default parameters
 spec.T = opt.T;
 spec.J = enforce(opt,'J',log2(spec.T));
-spec.max_Q = default(opt,'max_Q',spec.nFilters_per_octave);
+spec.max_Q = default(opt,'max_Q',default(opt,'nFilters_per_octave',1));
 spec.max_scale = default(opt,'max_scale',spec.T);
 spec.nFilters_per_octave = ...
-    default(opt,'max_Q',default(opt,'nFilters_per_octave',1));
+    default(opt,'nFilters_per_octave',default(opt,'max_Q',1));
 signal_dimension = 1; % to be replaced by conditional statement
 if signal_dimension==1
     nOrientations = 1;

@@ -5,7 +5,7 @@ depth = length(key_in.(name));
 tail = key_in.(name){depth};
 if isempty(tail)
     key_out = [];
-    return;
+    return
 end
 tail_names = fieldnames(tail);
 tail_name = tail_names{1};
