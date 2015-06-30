@@ -14,7 +14,7 @@ elseif signal_dimension==2
     nOrientations = spec.nOrientations;
 end
 if isinf(spec.max_scale)
-    spec.size = default(opt,8*spec.T)
+    spec.size = default(opt,'size',8*spec.T)
 else
     spec.size = default(opt,'size',4*max(spec.T,spec.max_scale));
 end
