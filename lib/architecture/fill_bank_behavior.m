@@ -16,7 +16,6 @@ if length(gamma_bounds)==1
 end
 bank_behavior.gamma_bounds = gamma_bounds;
 bank_behavior.has_mr_output = default(opt,'has_mr_output',true);
-bank_behavior.is_demodulated = default(opt,'is_demodulated',false);
 bank_behavior.is_sibling_padded = default(opt,'is_sibling_padded',false);
 bank_behavior.is_parallel = default(opt,'is_parallel',false);
 bank_behavior.key = opt.key; % provided in caller parse_plans

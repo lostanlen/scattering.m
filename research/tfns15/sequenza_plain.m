@@ -4,21 +4,17 @@
 start = 1;
 nSamples = 2^18 * 7/4;
 target_signal = original_waveform((start-1) + (1:nSamples));
-T = 2^15;
+J = 17;
+T = 2^J;
 
 %% Creation of wavelet filterbank
 opts{1}.time.size = length(target_signal);
 opts{1}.time.nFilters_per_octave = 16;
-opts{1}.time.gamma_bounds = [1 128];
-opts{1}.time.T = T;
+opts{1}.time.T = 256;
 opts{1}.time.max_scale = 4096;
 opts{1}.time.has_duals = true;
 
 opts{2}.time.T = T;
-opts{2}.time.handle = @gammatone_1d;
-opts{2}.time.max_Q = 1;
-opts{2}.time.max_scale = Inf;
-opts{2}.time.nFilters_per_octave = 1;
 opts{2}.time.has_duals = true;
 
 archs = sc_setup(opts);
@@ -34,5 +30,5 @@ nIterations = 50;
     sc_reconstruct(target_S,archs,rec_opt,nIterations);
 
 %% Export
-audiowrite(rec_signal,sample_rate,'sequenza_plain.wav');
-save('sequenza_plain');
+audiowrite(['sequenza_spiral_J',num2str(J),'.wav'],rec_signal,sample_rate);
+save(['sequenza_spiral_J',num2str(J)]);
