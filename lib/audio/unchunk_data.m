@@ -12,13 +12,31 @@ if iscell(data)
     end
 %% Data unchunking
 else
-    data_size = size(data);
-    
-
-    unchunked_size = ...
-        [data_size(1:(chunk_subscript-2)), ...
-        data_size(chunk_subscript-1) * data_size(chunk_subscript), ...
-        data_size((chunk_subscript+1):end),1];
-    unchunked_data = reshape(data,unchunked_size);
+    if ~isequal(chunk_subscript,2)
+        error('Unchunking for chunk subscript~=2 not ready');
+    end
+    data_sizes = size(data);
+    chunk_signal_size = data_sizes(1);
+    nChunks = data_sizes(2);
+    hop_signal_size = chunk_signal_size/2;
+    unchunked_sizes = [data_sizes(1)*data_sizes(2)/2,data_sizes(3:end)];
+    unchunked_data = zeros([unchunked_sizes,1]);
+    rhs_start = 1 + chunk_signal_size/4;
+    rhs_end = 3/4 * chunk_signal_size;
+    rhs_indices = rhs_start:rhs_end;
+    nSubscripts = length(data_sizes);
+    subsref_structure = substruct('()',replicate_colon(nSubscripts));
+    subsref_structure.subs{1} = rhs_indices;
+    subsasgn_structure = substruct('()',replicate_colon(nSubscripts-1));
+    for chunk_index = 1:nChunks
+        subsref_structure.subs{2} = chunk_index;
+        unpadded_chunk = subsref(data,subsref_structure);
+        lhs_start = hop_signal_size * (chunk_index-1) + 1;
+        lhs_end = lhs_start + chunk_signal_size/2 - 1;
+        lhs_indices = lhs_start:lhs_end;
+        subsasgn_structure.subs{1} = lhs_indices;
+        unchunked_data = ...
+            subsasgn(unchunked_data,subsasgn_structure,unpadded_chunk);
+    end
 end
 end
