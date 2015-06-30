@@ -24,7 +24,6 @@ archs = sc_setup(opts);
 
 %% Display scalogram (wavelet transform modulus)
 display_scalogram(U{1+1});
-colormap hot;
 
 %% Display second-order spectrum at given scale
 modulation_scale_index = 8;

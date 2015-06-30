@@ -42,5 +42,5 @@ nIterations = 50;
 [rec_signal,rec_summary] = sc_reconstruct(target_S,archs,rec_opt,nIterations);
 
 %% Export
-audiowrite(rec_signal,sample_rate,'tbnote_spiral.wav');
+audiowrite('tbnote_spiral.wav',rec_signal,sample_rate);
 save('tbnote_spiral');
