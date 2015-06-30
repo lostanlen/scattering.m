@@ -10,7 +10,8 @@ else
         subtree = tree.(head_name){head_relative_depth};
         leaf = get_leaf(subtree,tail);
     catch ME
-        if strcmp(ME.identifier,'MATLAB:badsubscript')
+        if strcmp(ME.identifier,'MATLAB:nonExistentField') || ...
+                strcmp(ME.identifier,'MATLAB:badsubscript')
             leaf = [];
             return
         else
