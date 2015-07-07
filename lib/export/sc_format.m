@@ -56,7 +56,7 @@ for subscript_index = 1:nSubscripts
     spatial_subscript_bools(subscript_index) = ...
         any(spatial_subscripts == subscript_index);
     range = zeroth_ranges(:,subscript_index);
-    unpadded_sizes(subscript_index) = ceil((range(3)-range(1)+1) / range(2));
+    unpadded_sizes(subscript_index) = floor((range(3)-range(1)+1) / range(2));
     subsref_structure.subs{subscript_index} = 1:unpadded_sizes(subscript_index);
 end
 unpadded_data = subsref(data,subsref_structure);
