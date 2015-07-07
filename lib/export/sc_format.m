@@ -3,6 +3,9 @@ nLayers = length(S);
 if nargin<3
     layers = (2:nLayers);
 end
+if nargin<2
+    spatial_subscripts = 1;
+end
 
 formatted_layers = cell(length(layers),1);
 for layer_index = layers
