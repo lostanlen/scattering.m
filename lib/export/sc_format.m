@@ -54,7 +54,8 @@ input_sizes = size(data);
 nSubscripts = length(input_sizes);
 spatial_subscript_bools = true(nSubscripts,1);
 unpadded_sizes = zeros(nSubscripts,1);
-subsref_structure = substruct('()',cell(nSubscripts,1));
+subsref_structure.type = '()';
+subsref_structure.subs = cell(nSubscripts,1);
 for subscript_index = 1:nSubscripts
     spatial_subscript_bools(subscript_index) = ...
         any(spatial_subscripts == subscript_index);
