@@ -34,7 +34,7 @@ if nChunks>2 && isequal(subscripts,1)
     
     % Special case: last chunk
     lhs_indices = 1:(chunk_signal_size/2);
-    rhs_indices = (chunk_signal_size/2+1):chunk_signal_size;
+    rhs_indices = ((1-chunk_signal_size/2):0) + padded_signal_size;
     chunked_tensor(lhs_indices,nChunks,:) = tensor(rhs_indices,:);
     
     tensor = chunked_tensor;
