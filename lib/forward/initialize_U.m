@@ -40,6 +40,15 @@ if nChunks>2 && isequal(subscripts,1)
     tensor = chunked_tensor;
     variable_names = {'time','chunk'};
     U0 = initialize_variables_custom(chunked_tensor_size,variable_names);
+elseif nChunks==1 && isequal(subscripts,1)
+    padding_signal_size = chunk_signal_size - unpadded_signal_size;
+    if padding_signal_size>0
+        % Zero-padding if length of signal is shorter than one chunk size
+        padding_size = tensor_size;
+        padding_size(1) = padding_signal_size;
+        padding_zeros = zeros(padding_size);
+        tensor = cat(1,tensor,padding_zeros);
+    end
 elseif nargin<3
     %% Automatic variable inference (for 1D and 2D only)
     U0 = initialize_variables_auto(tensor_size);
