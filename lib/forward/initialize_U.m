@@ -40,7 +40,7 @@ if nChunks>2 && isequal(subscripts,1)
     tensor = chunked_tensor;
     variable_names = {'time','chunk'};
     U0 = initialize_variables_custom(chunked_tensor_size,variable_names);
-elseif nChunks==1 && isequal(subscripts,1)
+elseif nChunks<=2 && isequal(subscripts,1)
     padding_signal_size = chunk_signal_size - unpadded_signal_size;
     if padding_signal_size>0
         % Zero-padding if length of signal is shorter than one chunk size
