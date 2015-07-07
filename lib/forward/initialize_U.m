@@ -49,6 +49,8 @@ elseif nChunks==1 && isequal(subscripts,1)
         padding_zeros = zeros(padding_size);
         tensor = cat(1,tensor,padding_zeros);
     end
+    variable_name = {'time'};
+    U0 = initialize_variables_custom(chunk_signal_size,variable_name);
 elseif nargin<3
     %% Automatic variable inference (for 1D and 2D only)
     U0 = initialize_variables_auto(tensor_size);
