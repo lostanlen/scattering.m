@@ -85,7 +85,7 @@ for layer = 2:nLayers
                 % 4 octaves of octave filtering by default
                 field.T = default(field,'T',4);
                 field.dimension = banks{end}.behavior.dimension+1;
-                field.handle = default(field,'handle',@RLC_1d);
+                field.handle = default(field,'handle',@gammatone_1d);
                 field.invariance = default(field,'invariance','bypassed');
                 field.is_spinned = enforce(field,'is_spinned',true);
                 field.has_multiple_support = ...
@@ -95,7 +95,7 @@ for layer = 2:nLayers
                 field.size = enforce(field,'size', ...
                     pow2(nextpow2(nOctaves + field.T)));
                 field.subscripts = ...
-                    default('subscripts',banks{1}.behavior.dimension + 2);
+                    default(field,'subscripts',banks{1}.behavior.dimension + 2);
                 if isfield(opt,'gamma')
                     % Here we assume that the transformation along gamma is
                     % in second position
