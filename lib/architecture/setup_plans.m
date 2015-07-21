@@ -8,9 +8,9 @@ elseif ~isfield(opts{1},'time') && isfield(opts{1},'space')
 end
 %%
 root_field = opts{1}.(root);
-root_field.size = drop_trailing(root_field.size);
+root_field.T = drop_trailing(root_field.T);
 root_field.key.(root) = cell(1);
-signal_dimension = length(root_field.size);
+signal_dimension = length(root_field.T);
 root_field.dimension = ...
     default(root_field,'dimension',signal_dimension);
 switch signal_dimension
@@ -26,8 +26,9 @@ end
 root_field.subscripts = ...
     default(root_field,'subscripts',1:root_field.dimension);
 root_field.is_U_blurred = enforce(root_field,'is_U_blurred',false);
-plans{1}.banks{1}.behavior = fill_bank_behavior(root_field);
 plans{1}.banks{1}.spec = fill_bank_spec(root_field);
+root_field.size = plans{1}.banks{1}.spec.size;
+plans{1}.banks{1}.behavior = fill_bank_behavior(root_field);
 plans{1}.nonlinearity = fill_nonlinearity(opts{1});
 ordered_names = {root,'theta','gamma','j'};
 
