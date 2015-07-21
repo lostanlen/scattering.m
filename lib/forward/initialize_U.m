@@ -26,7 +26,7 @@ elseif isequal(subscripts,1) && unpadded_signal_size>hop_signal_size
     chunked_tensor = zeros(chunked_tensor_size);
     
     % Special case: first chunk
-    lhs_indices = (1+bank_spec.T):bank.spec.size;
+    lhs_indices = (1+bank_spec.T):bank_spec.size;
     rhs_indices = 1:(bank_spec.size-bank_spec.T);
     chunked_tensor(lhs_indices,1,:) = tensor(rhs_indices,:);
     
