@@ -14,6 +14,12 @@ for layer_index = layers
 end
 
 formatted_S = [formatted_layers{:}].';
+
+%% Unpadding of spatial variable
+unpadded_length = S{1+0}.variable_tree.time{1}.leaf.unpadded_size;
+hop_length = S{1+0}.ranges{1}(2,1);
+nSamples = ceil(unpadded_length / hop_length);
+formatted_S = formatted_S(:,1:nSamples);
 end
 
 function formatted_layer = format_layer(layer_S, spatial_subscripts)
@@ -31,7 +37,8 @@ if iscell(layer_S)
     return
 end
 
-formatted_layer = format_data(layer_S.data, spatial_subscripts, layer_S.ranges{1+0});
+formatted_layer = ...
+    format_data(layer_S.data, spatial_subscripts, layer_S.ranges{1+0});
 end
 
 function formatted_data = format_data(data, spatial_subscripts, zeroth_ranges)
@@ -49,7 +56,7 @@ if iscell(data)
     return
 end
 
-%% Unpadding
+%% Unpadding of non-spatial variables
 input_sizes = size(data);
 nSubscripts = length(input_sizes);
 spatial_subscript_bools = true(nSubscripts,1);
