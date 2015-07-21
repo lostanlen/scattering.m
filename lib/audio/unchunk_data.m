@@ -1,4 +1,4 @@
-function unchunked_data = unchunk_data(data,chunk_subscript)
+function unchunked_data = unchunk_data(data,T)
 %% Deep map across cells
 if iscell(data)
     nCells = numel(data);
@@ -8,21 +8,20 @@ if iscell(data)
         if isempty(data_cell)
             continue
         end
-        unchunked_data{cell_index} = unchunk_data(data_cell,chunk_subscript);
+        unchunked_data{cell_index} = unchunk_data(data_cell);
     end
 %% Data unchunking
 else
-    if ~isequal(chunk_subscript,2)
-        error('Unchunking for chunk subscript~=2 not ready');
-    end
     data_sizes = size(data);
     chunk_signal_size = data_sizes(1);
     nChunks = data_sizes(2);
-    hop_signal_size = chunk_signal_size/2;
-    unchunked_sizes = [data_sizes(1)*data_sizes(2)/2,data_sizes(3:end)];
+    hop_signal_size = chunk_signal_size - 2*T;
+    yield_ratio = hop_signal_size / chunk_signal_size;
+    unchunked_signal_size = yield_ratio * nChunks;
+    unchunked_sizes = [unchunked_signal_size,data_sizes(3:end)];
     unchunked_data = zeros([unchunked_sizes,1]);
-    rhs_start = 1 + chunk_signal_size/4;
-    rhs_end = 3/4 * chunk_signal_size;
+    rhs_start = 1 + chunk_signal_size * yield_ratio/2;
+    rhs_end = (1-yield_ratio/2) * chunk_signal_size;
     rhs_indices = rhs_start:rhs_end;
     nSubscripts = length(data_sizes);
     subsref_structure = substruct('()',replicate_colon(nSubscripts));
@@ -32,7 +31,7 @@ else
         subsref_structure.subs{2} = chunk_index;
         unpadded_chunk = subsref(data,subsref_structure);
         lhs_start = hop_signal_size * (chunk_index-1) + 1;
-        lhs_end = lhs_start + chunk_signal_size/2 - 1;
+        lhs_end = lhs_start + chunk_signal_size * yield_ratio - 1;
         lhs_indices = lhs_start:lhs_end;
         subsasgn_structure.subs{1} = lhs_indices;
         unchunked_data = ...
