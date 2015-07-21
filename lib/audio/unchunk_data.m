@@ -1,4 +1,4 @@
-function unchunked_data = unchunk_data(data,T)
+function unchunked_data = unchunk_data(data)
 %% Deep map across cells
 if iscell(data)
     nCells = numel(data);
