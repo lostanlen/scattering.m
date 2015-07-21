@@ -1,4 +1,4 @@
-function unchunked_layer = unchunk_layer(layer,T)
+function unchunked_layer = unchunk_layer(layer)
 if iscell(layer)
     nCells = numel(layer);
     unchunked_layer = cell(size(layer));
@@ -17,7 +17,7 @@ else
         return
     end
     chunk_subscript = chunk_variable.subscripts;
-    unchunked_layer.data = unchunk_data(layer.data,T);
+    unchunked_layer.data = unchunk_data(layer.data);
     unchunked_layer.ranges{1+0} = ...
         unchunk_ranges(layer.ranges{1+0},chunk_subscript);
 end
