@@ -18,4 +18,6 @@ else
     end
     chunk_subscript = chunk_variable.subscripts;
     unchunked_layer.data = unchunk_data(layer.data,chunk_subscript);
+    unchunked_layer.ranges{1+0} = ...
+        unchunk_ranges(layer.ranges{1+0},chunk_subscript);
 end
