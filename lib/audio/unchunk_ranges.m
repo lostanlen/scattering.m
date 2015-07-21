@@ -14,7 +14,11 @@ end
 if ~isequal(chunk_subscript,2)
     error('Unchunking for chunk subscript~=2 not ready');
 end
-spatial_range_end = zeroth_ranges(3,1) * zeroth_ranges(3,2) / 2;
+nCoefficients_per_chunk = ...
+    (zeroth_ranges(3,1)-zeroth_ranges(1,1)+1) / zeroth_ranges(2,1);
+unpadded_chunk_length = (nCoefficients_per_chunk-2) * zeroth_ranges(2,1);
+nChunks = zeroth_ranges(3,2);
+spatial_range_end = (unpadded_chunk_length * nChunks);
 unchunked_spatial_range = [zeroth_ranges(1:2,1);spatial_range_end];
 unchunked_ranges = horzcat(unchunked_spatial_range,zeroth_ranges(:,3:end));
 end
