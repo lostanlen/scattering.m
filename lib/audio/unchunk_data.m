@@ -15,11 +15,11 @@ else
     data_sizes = size(data);
     chunk_signal_size = data_sizes(1);
     nChunks = data_sizes(2);
-    hop_signal_size = chunk_signal_size - 2;
+    hop_signal_size = chunk_signal_size - 4;
     unchunked_signal_size = hop_signal_size * nChunks;
     unchunked_sizes = [unchunked_signal_size,data_sizes(3:end)];
     unchunked_data = zeros([unchunked_sizes,1]);
-    rhs_indices = 1 + (1:hop_signal_size);
+    rhs_indices = 3:(chunk_signal_size-2);
     nSubscripts = length(data_sizes);
     subsref_structure = substruct('()',replicate_colon(nSubscripts));
     subsref_structure.subs{1} = rhs_indices;

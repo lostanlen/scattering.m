@@ -16,7 +16,7 @@ if ~isequal(chunk_subscript,2)
 end
 nCoefficients_per_chunk = ...
     (zeroth_ranges(3,1)-zeroth_ranges(1,1)+1) / zeroth_ranges(2,1);
-unpadded_chunk_length = (nCoefficients_per_chunk-2) * zeroth_ranges(2,1);
+unpadded_chunk_length = (nCoefficients_per_chunk-4) * zeroth_ranges(2,1);
 nChunks = zeroth_ranges(3,2);
 spatial_range_end = (unpadded_chunk_length * nChunks);
 unchunked_spatial_range = [zeroth_ranges(1:2,1);spatial_range_end];
