@@ -31,8 +31,9 @@ elseif isequal(subscripts,1) && unpadded_signal_size>hop_signal_size
     chunked_tensor(lhs_indices,1,:) = tensor(rhs_indices,:);
     
     % General case
+    offset = bank_spec.size - 2 * bank_spec.T + 1;
     for chunk_index = 2:(nChunks-1)
-        chunk_start = 1 + bank_spec.T + (chunk_index-2) * hop_signal_size;
+        chunk_start = offset + (chunk_index-2) * hop_signal_size;
         chunk_end = chunk_start + bank_spec.size - 1;
         chunked_tensor(:,chunk_index,:) = tensor(chunk_start:chunk_end,:);
     end
