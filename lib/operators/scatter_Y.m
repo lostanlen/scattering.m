@@ -28,6 +28,9 @@ end
 variable = get_leaf(variable_tree,bank.behavior.key);
 % Subscripts and colons are updated according to the network structure
 bank.behavior.subscripts = variable.subscripts;
+if variable.subscripts(1)>1
+    bank.psis = permute_subscript(bank.psis,bank.behavior.subscripts);
+end
 bank.behavior.colons.subs = replicate_colon(length(keys{1+0}));
 
 %% Scattering
