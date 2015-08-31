@@ -3,6 +3,11 @@ if nargin<3
     period = 2;
 end
 tensor_sizes = size(tensor);
+% If periodized dimension has already collapsed, return a copy of tensor
+if length(tensor_sizes)<max(subscripts)
+    periodized_tensor = tensor;
+    return
+end
 signal_sizes = tensor_sizes(subscripts);
 nSubscripts = length(subscripts);
 
