@@ -34,7 +34,7 @@ last_detected_index = find(shifted_abs2>absolute_threshold,1,'last');
 
 %% Trims coefficients to range
 coefficients = shifted_coefficients(first_detected_index:last_detected_index);
-start = first_detected_index + max_index - (original_length/2 + 1);
+start = first_detected_index + max_index - original_length/2 - 2;
 start = ...
     mod(start-1+original_length/2, original_length) - original_length/2 + 1;
 end

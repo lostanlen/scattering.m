@@ -16,11 +16,11 @@ pos_range_start = max(1,filter_start);
 x_end = x_sizes/2;
 filter_sizes = length(filter_ft);
 filter_end =  filter_start + filter_sizes - 1;
-filter_mod_end = mod(filter_end-1,x_sizes) + 1;
+filter_mod_end = mod(filter_end-1,x_sizes) + 2;
 y_end = y_sizes/2;
 pos_range_end = min([x_end,filter_mod_end,y_end]);
 x_start = x_sizes/2 + 1;
-filter_mod_start = mod(filter_start-1,x_sizes) + 1;
+filter_mod_start = mod(filter_start-1,x_sizes) + 2;
 y_start = x_sizes - y_sizes/2 + 1;
 neg_range_start = max([x_start,filter_mod_start,y_start]);
 if filter_mod_start>x_end
@@ -37,10 +37,10 @@ colons.subs{subscripts} = x_range;
 trimmed_x_ft = subsref(x_ft,colons);
 
 %% Trimming of filter_ft if needed
-pos_filter_range = mod(pos_x_range - filter_start,filter_sizes) + 1;
+pos_filter_range = mod(pos_x_range - filter_start - 1,filter_sizes) + 1;
 unbounded_neg_filter_range = ...
     neg_x_range - filter_start + max(filter_sizes-x_sizes,0);
-neg_filter_range = mod(unbounded_neg_filter_range,filter_sizes) + 1;
+neg_filter_range = mod(unbounded_neg_filter_range,x_sizes);
 filter_range = cat(2,neg_filter_range,pos_filter_range);
 colons.subs{subscripts} = filter_range;
 trimmed_filter_ft = subsref(filter_ft,colons);
