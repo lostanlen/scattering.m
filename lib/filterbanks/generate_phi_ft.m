@@ -10,7 +10,7 @@ switch signal_dimension
         half_support_length = ...
             bank_spec.phi_bw_multiplier/2 * original_sizes/bank_spec.T;
         if bank_spec.is_phi_gaussian
-            denominator = half_support_length*half_support_length / log(2);
+            denominator = half_support_length*half_support_length * 2/log(10);
             half_size = original_sizes / 2;
             half_support = 2:half_size;
             symmetric_support = original_sizes + 1 - half_support + 1;
