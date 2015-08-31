@@ -14,17 +14,17 @@ filter_start = filter_struct.ft_start;
 y_sizes = pow2(x_sizes,log2_resampling);
 pos_range_start = max(1,filter_start);
 x_end = x_sizes/2;
+y_end = y_sizes/2;
 filter_sizes = length(filter_ft);
 filter_end =  filter_start + filter_sizes - 1;
 filter_mod_end = mod(filter_end-1,x_sizes) + 2;
-y_end = y_sizes/2;
-pos_range_end = min([x_end,filter_mod_end,y_end]);
+pos_range_end = min([x_end,filter_end,filter_mod_end,y_end]);
 x_start = x_sizes/2 + 1;
 filter_mod_start = mod(filter_start-1,x_sizes) + 2;
 y_start = x_sizes - y_sizes/2 + 1;
 neg_range_start = max([x_start,filter_mod_start,y_start]);
 if filter_mod_start>x_end
-    neg_range_end = x_sizes;
+    neg_range_end = min([x_sizes,filter_mod_end]);
 elseif filter_mod_end>x_end
     neg_range_end = min([x_sizes,filter_mod_end]);
 else
