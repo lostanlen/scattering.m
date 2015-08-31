@@ -38,7 +38,7 @@ if length(ranges)==2
     ranges = {ranges{1:(end-1)},{},ranges{end}};
 end
 
-%% Fallback to firstborn_scatter and secondborn_scatter
+%% Fallback to firstborn_scatter, secondborn_scatter, and sibling scatter
 if nData_dimensions>1
     error('nephew_scatter for multiple variables at uncle level not ready yet');
 end
