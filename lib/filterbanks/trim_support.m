@@ -22,7 +22,7 @@ end
 absolute_threshold = max_abs2 * relative_threshold;
 
 %% Shifts circularly the absolute values
-shift_size = original_length/2 - max_index;
+shift_size = 1 + original_length/2 - max_index;
 signal_colons = substruct('()',replicate_colon(length(bank_spec.size)));
 shifted_coefficients = ...
     fast_circshift(coefficients,shift_size,signal_colons);
@@ -33,7 +33,7 @@ first_detected_index = find(shifted_abs2>absolute_threshold,1);
 last_detected_index = find(shifted_abs2>absolute_threshold,1,'last');
 detected_length = last_detected_index - first_detected_index + 1;
 % Supports of size 1 are error-prone in MATLAB when subscript>2
-% as trailing dimensions are dropped
+% because trailing dimensions are dropped
 detected_length = max(detected_length,2);
 
 %% Sets trimming factor to be a power of two
