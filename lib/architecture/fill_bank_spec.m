@@ -25,8 +25,8 @@ spec.cutoff_in_dB = default(opt,'cutoff_in_dB',3);
 spec.has_duals = default(opt,'has_duals',false);
 spec.has_multiple_support = default(opt,'has_multiple_support',false);
 spec.periodization_extent = default(opt,'periodization_extent',1);
-% TODO: implement single precision
 spec.is_double_precision = enforce(opt,'is_double_precision',true);
+spec.is_phi_gaussian = default(opt,'is_phi_gaussian',false);
 if spec.is_double_precision
     epsilon = eps(double(1));
 else
