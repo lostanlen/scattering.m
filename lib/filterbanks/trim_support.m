@@ -34,8 +34,10 @@ last_detected_index = find(shifted_abs2>absolute_threshold,1,'last');
 
 %% Constrains length to be a power of 2
 detected_length = last_detected_index - first_detected_index + 1;
-detected_length = pow2(nextpow2(detected_length) - 1);
+detected_length = pow2(nextpow2(detected_length));
 last_detected_index = first_detected_index + detected_length - 1;
+last_detected_index = min(last_detected_index, length(shifted_coefficients));
+first_detected_index = last_detected_index - detected_length + 1;
 
 %% Trims coefficients to range
 coefficients = shifted_coefficients(first_detected_index:last_detected_index);
