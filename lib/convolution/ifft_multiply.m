@@ -1,46 +1,53 @@
 function y = ifft_multiply(x_ft,filter_struct,log2_resampling,colons,subscripts)
-%% Definition of x_sizes
 if length(subscripts)>1
     error('Fourier-based filtering not ready in dimension >1');
 end
 input_sizes = size(x_ft);
-x_sizes = input_sizes(subscripts);
 
-%% Loading of filter
+%% Definition of positive range
+x_sizes = input_sizes(subscripts);
+x_start = - x_sizes/2 + 1;
+x_end = x_sizes/2;
+
+y_sizes = pow2(x_sizes,log2_resampling);
+y_start = - y_sizes/2 + 1;
+y_end = y_sizes/2;
+
 filter_ft = filter_struct.ft;
+filter_sizes = length(filter_ft);
 filter_start = filter_struct.ft_start;
+filter_end = filter_start + filter_sizes - 1;
+filter_mod_end = mod(filter_end + x_sizes/2 - 1, x_sizes) - x_sizes/2 + 1;
+
+pos_range_start = max(0,filter_start);
+if filter_mod_end>0
+    pos_range_end = min([x_end, filter_mod_end, y_end]);
+else
+    pos_range_end = min([x_end, y_end]);
+end
+pos_range = pos_range_start:pos_range_end;
+
+%% Definition of negative range
+neg_range_end = min(filter_mod_end, -1);
+if filter_start<0
+    neg_range_start = max([x_start, filter_start, y_start]);
+elseif filter_mod_end<0
+    neg_range_start = max([x_start, y_start]);
+else
+    neg_range_start = 1;
+end
+neg_range = neg_range_start:neg_range_end;
 
 %% Trimming of x_ft if needed
-y_sizes = pow2(x_sizes,log2_resampling);
-pos_range_start = max(1,filter_start);
-x_end = x_sizes/2;
-y_end = y_sizes/2;
-filter_sizes = length(filter_ft);
-filter_end =  filter_start + filter_sizes - 1;
-filter_mod_end = mod(filter_end-1,x_sizes) + 2;
-pos_range_end = min([x_end,filter_end,filter_mod_end,y_end]);
-x_start = x_sizes/2 + 1;
-filter_mod_start = mod(filter_start-1,x_sizes) + 2;
-y_start = x_sizes - y_sizes/2 + 1;
-neg_range_start = max([x_start,filter_mod_start,y_start]);
-if filter_mod_start>x_end
-    neg_range_end = min([x_sizes,filter_mod_end]);
-elseif filter_mod_end>x_end
-    neg_range_end = min([x_sizes,filter_mod_end]);
-else
-    neg_range_end = 1;
-end
-pos_x_range = pos_range_start:pos_range_end;
-neg_x_range = neg_range_start:neg_range_end;
+pos_x_range = 1 + pos_range;
+neg_x_range = 1 + x_sizes + neg_range;
 x_range = cat(2,neg_x_range,pos_x_range);
 colons.subs{subscripts} = x_range;
 trimmed_x_ft = subsref(x_ft,colons);
 
 %% Trimming of filter_ft if needed
-pos_filter_range = mod(pos_x_range - filter_start - 1,filter_sizes) + 1;
-unbounded_neg_filter_range = ...
-    neg_x_range - filter_start + max(filter_sizes-x_sizes,0);
-neg_filter_range = mod(unbounded_neg_filter_range,x_sizes);
+pos_filter_range = pos_range - filter_start + 1;
+neg_filter_range = mod(neg_range - filter_start + 1 - 1, x_sizes) + 1;
 filter_range = cat(2,neg_filter_range,pos_filter_range);
 colons.subs{subscripts} = filter_range;
 trimmed_filter_ft = subsref(filter_ft,colons);
@@ -52,9 +59,8 @@ sub_y_ft = bsxfun(@times,trimmed_x_ft,trimmed_filter_ft);
 y_tensor_sizes = size(x_ft);
 y_tensor_sizes(subscripts) = y_sizes;
 y = zeros(y_tensor_sizes);
-neg_y_range_start = neg_range_start + y_sizes - x_sizes;
-neg_y_range_end = neg_range_end + y_sizes - x_sizes;
-y_range = cat(2,neg_y_range_start:neg_y_range_end,pos_x_range);
+neg_y_range = neg_x_range + y_sizes - x_sizes;
+y_range = cat(2,neg_y_range,pos_x_range);
 colons.subs{subscripts} = y_range;
 y = subsasgn(y,colons,sub_y_ft);
 
