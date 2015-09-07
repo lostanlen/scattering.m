@@ -1,9 +1,4 @@
-addpath(genpath('~/MATLAB/scattering.m/'))
-folder_path = '~/mlsp2015/dataset22k/';
-file_name = 'Vc-scale-chr-asc';
-extension = '.wav';
-
-file_path = [folder_path, file_name, extension];
+file_path = 'Vc-scale-chr-asc.wav';
 [full_waveform, sample_rate] = audioread_compat(file_path);
 
 %%
