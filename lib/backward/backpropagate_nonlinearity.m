@@ -21,14 +21,17 @@ if nonlinearity.is_modulus
 elseif nonlinearity.is_uniform_log
     layer_dY_end.data = cell(size(layer_Y_end.data));
     for cell_index = 1:numel(layer_Y_end.data)
+        nSamples = size(layer_U.data{cell_index});
         layer_dY_end.data{cell_index} = ...
             layer_dU.data{cell_index} ./ ...
-            (nonlinearity.denominator+layer_U.data{cell_index}) .*...
+            (nonlinearity.denominator + nSamples*layer_U.data{cell_index}) .* ...
             layer_Y_end.data{cell_index} ./ ...
-            (eps()+layer_U.data{cell_index});   
+            (eps() + layer_U.data{cell_index});   
     end
+elseif nonlinearity.is_adapted_log
+    error('adapted log backprop not ready yet');
 end
-    
+
 %% Copy metadata
 layer_dY_end = copy_metadata(layer_Y_end,layer_dY_end);
 end
