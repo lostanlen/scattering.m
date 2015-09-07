@@ -183,7 +183,8 @@ while iteration < nIterations
         mod_iteration = ...
             mod(iteration,reconstruction_opt.signal_display_period);
         if mod_iteration==0
-            imagesc(log1p(1e3*display_scalogram(U{1+1})));
+            display_scalogram(U{1+1});
+            export_fig(['scalogram_it',int2str(iteration),'.png']);
             audiowrite(['cellospiral_it',int2str(iteration),'.wav',], signal, sample_rate);
         end
     end
