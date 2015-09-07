@@ -184,7 +184,7 @@ while iteration < nIterations
             mod(iteration,reconstruction_opt.signal_display_period);
         if mod_iteration==0
             sc = display_scalogram(U{1+1});
-            save(['scalogram_it',int2str(iteration)], sc);
+            save(['scalogram_it',int2str(iteration)], 'sc');
             audiowrite(['cellospiral_it',int2str(iteration),'.wav',], signal, sample_rate);
         end
     end
