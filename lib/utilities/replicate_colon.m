@@ -10,6 +10,8 @@ switch nColons
         colons = {':',':',':',':'};
     case 5
         colons = {':',':',':',':',':'};
+    case 6
+        colons = {':',':',':',':',':',':'};
     case 0
         colons = {};
     otherwise

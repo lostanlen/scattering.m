@@ -32,6 +32,10 @@ if variable.subscripts(1)>1
     bank.psis = permute_subscript(bank.psis,bank.behavior.subscripts);
 end
 bank.behavior.colons.subs = replicate_colon(length(keys{1+0}));
+if isfield(bank.behavior, 'spiral')
+    bank.behavior.spiral.subscript = ...
+        variable_tree.time{1}.gamma{1}.leaf.subscripts;
+end
 
 %% Scattering
 if isempty(uncle)

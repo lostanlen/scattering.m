@@ -47,7 +47,7 @@ switch handle_string
             quality_factors = max(resolutions ./ bandwidths,1);
         else
             quality_factors = repmat(bank_spec.max_Q,1,nGammas);
-            bandwidths = max(resolutions ./ bank_spec.max_Q,1);
+            bandwidths = resolutions ./ bank_spec.max_Q;
         end
         scales = 4 * mother_xi ./ bandwidths;
     case 'RLC_1d'

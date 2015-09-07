@@ -73,7 +73,7 @@ for support_index = 2:nSupports
         else
             bigger_sizes = size(bigger_filter.ift);
         end
-        for subscript = subscripts
+        for subscript = 1:length(bigger_sizes)
             subscript_range = 1:2:bigger_sizes(subscript);
             local_subsref_structure.subs{subscript} = subscript_range;
         end
