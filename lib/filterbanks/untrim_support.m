@@ -7,7 +7,7 @@ mod_ranges = cell(1,signal_dimension);
 for dimension_index = 1:signal_dimension
     start = filter.ft_start(1,dimension_index);
     nPoints = sizes(dimension_index);
-    range = start:(start+nPoints-1);
+    range = 1 + (start:(start+nPoints-1));
     original_nPoints = original_sizes(dimension_index);
     mod_ranges{signal_dimension} = 1 + mod(range-1,original_nPoints);
 end
