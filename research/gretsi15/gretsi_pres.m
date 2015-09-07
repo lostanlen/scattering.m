@@ -76,7 +76,7 @@ signal = signal * norm(target_signal)/norm(signal);
 signal = signal + mean(target_signal);
 
 %% Reconstruction
-nIterations = 40;
+nIterations = 50;
 
 %% Initialization
 reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
@@ -183,8 +183,8 @@ while iteration < nIterations
         mod_iteration = ...
             mod(iteration,reconstruction_opt.signal_display_period);
         if mod_iteration==0
-            display_scalogram(U{1+1});
-            export_fig(['scalogram_it',int2str(iteration),'.png']);
+            sc = display_scalogram(U{1+1});
+            save(['scalogram_it',int2str(iteration)], sc);
             audiowrite(['cellospiral_it',int2str(iteration),'.wav',], signal, sample_rate);
         end
     end
