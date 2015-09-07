@@ -14,16 +14,21 @@ if iscell(layer_dU)
     return
 end
 
-%% Error if nonlinearity is not modulus
-if ~nonlinearity.is_modulus
-    error('Backpropagation only available for modulus nonlinearity');
+if nonlinearity.is_modulus
+    layer_dY_end.data = dU_times_Y_over_U( ...
+        layer_dU.data,layer_Y_end.data,layer_U.data, ...
+        layer_dU.ranges,layer_Y_end.ranges);
+elseif nonlinearity.is_uniform_log
+    layer_dY_end.data = cell(size(layer_Y_end.data));
+    for cell_index = 1:numel(layer_Y_end.data)
+        layer_dY_end.data{cell_index} = ...
+            layer_dU.data{cell_index} ./ ...
+            (nonlinearity.denominator+layer_U.data{cell_index}) .*...
+            layer_Y_end.data{cell_index} ./ ...
+            (eps()+layer_U.data{cell_index});   
+    end
 end
-
-%% Call dU_times_Y_over_U to perform the backpropagation
-layer_dY_end.data = dU_times_Y_over_U( ...
-    layer_dU.data,layer_Y_end.data,layer_U.data, ...
-    layer_dU.ranges,layer_Y_end.ranges);
-
+    
 %% Copy metadata
 layer_dY_end = copy_metadata(layer_Y_end,layer_dY_end);
 end
