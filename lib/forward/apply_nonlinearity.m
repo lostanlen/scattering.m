@@ -33,7 +33,7 @@ end
 if nonlinearity.is_modulus
     layer_U.data = map_unary(@abs,sub_Y.data);
 elseif nonlinearity.is_uniform_log
-    log_handle = @(x) log1p(abs(x)/nonlinearity.denominator);
+    log_handle = @(x) log1p(abs(x)/(sqrt(size(x,1))*nonlinearity.denominator));
     layer_U.data = map_unary(log_handle,sub_Y.data);
 elseif nonlinearity.is_custom
     layer_U.data = map_unary(nonlinearity.handle,sub_Y.data);
