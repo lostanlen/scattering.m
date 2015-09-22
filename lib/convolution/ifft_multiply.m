@@ -32,7 +32,7 @@ end
 pos_range = pos_range_start:pos_range_end;
 
 %% Definition of negative range
-if filter_mod_end<filter_start && (filter_mod_end>0 || filter_mod_start<0)
+if filter_mod_end<filter_start && (filter_mod_end>0 || filter_start<0)
     neg_range_end = -1;
 else
     neg_range_end = min(filter_mod_end, -1);
