@@ -56,7 +56,7 @@ for theta = 1:nThetas
         end
         if is_ift
              slice_ift = subsref(bank_ifts,local_subsref_structure);
-             trimmed_ift = trim_ft(slice_ift,bank.spec);
+             trimmed_ift = trim_ift(slice_ift,bank.spec);
              if is_permuted
                  trimmed_ift.ift = ...
                      permute(trimmed_ift.ift,subscript_permutation);
