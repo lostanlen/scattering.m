@@ -6,10 +6,10 @@ end
 %% Does not trim if threshold is negative
 relative_threshold = bank_spec.trim_threshold;
 if relative_threshold<=0
-    filter_struct.pos = coefficients((1+end/2):end);
-    filter_struct.posfirst = 1;
-    filter_struct.neg = coefficients(1:(end/2));
-    filter_struct.neglast = -1;
+    filter_struct.ft_pos = coefficients((1+end/2):end);
+    filter_struct.ft_posfirst = 1;
+    filter_struct.ft_neg = coefficients(1:(end/2));
+    filter_struct.ft_neglast = -1;
     return
 end
 
@@ -42,19 +42,20 @@ start = ...
 
 %% Splits coefficients between analytic part (pos) and coanalytic part (neg)
 if start < 0
-    filter_struct.neg = ...
+    filter_struct.ft_neg = ...
         shifted_coefficients(first_detected_index + (0:(1-start)));
-    filter_struct.neglast = -1;
-    filter_struct.pos = shifted_coefficients((1-start+1):last_detected_index);
+    filter_struct.ft_neglast = -1;
+    filter_struct.ft_pos = ...
+        shifted_coefficients((1-start+1):last_detected_index);
     if isempty(pos)
-        filter_struct.posfirst = [];
+        filter_struct.ft_posfirst = [];
     else
-        filter_struct.posfirst = 1;
+        filter_struct.ft_posfirst = 1;
     end
 else
-    filter_struct.neg = [];
-    filter_struct.neglast = [];
-    filter_struct.pos = ...
+    filter_struct.ft_neg = [];
+    filter_struct.ft_neglast = [];
+    filter_struct.ft_pos = ...
         shifted_coefficients(first_detected_index:last_detected_index);
-    filter_struct.posfirst = start;
+    filter_struct.ft_posfirst = start;
 end
