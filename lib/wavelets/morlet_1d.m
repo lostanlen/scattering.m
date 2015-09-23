@@ -27,7 +27,6 @@ spatial_sigmas = 1./(2*pi*frequential_sigmas);
 %% Computation of Morlet wavelets in the time domain
 % This loop is performance-critical. It can already be made parallel.
 % MEX-file and GPU implementations should be considered.
-subsref_structure = substruct('()',{':'});
 for gamma = 1:nGammas
     resolution = resolutions(gamma);
     sigma = spatial_sigmas(gamma);
@@ -45,6 +44,7 @@ for gamma = 1:nGammas
     periodized_gaussian = sum(expanded_gaussian,2);
     scaling_factor = gabor_DC_bias/mean(periodized_gaussian);
     corrective_term = scaling_factor * periodized_gaussian;
-    morlets(:,gamma) = periodized_gabor - corrective_term;
+    morlets(:, gamma) = periodized_gabor - corrective_term;
 end
+morlets = cat(1, morlets(1+end/2:end,:), morlets(1:end/2,:));
 end
