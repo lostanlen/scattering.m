@@ -66,30 +66,30 @@ for support_index = 2:nSupports
     smaller_bank = repmat(initial_struct, 1, smaller_nLambdas);
     % This loop can be parallelized
     for lambda = 1:smaller_nLambdas
-        local_subsref_structure = overhead_colons;
+        pos_subsref_structure = overhead_colons;
+        neg_subsref_structue = overhead_colons;
         bigger_filter = bigger_bank(lambda);
-        if is_ft
-            bigger_sizes = size(bigger_filter.ft_pos);
-        else
-            bigger_sizes = size(bigger_filter.ift);
-        end
+        pos_bigger_sizes = size(bigger_filter.ft_pos);
+        neg_bigger_sizes = size(bigger_filter.ft_neg);
         for subscript = 1:length(bigger_sizes)
-            subscript_range = 1:2:bigger_sizes(subscript);
-            local_subsref_structure.subs{subscript} = subscript_range;
+            pos_subsref_structure.subs{subscript} = ...
+                1:2:pos_bigger_sizes(subscript);
+            neg_subsref_structure.subs{subscript} = ...
+                1:2:neg_bigger_sizes(subscript);
         end
         if is_ft
             smaller_filter.ft_pos = ...
-                subsref(bigger_filter.ft_pos, local_subsref_structure);
+                subsref(bigger_filter.ft_pos, pos_subsref_structure);
             smaller_filter.ft_posfirst = ...
                 1 + floor(bigger_filter.ft_posfirst/2);
             smaller_filter.ft_neg = ...
-                subsref(bigger_filter.ft_neg, local_subsref_structure);
+                subsref(bigger_filter.ft_neg, neg_subsref_structure);
             smaller_filter.ft_neglast = ...
                 1 + floor(bigger_filter.ft_neglast/2);
         end
         if is_ift
             smaller_filter.ift = periodize(bigger_filter.ift, subscripts);
-            smaller_filter.ift_start = 1+floor(bigger_filter.ift_start/2);
+            smaller_filter.ift_start = 1 + floor(bigger_filter.ift_start/2);
         end
         smaller_bank(lambda) = smaller_filter;
     end
