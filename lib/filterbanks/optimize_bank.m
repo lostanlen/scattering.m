@@ -67,11 +67,11 @@ for support_index = 2:nSupports
     % This loop can be parallelized
     for lambda = 1:smaller_nLambdas
         pos_subsref_structure = overhead_colons;
-        neg_subsref_structue = overhead_colons;
+        neg_subsref_structure = overhead_colons;
         bigger_filter = bigger_bank(lambda);
         pos_bigger_sizes = size(bigger_filter.ft_pos);
         neg_bigger_sizes = size(bigger_filter.ft_neg);
-        for subscript = 1:length(bigger_sizes)
+        for subscript = 1:length(pos_bigger_sizes)
             pos_subsref_structure.subs{subscript} = ...
                 1:2:pos_bigger_sizes(subscript);
             neg_subsref_structure.subs{subscript} = ...
