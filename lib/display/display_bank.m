@@ -19,13 +19,13 @@ for gamma = 1:nGammas
     for theta = 1:nThetas
         psi = bank.(fieldname){support_index}(gamma,theta);
         lambda = (theta-1)*nGammas + gamma;
-        psis(:,lambda) = untrim_support(psi,bank_spec);
+        psis(:,lambda) = untrim_ft(psi,bank_spec);
     end
 end
 if strcmp(fieldname,'dual_psis')
-    phi = untrim_support(bank.dual_phi{support_index},bank_spec);
+    phi = untrim_ft(bank.dual_phi{support_index},bank_spec);
 else
-    phi = untrim_support(bank.phi{support_index},bank_spec);
+    phi = untrim_ft(bank.phi{support_index},bank_spec);
 end
 psi_energies = psis .* conj(psis);
 phi_energy = phi .* conj(phi);

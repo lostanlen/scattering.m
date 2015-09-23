@@ -1,4 +1,4 @@
-function filter_struct = trim_support(coefficients,bank_spec)
+function filter_struct = trim_ft(coefficients,bank_spec)
 if sum(size(coefficients)~=1)>1
     error('support trimming not ready for multidimensional signals');
 end
@@ -47,7 +47,7 @@ if start < 0
     filter_struct.ft_neglast = -1;
     filter_struct.ft_pos = ...
         shifted_coefficients((1-start+1):last_detected_index);
-    if isempty(pos)
+    if isempty(filter_struct.ft_pos)
         filter_struct.ft_posfirst = [];
     else
         filter_struct.ft_posfirst = 1;
@@ -58,4 +58,5 @@ else
     filter_struct.ft_pos = ...
         shifted_coefficients(first_detected_index:last_detected_index);
     filter_struct.ft_posfirst = start;
+end
 end
