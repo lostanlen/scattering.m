@@ -40,6 +40,6 @@ start = ...
 
 %% Generate output
 filter_struct.ift = ...
-    shifted_coefficients(first_detected_index, last_detected_index);
+    shifted_coefficients(first_detected_index:last_detected_index);
 filter_struct.ift_start = start;
 end
