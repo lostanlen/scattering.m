@@ -34,9 +34,9 @@ subscripts = bank.behavior.subscripts;
 is_permuted = subscripts(end)>signal_dimension;
 if is_permuted
     nSubscripts = length(subscripts);
-    subscript_permutation = 1:max(subscripts);
-    subscript_permutation(1:nSubscripts) = subscripts;
-    subscript_permutation(subscripts) = 1:nSubscripts;
+    permutation = 1:max(subscripts);
+    permutation(1:nSubscripts) = subscripts;
+    permutation(subscripts) = 1:nSubscripts;
 end
 
 %% Trimming and permutation
@@ -59,7 +59,7 @@ for theta = 1:nThetas
              trimmed_ift = trim_ift(slice_ift,bank.spec);
              if is_permuted
                  trimmed_ift.ift = ...
-                     permute(trimmed_ift.ift,subscript_permutation);
+                     permute(trimmed_ift.ift,permutation);
              end
         end
         if is_ft
