@@ -45,8 +45,6 @@ for gamma = 1:nGammas
     periodized_gaussian = sum(expanded_gaussian,2);
     scaling_factor = gabor_DC_bias/mean(periodized_gaussian);
     corrective_term = scaling_factor * periodized_gaussian;
-    periodized_morlet = periodized_gabor - corrective_term;
-    morlets(:,gamma) = fast_circshift(periodized_morlet, ...
-        mother_range_start,subsref_structure);
+    morlets(:,gamma) = periodized_gabor - corrective_term;
 end
 end
