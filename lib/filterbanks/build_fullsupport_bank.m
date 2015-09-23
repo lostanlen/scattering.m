@@ -56,12 +56,13 @@ for theta = 1:nThetas
             end
         end
         if is_ift
-            slice_ift = subsref(bank_ifts,local_subsref_structure);
-            trimmed_ift = trim_support(slice_ift,bank.spec);
-            if is_permuted
-                trimmed_ift.ift = ...
-                    permute(trimmed_ift.ift,subscript_permutation);
-            end
+            error('ift trimming not ready yet');
+%             slice_ift = subsref(bank_ifts,local_subsref_structure);
+%             trimmed_ift = trim_support(slice_ift,bank.spec);
+%             if is_permuted
+%                 trimmed_ift.ift = ...
+%                     permute(trimmed_ift.ift,subscript_permutation);
+%             end
         end
         if is_ft
             if is_ift
