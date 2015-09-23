@@ -17,7 +17,8 @@ else
 end
 if isempty(bank_ifts)
     is_ift = false;
-    initial_struct = struct('ft', [], 'ft_start', []);
+    initial_struct = struct( ...
+        'ft_pos', [], 'ft_posfirst', [], 'ft_neg', [], 'ft_neglast', []);
 else
     is_ift = true;
     if ~is_ft
@@ -28,7 +29,9 @@ else
         initial_struct = struct('ift', [], 'ift_start', []);
     else
         initial_struct = ...
-            struct('ft', [], 'ft_start', [], 'ift', [],'ift_start', []);
+            struct('ft_pos', [], 'ft_posfirst', [], ...
+            'ft_neg', [], 'ft_neglast', [], ...
+            'ift', [], 'ift_start', []);
     end
 end
 scales = cat(signal_dimension+1, bank.metas.scale);
