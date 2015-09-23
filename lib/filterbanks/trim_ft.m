@@ -6,7 +6,7 @@ end
 %% Does not trim if threshold is negative
 relative_threshold = bank_spec.trim_threshold;
 if relative_threshold<=0
-    filter_struct.ft_pos = coefficients((1+end/2):end);
+    filter_struct.ft_pos = coefficients((1+1+end/2):end);
     filter_struct.ft_posfirst = 1;
     filter_struct.ft_neg = coefficients(1:(end/2));
     filter_struct.ft_neglast = -1;
