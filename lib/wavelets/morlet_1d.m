@@ -46,5 +46,4 @@ for gamma = 1:nGammas
     corrective_term = scaling_factor * periodized_gaussian;
     morlets(:, gamma) = periodized_gabor - corrective_term;
 end
-morlets = cat(1, morlets(1+end/2:end,:), morlets(1:end/2,:));
 end
