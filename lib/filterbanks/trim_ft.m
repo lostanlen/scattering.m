@@ -17,24 +17,26 @@ end
 abs2_coefficients = coefficients .* conj(coefficients);
 
 %% Detects first and last non-negligible coefficient in shifted domain
-first_detected_index = find(abs2_coefficients>absolute_threshold, 1);
-last_detected_index = find(abs2_coefficients>absolute_threshold, 1, 'last');
+first_detected_index = ...
+    find(abs2_coefficients>bank_spec.trim_threshold, 1);
+last_detected_index = ...
+    find(abs2_coefficients>bank_spec.trim_threshold, 1, 'last');
+
+%% Get coanalytic part (negative frequencies)
+full_length = length(coefficients);
+half_length = full_length / 2;
+filter_struct.ft_neg = coefficients((1+half_length):last_detected_index);
+if isempty(filter_struct.ft_neg)
+    filter_struct.ft_neglast = [];
+else
+    filter_struct.ft_neglast = last_detected_index - 1 - full_length;
+end
 
 %% Get analytic part (positive frequencies)
-half_length = length(coefficients) / 2;
 filter_struct.ft_pos = coefficients(first_detected_index:(1+half_length-1));
 if isempty(filter_struct.ft_pos)
     filter_struct.ft_posfirst = [];
 else
     filter_struct.ft_posfirst = first_detected_index - 1;
-end
-
-%% Get coanalytic part (negative frequencies)
-full_length = length(coefficients);
-filter_struct.ft_neg = coefficients((1+half_length):last_detected_index);
-if isempty(filter_struct.ft_neg)
-    filter_struct.ft_neglast = last_detected_index - 1 - full_length;
-else
-    filter_struct.ft_neglast = last_detected_index - 1;
 end
 end
