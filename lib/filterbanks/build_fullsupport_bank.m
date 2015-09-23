@@ -5,25 +5,28 @@ if isempty(bank_fts)
     is_ft = false;
 else
     is_ft = true;
-    nGammas = size(bank_fts,signal_dimension+1);
-    nThetas = size(bank_fts,signal_dimension+2);
+    nGammas = size(bank_fts, signal_dimension+1);
+    nThetas = size(bank_fts, signal_dimension+2);
 end
 if isempty(bank_ifts)
     is_ift = false;
-    fullsupport_bank(1:nGammas,1:nThetas) = struct('ft',[],'ft_start',[]);
+    fullsupport_bank(1:nGammas, 1:nThetas) = ...
+        struct('ft_neg', [], 'ft_neglast', [], 'ft_pos',[],'ft_posfirst',[]);
 else
     is_ift = true;
     if ~is_ft
-        nGammas = size(bank_ifts,signal_dimension+1);
-        nThetas = size(bank_ifts,signal_dimension+2);
+        nGammas = size(bank_ifts, signal_dimension+1);
+        nThetas = size(bank_ifts, signal_dimension+2);
         fullsupport_bank(1:nGammas,1:nThetas) = ...
-            struct('ift',[],'ift_start',[]);
+            struct('ift', [], 'ift_start', []);
     else
-        fullsupport_bank(1:nGammas,1:nThetas) = ...
-            struct('ft',[],'ft_start',[],'ift',[],'ift_start',[]);
+        fullsupport_bank(1:nGammas, 1:nThetas) = ...
+            struct('ft_neg', [], 'ft_neglast', [], ...
+                   'ft_pos', [], 'ft_posfirst', [], ...
+                   'ift', [], 'ift_start');
     end
 end
-overhead_colons = substruct('()',replicate_colon(signal_dimension+2));
+overhead_colons = substruct('()', replicate_colon(signal_dimension+2));
 gamma_subscript = signal_dimension + 1;
 theta_subscript = signal_dimension + 2;
 
@@ -46,30 +49,34 @@ for theta = 1:nThetas
         local_subsref_structure.subs{theta_subscript} = theta;
         if is_ft
             slice_ft = subsref(bank_fts,local_subsref_structure);
-            [trimmed_ft,ft_start] = trim_support(slice_ft,bank.spec);
+            trimmed_ft = trim_support(slice_ft,bank.spec);
             if is_permuted
-                trimmed_ft = permute(trimmed_ft,subscript_permutation);
+                trimmed_ft.ft_pos = permute(trimmed_ft.ft_pos, permutation);
+                trimmed_ft.ft_neg = permute(trimmed_ft.ft_neg, permutation);
             end
         end
         if is_ift
             slice_ift = subsref(bank_ifts,local_subsref_structure);
-            [trimmed_ift,ift_start] = trim_support(slice_ift,bank.spec);
+            trimmed_ift = trim_support(slice_ift,bank.spec);
             if is_permuted
-                trimmed_ift = permute(trimmed_ift,subscript_permutation);
+                trimmed_ift.ift = ...
+                    permute(trimmed_ift.ift,subscript_permutation);
             end
         end
         if is_ft
             if is_ift
                 fullsupport_bank(gamma,theta) = struct( ...
-                    'ft',trimmed_ft,'ft_start',ft_start, ...
-                    'ift',trimmed_ift,'ift_start',ift_start);
+                    'ft_neg', trimmed_ft.ft_neg, ...
+                    'ft_neglast', trimmed_ft.ft_neglast, ...
+                    'ft_pos', trimmed_ft.ft_pos, ...
+                    'ft_posfirst', trimmed_ft.ft_posfirst, ...
+                    'ift', trimmed_ift.ft_ift, ...
+                    'ift_start', trimmed_ift.ift_start);
             else
-                fullsupport_bank(gamma,theta) = struct( ...
-                    'ft',trimmed_ft,'ft_start',ft_start);
+                fullsupport_bank(gamma,theta) = trimmed_ft;
             end
         else
-            fullsupport_bank(gamma,theta) = struct( ...
-                'ift',trimmed_ift,'ift_start',ift_start);
+            fullsupport_bank(gamma,theta) = trimmed_ift;
         end
     end
 end
