@@ -1,4 +1,4 @@
-function [pos, posfirst, neg, neglast] = trim_support(coefficients,bank_spec)
+function filter_struct = trim_support(coefficients,bank_spec)
 if sum(size(coefficients)~=1)>1
     error('support trimming not ready for multidimensional signals');
 end
@@ -6,10 +6,10 @@ end
 %% Does not trim if threshold is negative
 relative_threshold = bank_spec.trim_threshold;
 if relative_threshold<=0
-    pos = coefficients((1+end/2):end);
-    posfirst = 1;
-    neg = coefficients(1:(end/2));
-    neglast = -1;
+    filter_struct.pos = coefficients((1+end/2):end);
+    filter_struct.posfirst = 1;
+    filter_struct.neg = coefficients(1:(end/2));
+    filter_struct.neglast = -1;
     return
 end
 
@@ -42,17 +42,19 @@ start = ...
 
 %% Splits coefficients between analytic part (pos) and coanalytic part (neg)
 if start < 0
-    neg = shifted_coefficients(first_detected_index + (0:(1-start)));
-    neglast = -1;
-    pos = shifted_coefficients((1-start+1):last_detected_index);
+    filter_struct.neg = ...
+        shifted_coefficients(first_detected_index + (0:(1-start)));
+    filter_struct.neglast = -1;
+    filter_struct.pos = shifted_coefficients((1-start+1):last_detected_index);
     if isempty(pos)
-        posfirst = [];
+        filter_struct.posfirst = [];
     else
-        posfirst = 1;
+        filter_struct.posfirst = 1;
     end
 else
-    neg = [];
-    neglast = [];
-    pos = shifted_coefficients(first_detected_index:last_detected_index);
-    posfirst = start;
+    filter_struct.neg = [];
+    filter_struct.neglast = [];
+    filter_struct.pos = ...
+        shifted_coefficients(first_detected_index:last_detected_index);
+    filter_struct.posfirst = start;
 end
