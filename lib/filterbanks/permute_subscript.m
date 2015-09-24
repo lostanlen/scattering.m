@@ -10,7 +10,7 @@ if iscell(psis)
 end
 
 %% Compute permutation
-old_subscript = length(drop_trailing(size(psis(1).ft)));
+old_subscript = length(drop_trailing(size(psis(1).ft_pos)));
 permutation = 1:subscript;
 permutation(old_subscript) = subscript;
 permutation(subscript) = old_subscript;
@@ -18,7 +18,7 @@ permutation(subscript) = old_subscript;
 %%
 nLambdas = numel(psis);
 for lambda = 1:nLambdas
-    psis(lambda).ft = permute(psis(lambda).ft,permutation);
+    psis(lambda).ft = permute(psis(lambda).ft_pos, permutation);
 end
 end
 
