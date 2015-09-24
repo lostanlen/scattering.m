@@ -84,11 +84,11 @@ for support_index = 2:nSupports
             smaller_filter.ft_pos = ...
                 subsref(bigger_filter.ft_pos, pos_subsref_structure);
             smaller_filter.ft_posfirst = ...
-                1 + floor(bigger_filter.ft_posfirst/2);
+                ceil(bigger_filter.ft_posfirst/2);
             smaller_filter.ft_neg = ...
                 subsref(bigger_filter.ft_neg, neg_subsref_structure);
             smaller_filter.ft_neglast = ...
-                1 + floor(bigger_filter.ft_neglast/2);
+                floor(bigger_filter.ft_neglast/2);
         end
         if is_ift
             smaller_filter.ift = periodize(bigger_filter.ift, subscripts);
