@@ -24,6 +24,10 @@ for padding_subscripts_index = 1:nPadding_subscripts
     tensor = cat(padding_subscript, tensor, padding_zeros);
 end
 
+%% Update sizes after padding
+tensor_sizes = size(tensor);
+signal_sizes = tensor_sizes(subscripts);
+
 %% Expanded sizes computation
 expanded_sizes = zeros(1,ndims(tensor)+nSubscripts);
 sorted_subscripts = sort(subscripts);
