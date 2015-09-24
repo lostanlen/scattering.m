@@ -18,7 +18,7 @@ permutation(subscript) = old_subscript;
 %%
 nLambdas = numel(psis);
 for lambda = 1:nLambdas
-    psis(lambda).ft = permute(psis(lambda).ft_pos, permutation);
+    psis(lambda).ft_pos = permute(psis(lambda).ft_pos, permutation);
 end
 end
 
