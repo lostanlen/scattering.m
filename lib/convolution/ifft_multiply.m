@@ -28,7 +28,7 @@ colons.subs{subscripts} = pos_x_range;
 pos_x_ft = subsref(x_ft, colons);
 neg_x_range = (1+x_sizes+neg_range_start):(1+x_sizes+neg_range_end);
 colons.subs{subscripts} = neg_x_range;
-neg_x_ft = subsref(x_fr, colons);
+neg_x_ft = subsref(x_ft, colons);
 
 %% Trimming of filter
 pos_filter_range = ...
