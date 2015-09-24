@@ -11,6 +11,23 @@ end
 signal_sizes = tensor_sizes(subscripts);
 nSubscripts = length(subscripts);
 
+%% Zero-padding at the end
+remainders = mod(signal_sizes, period);
+padding_subscripts = subscripts(remainders~=0);
+nPadding_subscripts = length(padding_subscripts);
+for padding_subscripts_index = 1:nPadding_subscripts
+    padding_subscript = padding_subscripts(padding_subscripts_index);
+    padding_sizes = tensor_sizes;
+    padding_sizes(padding_subscript) = ...
+        period - mod(tensor_sizes(padding_subscript), period);
+    padding_zeros = zeros(padding_sizes);
+    tensor = cat(padding_subscript, tensor, padding_zeros);
+end
+
+%% Update sizes after padding
+tensor_sizes = size(tensor);
+signal_sizes = tensor_sizes(subscripts);
+
 %% Expanded sizes computation
 expanded_sizes = zeros(1,ndims(tensor)+nSubscripts);
 sorted_subscripts = sort(subscripts);

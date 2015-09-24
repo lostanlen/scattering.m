@@ -1,4 +1,4 @@
-function y = ifft_multiply(x_ft,filter_struct,log2_resampling,colons,subscripts)
+function y = ifft_multiply(x_ft,filter,log2_resampling,colons,subscripts)
 if length(subscripts)>1
     error('Fourier-based filtering not ready in dimension >1');
 end
@@ -6,73 +6,57 @@ input_sizes = size(x_ft);
 
 %% Definition of positive range
 x_sizes = input_sizes(subscripts);
-x_start = - x_sizes/2 + 1;
-x_end = x_sizes/2;
+x_start = - x_sizes/2;
+x_end = x_sizes/2 - 1;
 
 y_sizes = pow2(x_sizes,log2_resampling);
-y_start = - y_sizes/2 + 1;
-y_end = y_sizes/2;
+y_start = - y_sizes/2;
+y_end = y_sizes/2 - 1;
 
-filter_ft = filter_struct.ft;
-filter_sizes = length(filter_ft);
-filter_start = filter_struct.ft_start;
-filter_end = filter_start + filter_sizes - 1;
-filter_mod_end = mod(filter_end + x_sizes/2 - 1, x_sizes) - x_sizes/2 + 1;
-
-if filter_mod_end<filter_start && filter_mod_end>0
-    pos_range_start = 0;
-else
-    pos_range_start = max(0, filter_start);
-end
-if filter_mod_end>0 && filter_mod_end>filter_start
-    pos_range_end = min([x_end, filter_mod_end, y_end]);
-else
-    pos_range_end = min([x_end, y_end]);
-end
-pos_range = pos_range_start:pos_range_end;
+filter_pos_end = filter.ft_posfirst + length(filter.ft_pos) - 1;
+pos_range_start = filter.ft_posfirst;
+pos_range_end = min(min(x_end, filter_pos_end), y_end);
 
 %% Definition of negative range
-if filter_mod_end<filter_start && (filter_mod_end>0 || filter_start<0)
-    neg_range_end = -1;
-else
-    neg_range_end = min(filter_mod_end, -1);
-end
-if filter_mod_end<filter_start
-    neg_range_start = max([x_start, y_start]);
-elseif filter_start<0
-    neg_range_start = max([x_start, filter_start, y_start]);
-elseif filter_mod_end<0
-    neg_range_start = max([x_start, y_start]);
-else
-    neg_range_start = 0;
-end
-neg_range = neg_range_start:neg_range_end;
+filter_neg_start = filter.ft_neglast - length(filter.ft_neg) + 1;
+neg_range_start = max(max(x_start, filter_neg_start), y_start);
+neg_range_end = filter.ft_neglast;
 
-%% Trimming of x_ft if needed
-pos_x_range = 1 + pos_range;
-neg_x_range = 1 + x_sizes + neg_range;
-x_range = cat(2,neg_x_range,pos_x_range);
-colons.subs{subscripts} = x_range;
-trimmed_x_ft = subsref(x_ft,colons);
+%% Trimming of x
+pos_x_range = (1+pos_range_start):(1+pos_range_end);
+colons.subs{subscripts} = pos_x_range;
+pos_x_ft = subsref(x_ft, colons);
+neg_x_range = (1+x_sizes+neg_range_start):(1+x_sizes+neg_range_end);
+colons.subs{subscripts} = neg_x_range;
+neg_x_ft = subsref(x_ft, colons);
 
-%% Trimming of filter_ft if needed
-pos_filter_range = mod(pos_range - filter_start + 1 - 1, x_sizes) + 1;
-neg_filter_range = mod(neg_range - filter_start + 1 - 1, x_sizes) + 1;
-filter_range = cat(2,neg_filter_range,pos_filter_range);
-colons.subs{subscripts} = filter_range;
-trimmed_filter_ft = subsref(filter_ft,colons);
+%% Trimming of filter
+pos_filter_range = ...
+    (1+pos_range_start-filter.ft_posfirst):(1+pos_range_end-filter.ft_posfirst);
+colons.subs{subscripts} = pos_filter_range;
+pos_filter_ft = subsref(filter.ft_pos, colons);
 
-%% Product between non-negligible Fourier coefficients of x_ft and filter_ft
-sub_y_ft = bsxfun(@times,trimmed_x_ft,trimmed_filter_ft);
+neg_filter_range = ...
+    (1+neg_range_start-filter_neg_start):(1+neg_range_end-filter_neg_start);
+colons.subs{subscripts} = neg_filter_range;
+neg_filter_ft = subsref(filter.ft_neg, colons);
+
+%% Product between non-negligible Fourier coefficients of x_ft and filter
+pos_y_ft = bsxfun(@times, pos_x_ft, pos_filter_ft);
+neg_y_ft = bsxfun(@times, neg_x_ft, neg_filter_ft);
 
 %% Assignment of product to zero-allocated y_ft
 y_tensor_sizes = size(x_ft);
 y_tensor_sizes(subscripts) = y_sizes;
 y = zeros(y_tensor_sizes);
-neg_y_range = neg_x_range + y_sizes - x_sizes;
-y_range = cat(2,neg_y_range,pos_x_range);
-colons.subs{subscripts} = y_range;
-y = subsasgn(y,colons,sub_y_ft);
+
+pos_y_range = (1+pos_range_start):(1+pos_range_end);
+colons.subs{subscripts} = pos_y_range;
+y = subsasgn(y, colons,  pos_y_ft);
+
+neg_y_range = (1+neg_range_start+y_sizes):(1+neg_range_end+y_sizes);
+colons.subs{subscripts} = neg_y_range;
+y = subsasgn(y, colons, neg_y_ft);
 
 %% In-place inverse Fourier transform
 for subscript = subscripts
