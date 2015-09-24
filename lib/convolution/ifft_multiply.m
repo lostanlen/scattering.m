@@ -52,11 +52,11 @@ y = zeros(y_tensor_sizes);
 
 pos_y_range = (1+pos_range_start):(1+pos_range_end);
 colons.subs{subscripts} = pos_y_range;
-y = subsasgn(y, pos_y_ft, colons);
+y = subsasgn(y, colons,  pos_y_ft);
 
 neg_y_range = (1+neg_range_start+y_sizes):(1+neg_range_end+y_sizes);
 colons.subs{subscripts} = neg_y_range;
-y = subsasgn(y, neg_y_ft, colons);
+y = subsasgn(y, colons, neg_y_ft);
 
 %% In-place inverse Fourier transform
 for subscript = subscripts
