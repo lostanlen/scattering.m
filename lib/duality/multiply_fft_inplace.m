@@ -1,4 +1,4 @@
-function y_ft = multiply_fft_inplace(x_ft,filter_struct, ...
+function y_ft = multiply_fft_inplace(x_ft,filter, ...
     log2_resampling,colons,subscripts,y_ft)
 %% In-place Fourier transform
 for subscript = subscripts
@@ -61,16 +61,12 @@ neg_filter_ft = subsref(filter.ft_neg, colons);
 pos_y_ft = bsxfun(@times, pos_x_ft, pos_filter_ft);
 neg_y_ft = bsxfun(@times, neg_x_ft, neg_filter_ft);
 
-%% Assignment of product to zero-allocated y_ft
-y_tensor_sizes = size(x_ft);
-y_tensor_sizes(subscripts) = y_sizes;
-y_ft = zeros(y_tensor_sizes);
-
+%% Product between x_ft and filter_xt, and reduction into y_ft
 pos_y_range = (1+pos_range_start):(1+pos_range_end);
 colons.subs{subscripts} = pos_y_range;
-y_ft = subsasgn(y_ft, colons,  pos_y_ft);
+y_ft = subsasgn(y_ft, colons,  subsref(y_ft, colons) + pos_y_ft);
 
 neg_y_range = (1+neg_range_start+y_sizes):(1+neg_range_end+y_sizes);
 colons.subs{subscripts} = neg_y_range;
-y_ft = subsasgn(y_ft, colons, neg_y_ft);
+y_ft = subsasgn(y_ft, colons, subsref(y_ft, colons) + neg_y_ft);
 end
