@@ -60,6 +60,8 @@ switch func2str(spec.handle)
         spec.has_real_ft = true;
     case 'RLC_1d'
         spec.has_real_ft = false;
+    case 'finitediff_1d'
+        spec.has_real_ft = true;
     otherwise
         disp(spec);
         error('Unknown wavelet handle in "bank.spec".');
