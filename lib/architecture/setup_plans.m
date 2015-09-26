@@ -95,6 +95,7 @@ for layer = 2:nLayers
                         field.max_Q = ...
                             enforce(field, 'max_Q', 1);
                         field.nOctaves = enforce(field, 'nOctaves', 2);
+                        field.is_spinned = enforce(field, 'is_spinned', false);
                     end
                 end
                 gamma_bounds = plans{1}.banks{1}.behavior.gamma_bounds;
@@ -108,7 +109,7 @@ for layer = 2:nLayers
                 field.dimension = banks{end}.behavior.dimension+1;
                 field.handle = default(field,'handle',@gammatone_1d);
                 field.invariance = default(field,'invariance','bypassed');
-                field.is_spinned = enforce(field,'is_spinned',true);
+                field.is_spinned = default(field,'is_spinned',true);
                 field.has_multiple_support = ...
                     enforce(field,'has_multiple_support',true);
                 field.key.(root){1}.j = cell(1);
