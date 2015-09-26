@@ -57,6 +57,10 @@ switch handle_string
         scales = [2 4];
         %scales = log(2) ./ (bank_spec.decay_factor * resolutions);
         bandwidths = 1 ./ scales;
+    case 'finitediff_1d'
+        quality_factors = [1 1];
+        scales = [3 3];
+        bandwidths = [1/2 1/4];
 end
 %%
 log2_resolutions = min(0,1+floor(log2(resolutions)));
