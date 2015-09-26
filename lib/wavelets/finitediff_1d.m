@@ -1,5 +1,5 @@
-function finitediffs = finitediff_1d(bank_metas, ~)
-assert(length([bank_metas.resolution])==2);
+function finitediffs = finitediff_1d(~, bank_spec)
+finitediffs = zeros(bank_spec.size, 1);
 
 % First scale (first-order finite difference)
 finitediffs(end, 1) = -1;
