@@ -66,6 +66,29 @@ else
 end
 
 %% Scattering implementations
+%% []. Not deepest, not oriented, not spiraled
+% e.g. scattering along j with real wavelets after scattering along gamma
+if ~is_deepest && ~is_oriented && ~is_spiraled
+    data = cell(nCousins,nEnabled_gammas);
+    subsasgn_structure = substruct('()',replicate_colon(input_dimension));
+    for cousin = 1:nCousins
+        x_ft = data_ft{cousin};
+        for gamma_index = 1:nEnabled_gammas
+            log2_resampling = enabled_log2_resamplings(gamma_index);
+            output_size = output_sizes{cousin,gamma_index};
+            data{cousin,gamma_index} = zeros(output_size);
+            psi = psis(gammas(gamma_index));
+            data{cousin,gamma_index} = ...
+                subsasgn(data{cousin,gamma_index}, subsasgn_structure, ...
+                ifft_multiply(x_ft,psi,log2_resampling,colons,subscripts));
+        end
+    end
+    if length(input_size)>1
+        data = reshape(data,[input_size,nEnabled_gammas]);
+    end
+    return
+end
+
 %% D. Deepest
 % e.g. time scattering of 1d signals
 if is_deepest && ~is_oriented && ~is_spiraled
