@@ -42,7 +42,7 @@ elseif is_deepest && ~is_oriented
     return
 elseif ~is_deepest && is_oriented
     % e.g. scattering along gamma in joint time-frequency scattering
-    % e.g. scattering along j in spiral scattering
+    % e.g. scattering along j in spiral scattering with analytic wavelets
     % e.g. scattering along theta in roto-translation scattering
     theta_range = [1;1;nThetas];
     for cousin = 1:nCousins
@@ -56,6 +56,20 @@ elseif ~is_deepest && is_oriented
             zeroth_ranges{cousin,gamma_index} = local_range;
             zeroth_ranges{cousin,gamma_index}(2,subscripts) = ...
                 pow2(local_range(2,subscripts),-log2_resampling);
+        end
+    end
+elseif ~is_deepest && ~is_oriented
+    % e.g. scattering along j in spiral scattering with real wavelets
+    for cousin = 1:nCousins
+        for gamma_index = 1:nEnabled_gammas
+            log2_resampling = enabled_log2_resamplings(gamma_index);
+            output_sizes{cousin, gamma_index} = data_size{cousin};
+            output_sizes{cousin, gamma_index}(subscripts) = ...
+                pow2(output_sizes{cousin, gamma_index}(subscripts), ...
+                log2_resampling);
+            zeroth_ranges{cousin, gamma_index} = ranges{1+0}{cousin};
+            zeroth_ranges{cousin, gamma_index}(2, subscripts) = ...
+                pow2(zeroth_ranges{cousin, gamma_index}, -log2_resampling);
         end
     end
 end
