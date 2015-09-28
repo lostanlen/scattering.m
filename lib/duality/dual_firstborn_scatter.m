@@ -57,7 +57,7 @@ if is_deepest && ~is_oriented
 end
 
 %% DO. Deepest, Oriented
-% e.g. along gamma variable
+% e.g. along gamma variable with analytic wavelets
 if is_deepest && is_oriented && ~is_unspiraled
     % In-place multiply-add in Fourier domain
     for gamma_index = 1:nGammas
@@ -84,7 +84,7 @@ if is_deepest && is_oriented && ~is_unspiraled
 end
 
 %% OS. Oriented, unSpiraled
-% e.g. along j variable after scattering along gamma
+% e.g. along j variable with analytic wavelets after scattering along gamma
 if ~is_deepest && is_oriented && is_unspiraled
     spiral = bank_behavior.spiral;
     spiral_subscript = spiral.subscript;
@@ -134,7 +134,7 @@ if ~is_deepest && is_oriented && is_unspiraled
 end
 
 %% DOS. Deepest, Oriented, unSpiraled
-% e.g. along j variable after blurring along gamma
+% e.g. along j variable with analytic wavelets after blurring along gamma
 if is_deepest && is_oriented && is_unspiraled
     spiral = bank_behavior.spiral;
     spiral_subscript = spiral.subscript;
