@@ -3,31 +3,33 @@ function bank = setup_bank(bank)
 bank.metas = fill_bank_metas(bank.spec);
 
 %% Construction of the band-pass filters psi's in time domain
-raw_psis = bank.spec.handle(bank.metas,bank.spec);
+psi_ifts = bank.spec.handle(bank.metas,bank.spec);
 
 %% Fourier transform and spinning
 % NB: a wavelet-specific GPU handle should integrate this natively.
 signal_dimension = length(bank.spec.size);
-raw_psi_fts = multidimensional_fft(raw_psis,1:signal_dimension);
+psi_fts = multidimensional_fft(psi_ifts,1:signal_dimension);
 if bank.spec.has_real_ft
-    raw_psi_fts = real(raw_psi_fts);
+    psi_fts = real(psi_fts);
 end
 if bank.spec.is_spinned
-    raw_psi_fts = spin_psi_fts(raw_psi_fts,signal_dimension);
+    psi_fts = spin_psi_fts(psi_fts,signal_dimension);
 end
 
 %% Littlewood-Paley renormalization
 [normalizers,psi_energy_sum] = ...
-    get_psi_normalizers(raw_psi_fts,bank.metas,bank.spec);
-if bank.spec.domain.is_ift
-    psi_ifts = bsxfun(@rdivide,raw_psi_ifts,normalizers);
-else
-    psi_ifts = [];
-end
-if bank.spec.domain.is_ft
-    psi_fts = bsxfun(@rdivide,raw_psi_fts,normalizers);
-else
-    psi_fts = [];
+    get_psi_normalizers(psi_fts,bank.metas,bank.spec);
+if ~strcmp(func2str(bank.spec.handle), 'finitediff_1d')
+    if bank.spec.domain.is_ift
+        psi_ifts = bsxfun(@rdivide,psi_ifts,normalizers);
+    else
+        psi_ifts = [];
+    end
+    if bank.spec.domain.is_ft
+        psi_fts = bsxfun(@rdivide,psi_fts,normalizers);
+    else
+        psi_fts = [];
+    end
 end
 
 %% Filter "optimization": truncation of negligible values
