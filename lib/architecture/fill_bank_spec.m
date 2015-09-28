@@ -1,7 +1,11 @@
 function spec = fill_bank_spec(opt)
 %% Management of default parameters
 spec.T = opt.T;
-spec.J = enforce(opt,'J',log2(spec.T));
+if isfield(opt, 'handle') && strcmp(func2str(opt.handle), 'finitediff_1d')
+    spec.J = opt.J;
+else
+    spec.J = enforce(opt,'J',log2(spec.T));
+end
 spec.max_Q = default(opt,'max_Q',default(opt,'nFilters_per_octave',1));
 spec.max_scale = default(opt,'max_scale',spec.T);
 spec.nFilters_per_octave = ...
@@ -26,7 +30,6 @@ spec.has_duals = default(opt,'has_duals',false);
 spec.has_multiple_support = default(opt,'has_multiple_support',false);
 spec.periodization_extent = default(opt,'periodization_extent',1);
 spec.is_double_precision = enforce(opt,'is_double_precision',true);
-spec.is_phi_gaussian = default(opt,'is_phi_gaussian',true);
 if spec.is_double_precision
     epsilon = eps(double(1));
 else
@@ -50,15 +53,26 @@ elseif signal_dimension==2
     error('2d wavelets not ready'); % TODO: write @morlet_2d
     spec.handle = @morlet_2d;
 end
-
+if strcmp(func2str(spec.handle), 'finitediff_1d')
+    phi_string = default(opt, 'phi', 'rectangular');
+else
+    phi_string = default(opt, 'phi', 'gaussian');
+end
+spec.phi = parse_phi(phi_string);
 %% Management of handle-specific parameters
 switch func2str(spec.handle)
     case 'gammatone_1d'
         spec.gammatone_order = default(opt,'gammatone_order',4);
+        spec.has_real_ift = false;
         spec.has_real_ft = false;
     case 'morlet_1d'
+        spec.has_real_ift = false;
         spec.has_real_ft = true;
     case 'RLC_1d'
+        spec.has_real_ift = false;
+        spec.has_real_ft = false;
+    case 'finitediff_1d'
+        spec.has_real_ift = true;
         spec.has_real_ft = false;
     otherwise
         disp(spec);
@@ -68,6 +82,11 @@ end
 if ~spec.has_real_ft
     spec.is_ift_flipped = default(opt,'is_ift_flipped',false);
 end
+
+if signal_dimension==1 && spec.has_real_ift && spec.is_spinned
+    error('It is not necessary to spin a 1d real filter bank');
+end
+
 %% Alphanumeric ordering of field names
 spec = orderfields(spec);
 end
