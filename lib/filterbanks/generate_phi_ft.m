@@ -1,4 +1,4 @@
-function [phi_ft,energy_sum] = generate_phi_ft(psi_energy_sum,bank_spec)
+function phi_ft= generate_phi_ft(psi_energy_sum,bank_spec)
 %%
 symmetrized_energy_sum = (psi_energy_sum + psi_energy_sum(end:-1:1)) / 2;
 remainder = 1 - min(symmetrized_energy_sum,1);
@@ -20,26 +20,21 @@ switch signal_dimension
             phi_ft(symmetric_support) = half_gaussian;
             phi_ft(half_size+1) = exp(- half_size*half_size / denominator);
         elseif bank_spec.phi.is_rectangular
-            phi_ft(half_support) = 1;
-            phi_ft(symmetric_support) = 1;
+            phi_ift = zeros(original_sizes, 1);
+            half_ift_support = 1:((bank_spec.T-1)/2);
+            phi_ift(1 + half_ift_support) = 1;
+            phi_ift(1 + end - half_ift_support) = 1;
+            phi_ift(1+0) = 1;
+            phi_ft = fft(phi_ift);
         elseif bank_spec.phi.is_by_substraction
             half_support = 2:half_support_length;
             symmetric_support = original_sizes + 1 - half_support + 1;
             sqrt_truncated_remainder = sqrt(remainder(half_support));
             phi_ft(half_support) = sqrt_truncated_remainder;
             phi_ft(symmetric_support) = sqrt_truncated_remainder;
+            phi_ft(1+0) = 1;
         end
-        % We enforce energy conservation for constant signals by setting
-        % the Fourier transform to exactly 1 at frequency zero.
-        phi_ft(1+0) = 1;
     case 2
         error('2D phi not ready yet');
 end
-spin_multiplier = 1 + ~bank_spec.is_spinned;
-energy_sum = psi_energy_sum;
-energy_sum(half_support) = max(psi_energy_sum(half_support),spin_multiplier);
-if bank_spec.is_spinned
-    energy_sum(symmetric_support) = energy_sum(half_support);
-end
-energy_sum(1+0) = spin_multiplier;
 end
