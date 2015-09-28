@@ -9,7 +9,7 @@ switch signal_dimension
     case 1
         half_support_length = ...
             bank_spec.phi_bw_multiplier/2 * original_sizes/bank_spec.T;
-        if bank_spec.is_phi_gaussian
+        if bank_spec.phi.is_gaussian
             denominator = half_support_length*half_support_length / log(10);
             half_size = original_sizes / 2;
             half_support = 2:half_size;
@@ -19,7 +19,10 @@ switch signal_dimension
             phi_ft(half_support) = half_gaussian;
             phi_ft(symmetric_support) = half_gaussian;
             phi_ft(half_size+1) = exp(- half_size*half_size / denominator);
-        else
+        elseif bank_spec.phi.is_rectangular
+            phi_ft(half_support) = 1;
+            phi_ft(symmetric_support) = 1;
+        elseif bank_spec.phi.is_by_substraction
             half_support = 2:half_support_length;
             symmetric_support = original_sizes + 1 - half_support + 1;
             sqrt_truncated_remainder = sqrt(remainder(half_support));
