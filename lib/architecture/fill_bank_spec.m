@@ -59,12 +59,16 @@ end
 switch func2str(spec.handle)
     case 'gammatone_1d'
         spec.gammatone_order = default(opt,'gammatone_order',4);
+        spec.has_real_ift = false;
         spec.has_real_ft = false;
     case 'morlet_1d'
+        spec.has_real_ift = false;
         spec.has_real_ft = true;
     case 'RLC_1d'
+        spec.has_real_ift = false;
         spec.has_real_ft = false;
     case 'finitediff_1d'
+        spec.has_real_ift = true;
         spec.has_real_ft = false;
     otherwise
         disp(spec);
