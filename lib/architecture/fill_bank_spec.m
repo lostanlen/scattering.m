@@ -30,12 +30,6 @@ spec.has_duals = default(opt,'has_duals',false);
 spec.has_multiple_support = default(opt,'has_multiple_support',false);
 spec.periodization_extent = default(opt,'periodization_extent',1);
 spec.is_double_precision = enforce(opt,'is_double_precision',true);
-if strcmp(spec.handle, 'finitediff_1d')
-    phi_string = default(opt, 'phi', 'rectangular');
-else
-    phi_string = default(opt, 'phi', 'gaussian');
-end
-spec.phi = parse_phi(phi_string);
 if spec.is_double_precision
     epsilon = eps(double(1));
 else
@@ -59,7 +53,12 @@ elseif signal_dimension==2
     error('2d wavelets not ready'); % TODO: write @morlet_2d
     spec.handle = @morlet_2d;
 end
-
+if strcmp(spec.handle, 'finitediff_1d')
+    phi_string = default(opt, 'phi', 'rectangular');
+else
+    phi_string = default(opt, 'phi', 'gaussian');
+end
+spec.phi = parse_phi(phi_string);
 %% Management of handle-specific parameters
 switch func2str(spec.handle)
     case 'gammatone_1d'
