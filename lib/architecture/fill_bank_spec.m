@@ -79,7 +79,7 @@ if ~spec.has_real_ft
     spec.is_ift_flipped = default(opt,'is_ift_flipped',false);
 end
 
-if signal_dimension==1 && spec.has_real_ft && spec.is_spinned
+if signal_dimension==1 && spec.has_real_ift && spec.is_spinned
     error('It is not necessary to spin a 1d real filter bank');
 end
 
