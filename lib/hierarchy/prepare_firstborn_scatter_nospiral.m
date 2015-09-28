@@ -69,7 +69,8 @@ elseif ~is_deepest && ~is_oriented
                 log2_resampling);
             zeroth_ranges{cousin, gamma_index} = ranges{1+0}{cousin};
             zeroth_ranges{cousin, gamma_index}(2, subscripts) = ...
-                pow2(zeroth_ranges{cousin, gamma_index}, -log2_resampling);
+                pow2(zeroth_ranges{cousin, gamma_index}(2, subscripts), ...
+                -log2_resampling);
         end
     end
 end
