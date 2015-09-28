@@ -35,7 +35,7 @@ max_Q = quality_factors(1);
 Q_normalizers = continuous_Q./max_Q;
 normalized_sum = raw_sum ./ Q_normalizers;
 spin_normalizer = ...
-    1 - double((~bank_spec.is_spinned) && (~bank_spec.has_real_ft)) /2;
+    1 - double((~bank_spec.is_spinned) && (~bank_spec.has_real_ift)) /2;
 energy_normalizer = max(normalized_sum(:));
 squared_normalizers = spin_normalizer * energy_normalizer .* Q_normalizers;
 normalizers = sqrt(squared_normalizers);
