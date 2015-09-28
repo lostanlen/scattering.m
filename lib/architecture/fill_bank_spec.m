@@ -53,7 +53,7 @@ elseif signal_dimension==2
     error('2d wavelets not ready'); % TODO: write @morlet_2d
     spec.handle = @morlet_2d;
 end
-if strcmp(spec.handle, 'finitediff_1d')
+if strcmp(func2str(spec.handle), 'finitediff_1d')
     phi_string = default(opt, 'phi', 'rectangular');
 else
     phi_string = default(opt, 'phi', 'gaussian');
