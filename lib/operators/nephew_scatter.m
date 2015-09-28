@@ -43,7 +43,7 @@ if nData_dimensions>1
     error('nephew_scatter for multiple variables at uncle level not ready yet');
 end
 for uncle_index = 1:nUncle_gammas
-    ranges_node = get_ranges_node(input_ranges,uncle_index);
+    ranges_node = get_ranges_node(input_ranges, uncle_index);
     if isempty(sibling)
         [data{uncle_index},ranges_node] = ...
             firstborn_scatter(data_ft{uncle_index},bank,ranges_node);
