@@ -32,7 +32,8 @@ phi_energy = phi .* conj(phi);
 littlewood_paley_sum = sum(sum(psi_energies,3),2)+phi_energy;
 %%
 if ~bank_spec.is_spinned
-    littlewood_paley_sum = symmetrize_ft(littlewood_paley_sum,bank.behavior);
+    littlewood_paley_sum(2:end) = ...
+        0.5 * (littlewood_paley_sum(2:end) + littlewood_paley_sum(end:-1:2));
 end
 sqrt_littlewood_paley_sum = sqrt(littlewood_paley_sum);
 
