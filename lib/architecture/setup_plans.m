@@ -88,7 +88,7 @@ for layer = 2:nLayers
                     end
                     % If wavelets are replaced by finite differences
                     if strcmp(handle_str, 'finitediff_1d')
-                        field.T = enforce(field, 'T', 3);
+                        field.T = enforce(field, 'T', 2);
                         field.J = enforce(field, 'J', 2);
                         field.nFilters_per_octave = ...
                             enforce(field, 'nFilters_per_octave', 1);
