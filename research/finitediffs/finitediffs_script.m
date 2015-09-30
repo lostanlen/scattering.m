@@ -75,7 +75,7 @@ signal = signal * norm(target_signal)/norm(signal);
 signal = signal + mean(target_signal);
 
 %% Reconstruction
-nIterations = 20;
+nIterations = 100;
 
 % Initialization
 reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
