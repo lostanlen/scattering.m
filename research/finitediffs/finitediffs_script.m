@@ -1,4 +1,4 @@
-file_path = 'research/gretsi15/Vc-scale-chr-asc.wav';
+file_path = 'Vc-scale-chr-asc.wav';
 [full_waveform, sample_rate] = audioread_compat(file_path);
 N = 2^16;
 target_signal = full_waveform(1:N);
