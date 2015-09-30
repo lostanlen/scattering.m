@@ -45,7 +45,7 @@ is_unspiraled = isfield(bank_behavior,'spiral') && ...
     ~strcmp(get_suffix(bank_behavior.key),'gamma');
 %% D. Deepest
 % e.g. along time
-if is_deepest && ~is_oriented
+if is_deepest && ~is_oriented && ~is_unspiraled
     for gamma_index = 1:nGammas
         gamma = gammas(gamma_index);
         log2_resampling = enabled_log2_resamplings(gamma_index);
