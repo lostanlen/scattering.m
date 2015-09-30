@@ -67,7 +67,7 @@ end
 
 %% Scattering implementations
 %% []. Not deepest, not oriented, not spiraled
-% e.g. scattering along j with real wavelets after scattering along gamma
+% e.g. real scattering along j after scattering along gamma
 if ~is_deepest && ~is_oriented && ~is_spiraled
     data = cell(nCousins,nEnabled_gammas);
     subsasgn_structure = substruct('()',replicate_colon(input_dimension));
@@ -104,8 +104,8 @@ end
 
 %% DO. Deepest, Oriented
 % e.g. scattering along space for images
-% e.g. scattering along gamma in joint time-frequency scattering
-% e.g. scattering along j after blurring (or bypassing) gamma
+% e.g. analytic scattering along gamma in joint time-frequency scattering
+% e.g. analytic scattering along j after blurring (or bypassing) gamma
 if is_deepest && is_oriented && ~is_spiraled
     data = cell(nEnabled_gammas,1);
     subsasgn_structure = substruct('()',replicate_colon(input_dimension+1));
@@ -124,7 +124,7 @@ if is_deepest && is_oriented && ~is_spiraled
 end
 
 %% DOS. Deepest, Oriented, Spiraled
-% e.g. scattering along gamma in spiral
+% e.g. analytic scattering along gamma in spiral
 if is_deepest && is_oriented && is_spiraled
     data = cell(nEnabled_gammas,1);
     for gamma_index = 1:nEnabled_gammas
@@ -144,8 +144,8 @@ if is_deepest && is_oriented && is_spiraled
 end
 
 %% O. Oriented
-% e.g. scattering along j in after scattering along gamma
-% e.g. scattering along theta in roto-translation scattering
+% e.g. analytic scattering along j after scattering along gamma
+% e.g. analytic scattering along theta in roto-translation scattering
 if ~is_deepest && is_oriented && ~is_spiraled
     data = cell(nCousins,nEnabled_gammas);
     subsasgn_structure = substruct('()',replicate_colon(input_dimension+1));

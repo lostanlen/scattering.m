@@ -17,6 +17,7 @@ if length(minuend_ranges)>1
     
     % Difference initialization
     difference_data = cell(size(minuend_data));
+    difference_ranges{end-1} = cell(size(minuend_ranges{end-1}));
     
     % Loop over nodes
     for node = 1:numel(minuend_data)

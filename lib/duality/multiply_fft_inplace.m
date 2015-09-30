@@ -1,5 +1,5 @@
-function y_ft = multiply_fft_inplace(x_ft,filter, ...
-    log2_resampling,colons,subscripts,y_ft)
+function y_ft = multiply_fft_inplace(x_ft, filter, ...
+    log2_resampling, colons, subscripts, y_ft)
 %% In-place Fourier transform
 for subscript = subscripts
     x_ft = fft(x_ft,[],subscript);
@@ -64,7 +64,7 @@ neg_y_ft = bsxfun(@times, neg_x_ft, neg_filter_ft);
 %% Product between x_ft and filter_xt, and reduction into y_ft
 pos_y_range = (1+pos_range_start):(1+pos_range_end);
 colons.subs{subscripts} = pos_y_range;
-y_ft = subsasgn(y_ft, colons,  subsref(y_ft, colons) + pos_y_ft);
+y_ft = subsasgn(y_ft, colons, subsref(y_ft, colons) + pos_y_ft);
 
 neg_y_range = (1+neg_range_start+y_sizes):(1+neg_range_end+y_sizes);
 colons.subs{subscripts} = neg_y_range;

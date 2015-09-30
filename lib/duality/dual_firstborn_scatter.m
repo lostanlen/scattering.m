@@ -45,7 +45,7 @@ is_unspiraled = isfield(bank_behavior,'spiral') && ...
     ~strcmp(get_suffix(bank_behavior.key),'gamma');
 %% D. Deepest
 % e.g. along time
-if is_deepest && ~is_oriented
+if is_deepest && ~is_oriented && ~is_unspiraled
     for gamma_index = 1:nGammas
         gamma = gammas(gamma_index);
         log2_resampling = enabled_log2_resamplings(gamma_index);
@@ -57,7 +57,7 @@ if is_deepest && ~is_oriented
 end
 
 %% DO. Deepest, Oriented
-% e.g. along gamma variable
+% e.g. along gamma variable with analytic wavelets
 if is_deepest && is_oriented && ~is_unspiraled
     % In-place multiply-add in Fourier domain
     for gamma_index = 1:nGammas
@@ -84,7 +84,7 @@ if is_deepest && is_oriented && ~is_unspiraled
 end
 
 %% OS. Oriented, unSpiraled
-% e.g. along j variable after scattering along gamma
+% e.g. along j variable with analytic wavelets after scattering along gamma
 if ~is_deepest && is_oriented && is_unspiraled
     spiral = bank_behavior.spiral;
     spiral_subscript = spiral.subscript;
@@ -133,8 +133,55 @@ if ~is_deepest && is_oriented && is_unspiraled
     return
 end
 
+%% S. unSpiraled
+% e.g. along j variable with real wavelets after scattering along gamma
+if ~is_deepest && ~is_oriented && is_unspiraled
+    spiral = bank_behavior.spiral;
+    spiral_subscript = spiral.subscript;
+    nCousins = input_size(1);
+    data_out = cell(nCousins,1);
+    for cousin = 1:nCousins
+        % Loading
+        x_ft = data_ft_out{cousin};
+        
+        % In-place multiply-add in Fourier domain
+        for gamma_index = 1:nGammas
+            log2_resampling = enabled_log2_resamplings(gamma_index);
+            dual_psi = dual_psis(gammas(gamma_index));
+            x_ft = multiply_fft_inplace( ...
+                data_in{cousin,gamma_index}, dual_psi, ...
+                log2_resampling, colons, subscripts, x_ft);
+        end
+        
+        % Inverse Fourier transform
+        x = multidimensional_ifft(x_ft, subscripts);
+        
+        % Unspiraling
+        output_size = size(x);
+        unspiraled_size = [ ...
+            output_size(1:(spiral_subscript-1)), ...
+            output_size(spiral_subscript)*output_size(spiral_subscript+1), ...
+            output_size((spiral_subscript+2):end)];
+        x = reshape(x, unspiraled_size);
+        
+        % Unpadding
+        nPadded_gammas = size(x,spiral_subscript);
+        nUnpadded_gammas = pow2(floor(nextpow2(nPadded_gammas)));
+        if nUnpadded_gammas<nPadded_gammas
+            nSubscripts = length(output_size) - 1;
+            subsref_structure = substruct('()', replicate_colon(nSubscripts));
+            subsref_structure.subs{spiral_subscript} = 1:nUnpadded_gammas;
+            x = subsref(x, subsref_structure);
+        end
+        
+        % Assignment
+        data_out{cousin} = x;
+    end
+    return
+end
+
 %% DOS. Deepest, Oriented, unSpiraled
-% e.g. along j variable after blurring along gamma
+% e.g. along j variable with analytic wavelets after blurring along gamma
 if is_deepest && is_oriented && is_unspiraled
     spiral = bank_behavior.spiral;
     spiral_subscript = spiral.subscript;
@@ -169,4 +216,41 @@ if is_deepest && is_oriented && is_unspiraled
         subsref_structure.subs{spiral_subscript} = 1:nUnpadded_gammas;
         data_out = subsref(data_out,subsref_structure);
     end
+    return
+end
+
+%% DS. Deepest, unSpiraled
+% e.g. along j variable with real wavelets after blurring along gamma
+if is_deepest && ~is_oriented && is_unspiraled
+    spiral = bank_behavior.spiral;
+    spiral_subscript = spiral.subscript;
+    % In-place multiply-add in Fourier domain
+    for gamma_index = 1:nGammas
+        log2_resampling = enabled_log2_resamplings(gamma_index);
+        dual_psi = dual_psis(gammas(gamma_index));
+        data_ft_out = multiply_fft_inplace(data_in{gamma_index}, ...
+            dual_psi, log2_resampling, colons, subscripts, data_ft_out);
+    end
+    
+    % Inverse Fourier transform
+    data_out = multidimensional_ifft(data_ft_out, subscripts);
+    
+    % Unspiraling
+    output_size = size(data_out);
+    unspiraled_size = [ ...
+        output_size(1:(spiral_subscript-1)), ...
+        output_size(spiral_subscript) * output_size(spiral_subscript+1), ...
+        output_size((spiral_subscript+2):end)];
+    data_out = reshape(data_out, unspiraled_size);
+    
+    % Unpadding
+    nPadded_gammas = size(data_out, spiral_subscript);
+    nUnpadded_gammas = pow2(floor(nextpow2(nPadded_gammas)));
+    if nUnpadded_gammas < nPadded_gammas
+        nSubscripts = length(output_size) - 1;
+        subsref_structure = substruct('()', replicate_colon(nSubscripts));
+        subsref_structure.subs{spiral_subscript} = 1:nUnpadded_gammas;
+        data_out = subsref(data_out, subsref_structure);
+    end
+    return
 end
