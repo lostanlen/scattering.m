@@ -19,6 +19,7 @@ switch signal_dimension
             phi_ft(half_support) = half_gaussian;
             phi_ft(symmetric_support) = half_gaussian;
             phi_ft(half_size+1) = exp(- half_size*half_size / denominator);
+            phi_ft(1+0) = 1;
         elseif bank_spec.phi.is_rectangular
             phi_ift = zeros(original_sizes, 1);
             half_ift_support = 1:((bank_spec.T-1)/2);
