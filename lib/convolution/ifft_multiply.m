@@ -6,11 +6,11 @@ input_sizes = size(x_ft);
 
 %% Definition of positive range
 x_sizes = input_sizes(subscripts);
-x_start = - x_sizes/2;
+x_start = - x_sizes/2 + 1;
 x_end = x_sizes/2 - 1;
 
 y_sizes = pow2(x_sizes,log2_resampling);
-y_start = - y_sizes/2;
+y_start = - y_sizes/2 + 1;
 y_end = y_sizes/2 - 1;
 
 filter_pos_end = filter.ft_posfirst + length(filter.ft_pos) - 1;
@@ -58,6 +58,36 @@ neg_y_range = (1+neg_range_start+y_sizes):(1+neg_range_end+y_sizes);
 colons.subs{subscripts} = neg_y_range;
 y = subsasgn(y, colons, neg_y_ft);
 
+%% Midpoint
+if log2_resampling < 0
+    if filter_neg_start < (-y_sizes/2)
+        colons.subs{subscripts} = x_sizes + 1 - y_sizes/2;
+        midpoint_x_ft = subsref(x_ft, colons);
+        midpoint_filter_ft = filter.ft_neg(1 - y_sizes/2 - filter_neg_start);
+        midpoint_y_ft = bsxfun(@times, midpoint_x_ft, midpoint_filter_ft);
+        colons.subs{subscripts} = 1 + y_sizes / 2;
+        if filter_pos_end > (y_sizes/2)
+            midpoint_x_ft = subsref(x_ft, colons);
+            midpoint_filter_ft = ...
+                filter.ft_pos(1 + y_sizes/2 - filter.ft_posfirst);
+            midpoint_y_ft = midpoint_y_ft + ...
+                bsxfun(@times, midpoint_x_ft, midpoint_filter_ft);
+        end
+        y = subsasgn(y, colons, midpoint_y_ft);
+    elseif filter_pos_end > (y_sizes/2)
+        colons.subs{subscripts} = 1 + y_sizes / 2;
+        midpoint_x_ft = subsref(x_ft, colons);
+        midpoint_filter_ft = filter.ft_pos(y_sizes/2 - filter.ft_posfirst);
+        midpoint_y_ft = bsxfun(@times, midpoint_x_ft, midpoint_filter_ft);
+        y = subsasgn(y, colons, midpoint_y_ft);
+    end
+elseif log2_resampling == 0 && ~isempty(filter.ft_neglast)
+    colons.subs{subscripts} = 1 + x_sizes / 2;
+    midpoint_y_ft = subsref(x_ft, colons) * filter.ft_neg(1);
+    y = subsasgn(y, colons, midpoint_y_ft);
+end
+
+%%
 %% In-place inverse Fourier transform
 for subscript = subscripts
     y = ifft(y,[],subscript);
