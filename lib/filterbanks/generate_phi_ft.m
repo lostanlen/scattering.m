@@ -18,7 +18,6 @@ switch signal_dimension
             half_gaussian = exp(- omegas .* omegas / denominator);
             phi_ft(half_support) = half_gaussian;
             phi_ft(symmetric_support) = half_gaussian;
-            phi_ft(half_size+1) = exp(- half_size*half_size / denominator);
             phi_ft(1+0) = 1;
         elseif bank_spec.phi.is_rectangular
             phi_ift = zeros(original_sizes, 1);
@@ -35,6 +34,9 @@ switch signal_dimension
             phi_ft(symmetric_support) = sqrt_truncated_remainder;
             phi_ft(1+0) = 1;
         end
+        % We must ensure that phi_ft is exactly zero at the frequency pi
+        % in order to yield real results for real inputs.
+        phi_ft(half_size+1) = 0;
     case 2
         error('2D phi not ready yet');
 end
