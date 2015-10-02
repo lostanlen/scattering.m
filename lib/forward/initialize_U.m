@@ -44,7 +44,11 @@ elseif isequal(subscripts,1) && unpadded_signal_size>hop_signal_size
     chunked_tensor(lhs_indices,nChunks,:) = tensor(rhs_indices,:);
     
     tensor = chunked_tensor;
-    variable_names = {'time','chunk'};
+    if ismatrix(chunked_tensor)
+        variable_names = {'time', 'chunk'};
+    else
+        variable_names = {'time', 'chunk', 'channel'};
+    end
     U0 = initialize_variables_custom(chunked_tensor_size,variable_names);
     U0.variable_tree.time{1}.leaf.unpadded_size = unpadded_signal_size;
 end
