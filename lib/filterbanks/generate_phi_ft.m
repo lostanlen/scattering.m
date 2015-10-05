@@ -36,7 +36,7 @@ switch signal_dimension
         end
         % We must ensure that phi_ft is exactly zero at the frequency pi
         % in order to yield real results for real inputs.
-        phi_ft(half_size+1) = 0;
+        phi_ft(1+end/2) = 0;
     case 2
         error('2D phi not ready yet');
 end
