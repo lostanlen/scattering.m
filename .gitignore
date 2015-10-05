@@ -2,6 +2,7 @@
 /tmp
 /usr
 /Make-user
+/research/finitediffs/local/
 
 *.m~
 
