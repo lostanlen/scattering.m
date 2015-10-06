@@ -2,7 +2,7 @@ file_path = 'ravel_original_at17640Hz.wav';
 [full_waveform, sample_rate] = audioread_compat(file_path);
 N = 2^16;
 target_signal = full_waveform(1:N);
-arch_type = 'spiral';
+arch_type = 'gammatonespiral';
 
 %%
 T = N/2;
@@ -19,7 +19,7 @@ opts{2}.time.handle = @gammatone_1d;
 opts{2}.time.sibling_mask_factor = 2;
 opts{2}.time.max_Q = 1;
 opts{2}.time.has_duals = true;
-opts{2}.time.U_log2_oversampling = 1;
+opts{2}.time.U_log2_oversampling = 2;
 
 opts{2}.gamma.T = 4 * opts{1}.time.nFilters_per_octave;
 opts{2}.gamma.handle = @morlet_1d;
