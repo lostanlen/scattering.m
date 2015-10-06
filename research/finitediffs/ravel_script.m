@@ -15,7 +15,7 @@ opts{1}.time.gamma_bounds = [1 128];
 
 opts{2}.time.T = T;
 opts{2}.time.max_scale = Inf;
-opts{2}.time.handle = @morlet_1d;
+opts{2}.time.handle = @gammatone_1d;
 opts{2}.time.sibling_mask_factor = 2;
 opts{2}.time.max_Q = 1;
 opts{2}.time.has_duals = true;
