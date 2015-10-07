@@ -29,7 +29,7 @@ Sabs0 =  Y_to_S(Yabs1, archs{1});
 Sabs0 = unchunk_layer(Sabs0);
 
 ren_S1 = S1;
-ren_S1.data = bsxfun(@rdivide, S1.data, Sabs0.data);
+ren_S1.data = bsxfun(@rdivide, S1.data, eps() + max(Sabs0.data, 0));
 
 %%
 if nLayers == 1
@@ -53,7 +53,7 @@ elseif nLayers == 2
         range_length = gamma1_range(end) - gamma1_range(1) + 1;
         subsref_structure.subs{gamma1_in_S1_subscript} = 1:range_length;
         node_S1 = subsref(S1.data, subsref_structure);
-        ren_S2.data{gamma2_index} = node_S2 ./ node_S1;
+        ren_S2.data{gamma2_index} = node_S2 ./ (eps() + max(node_S1, 0));
     end
     ren_S = {Sabs0, ren_S1, ren_S2};
     S = {S0, S1, S2};
