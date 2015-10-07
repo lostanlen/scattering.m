@@ -10,11 +10,15 @@ S0 = unchunk_layer(S0);
 
 switch nLayers
     case 1
-        % TODO
+        % Layer 1 averaging
+        Y2{1+0} = initialize_Y(U1, archs{1}.banks);
+        S1 = Y_to_S(Y2, archs{1});
+        S1 = unchunk_layer(S1);
     case 2
         % Layer 2 scattering
         Y2 = U_to_Y(U1, archs{2});
         S1 = Y_to_S(Y2, archs{2});
+        % Layer 1 averaging
         S1 = unchunk_layer(S1);
 end
 
