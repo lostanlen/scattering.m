@@ -28,8 +28,6 @@ elseif nonlinearity.is_uniform_log
             layer_Y_end.data{cell_index} ./ ...
             (eps() + layer_U.data{cell_index});   
     end
-elseif nonlinearity.is_adapted_log
-    error('adapted log backprop not ready yet');
 end
 
 %% Copy metadata
