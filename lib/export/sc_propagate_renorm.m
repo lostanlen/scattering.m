@@ -6,6 +6,7 @@ U0 = initialize_U(signal,archs{1}.banks{1});
 Y1 = U_to_Y(U0, archs{1});
 U1 = Y_to_U(Y1{end},archs{1});
 S0 = Y_to_S(Y1, archs{1});
+S0 = unchunk_layer(S0);
 
 switch nLayers
     case 1
@@ -14,12 +15,14 @@ switch nLayers
         % Layer 2 scattering
         Y2 = U_to_Y(U1, archs{2});
         S1 = Y_to_S(Y2, archs{2});
+        S1 = unchunk_layer(S1);
 end
 
 %% Layer 1 renormalization
 Uabs0 = initialize_U(abs(signal),archs{1}.banks{1});
 Yabs1{1+0} = initialize_Y(Uabs0, archs{1}.banks);
 Sabs0 =  Y_to_S(Yabs1, archs{1});
+Sabs0 = unchunk_layer(Sabs0);
 
 ren_S1 = S1;
 ren_S1.data = bsxfun(@rdivide, S1.data, Sabs0.data);
@@ -33,6 +36,7 @@ elseif nLayers == 2
     U2 = Y_to_U(Y2{end}, archs{2});
     Y3{1+0} = initialize_Y(U2, archs{1}.banks);
     S2 = Y_to_S(Y3, archs{2});
+    S2 = unchunk_layer(S2);
     %% Layer 2 renormalization
     ren_S2 = S2;
     gamma1_in_S1_subscript = S1.variable_tree.time{1}.gamma{1}.leaf.subscripts;
