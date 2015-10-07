@@ -30,7 +30,7 @@ opts{2}.gamma.has_duals = true;
 opts{2}.gamma.U_log2_oversampling = 2;
 opts{2}.gamma.S_log2_oversampling = 2;
 
-if strcmp(arch_type, 'spiral') || strcmp(arch.type, 'gammatonespiral')
+if strcmp(arch_type, 'spiral') || strcmp(arch_type, 'gammatonespiral')
     opts{2}.j.invariance = 'bypassed';
     opts{2}.j.T = 4;
     opts{2}.j.phi_bw_multiplier = 1;
