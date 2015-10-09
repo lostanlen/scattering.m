@@ -3,16 +3,29 @@ if nargin<2
     note_opts = struct();
 end
 note_opts = fill_note_opts(note_opts);
+%%
+melody_waveform = zeros(3 * melody_opts.nSamples, 1);
+nPitches = 12 * melody_opts.tessitura;
 
-melody_waveform = zeros(2 * melody_opts.nSamples, 1);
-
+tatum_length = melody_opts.tatum_duration * melody_opts.sample_rate;
+nTatums = floor(melody_opts.nSamples / tatum_length);
 
 for onset_index = 1:melody_opts.nOnsets
-    onset = randi(nSamples);
-    fundamental_frequency
+    tatum = randi(nTatums);
+    onset = round(tatum * tatum_length);
+    pitch = randi(nPitches) - 1;
+    note_opts.fundamental_frequency = ...
+        melody_opts.fundamental_frequency * 2^(pitch/12);
+    note_waveform = generate_note(note_opts);
+    melody_waveform(onset:(onset+length(note_waveform)-1)) = ...
+        melody_waveform(onset:(onset+length(note_waveform)-1)) + note_waveform;
 end
 
-melody_waveform = melody_waveform(1:(end/2)) + melody_waveform(1+end/2):end);
+plot(melody_waveform);
+soundsc(melody_waveform,22050);
+%%
+melody_waveform = reshape(melody_waveform, melody_opts.nSamples, 3);
+melody_waveform = sum(melody_waveform, 2);
 melody_waveform = 0.1 * melody_waveform / max(abs(melody_waveform));
 end
 
