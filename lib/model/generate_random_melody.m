@@ -1,10 +1,11 @@
 function melody_waveform = generate_random_melody(melody_opts, note_opts)
 if nargin<2
-    note_opts = struct();
+    note_opts = struct('sample_rate', melody_opts.sample_rate);
 end
 note_opts = fill_note_opts(note_opts);
 %%
-melody_waveform = zeros(3 * melody_opts.nSamples, 1);
+nPeriods = 1 + ceil(note_opts.duration * melody_opts.sample_rate);
+melody_waveform = zeros(nPeriods * melody_opts.nSamples, 1);
 nPitches = 12 * melody_opts.tessitura;
 
 tatum_length = melody_opts.tatum_duration * melody_opts.sample_rate;
@@ -24,7 +25,7 @@ end
 plot(melody_waveform);
 soundsc(melody_waveform,22050);
 %%
-melody_waveform = reshape(melody_waveform, melody_opts.nSamples, 3);
+melody_waveform = reshape(melody_waveform, melody_opts.nSamples, nPeriods);
 melody_waveform = sum(melody_waveform, 2);
 melody_waveform = 0.1 * melody_waveform / max(abs(melody_waveform));
 end
