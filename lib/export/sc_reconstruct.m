@@ -1,18 +1,8 @@
-function [signal,summary] = sc_reconstruct(target_S,archs, ...
-    reconstruction_opt,nIterations,initial_signal)
+function [signal,summary] = sc_reconstruct(target_S, archs, reconstruction_opt)
 %% Default argument handling
 signal_sizes = [archs{1}.banks{1}.spec.size,1];
-if nargin<5
-    initial_signal = generate_pink_noise(signal_sizes);
-end
-if nargin<4
-    nIterations = 100;
-end
-if nargin<3
-    reconstruction_opt = fill_reconstruction_opt();
-else
-    reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
-end
+initial_signal = generate_pink_noise(signal_sizes);
+reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
 
 %% Initialization
 signal = initial_signal;
@@ -38,7 +28,24 @@ while iteration < nIterations
         update_reconstruction(previous_signal,delta_signal,reconstruction_opt);
     
     %% Scattering propagation
-    [S,U,Y] = sc_propagate(signal,archs);
+    nLayers = length(archs);
+    target_S = cell(1,1+nLayers);
+    target_U = cell(1,1+nLayers);
+    target_Y = cell(1,1+nLayers);
+    target_U{1+0} = initialize_variables_auto(size(target_signal));
+    target_U{1+0}.data = target_signal;
+    for layer = 1:nLayers
+        arch = archs{layer};
+        previous_layer = layer - 1;
+        % Scatter iteratively layer U to get sub-layers Y
+        target_Y{layer} = U_to_Y(target_U{1+previous_layer},arch);
+        % Apply non-linearity to last sub-layer Y to get layer U
+        target_U{1+layer} = Y_to_U(target_Y{layer}{end},arch);
+        % Blur/pool first sub-layer Y to get layer S
+        target_S{1+previous_layer} = Y_to_S(target_Y{layer},arch);
+    end
+    target_Y{1+nLayers}{1+0} = initialize_Y(target_U{1+nLayers},arch.banks);
+    target_S{1+nLayers} = Y_to_S(target_Y{1+nLayers},arch);
     
     %% Measurement of distance to target in the scattering domain
     delta_S = sc_substract(target_S,S);
@@ -100,7 +107,9 @@ if nargout>1
     delta_S = sc_substract(target_S,S);
     summary.distances = sc_norm(delta_S);
     summary.reconstruction_opt = reconstruction_opt;
-    [summary.S,summary.U] = sc_propagate(signal,archs);
+    [summary.S, U, Y] = sc_propagate(signal,archs);
+    summary.U1 = U{1+1};
+    summary.Y1 = Y{1+1};
     summary.signal = signal;
 end
 end
