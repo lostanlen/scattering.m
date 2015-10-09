@@ -5,5 +5,6 @@ melody_opts.fundamental_frequency = ...
 melody_opts.tessitura = 2; % in octaves
 melody_opts.nSamples = 32768;
 
+melody_opts.tatum_duration = default(melody_opts, 'tatum_duration', 0.15);
 end
 
