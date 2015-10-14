@@ -165,7 +165,7 @@ while iteration < reconstruction_opt.nIterations
         snapshot.relative_loss_chart = relative_loss_chart(1:iteration);
         pretty_iteration = sprintf(sprintf_format, iteration);
         file_name = [prefix, '_it', pretty_iteration];
-        eval([file_name, ' = snapshot']);
+        eval([file_name, ' = snapshot;']);
         save(file_name, file_name);
     end
 end
