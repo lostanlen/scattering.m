@@ -54,7 +54,7 @@ while iteration < nIterations
     delta_S = sc_substract(target_S,S);
     
     %% If loss has increased, step retraction and bold driver "brake"
-    [relative_loss_chart,layer_absolute_distances] = sc_norm(delta_S);
+    [loss,layer_absolute_distances] = sc_norm(delta_S);
     if loss>previous_loss
         reconstruction_opt.learning_rate = ...
             reconstruction_opt.bold_driver_brake * ...
