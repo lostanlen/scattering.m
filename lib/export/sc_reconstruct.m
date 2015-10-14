@@ -69,6 +69,17 @@ previous_loss = sc_norm(delta_S);
 delta_signal = sc_backpropagate(delta_S,U,Y,archs);
 light_archs = lighten_archs(archs);
 
+%% Make a snapshot of the target
+snapshot.reconstruction_opt = reconstruction_opt;
+snapshot.light_archs = light_archs;
+snapshot.S = target_S;
+snapshot.U1 = target_U{1+1};
+snapshot.Y1 = target_Y{1};
+snapshot.signal = target_signal;
+target_file_name = [prefix, '_target'];
+eval([target_file_name, ' = snapshot;']);
+save(target_file_name, target_file_name);
+
 %% Iterated reconstruction
 relative_loss_chart = zeros(reconstruction_opt.nIterations, 1);
 iteration = 0;
