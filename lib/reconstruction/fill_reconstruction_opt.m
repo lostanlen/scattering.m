@@ -37,14 +37,9 @@ if reconstruction_opt.is_verbose && ...
     reconstruction_opt.verbosity_period = 1;
 end
 
-%% Signal display
-reconstruction_opt.is_signal_displayed = ...
-    default(reconstruction_opt, 'is_signal_displayed', ...
-    isfield(reconstruction_opt, 'signal_display_period'));
-if reconstruction_opt.is_signal_displayed
-    reconstruction_opt.signal_display_period = ...
-        default(reconstruction_opt, 'signal_display_period', 10);
-end
+%% Snapshots
+reconstruction_opt.snapshot_period = ...
+    default(reconstruction_opt, 'snapshot_period', 10);
 
 %% Alphanumeric ordering of field names
 reconstruction_opt = orderfields(reconstruction_opt);
