@@ -4,7 +4,8 @@ if nargin<2
 end
 note_opts = fill_note_opts(note_opts);
 %%
-nPeriods = 1 + ceil(note_opts.duration * melody_opts.sample_rate);
+nPeriods = 1 + ...
+    ceil(note_opts.duration * melody_opts.sample_rate / melody_opts.nSamples);
 melody_waveform = zeros(nPeriods * melody_opts.nSamples, 1);
 nPitches = 12 * melody_opts.tessitura;
 
