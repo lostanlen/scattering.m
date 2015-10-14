@@ -41,8 +41,7 @@ end
 archs = sc_setup(opts);
 
 %% Options for the reconstruction$
-reconstruction_opt = fill_reconstruction_opt(struc());
+reconstruction_opt = fill_reconstruction_opt(struct());
 
 %%
-prefix = 'debussyjoint_1014';
-sc_reconstruct(target_S, archs, reconstruction_opt, prefix);
+sc_reconstruct(target_signal, archs, reconstruction_opt);
