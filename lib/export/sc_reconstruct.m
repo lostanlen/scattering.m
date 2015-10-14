@@ -41,7 +41,7 @@ signal = signal + mean(target_signal);
 
 %% Initialization
 reconstruction_opt.signal_update = zeros(signal_sizes);
-max_nDigits = 1 + floor(log10(nIterations));
+max_nDigits = 1 + floor(log10(reconstruction_opt.nIterations));
 sprintf_format = ['%',num2str(max_nDigits),'d'];
 reconstruction_opt.learning_rate = reconstruction_opt.initial_learning_rate;
 [target_norm,layer_target_norms] = sc_norm(target_S);
@@ -53,10 +53,10 @@ delta_signal = sc_backpropagate(delta_S,U,Y,archs);
 light_archs = lighten_archs(archs);
 
 %% Iterated reconstruction
-relative_loss_chart = zeros(nIterations, 1);
+relative_loss_chart = zeros(reconstruction_opt.nIterations, 1);
 iteration = 0;
 tic();
-while iteration < nIterations
+while iteration < reconstruction_opt.nIterations
     %% Signal update
     [signal,reconstruction_opt] = ...
         update_reconstruction(previous_signal,delta_signal,reconstruction_opt);
