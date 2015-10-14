@@ -93,27 +93,22 @@ while iteration < nIterations
             tic();
         end
     end
-    if reconstruction_opt.is_signal_displayed
-        mod_iteration = ...
-            mod(iteration,reconstruction_opt.signal_display_period);
-        if mod_iteration==0
-            plot(signal);
-            drawnow;
-        end
+    mod_iteration = ...
+        mod(iteration,reconstruction_opt.snapshot_period);
+    if mod_iteration==0
+        %% Make summary
+        summary.reconstruction_opt = reconstruction_opt;
+        summary.light_archs = light_archs;
+        summary.S = S;
+        summary.U1 = U{1+1};
+        summary.Y = Y{1+1};
+        summary.signal = signal;
+        summary.relative_loss_chart = relative_loss_chart(1:iteration);
+        pretty_iteration = sprintf(sprintf_format, iteration);
+        file_name = [prefix, '_it', pretty_iteration];
+        eval([file_name, ' = summary']);
+        save(file_name, file_name);
     end
 end
-
-%% Make summary
-% TODO : summarize bank structure with only specs and behaviors
 toc();
-if nargout>1
-    delta_S = sc_substract(target_S,S);
-    summary.distances = sc_norm(delta_S);
-    summary.reconstruction_opt = reconstruction_opt;
-    [summary.S, U, Y] = sc_propagate(signal,archs);
-    summary.U1 = U{1+1};
-    summary.Y1 = Y{1+1};
-    summary.signal = signal;
-    summary.archs = lighten_archs(archs);
-end
 end
