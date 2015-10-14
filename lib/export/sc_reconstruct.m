@@ -9,7 +9,6 @@ end
 signal_sizes = [archs{1}.banks{1}.spec.size,1];
 reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
 
-
 %% Forward propagation
 nLayers = length(archs);
 target_S = cell(1,1+nLayers);
