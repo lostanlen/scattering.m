@@ -10,10 +10,8 @@ reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
 %% Initialization
 signal = initial_signal;
 reconstruction_opt.signal_update = zeros(signal_sizes);
-if reconstruction_opt.is_verbose
-    max_nDigits = 1 + floor(log10(nIterations));
-    sprintf_format = ['%',num2str(max_nDigits),'d'];
-end
+max_nDigits = 1 + floor(log10(nIterations));
+sprintf_format = ['%',num2str(max_nDigits),'d'];
 reconstruction_opt.learning_rate = reconstruction_opt.initial_learning_rate;
 [target_norm,layer_target_norms] = sc_norm(target_S);
 [S,U,Y] = sc_propagate(signal,archs);
@@ -21,6 +19,7 @@ delta_S = sc_substract(target_S,S);
 previous_signal = signal;
 previous_loss = sc_norm(delta_S);
 delta_signal = sc_backpropagate(delta_S,U,Y,archs);
+light_archs = lighten_archs(archs);
 
 %% Iterated reconstruction
 iteration = 0;
