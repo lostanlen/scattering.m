@@ -160,7 +160,7 @@ while iteration < reconstruction_opt.nIterations
         snapshot.light_archs = light_archs;
         snapshot.S = S;
         snapshot.U1 = U{1+1};
-        snapshot.Y = Y{1+1};
+        snapshot.Y1 = Y{1};
         snapshot.signal = signal;
         snapshot.relative_loss_chart = relative_loss_chart(1:iteration);
         pretty_iteration = sprintf(sprintf_format, iteration);
