@@ -1,4 +1,7 @@
-function [signal,summary] = sc_reconstruct(target_S, archs, reconstruction_opt)
+function snapshots = sc_reconstruct(target_S, archs, reconstruction_opt, prefix)
+if nargin < 4
+    prefix = 'summary';
+end
 %% Default argument handling
 signal_sizes = [archs{1}.banks{1}.spec.size,1];
 initial_signal = generate_pink_noise(signal_sizes);
