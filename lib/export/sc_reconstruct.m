@@ -111,5 +111,6 @@ if nargout>1
     summary.U1 = U{1+1};
     summary.Y1 = Y{1+1};
     summary.signal = signal;
+    summary.archs = lighten_archs(archs);
 end
 end
