@@ -3,33 +3,31 @@ function bank = setup_bank(bank)
 bank.metas = fill_bank_metas(bank.spec);
 
 %% Construction of the band-pass filters psi's in time domain
-psi_ifts = bank.spec.handle(bank.metas,bank.spec);
+raw_psis = bank.spec.handle(bank.metas,bank.spec);
 
 %% Fourier transform and spinning
 % NB: a wavelet-specific GPU handle should integrate this natively.
 signal_dimension = length(bank.spec.size);
-psi_fts = multidimensional_fft(psi_ifts,1:signal_dimension);
+raw_psi_fts = multidimensional_fft(raw_psis,1:signal_dimension);
 if bank.spec.has_real_ft
-    psi_fts = real(psi_fts);
+    raw_psi_fts = real(raw_psi_fts);
 end
 if bank.spec.is_spinned
-    psi_fts = spin_psi_fts(psi_fts,signal_dimension);
+    raw_psi_fts = spin_psi_fts(raw_psi_fts,signal_dimension);
 end
 
 %% Littlewood-Paley renormalization
 [normalizers,psi_energy_sum] = ...
-    get_psi_normalizers(psi_fts,bank.metas,bank.spec);
-if ~strcmp(func2str(bank.spec.handle), 'finitediff_1d')
-    if bank.spec.domain.is_ift
-        psi_ifts = bsxfun(@rdivide,psi_ifts,normalizers);
-    else
-        psi_ifts = [];
-    end
-    if bank.spec.domain.is_ft
-        psi_fts = bsxfun(@rdivide,psi_fts,normalizers);
-    else
-        psi_fts = [];
-    end
+    get_psi_normalizers(raw_psi_fts,bank.metas,bank.spec);
+if bank.spec.domain.is_ift
+    psi_ifts = bsxfun(@rdivide,raw_psi_ifts,normalizers);
+else
+    psi_ifts = [];
+end
+if bank.spec.domain.is_ft
+    psi_fts = bsxfun(@rdivide,raw_psi_fts,normalizers);
+else
+    psi_fts = [];
 end
 
 %% Filter "optimization": truncation of negligible values
@@ -37,7 +35,7 @@ end
 bank.psis = optimize_bank(psi_fts,psi_ifts,bank);
 
 %% Construction and trimming of the low-pass filter phi
-phi_ft = generate_phi_ft(psi_energy_sum,bank.spec);
+[phi_ft,energy_sum] = generate_phi_ft(psi_energy_sum,bank.spec);
 phi_ift = multidimensional_ifft(phi_ft,1:signal_dimension);
 bank.phi = optimize_bank(phi_ft,phi_ift,bank);
 
@@ -47,10 +45,10 @@ if bank.spec.has_duals
         % If the wavelets are complex in the Fourier domain (e.g.
         % Gammatones), we do in-place conjugation to compute the duals.
         if ~bank.spec.has_real_ft
-            dual_psi_fts = conj(psi_fts);
-        else
-            dual_psi_fts = psi_fts;
+            psi_fts = conj(psi_fts);
         end
+        symmetrized_energy_sum = (energy_sum + energy_sum(end:-1:1)) / 2;
+        dual_psi_fts = bsxfun(@rdivide,psi_fts,symmetrized_energy_sum);
     else
         dual_psi_fts = [];
     end
@@ -63,7 +61,9 @@ if bank.spec.has_duals
     bank.dual_psis = optimize_bank(dual_psi_fts,dual_psi_ifts,bank);
     % Since the low-pass filter phi is symmetric by design, phi_ft is real.
     % Thus, we don't have to conjugate phi_ft to have dual_phi_ft.
-    bank.dual_phi = bank.phi;
+    dual_phi_ft = bsxfun(@rdivide,phi_ft,symmetrized_energy_sum);
+    dual_phi = multidimensional_ifft(dual_phi_ft,1:signal_dimension);
+    bank.dual_phi = optimize_bank(dual_phi_ft,dual_phi,bank);
 end
 
 %% Alphanumeric ordering of field names
