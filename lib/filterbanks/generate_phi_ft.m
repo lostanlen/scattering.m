@@ -1,4 +1,4 @@
-function phi_ft= generate_phi_ft(psi_energy_sum,bank_spec)
+function [phi_ft, energy_sum] = generate_phi_ft(psi_energy_sum,bank_spec)
 %%
 symmetrized_energy_sum = (psi_energy_sum + psi_energy_sum(end:-1:1)) / 2;
 remainder = 1 - min(symmetrized_energy_sum,1);
@@ -40,4 +40,11 @@ switch signal_dimension
     case 2
         error('2D phi not ready yet');
 end
+spin_multiplier = 1 + ~bank_spec.is_spinned;
+energy_sum = psi_energy_sum;
+energy_sum(half_support) = max(psi_energy_sum(half_support),spin_multiplier);
+if bank_spec.is_spinned
+    energy_sum(symmetric_support) = energy_sum(half_support);
+end
+energy_sum(1+0) = spin_multiplier;
 end
