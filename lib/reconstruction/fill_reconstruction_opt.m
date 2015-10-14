@@ -34,7 +34,7 @@ end
 reconstruction_opt.is_verbose = default(reconstruction_opt, 'is_verbose', true);
 if reconstruction_opt.is_verbose && ...
         ~isfield(reconstruction_opt, 'verbosity_period')
-    reconstruction_opt.verbosity_period = 10;
+    reconstruction_opt.verbosity_period = 1;
 end
 
 %% Signal display
