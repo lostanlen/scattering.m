@@ -1,14 +1,41 @@
-function sc_reconstruct(target_S, archs, reconstruction_opt, prefix)
-if nargin < 4
-    prefix = 'snapshot';
-end
+function sc_reconstruct(target_signal, archs, reconstruction_opt)
+prefix = dbstack();
 %% Default argument handling
 signal_sizes = [archs{1}.banks{1}.spec.size,1];
-initial_signal = generate_pink_noise(signal_sizes);
 reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
 
+
+%% Forward propagation
+nLayers = length(archs);
+target_S = cell(1,1+nLayers);
+target_U = cell(1,1+nLayers);
+target_Y = cell(1,1+nLayers);
+target_U{1+0} = initialize_variables_auto(size(target_signal));
+target_U{1+0}.data = target_signal;
+for layer = 1:nLayers
+    arch = archs{layer};
+    previous_layer = layer - 1;
+    % Scatter iteratively layer U to get sub-layers Y
+    target_Y{layer} = U_to_Y(target_U{1+previous_layer},arch);
+    % Apply non-linearity to last sub-layer Y to get layer U
+    target_U{1+layer} = Y_to_U(target_Y{layer}{end},arch);
+    % Blur/pool first sub-layer Y to get layer S
+    target_S{1+previous_layer} = Y_to_S(target_Y{layer},arch);
+end
+target_Y{1+nLayers}{1+0} = initialize_Y(target_U{1+nLayers},arch.banks);
+target_S{1+nLayers} = Y_to_S(target_Y{1+nLayers},arch);
+
 %% Initialization
-signal = initial_signal;
+if isfield(reconstruction_opt, 'initial_signal')
+    signal = reconstruction_opt.initial_signal;
+else
+    signal = generate_pink_noise(signal_sizes);
+end
+signal = signal - mean(signal);
+signal = signal * norm(target_signal)/norm(signal);
+signal = signal + mean(target_signal);
+
+%% Initialization
 reconstruction_opt.signal_update = zeros(signal_sizes);
 max_nDigits = 1 + floor(log10(nIterations));
 sprintf_format = ['%',num2str(max_nDigits),'d'];
