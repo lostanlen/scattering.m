@@ -1,8 +1,8 @@
 function [phi_ft, energy_sum] = generate_phi_ft(psi_energy_sum,bank_spec)
 %%
-symmetrized_energy_sum = (psi_energy_sum + psi_energy_sum(end:-1:1)) / 2;
-remainder = 1 - min(symmetrized_energy_sum,1);
-phi_ft = zeros(size(psi_energy_sum));
+energy_sum = (psi_energy_sum + psi_energy_sum(end:-1:1)) / 2;
+remainder = 1 - min(energy_sum,1);
+phi_ft = zeros(size(energy_sum));
 signal_dimension = length(bank_spec.size);
 original_sizes = bank_spec.size;
 switch signal_dimension
@@ -19,6 +19,7 @@ switch signal_dimension
             phi_ft(half_support) = half_gaussian;
             phi_ft(symmetric_support) = half_gaussian;
             phi_ft(1+0) = 1;
+            energy_sum = energy_sum + phi_ft;
         elseif bank_spec.phi.is_rectangular
             phi_ift = zeros(original_sizes, 1);
             half_ift_support = 1:((bank_spec.T-1)/2);
@@ -26,6 +27,7 @@ switch signal_dimension
             phi_ift(1 + end - half_ift_support) = 1  / bank_spec.T;
             phi_ift(1+0) = 1 / bank_spec.T;
             phi_ft = fft(phi_ift);
+            energy_sum = energy_sum + phi_ft;
         elseif bank_spec.phi.is_by_substraction
             half_support = 2:half_support_length;
             symmetric_support = original_sizes + 1 - half_support + 1;
@@ -33,6 +35,9 @@ switch signal_dimension
             phi_ft(half_support) = sqrt_truncated_remainder;
             phi_ft(symmetric_support) = sqrt_truncated_remainder;
             phi_ft(1+0) = 1;
+            energy_sum(half_support) = max(energy_sum(half_support), 1);
+            energy_sum(symmetric_support) = energy_sum(half_support);
+            energy_sum(1+0) = 1;
         end
         % We must ensure that phi_ft is exactly zero at the frequency pi
         % in order to yield real results for real inputs.
@@ -40,11 +45,4 @@ switch signal_dimension
     case 2
         error('2D phi not ready yet');
 end
-spin_multiplier = 1 + ~bank_spec.is_spinned;
-energy_sum = psi_energy_sum;
-energy_sum(half_support) = max(psi_energy_sum(half_support),spin_multiplier);
-if bank_spec.is_spinned
-    energy_sum(symmetric_support) = energy_sum(half_support);
-end
-energy_sum(1+0) = spin_multiplier;
 end
