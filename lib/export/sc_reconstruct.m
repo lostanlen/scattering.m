@@ -1,6 +1,6 @@
-function snapshots = sc_reconstruct(target_S, archs, reconstruction_opt, prefix)
+function sc_reconstruct(target_S, archs, reconstruction_opt, prefix)
 if nargin < 4
-    prefix = 'summary';
+    prefix = 'snapshot';
 end
 %% Default argument handling
 signal_sizes = [archs{1}.banks{1}.spec.size,1];
@@ -96,17 +96,17 @@ while iteration < nIterations
     mod_iteration = ...
         mod(iteration,reconstruction_opt.snapshot_period);
     if mod_iteration==0
-        %% Make summary
-        summary.reconstruction_opt = reconstruction_opt;
-        summary.light_archs = light_archs;
-        summary.S = S;
-        summary.U1 = U{1+1};
-        summary.Y = Y{1+1};
-        summary.signal = signal;
-        summary.relative_loss_chart = relative_loss_chart(1:iteration);
+        %% Make snapshot
+        snapshot.reconstruction_opt = reconstruction_opt;
+        snapshot.light_archs = light_archs;
+        snapshot.S = S;
+        snapshot.U1 = U{1+1};
+        snapshot.Y = Y{1+1};
+        snapshot.signal = signal;
+        snapshot.relative_loss_chart = relative_loss_chart(1:iteration);
         pretty_iteration = sprintf(sprintf_format, iteration);
         file_name = [prefix, '_it', pretty_iteration];
-        eval([file_name, ' = summary']);
+        eval([file_name, ' = snapshot']);
         save(file_name, file_name);
     end
 end
