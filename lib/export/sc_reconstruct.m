@@ -22,6 +22,7 @@ delta_signal = sc_backpropagate(delta_S,U,Y,archs);
 light_archs = lighten_archs(archs);
 
 %% Iterated reconstruction
+relative_loss_chart = zeros(nIterations, 1);
 iteration = 0;
 tic();
 while iteration < nIterations
@@ -53,7 +54,7 @@ while iteration < nIterations
     delta_S = sc_substract(target_S,S);
     
     %% If loss has increased, step retraction and bold driver "brake"
-    [loss,layer_absolute_distances] = sc_norm(delta_S);
+    [relative_loss_chart,layer_absolute_distances] = sc_norm(delta_S);
     if loss>previous_loss
         reconstruction_opt.learning_rate = ...
             reconstruction_opt.bold_driver_brake * ...
@@ -66,6 +67,7 @@ while iteration < nIterations
     
     %% If loss has decreased, step confirmation and bold driver "acceleration"
     iteration = iteration + 1;
+    relative_loss_chart(iteration) = 100 * loss / target_norm;
     previous_signal = signal;
     previous_loss = loss;
     reconstruction_opt.learning_rate = ...
@@ -78,11 +80,10 @@ while iteration < nIterations
         mod_iteration = mod(iteration,reconstruction_opt.verbosity_period);
         if mod_iteration==0
             pretty_iteration = sprintf(sprintf_format,iteration);
-            relative_loss = 100 * loss / target_norm;
             layer_distances = ...
                 100 * layer_absolute_distances ./ layer_target_norms;
             pretty_distances = num2str(layer_distances,'%8.2f%%');
-            pretty_loss = sprintf('%.2f%%',relative_loss);
+            pretty_loss = sprintf('%.2f%%',relative_loss_chart(iteration));
             iteration_string = ['it = ',pretty_iteration,'  ;  '];
             distances_string = ...
                 ['S_m distances = [ ',pretty_distances, ' ]  ;  '];
