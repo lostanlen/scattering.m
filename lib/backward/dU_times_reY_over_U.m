@@ -1,5 +1,5 @@
 function dY_data = ...
-    dU_times_Y_over_U(dU_data,Y_data,U_data,dU_ranges,Y_ranges)
+    dU_times_reY_over_U(dU_data,Y_data,U_data,dU_ranges,Y_ranges)
 %% Range intersection at top level
 [~,dU_substruct,Y_substruct] = intersect_ranges(dU_ranges{end},Y_ranges{end});
 
@@ -28,8 +28,10 @@ if length(dU_ranges)>1
             dU_ranges_node,Y_ranges_node);
     end
 else
-    %% Subscripted reference and pointwise substraction
-    dY_data = subsref(dU_data,dU_substruct) .* ...
-        subsref(Y_data,Y_substruct) ./ (eps()+subsref(U_data,Y_substruct));
+    %% Subscripted reference and pointwise division
+    dY_data = ...
+        subsref(dU_data,dU_substruct) .* ...
+        real(subsref(Y_data,Y_substruct)) ./ ...
+        (eps()+subsref(U_data,Y_substruct));
 end
 end
