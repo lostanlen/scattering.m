@@ -75,7 +75,6 @@ snapshot.light_archs = light_archs;
 snapshot.S = target_S;
 snapshot.U1 = target_U{1+1};
 snapshot.Y1 = target_Y{1};
-snapshot.opts = opts;
 snapshot.signal = target_signal;
 target_file_name = [prefix, '_target'];
 eval([target_file_name, ' = snapshot;']);
@@ -162,7 +161,6 @@ while iteration < reconstruction_opt.nIterations
         snapshot.S = S;
         snapshot.U1 = U{1+1};
         snapshot.Y1 = Y{1};
-        snaspshot.opts = opts;
         snapshot.signal = signal;
         snapshot.relative_loss_chart = relative_loss_chart(1:iteration);
         pretty_iteration = sprintf(sprintf_format, iteration);
