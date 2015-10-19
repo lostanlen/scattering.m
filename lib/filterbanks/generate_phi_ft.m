@@ -9,7 +9,20 @@ switch signal_dimension
     case 1
         half_support_length = ...
             bank_spec.phi_bw_multiplier/2 * original_sizes/bank_spec.T;
-        if bank_spec.phi.is_gaussian
+        if bank_spec.phi.is_gamma
+            full_support_length = 2 * half_support_length;
+            gamma_order = default(bank_spec, 'gammatone_order', 4);
+            alpha = sqrt(gamma_order) / full_support_length;
+            lag = gamma_order / alpha;
+            full_range = 1:bank_spec.size;
+            lagged_range = full_range - lag;
+            monomial = lagged_range.^(gamma_order - 1);
+            exponential = exp(- alpha * lagged_range);
+            phi_ift = monomial .* exponential;
+            phi_ift = phi_ift / norm(phi_ift);
+            phi_ft = fft(phi_ift);
+            energy_sum = energy_sum + phi_ft .* conj(phi_ft);
+        elseif bank_spec.phi.is_gaussian
             denominator = half_support_length*half_support_length / log(10);
             half_size = original_sizes / 2;
             half_support = 2:half_size;
