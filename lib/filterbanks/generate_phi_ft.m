@@ -32,7 +32,7 @@ switch signal_dimension
             phi_ft(half_support) = half_gaussian;
             phi_ft(symmetric_support) = half_gaussian;
             phi_ft(1+0) = 1;
-            energy_sum = energy_sum + phi_ft;
+            energy_sum = energy_sum + phi_ft .* conj(phi_ft);
         elseif bank_spec.phi.is_rectangular
             assert(strcmp(func2str(bank_spec.handle), 'finitediff_1d'));
             phi_ift = zeros(original_sizes, 1);
