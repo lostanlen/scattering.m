@@ -70,7 +70,7 @@ delta_signal = sc_backpropagate(delta_S,U,Y,archs);
 light_archs = lighten_archs(archs);
 
 %% Make a snapshot of the target
-snapshot.datetime = datetime('now');
+snapshot.datetime = date();
 snapshot.reconstruction_opt = reconstruction_opt;
 snapshot.light_archs = light_archs;
 snapshot.S = target_S;
@@ -164,7 +164,7 @@ while iteration < reconstruction_opt.nIterations
         snapshot.Y1 = Y{1};
         snapshot.signal = signal;
         snapshot.relative_loss_chart = relative_loss_chart(1:iteration);
-        snapshot.datetime = datetime('now');
+        snapshot.datetime = date();
         pretty_iteration = sprintf(sprintf_format, iteration);
         file_name = [prefix, '_it', pretty_iteration];
         eval([file_name, ' = snapshot;']);
