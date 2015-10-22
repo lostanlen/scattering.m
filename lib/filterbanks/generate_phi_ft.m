@@ -10,15 +10,21 @@ switch signal_dimension
         half_support_length = ...
             bank_spec.phi_bw_multiplier/2 * original_sizes/bank_spec.T;
         if bank_spec.phi.is_gamma
-            full_support_length = 2 * half_support_length;
-            gamma_order = default(bank_spec, 'gammatone_order', 4);
-            alpha = sqrt(gamma_order) / full_support_length;
-            lag = gamma_order / alpha;
-            full_range = 1:bank_spec.size;
-            lagged_range = full_range - lag;
-            monomial = lagged_range.^(gamma_order - 1);
-            exponential = exp(- alpha * lagged_range);
+            %%
+            gamma_order = 3;
+            alpha = 4 * sqrt(gamma_order) / bank_spec.T;
+            full_range = (1:bank_spec.size).';
+            monomial = full_range.^(gamma_order - 1);
+            exponential = exp(- alpha * full_range);
             phi_ift = monomial .* exponential;
+            [~, maximum_index] = max(abs(phi_ift));
+            time_shift = 1 - maximum_index;
+            phi_ift = circshift(phi_ift, time_shift);
+            z = circshift(phi_ift, 32768);
+            y = z .* cos(2*pi* 500 * (1:65536).'/65536);
+            plot(y); drawnow();
+            soundsc(y, 22050)
+            %%
             phi_ift = phi_ift / norm(phi_ift);
             phi_ft = fft(phi_ift);
             energy_sum = energy_sum + phi_ft .* conj(phi_ft);
