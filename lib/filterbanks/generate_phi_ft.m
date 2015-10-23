@@ -10,8 +10,7 @@ switch signal_dimension
         half_support_length = ...
             bank_spec.phi_bw_multiplier/2 * original_sizes/bank_spec.T;
         if bank_spec.phi.is_gamma
-            %%
-            gamma_order = 3;
+            gamma_order = 1.2;
             alpha = 4 * sqrt(gamma_order) / bank_spec.T;
             full_range = (1:bank_spec.size).';
             monomial = full_range.^(gamma_order - 1);
@@ -20,13 +19,11 @@ switch signal_dimension
             [~, maximum_index] = max(abs(phi_ift));
             time_shift = 1 - maximum_index;
             phi_ift = circshift(phi_ift, time_shift);
-            z = circshift(phi_ift, 32768);
-            y = z .* cos(2*pi* 500 * (1:65536).'/65536);
-            plot(y); drawnow();
-            soundsc(y, 22050)
-            %%
             phi_ift = phi_ift / norm(phi_ift);
             phi_ft = fft(phi_ift);
+            normalizer = max(abs(phi_ft));
+            phi_ft = phi_ft / normalizer;
+            phi_ift = phi_ift / normalizer;
             energy_sum = energy_sum + phi_ft .* conj(phi_ft);
         elseif bank_spec.phi.is_gaussian
             denominator = half_support_length*half_support_length / log(10);
