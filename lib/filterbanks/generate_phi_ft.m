@@ -10,8 +10,11 @@ switch signal_dimension
         half_support_length = ...
             bank_spec.phi_bw_multiplier/2 * original_sizes/bank_spec.T;
         if bank_spec.phi.is_gamma
+            %%
             gamma_order = 1.2;
-            alpha = 4 * sqrt(gamma_order) / bank_spec.T;
+            standard_deviation_multiplier = 0.5;
+            standard_deviation = bank_spec.T/2 * standard_deviation_multiplier;
+            alpha = sqrt(gamma_order) / standard_deviation;
             full_range = (1:bank_spec.size).';
             monomial = full_range.^(gamma_order - 1);
             exponential = exp(- alpha * full_range);
