@@ -40,24 +40,6 @@ end
 
 archs = sc_setup(opts);
 
-%% Display
-Y2 = display_secondorder_wavelets(archs, 0.5);
-%%
-gamma2 = 8;
-gamma_chroma = 8;
-gamma_octave = 2;
-theta_chroma = 2;
-theta_octave = 1;
-node = Y2{4}{1,1,1}.data{gamma2}{gamma_chroma, gamma_octave};
-tensor = node(:, :, :, theta_chroma, theta_octave);
-matrix = reshape(tensor, size(tensor, 1), size(tensor,2) * size(tensor, 3)).';
-imagesc(real(matrix));
-
-%%
-node = Y2{4}{1,1,2}.data{gamma2}{gamma_chroma};
-tensor = node(:, :, :, theta_chroma);
-matrix = reshape(tensor, size(tensor, 1), size(tensor, 2) * size(tensor, 3)).';
-imagesc(real(matrix));
 %% Options for the reconstruction
 reconstruction_opt = fill_reconstruction_opt(struct());
 
