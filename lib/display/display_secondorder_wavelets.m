@@ -1,4 +1,4 @@
-function Y2 = display_secondorder_wavelet(archs, fraction)
+function Y2 = display_secondorder_wavelets(archs, fraction)
 if nargin<2
     fraction = 1/5;
 end
