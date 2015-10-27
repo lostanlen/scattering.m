@@ -12,7 +12,7 @@ opts{1}.time.max_Q = 16;
 opts{1}.time.nFilters_per_octave = 16;
 opts{1}.time.has_duals = true;
 opts{1}.time.gamma_bounds = [1 128];
-opts{1}.time.phi = 'gaussian';
+opts{1}.time.phi = 'gamma';
 
 opts{2}.time.T = T;
 opts{2}.time.max_scale = Inf;
@@ -42,7 +42,8 @@ end
 archs = sc_setup(opts);
 
 %% Options for the reconstruction
-reconstruction_opt = fill_reconstruction_opt(struct());
+str = struct('snapshot_period', 1);
+reconstruction_opt = fill_reconstruction_opt(str);
 
 %%
 sc_reconstruct(target_signal, archs, reconstruction_opt);
