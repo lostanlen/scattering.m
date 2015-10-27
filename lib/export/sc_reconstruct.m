@@ -42,7 +42,7 @@ signal = signal + mean(target_signal);
 %% Initialization
 reconstruction_opt.signal_update = zeros(signal_sizes);
 max_nDigits = 1 + floor(log10(reconstruction_opt.nIterations));
-sprintf_format = ['%',num2str(max_nDigits),'d'];
+sprintf_format = ['%0.',num2str(max_nDigits),'d'];
 reconstruction_opt.learning_rate = reconstruction_opt.initial_learning_rate;
 [target_norm,layer_target_norms] = sc_norm(target_S);
 nLayers = length(archs);
