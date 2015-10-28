@@ -29,7 +29,7 @@ plans{1}.banks{1}.spec = fill_bank_spec(root_field);
 root_field.size = plans{1}.banks{1}.spec.size;
 plans{1}.banks{1}.behavior = fill_bank_behavior(root_field);
 plans{1}.invariants{1}.spec = ...
-    fill_invariant_spec(root_field, plans{1}.invariants.spec);
+    fill_invariant_spec(root_field, plans{1}.banks{1}.spec);
 plans{1}.nonlinearity = fill_nonlinearity(opts{1});
 ordered_names = {root,'theta','gamma','j'};
 
