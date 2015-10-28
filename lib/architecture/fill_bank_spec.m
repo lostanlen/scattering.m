@@ -1,8 +1,15 @@
 function spec = fill_bank_spec(opt)
+%% Backwards compability: handle is renamed to wavelet_handle
+if isfield(opt, 'handle')
+    opt.wavelet_handle = enforce(opt, 'wavelet_handle', opt.handle);
+end
+
 %% Management of default parameters
 spec.T = opt.T;
-if isfield(opt, 'handle') && strcmp(func2str(opt.handle), 'finitediff_1d')
-    spec.J = opt.J;
+if isfield(opt, 'wavelet_handle')
+    if strcmp(func2str(opt.wavelet_handle), 'finitediff_1d')
+        spec.J = opt.J;
+    end
 else
     spec.J = enforce(opt,'J',log2(spec.T));
 end
@@ -48,19 +55,19 @@ spec.trim_threshold = default(opt,'trim_threshold',epsilon);
 spec.domain.is_ft = default(opt,'is_domain_ft',true);
 spec.domain.is_ift = default(opt,'is_domain_ift',false);
 if signal_dimension==1
-    spec.handle = default(opt,'handle',@morlet_1d);
+    spec.wavelet_handle = default(opt,'wavelet_handle',@morlet_1d);
 elseif signal_dimension==2
     error('2d wavelets not ready'); % TODO: write @morlet_2d
-    spec.handle = @morlet_2d;
+    spec.wavelet_handle = @morlet_2d;
 end
-if strcmp(func2str(spec.handle), 'finitediff_1d')
+if strcmp(func2str(spec.wavelet_handle), 'finitediff_1d')
     phi_string = default(opt, 'phi', 'rectangular');
 else
     phi_string = default(opt, 'phi', 'gaussian');
 end
 spec.phi = parse_phi(phi_string);
-%% Management of handle-specific parameters
-switch func2str(spec.handle)
+%% Management of wavelet_handle-specific parameters
+switch func2str(spec.wavelet_handle)
     case 'gammatone_1d'
         spec.gammatone_order = default(opt,'gammatone_order',4);
         spec.has_real_ift = false;
