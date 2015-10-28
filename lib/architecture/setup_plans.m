@@ -25,7 +25,6 @@ switch signal_dimension
 end
 root_field.subscripts = ...
     default(root_field,'subscripts',1:root_field.dimension);
-root_field.is_U_blurred = enforce(root_field,'is_U_blurred',false);
 plans{1}.banks{1}.spec = fill_bank_spec(root_field);
 root_field.size = plans{1}.banks{1}.spec.size;
 plans{1}.banks{1}.behavior = fill_bank_behavior(root_field);
