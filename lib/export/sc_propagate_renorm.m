@@ -43,17 +43,20 @@ elseif nLayers == 2
     S2 = unchunk_layer(S2);
     %% Layer 2 renormalization
     ren_S2 = S2;
-    gamma1_in_S1_subscript = S1.variable_tree.time{1}.gamma{1}.leaf.subscripts;
-    gamma1_in_S2_subscript = S2.variable_tree.time{1}.gamma{1}.leaf.subscripts;
+    % gamma1 has subscript 2 in S1 after unchunking
+    gamma1_in_S1_subscript = 2;
+    % gamma1 has subscript 2 in S2 after unchunking
+    gamma1_in_S2_subscript = 2;
     nSubscripts = size(S1.ranges{1}, 2);
     subsref_structure = substruct('()', replicate_colon(nSubscripts));
     for gamma2_index = 1:length(S2.data)
         node_S2 = S2.data{gamma2_index};
-        gamma1_range = S2.ranges{1}{gamma2_index}(:,gamma1_in_S2_subscript);
+        gamma1_range = S2.ranges{1}{gamma2_index}(:, gamma1_in_S2_subscript);
         range_length = gamma1_range(end) - gamma1_range(1) + 1;
         subsref_structure.subs{gamma1_in_S1_subscript} = 1:range_length;
         node_S1 = subsref(S1.data, subsref_structure);
-        ren_S2.data{gamma2_index} = node_S2 ./ (eps() + max(node_S1, 0));
+        ren_S2.data{gamma2_index} = bsxfun(@rdivide, ...
+            node_S2, (eps() + max(node_S1, 0)));
     end
     ren_S = {Sabs0, ren_S1, ren_S2};
     S = {S0, S1, S2};
