@@ -20,5 +20,7 @@ if strcmp(invariant_spec.invariance, 'blurred')
             phi_handle = @rectangular_1d;
     end
     invariant_spec.handle = default(opt, 'phi_handle', phi_handle);
-end     
+end
+invariant_spec.phi_bw_multiplier = ...
+    default(invariant_spec, 'phi_bw_multiplier', bank_spec.phi_bw_multiplier);
 end
