@@ -4,7 +4,6 @@ bank_behavior.U.is_blurred = default(opt,'is_U_blurred',true);
 bank_behavior.U.is_bypassed = default(opt,'is_U_bypassed',false);
 bank_behavior.U.is_scattered = default(opt,'is_U_scattered',true);
 bank_behavior.U.log2_oversampling = default(opt,'U_log2_oversampling',1);
-bank_behavior.S = parse_invariance(default(opt,'invariance','blurred'));
 signal_dimension = length(opt.size); % provided by user
 dimension = default(opt,'dimension',signal_dimension);
 bank_behavior.colons = substruct('()',replicate_colon(dimension));

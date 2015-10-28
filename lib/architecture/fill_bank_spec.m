@@ -60,12 +60,6 @@ elseif signal_dimension==2
     error('2d wavelets not ready'); % TODO: write @morlet_2d
     spec.wavelet_handle = @morlet_2d;
 end
-if strcmp(func2str(spec.wavelet_handle), 'finitediff_1d')
-    phi_string = default(opt, 'phi', 'rectangular');
-else
-    phi_string = default(opt, 'phi', 'gaussian');
-end
-spec.phi = parse_phi(phi_string);
 %% Management of wavelet_handle-specific parameters
 switch func2str(spec.wavelet_handle)
     case 'gammatone_1d'
