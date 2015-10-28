@@ -1,4 +1,4 @@
-function invariant_spec = fill_invariant_spec(opt)
+function invariant_spec = fill_invariant_spec(opt, bank_spec)
 invariant_spec = struct();
 if isfield(opt, 'invariance')
     invariant_spec = opt.invariance;
@@ -20,5 +20,5 @@ if strcmp(invariant_spec.invariance, 'blurred')
             phi_handle = @rectangular_1d;
     end
     invariant_spec.handle = default(opt, 'phi_handle', phi_handle);
+end     
 end
-
