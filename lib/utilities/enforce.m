@@ -8,7 +8,7 @@ else
                      ' with value "%s" (previously %s)'], ...
                      field,enforced_value,structure.(field));
         end
-        return;
+        return
     end
     if isnumeric(enforced_value);
         if ~isequal(structure.(field),enforced_value)
