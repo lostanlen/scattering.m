@@ -9,6 +9,7 @@ end
 %%
 root_field = opts{1}.(root);
 root_field.T = drop_trailing(root_field.T);
+root_field.invariance = default(root_field, 'invariance', 'blurred');
 root_field.key.(root) = cell(1);
 signal_dimension = length(root_field.T);
 root_field.dimension = ...
