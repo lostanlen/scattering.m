@@ -6,6 +6,7 @@ end
 if isfield(opt, 'T')
     % TODO: integrate max pooling
     enforce(invariant_spec, 'invariance', 'blurred');
+    invariant_spec.T = opt.T;
 end
 if ~isfield(invariant_spec, 'invariance')
     invariant_spec.invariance = 'none';
