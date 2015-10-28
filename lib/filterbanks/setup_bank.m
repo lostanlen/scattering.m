@@ -3,7 +3,7 @@ function bank = setup_bank(bank)
 bank.metas = fill_bank_metas(bank.spec);
 
 %% Construction of the band-pass filters psi's in time domain
-psi_ifts = bank.spec.handle(bank.metas,bank.spec);
+psi_ifts = bank.spec.wavelet_handle(bank.metas,bank.spec);
 
 %% Fourier transform and spinning
 % NB: a wavelet-specific GPU handle should integrate this natively.
@@ -17,7 +17,7 @@ if bank.spec.is_spinned
 end
 
 %% Littlewood-Paley renormalization
-if strcmp(func2str(bank.spec.handle), 'finitediff_1d')
+if strcmp(func2str(bank.spec.wavelet_handle), 'finitediff_1d')
     psi_energy_sum = sum(psi_fts .* conj(psi_fts),2);
 else
     [normalizers,psi_energy_sum] = ...

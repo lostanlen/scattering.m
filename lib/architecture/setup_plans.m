@@ -53,7 +53,7 @@ for layer = 2:nLayers
                 field.size = enforce(field,'size',root_plan.spec.size);
                 field.dimension = previous_plan.behavior.output_dimension;
                 field.is_U_blurred = false;
-                field.handle = default(field,'handle',@gammatone_1d);
+                field.wavelet_handle = default(field,'wavelet_handle',@gammatone_1d);
                 field.output_dimension = ...
                     field.dimension + (layer==2) + (signal_dimension==2);
                 field.subscripts = ...
@@ -77,17 +77,17 @@ for layer = 2:nLayers
                     default(field,'subscripts',banks{1}.behavior.dimension + 1);
                 banks{1}.behavior.gamma_padding_length = field.T / 2;
             case 'j'
-                if isfield(field,'handle')
-                    handle_str = func2str(field.handle);
+                if isfield(field,'wavelet_handle')
+                    wavelet_handle_str = func2str(field.wavelet_handle);
                     % It is better to have the impulsive part of the
                     % gammatone in the lower octaves
-                    if strcmp(handle_str, 'gammatone_1d') || ...
-                            strcmp(handle_str,'RLC_1d') 
+                    if strcmp(wavelet_handle_str, 'gammatone_1d') || ...
+                            strcmp(wavelet_handle_str,'RLC_1d') 
                         field.is_ift_flipped = ...
                             default(field, 'is_ift_flipped', true);
                     end
                     % If wavelets are replaced by finite differences
-                    if strcmp(handle_str, 'finitediff_1d')
+                    if strcmp(wavelet_handle_str, 'finitediff_1d')
                         field.T = enforce(field, 'T', 2);
                         field.J = enforce(field, 'J', 2);
                         field.nFilters_per_octave = ...
@@ -107,7 +107,7 @@ for layer = 2:nLayers
                 % 4 octaves of octave filtering by default
                 field.T = default(field, 'T', 4);
                 field.dimension = banks{end}.behavior.dimension+1;
-                field.handle = default(field,'handle',@gammatone_1d);
+                field.wavelet_handle = default(field,'wavelet_handle',@gammatone_1d);
                 field.invariance = default(field,'invariance','bypassed');
                 field.is_spinned = default(field,'is_spinned',true);
                 field.has_multiple_support = ...
