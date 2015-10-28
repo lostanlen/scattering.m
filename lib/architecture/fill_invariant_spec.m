@@ -23,4 +23,7 @@ if strcmp(invariant_spec.invariance, 'blurred')
 end
 invariant_spec.phi_bw_multiplier = ...
     default(invariant_spec, 'phi_bw_multiplier', bank_spec.phi_bw_multiplier);
+
+%% Alphanumeric ordering of field names
+invariant_spec = orderfields(invariant_spec);
 end
