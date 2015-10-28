@@ -10,6 +10,7 @@ opts{1}.time.T = T;
 opts{1}.time.size = N;
 opts{1}.time.max_Q = 16;
 opts{1}.time.nFilters_per_octave = 16;
+opts{1}.time.handle = @gammatone_1d;
 opts{1}.time.has_duals = true;
 opts{1}.time.gamma_bounds = [1 128];
 opts{1}.time.phi = 'gamma';
