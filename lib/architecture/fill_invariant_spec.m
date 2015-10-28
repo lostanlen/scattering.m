@@ -1,7 +1,7 @@
 function invariant_spec = fill_invariant_spec(opt, bank_spec)
 invariant_spec = struct();
 if isfield(opt, 'invariance')
-    invariant_spec = opt.invariance;
+    invariant_spec.invariance = opt.invariance;
 end 
 if isfield(opt, 'T')
     % TODO: integrate max pooling
