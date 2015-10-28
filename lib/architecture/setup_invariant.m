@@ -1,4 +1,3 @@
-function invariant = setup_invariant(invariant_spec)
-invariant = struct();
+function invariant = setup_invariant(invariant)
 end
 
