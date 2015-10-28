@@ -28,6 +28,7 @@ root_field.subscripts = ...
 plans{1}.banks{1}.spec = fill_bank_spec(root_field);
 root_field.size = plans{1}.banks{1}.spec.size;
 plans{1}.banks{1}.behavior = fill_bank_behavior(root_field);
+plans{1}.invariants{1}.spec = fill_invariant_spec(opts{1});
 plans{1}.nonlinearity = fill_nonlinearity(opts{1});
 ordered_names = {root,'theta','gamma','j'};
 
@@ -41,7 +42,7 @@ for layer = 2:nLayers
         opt_name = ordered_names{name_index};
         items = strfind(names,opt_name);
         if all(cellfun(@isempty,items))
-            continue;
+            continue
         end
         field = opt.(opt_name);
         switch opt_name
