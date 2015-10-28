@@ -11,15 +11,15 @@ if ~isfield(invariant_spec, 'invariance')
     invariant_spec.invariance = 'none';
 end
 if strcmp(invariant_spec.invariance, 'blurred')
-    switch func2str(bank_spec.handle)
+    switch func2str(bank_spec.wavelet_handle)
         case 'morlet_1d'
-            phi_handle = @gaussian_1d;
+            invariant_handle = @gaussian_1d;
         case 'gammatone_1d'
-            phi_handle = @gamma_1d;
+            invariant_handle = @gamma_1d;
         case 'finitediff_1d'
-            phi_handle = @rectangular_1d;
+            invariant_handle = @rectangular_1d;
     end
-    invariant_spec.handle = default(opt, 'phi_handle', phi_handle);
+    invariant_spec.handle = default(opt, 'invariant_handle', invariant_handle);
 end
 invariant_spec.phi_bw_multiplier = ...
     default(invariant_spec, 'phi_bw_multiplier', bank_spec.phi_bw_multiplier);
