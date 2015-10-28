@@ -42,7 +42,7 @@ end
 archs = sc_setup(opts);
 
 %% Options for the reconstruction
-str = struct('snapshot_period', 1);
+str = struct('snapshot_period', 10);
 reconstruction_opt = fill_reconstruction_opt(str);
 
 %%
