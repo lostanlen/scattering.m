@@ -17,7 +17,7 @@ spec.max_Q = default(opt,'max_Q',default(opt,'nFilters_per_octave',1));
 spec.max_scale = default(opt,'max_scale',spec.T);
 spec.nFilters_per_octave = ...
     default(opt,'nFilters_per_octave',default(opt,'max_Q',1));
-signal_dimension = 1; % to be replaced by conditional statement
+signal_dimension = 1; % replace by conditional statement for 2d integration
 if signal_dimension==1
     nOrientations = 1;
 elseif signal_dimension==2
