@@ -39,17 +39,15 @@ end
 bank.psis = optimize_bank(psi_fts,psi_ifts,bank);
 
 %% Construction and trimming of the low-pass filter phi
-% switch func2str(bank.spec.wavelet_handle)
-%     case 'morlet_1d'
-%         phi_ift = gaussian_1d(bank.spec);
-%     case 'gammatone_1d'
-%         phi_ift = gamma_1d(bank.spec);
-%     case 'finitediff_1d'
-%         phi_ift = rectangular_1d(bank.spec);
-% end
-% phi_ft = multidimensional_fft(phi_ift,1:signal_dimension);
-[phi_ft,energy_sum] = generate_phi_ft(psi_energy_sum,bank.spec);
-phi_ift = multidimensional_ifft(phi_ft,1:signal_dimension);
+switch func2str(bank.spec.wavelet_handle)
+    case 'morlet_1d'
+        phi_ift = gaussian_1d(bank.spec);
+    case 'gammatone_1d'
+        phi_ift = gamma_1d(bank.spec);
+    case 'finitediff_1d'
+        phi_ift = rectangular_1d(bank.spec);
+end
+phi_ft = multidimensional_fft(phi_ift,1:signal_dimension);
 bank.phi = optimize_bank(phi_ft,phi_ift,bank);
 
 %% Generation of dual filter bank if required
