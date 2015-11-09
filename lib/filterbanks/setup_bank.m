@@ -49,6 +49,7 @@ switch func2str(bank.spec.wavelet_handle)
 end
 phi_ft = multidimensional_fft(phi_ift,1:signal_dimension);
 bank.phi = optimize_bank(phi_ft,phi_ift,bank);
+energy_sum = psi_energy_sum + phi_ft .* conj(phi_ft);
 
 %% Generation of dual filter bank if required
 if bank.spec.has_duals
