@@ -2,6 +2,7 @@ function layer_S = Y_to_S(layer_Y,arch)
 %% Initialization
 nVariables_to_transform = length(arch.banks);
 banks = arch.banks;
+invariants = arch.invariants;
 % This boolean is true at the last layer
 is_U_bypassed = (length(layer_Y)==1);
 % This boolean is true at the first layer (except for videos)
@@ -39,8 +40,9 @@ end
 
 %% Iterated one-variable blurring or pooling
 for variable_index = start_index:nVariables_to_transform
-    bank = arch.banks{variable_index};
-    if bank.behavior.S.is_blurred
+    bank = banks{variable_index};
+    invariant = invariants{variable_index};
+    if strcmp(invariant.spec.invariant, 'blurred')
         if iscell(layer_S)
             subsref_structure.type = '()';
             subsref_structure.subs = cat(2, ...
