@@ -1,14 +1,13 @@
 function layer_S = Y_to_S(layer_Y,arch)
 %% Initialization
-nVariables_to_transform = length(arch.banks);
-banks = arch.banks;
+nVariables_to_transform = length(arch.invariants);
+invariants = arch.invariants;
 % This boolean is true at the last layer
 is_U_bypassed = (length(layer_Y)==1);
 % This boolean is true at the first layer (except for videos)
+banks = arch.banks;
 is_U_single_scattered = nVariables_to_transform==1 && ...
-    banks{1}.behavior.U.is_scattered && ...
-    ~banks{1}.behavior.U.is_blurred && ...
-    ~banks{1}.behavior.U.is_bypassed;
+    ~banks{1}.behavior.is_phi_applied;
 
 if is_U_bypassed || is_U_single_scattered
     layer_S = layer_Y{1};
