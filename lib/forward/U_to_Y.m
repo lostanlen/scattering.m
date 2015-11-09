@@ -6,7 +6,9 @@ layer_Y = cell(1+nVariables_to_transform,1);
 
 %% Special case of single-variable scattering
 is_U_single_scattered = nVariables_to_transform==1 && ...
-    ~banks{1}.behavior.is_phi_applied;
+    banks{1}.behavior.U.is_scattered && ...
+    ~banks{1}.behavior.U.is_blurred && ...
+    ~banks{1}.behavior.U.is_bypassed;
 if is_U_single_scattered
     layer_Y{1+0} = initialize_Y(layer_U,banks);
     layer_Y{1+0} = perform_ft(layer_Y{1+0},banks{1}.behavior.key);
