@@ -54,7 +54,7 @@ for layer = 2:nLayers
                 field.T = default(field,'T',root_plan.spec.T);
                 field.size = enforce(field,'size',root_plan.spec.size);
                 field.dimension = previous_plan.behavior.output_dimension;
-                field.is_phi_applied = false;
+                field.is_U_blurred = false;
                 field.wavelet_handle = default(field,'wavelet_handle',@gammatone_1d);
                 field.output_dimension = ...
                     field.dimension + (layer==2) + (signal_dimension==2);
