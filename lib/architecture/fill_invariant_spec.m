@@ -1,5 +1,5 @@
 function invariant_spec = fill_invariant_spec(opt, bank_spec)
-invariant_spec = struct();
+invariant_spec = struct('size', bank_spec.size);
 if isfield(opt, 'invariance')
     invariant_spec.invariance = opt.invariance;
 end 
