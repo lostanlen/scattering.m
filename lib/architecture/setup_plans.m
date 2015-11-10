@@ -1,14 +1,22 @@
 function plans = setup_plans(opts)
 nLayers = length(opts);
 plans = cell(1,nLayers);
-if isfield(opts{1}, 'banks') && isfield(opts{1}, 'invariants')
-    has_custom_invariants = true;
-end
 
-if isfield(opts{1},'time') && ~isfield(opts{1},'space')
-    root = 'time';
-elseif ~isfield(opts{1},'time') && isfield(opts{1},'space')
-    root = 'space';
+%% First order
+has_custom_root_invariants = ...
+    isfield(opts{1}, 'banks') && isfield(opts{1}, 'invariants');
+if has_custom_root_invariants
+    if isfield(opts{1}, 'time') && ~isfield(opts{1}, 'space')
+        root = 'time';
+    elseif ~isfield(opts{1}, 'time') && isfield(opts{1}, 'space')
+        root = 'space';
+    end
+else
+    if isfield(opts{1}.banks, 'time') && ~isfield(opts{1}.banks, 'space')
+        root = 'time';
+    elseif ~isfield(opts{1}.banks,'time') && isfield(opts{1}.banks, 'space')
+        root = 'space';
+    end
 end
 %%
 root_field = opts{1}.(root);
