@@ -1,4 +1,4 @@
-function invariant = setup_invariant(invariant,bank)
+function invariant = setup_invariant(invariant)
 invariant.behavior.subscripts = bank.subscripts;
 if strcmp(invariant.spec.invariance, 'blurred')
     phi_ift = invariant.spec.handle(invariant.spec);
