@@ -33,6 +33,7 @@ else
                 bank_spec.phi_bw_multiplier);
         spec.trim_threshold = ...
             default(spec, 'trim_thrshold', bank_spec.trim_threshold);
+        spec.has_real_ft = enforce(opt, 'has_real_ft', opt.has_real_ft);
     end
     spec.has_multiple_support = ...
         default(opt,'has_multiple_support',bank_spec.has_multiple_support);
