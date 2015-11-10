@@ -13,6 +13,7 @@ if nargin<2
         spec.trim_threshold = ...
             default(opt, 'trim_threshold', eps());
     end
+    spec.has_multiple_support = default(opt,'has_multiple_support',false);
 else
     spec.size = bank_spec.size;
     spec.T = default(opt, 'T', bank_spec.T);
@@ -33,6 +34,8 @@ else
         spec.trim_threshold = ...
             default(spec, 'trim_thrshold', bank_spec.trim_threshold);
     end
+    spec.has_multiple_support = ...
+        default(opt,'has_multiple_support',bank_spec.has_multiple_support);
 end
 
 %% Alphanumeric ordering of field names
