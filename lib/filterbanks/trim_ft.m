@@ -24,7 +24,8 @@ posfirst_index = find(abs2_analytic > spec.trim_threshold, 1);
 poslast_index = find(abs2_analytic > spec.trim_threshold, 1, 'last');
 abs2_coanalytic = abs2_coefficients((half_length+1):end);
 negfirst_index = half_length + find(abs2_coanalytic > spec.trim_threshold, 1);
-neglast_index = half_length + find(abs2_coanalytic > spec.trim_threshold, 1);
+neglast_index = ...
+    half_length + find(abs2_coanalytic > spec.trim_threshold, 1, 'last');
 
 %% Get coanalytic part (negative frequencies)
 filter_struct.ft_neg = coefficients(negfirst_index:neglast_index);
