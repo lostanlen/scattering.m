@@ -8,5 +8,6 @@ else
     behavior.key = opt.key;
     behavior.subscripts = opt.subscripts;
 end
+behavior.S.log2_oversampling = default(opt, 'U_log2_oversampling', 0);
 end
 
