@@ -30,7 +30,7 @@ else
         if isempty(cell_Y)
             condition = false;
             start_index = start_index - 1;
-        elseif (start_index==(nVariables_to_transform+1))
+        elseif (start_index==(nBanks+1))
             condition = false;
         else
             start_index = start_index + 1;
@@ -50,20 +50,20 @@ if has_multiple_invariants
 end
 
 %% Iterated one-variable blurring or pooling
-for variable_index = start_index:nVariables_to_transform
+for variable_index = start_index:nInvariants
     invariant = invariants{variable_index};
     if strcmp(invariant.spec.invariance, 'blurred')
         if iscell(layer_S)
             subsref_structure.type = '()';
             subsref_structure.subs = cat(2, ...
                 replicate_colon(start_index-1),[1,3], ...
-                replicate_colon(nVariables_to_transform-start_index));
+                replicate_colon(nInvariants-start_index));
             sub_layer_S = subsref(layer_S,subsref_structure);
-            sub_layer_S = perform_ft(sub_layer_S,bank.behavior.key);
+            sub_layer_S = perform_ft(sub_layer_S,invariant.behavior.key);
             sub_layer_S = blur_Y(sub_layer_S,bank);
             layer_S = subsasgn(layer_S,subsref_structure,sub_layer_S);
         else
-            layer_S = perform_ft(layer_S,bank.behavior.key);
+            layer_S = perform_ft(layer_S,invariant.behavior.key);
             layer_S = blur_Y(layer_S,bank);
         end
     elseif strcmp(invariant.spec.invariance, 'pooled');
