@@ -9,9 +9,9 @@ if nargin<2
         spec.handle = ...
             default(opt, 'invariant_handle', @gaussian_1d);
         spec.phi_bw_multiplier = ...
-            default(opt, 'phi_bw_multiplier', bank_spec.phi_bw_multiplier);
+            default(opt, 'phi_bw_multiplier', 2);
         spec.trim_threshold = ...
-            default(opt, 'trim_threshold', bank_spec.trim_threshold);
+            default(opt, 'trim_threshold', eps());
     end
 else
     spec.size = bank_spec.size;
@@ -30,6 +30,8 @@ else
         spec.phi_bw_multiplier = ...
             default(spec, 'phi_bw_multiplier', ...
                 bank_spec.phi_bw_multiplier);
+        spec.trim_threshold = ...
+            default(spec, 'trim_thrshold', bank_spec.trim_threshold);
     end
 end
 
