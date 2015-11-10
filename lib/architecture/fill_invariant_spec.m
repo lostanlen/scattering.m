@@ -5,14 +5,13 @@ spec.invariance = default(opt, 'invariance', 'blurred');
 %% If a bank specification is available, import size and default T
 % The default invariant blurring handle is also specified
 if nargin<2
-    spec = opt;
     if strcmp(spec.invariance, 'blurred')
         spec.handle = ...
             default(opt, 'invariant_handle', @gaussian_1d);
         spec.phi_bw_multiplier = default(opt,'phi_bw_multiplier',2);
     end
 else
-    spec = struct('size', bank_spec.size);
+    spec.size = bank_spec.size;
     spec.T = default(opt, 'T', bank_spec.T);
     if strcmp(spec.invariance, 'blurred')
         switch func2str(bank_spec.wavelet_handle)
