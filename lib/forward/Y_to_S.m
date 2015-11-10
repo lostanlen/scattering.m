@@ -6,11 +6,11 @@ invariants = arch.invariants;
 nInvariants = length(invariants);
 % This boolean is true at the last layer
 is_U_bypassed = (length(layer_Y)==1);
-% This boolean is always true at the first layer (except for videos)
-% It is sometimes false at the second layer (e.g. transposition-invariant S2)
-is_single_invariant = nInvariants==1 && ...
-    invariants{1}.behavior.S.is_invariant && ...
-    ~invariants{1}.behavior.S.is_bypassed;
+% This boolean is true at the first layer (except for videos)
+is_U_single_scattered = nVariables_to_transform==1 && ...
+    banks{1}.behavior.U.is_scattered && ...
+    ~banks{1}.behavior.U.is_blurred && ...
+    ~banks{1}.behavior.U.is_bypassed;
 
 invariant_booleans = cellfun(@(x) x.behavior.S.is_invariant, invariants);
 bypassed_booleans = cellfun(@(x) x.behavior.S.is_bypassed, invariants);
