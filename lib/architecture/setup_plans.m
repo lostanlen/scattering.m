@@ -1,4 +1,5 @@
 function plans = setup_plans(opts)
+%% Initialize cell array of plans
 nLayers = length(opts);
 plans = cell(1,nLayers);
 
@@ -6,43 +7,51 @@ plans = cell(1,nLayers);
 has_custom_root_invariants = ...
     isfield(opts{1}, 'banks') && isfield(opts{1}, 'invariants');
 if has_custom_root_invariants
-    if isfield(opts{1}, 'time') && ~isfield(opts{1}, 'space')
+    if isfield(opts{1}.banks, 'time') && ~isfield(opts{1}.banks, 'space')
         root = 'time';
-    elseif ~isfield(opts{1}, 'time') && isfield(opts{1}, 'space')
+    elseif ~isfield(opts{1}.banks, 'time') && isfield(opts{1}.banks, 'space')
         root = 'space';
     end
 else
-    if isfield(opts{1}.banks, 'time') && ~isfield(opts{1}.banks, 'space')
+    if isfield(opts{1}, 'time') && ~isfield(opts{1}, 'space')
         root = 'time';
-    elseif ~isfield(opts{1}.banks,'time') && isfield(opts{1}.banks, 'space')
+    elseif ~isfield(opts{1},'time') && isfield(opts{1}, 'space')
         root = 'space';
     end
 end
-%%
-root_field = opts{1}.(root);
-root_field.T = drop_trailing(root_field.T);
-root_field.invariance = default(root_field, 'invariance', 'blurred');
-root_field.key.(root) = cell(1);
-signal_dimension = length(root_field.T);
-root_field.dimension = ...
-    default(root_field,'dimension',signal_dimension);
-switch signal_dimension
-    case 1
-        if isfield(root_field,'is_spinned') && root_field.is_spinned
+if has_custom_root_invariants
+    root_bank_field = opts{1}.banks.(root);
+    root_invariant_field = opts{1}.banks.(root);
+    plans{1}.banks{1}.spec = fill_bank_spec(root_bank_field);
+    plans{1}.banks{1}.behavior = fill_bank_behavior(root_invariant_field);
+    plans{1}.invariants{1}.spec = fill_invariant_spec(root_invariant_field);
+else
+    root_field = opts{1}.(root);
+    root_field.T = drop_trailing(root_field.T);
+    root_field.invariance = default(root_field, 'invariance', 'blurred');
+    root_field.key.(root) = cell(1);
+    signal_dimension = length(root_field.T);
+    root_field.dimension = ...
+        default(root_field,'dimension',signal_dimension);
+    switch signal_dimension
+        case 1
+            if isfield(root_field,'is_spinned') && root_field.is_spinned
+                root_field.output_dimension = root_field.dimension + 1;
+            else
+                root_field.output_dimension = root_field.dimension;
+            end
+        case 2
             root_field.output_dimension = root_field.dimension + 1;
-        else
-            root_field.output_dimension = root_field.dimension;
-        end
-    case 2
-        root_field.output_dimension = root_field.dimension + 1;
+    end
+    root_field.subscripts = ...
+        default(root_field,'subscripts',1:root_field.dimension);
+    plans{1}.banks{1}.spec = fill_bank_spec(root_field);
+    root_field.size = plans{1}.banks{1}.spec.size;
+    plans{1}.banks{1}.behavior = fill_bank_behavior(root_field);
+    plans{1}.invariants{1}.spec = fill_invariant_spec(root_field);
 end
-root_field.subscripts = ...
-    default(root_field,'subscripts',1:root_field.dimension);
-plans{1}.banks{1}.spec = fill_bank_spec(root_field);
-root_field.size = plans{1}.banks{1}.spec.size;
-plans{1}.banks{1}.behavior = fill_bank_behavior(root_field);
-plans{1}.invariants{1}.spec = ...
-    fill_invariant_spec(root_field, plans{1}.banks{1}.spec);
+
+%% Setup first-order nonlinearity
 plans{1}.nonlinearity = fill_nonlinearity(opts{1});
 ordered_names = {root,'theta','gamma','j'};
 
@@ -96,7 +105,7 @@ for layer = 2:nLayers
                     % It is better to have the impulsive part of the
                     % gammatone in the lower octaves
                     if strcmp(wavelet_handle_str, 'gammatone_1d') || ...
-                            strcmp(wavelet_handle_str,'RLC_1d') 
+                            strcmp(wavelet_handle_str,'RLC_1d')
                         field.is_ift_flipped = ...
                             default(field, 'is_ift_flipped', true);
                     end
