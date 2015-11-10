@@ -25,12 +25,13 @@ else
                 invariant_handle = @gamma_1d;
             case 'finitediff_1d'
                 invariant_handle = @rectangular_1d;
+                spec.J = bank_spec.J;
         end
         spec.handle = ...
             default(opt, 'invariant_handle', invariant_handle);
         spec.phi_bw_multiplier = ...
             default(spec, 'phi_bw_multiplier', ...
-                bank_spec.phi_bw_multiplier);
+            bank_spec.phi_bw_multiplier);
         spec.trim_threshold = ...
             default(spec, 'trim_thrshold', bank_spec.trim_threshold);
         spec.has_real_ft = enforce(opt, 'has_real_ft', bank_spec.has_real_ft);
@@ -38,7 +39,7 @@ else
     spec.has_multiple_support = ...
         default(opt,'has_multiple_support',bank_spec.has_multiple_support);
 end
-
+spec.J = enforce(opt, 'J', log2(spec.T));
 %% Alphanumeric ordering of field names
 spec = orderfields(spec);
 end
