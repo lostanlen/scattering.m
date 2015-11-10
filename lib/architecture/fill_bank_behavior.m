@@ -1,4 +1,4 @@
-function bank_behavior = fill_bank_behavior(opt)
+function behavior = fill_bank_behavior(opt)
 %%
 behavior.U.is_blurred = default(opt,'is_U_blurred',true);
 behavior.U.is_bypassed = default(opt,'is_U_bypassed',false);
