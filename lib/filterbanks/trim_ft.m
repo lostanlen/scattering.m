@@ -23,8 +23,8 @@ abs2_analytic = abs2_coefficients(1:half_length);
 posfirst_index = find(abs2_analytic > spec.trim_threshold, 1);
 poslast_index = find(abs2_analytic > spec.trim_threshold, 1, 'last');
 abs2_coanalytic = abs2_coefficients((half_length+1):end);
-negfirst_index = find(abs2_coanalytic > spec.trim_threshold, 1);
-neglast_index = find(abs2_coanalytic > spec.trim_threshold, 1);
+negfirst_index = half_length + find(abs2_coanalytic > spec.trim_threshold, 1);
+neglast_index = half_length + find(abs2_coanalytic > spec.trim_threshold, 1);
 
 %% Get coanalytic part (negative frequencies)
 filter_struct.ft_neg = coefficients(negfirst_index:neglast_index);
