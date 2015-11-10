@@ -18,7 +18,7 @@ abs2_coefficients = coefficients .* conj(coefficients);
 
 %% Detects boundaries of analytic and coanalytic parts
 full_length = length(coefficients);
-half_length = full_length;
+half_length = full_length /2 ;
 abs2_analytic = abs2_coefficients(1:half_length);
 posfirst_index = find(abs2_analytic > spec.trim_threshold, 1);
 poslast_index = find(abs2_analytic > spec.trim_threshold, 1, 'last');
