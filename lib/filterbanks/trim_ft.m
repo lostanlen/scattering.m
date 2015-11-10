@@ -16,27 +16,29 @@ end
 %% Finds maximum absolute value
 abs2_coefficients = coefficients .* conj(coefficients);
 
-%% Detects first and last non-negligible coefficient in shifted domain
-first_detected_index = ...
-    find(abs2_coefficients>spec.trim_threshold, 1);
-last_detected_index = ...
-    find(abs2_coefficients>spec.trim_threshold, 1, 'last');
+%% Detects boundaries of analytic and coanalytic parts
+full_length = length(coefficients);
+half_length = full_length;
+abs2_analytic = abs2_coefficients(1:half_length);
+posfirst_index = find(abs2_analytic > spec.trim_threshold, 1);
+poslast_index = find(abs2_analytic > spec.trim_threhsold, 1, 'last');
+abs2_coanalytic = abs2_coefficients((hald_length+1):end);
+negfirst_index = find(abs2_coanalytic > spec.trim_threshold, 1);
+neglast_index = find(abs2_coanalytic > spec.trim_threshold, 1);
 
 %% Get coanalytic part (negative frequencies)
-full_length = length(coefficients);
-half_length = full_length / 2;
-filter_struct.ft_neg = coefficients((1+half_length):last_detected_index);
+filter_struct.ft_neg = coefficients(negfirst_index:neglast_index);
 if isempty(filter_struct.ft_neg)
     filter_struct.ft_neglast = [];
 else
-    filter_struct.ft_neglast = last_detected_index - 1 - full_length;
+    filter_struct.ft_neglast = neglast_index - 1 - full_length;
 end
 
 %% Get analytic part (positive frequencies)
-filter_struct.ft_pos = coefficients(first_detected_index:(1+half_length-1));
+filter_struct.ft_pos = coefficients(posfirst_index:poslast_index);
 if isempty(filter_struct.ft_pos)
     filter_struct.ft_posfirst = [];
 else
-    filter_struct.ft_posfirst = first_detected_index - 1;
+    filter_struct.ft_posfirst = posfirst_index - 1;
 end
 end
