@@ -13,6 +13,6 @@ else
     behavior.output_dimension = opt.output_dimension;
     behavior.subscripts = opt.subscripts;
 end
-behavior.S.log2_oversampling = default(opt, 'U_log2_oversampling', 0);
+behavior.S.log2_oversampling = default(opt, 'S_log2_oversampling', 0);
 end
 
