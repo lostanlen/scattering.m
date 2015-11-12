@@ -71,14 +71,15 @@ for layer = 2:nLayers
         invariants_opt = opt.invariants;
     else
         banks_opt = opt;
-        invariants_opt = opt.invariants;
+        invariants_opt = opt;
     end
     bank_names = fieldnames(banks_opt);
     nBank_names = length(ordered_names);
     banks = {};
-        opt_name = ordered_names{name_index};
-        items = strfind(names,opt_name);
-        if all(cellfun(@isempty,items))
+    for bank_name_index = 1:nBank_names
+        opt_name = ordered_names{bank_name_index};
+        items = strfind(bank_names, opt_name);
+        if all(cellfun(@isempty, items))
             continue
         end
         field = opt.(opt_name);
@@ -86,15 +87,16 @@ for layer = 2:nLayers
             case root
                 root_plan = plans{layer-1}.banks{1};
                 previous_plan = plans{layer-1}.banks{end};
-                field.T = default(field,'T',root_plan.spec.T);
-                field.size = enforce(field,'size',root_plan.spec.size);
+                field.T = default(field, 'T', root_plan.spec.T);
+                field.size = enforce(field, 'size', root_plan.spec.size);
                 field.dimension = previous_plan.behavior.output_dimension;
                 field.is_U_blurred = false;
-                field.wavelet_handle = default(field,'wavelet_handle',@gammatone_1d);
+                field.wavelet_handle = default(field, 'wavelet_handle', ...
+                    @gammatone_1d);
                 field.output_dimension = ...
                     field.dimension + (layer==2) + (signal_dimension==2);
-                field.subscripts = ...
-                    default(field,'subscripts',root_plan.behavior.subscripts);
+                field.subscripts = default(field, 'subscripts', ...
+                    root_plan.behavior.subscripts);
                 field.key.(root) = cell(1);
             case 'gamma'
                 nChromas = plans{1}.banks{1}.spec.nFilters_per_octave;
@@ -102,10 +104,10 @@ for layer = 2:nLayers
                 % 1 octave of chroma filtering by default
                 field.T = default(field,'T',pow2(nextpow2(nChromas)));
                 field.dimension = banks{end}.behavior.output_dimension + 1;
-                field.invariance = default(field,'invariance','bypassed');
-                field.is_spinned = enforce(field,'is_spinned',true);
+                field.invariance = default(field, 'invariance', 'bypassed');
+                field.is_spinned = enforce(field, 'is_spinned', true);
                 field.has_multiple_support = ...
-                    enforce(field,'has_multiple_support',true);
+                    enforce(field, 'has_multiple_support', true);
                 field.key.(root){1}.gamma = cell(1);
                 field.output_dimension = field.dimension + 1;
                 field.size = enforce(field,'size', ...
@@ -170,7 +172,7 @@ for layer = 2:nLayers
         end
         bank.behavior = fill_bank_behavior(field);
         bank.spec = fill_bank_spec(field);
-        banks = cat(1,banks,bank);
+        banks = cat(1, banks, bank);
     end
     plan.banks = banks;
     plan.nonlinearity = fill_nonlinearity(opt);
