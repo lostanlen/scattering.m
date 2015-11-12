@@ -174,7 +174,7 @@ for layer = 2:nLayers
         bank.spec = fill_bank_spec(field);
         banks = cat(1, banks, bank);
     end
-    invariant_names = fieldnames(invariant_opt);
+    invariant_names = fieldnames(invariants_opt);
     invariants = {};
     for invariant_name_index = 1:nNames
         opt_name = ordered_names{invariant_name_index};
