@@ -6,13 +6,17 @@ architectures = cell(nLayers,1);
 %%
 for layer = 1:nLayers
     architecture = plans{layer};
-    for bank_index = 1:length(architecture.banks)
-        architecture.banks{bank_index} = ...
-            setup_bank(architecture.banks{bank_index});
+    if isfield(architecture, 'banks')
+        for bank_index = 1:length(architecture.banks)
+            architecture.banks{bank_index} = ...
+                setup_bank(architecture.banks{bank_index});
+        end
     end
-    for invariant_index = 1:length(architecture.invariants)
-        architecture.invariants{invariant_index} = ...
-            setup_invariant(architecture.invariants{invariant_index});
+    if isfield(architecture, 'invariants')
+        for invariant_index = 1:length(architecture.invariants)
+            architecture.invariants{invariant_index} = ...
+                setup_invariant(architecture.invariants{invariant_index});
+        end
     end
     architectures{layer} = architecture;
 end
