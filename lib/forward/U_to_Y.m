@@ -1,11 +1,11 @@
 function layer_Y = U_to_Y(layer_U,arch)
 %% Initialization
 banks = arch.banks;
-nVariables_to_transform = length(banks);
-layer_Y = cell(1+nVariables_to_transform,1);
+nBanks = length(banks);
+layer_Y = cell(1+nBanks,1);
 
 %% Special case of single-variable scattering
-is_U_single_scattered = nVariables_to_transform==1 && ...
+is_U_single_scattered = nBanks==1 && ...
     banks{1}.behavior.U.is_scattered && ...
     ~banks{1}.behavior.U.is_blurred && ...
     ~banks{1}.behavior.U.is_bypassed;
@@ -18,7 +18,7 @@ end
 
 %% Iterated one-variable scattering, blurring and bypassing
 layer_Y{1+0} = {initialize_Y(layer_U,banks)};
-for variable_index = 1:nVariables_to_transform
+for variable_index = 1:nBanks
     % Fourier transform
     bank = banks{variable_index};
     is_scattered = bank.behavior.U.is_scattered;
