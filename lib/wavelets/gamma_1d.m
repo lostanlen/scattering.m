@@ -10,7 +10,5 @@ phi_ift = monomial .* exponential;
 [~, maximum_index] = max(abs(phi_ift));
 time_shift = 1 - maximum_index;
 phi_ift = circshift(phi_ift, time_shift);
-phi_ift = phi_ift / norm(phi_ift);
-normalizer = max(abs(phi_ft));
-phi_ift = phi_ift / normalizer;
+phi_ift = phi_ift / sum(phi_ift);
 end
