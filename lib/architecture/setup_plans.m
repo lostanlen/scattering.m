@@ -68,8 +68,14 @@ for layer = 2:nLayers
     opt = opts{layer};
     has_custom_invariants = isfield(opt, 'banks') || isfield(opt, 'invariants');
     if has_custom_invariants
-        banks_opt = opt.banks;
-        invariants_opt = opt.invariants;
+        has_banks = isfield(opt, 'banks');
+        if has_banks
+            banks_opt = opt.banks;
+        end
+        has_invariants = isfield(opt, 'invariants');
+        if has_invariants
+            invariants_opt = opt.invariants;
+        end
     else
         banks_opt = opt;
         invariants_opt = opt;
