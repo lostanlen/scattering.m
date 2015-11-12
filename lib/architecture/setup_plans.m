@@ -61,6 +61,7 @@ end
 %% Setup first-order nonlinearity
 plans{1}.nonlinearity = fill_nonlinearity(opts{1});
 ordered_names = {root,'theta','gamma','j'};
+nNames = length(ordered_names);
 
 %%
 for layer = 2:nLayers
@@ -74,9 +75,8 @@ for layer = 2:nLayers
         invariants_opt = opt;
     end
     bank_names = fieldnames(banks_opt);
-    nBank_names = length(ordered_names);
     banks = {};
-    for bank_name_index = 1:nBank_names
+    for bank_name_index = 1:nNames
         opt_name = ordered_names{bank_name_index};
         items = strfind(bank_names, opt_name);
         if all(cellfun(@isempty, items))
@@ -173,6 +173,16 @@ for layer = 2:nLayers
         bank.behavior = fill_bank_behavior(field);
         bank.spec = fill_bank_spec(field);
         banks = cat(1, banks, bank);
+    end
+    invariant_names = fieldnames(invariant_opt);
+    invariants = {};
+    for invariant_name_index = 1:nNames
+        opt_name = ordered_names{invariant_name_index};
+        items = strfind(invariant_names, opt_name);
+        if all(cellfun(@isempty, items))
+            continue
+        end
+        field = opt.(opt_name);
     end
     plan.banks = banks;
     plan.nonlinearity = fill_nonlinearity(opt);
