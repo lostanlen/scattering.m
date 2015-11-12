@@ -22,6 +22,8 @@ end
 if has_custom_root_invariants
     root_bank_field = opts{1}.banks.(root);
     root_invariant_field = opts{1}.banks.(root);
+    root_bank_field.is_U_blurred = ...
+        default(opt, 'is_U_blurred', false);
     plans{1}.banks{1}.spec = fill_bank_spec(root_bank_field);
     plans{1}.banks{1}.behavior = fill_bank_behavior(root_invariant_field);
     plans{1}.invariants{1}.spec = fill_invariant_spec(root_invariant_field);
