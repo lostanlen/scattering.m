@@ -73,10 +73,9 @@ for layer = 2:nLayers
         banks_opt = opt;
         invariants_opt = opt.invariants;
     end
+    bank_names = fieldnames(banks_opt);
+    nBank_names = length(ordered_names);
     banks = {};
-    names = fieldnames(opt);
-    nNames = length(ordered_names);
-    for name_index = 1:nNames
         opt_name = ordered_names{name_index};
         items = strfind(names,opt_name);
         if all(cellfun(@isempty,items))
