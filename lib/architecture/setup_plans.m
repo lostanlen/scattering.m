@@ -4,9 +4,9 @@ nLayers = length(opts);
 plans = cell(1,nLayers);
 
 %% First order
-has_custom_root_invariants = ...
+has_custom_invariants = ...
     isfield(opts{1}, 'banks') && isfield(opts{1}, 'invariants');
-if has_custom_root_invariants
+if has_custom_invariants
     if isfield(opts{1}.banks, 'time') && ~isfield(opts{1}.banks, 'space')
         root = 'time';
     elseif ~isfield(opts{1}.banks, 'time') && isfield(opts{1}.banks, 'space')
@@ -19,7 +19,7 @@ else
         root = 'space';
     end
 end
-if has_custom_root_invariants
+if has_custom_invariants
     root_bank_field = opts{1}.banks.(root);
     root_invariant_field = opts{1}.banks.(root);
     root_bank_field.is_U_blurred = ...
