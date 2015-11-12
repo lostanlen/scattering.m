@@ -80,7 +80,11 @@ for layer = 2:nLayers
         banks_opt = opt;
         invariants_opt = opt;
     end
-    bank_names = fieldnames(banks_opt);
+    if has_custom_invariants && ~has_banks
+        bank_names = {};
+    else
+        bank_names = fieldnames(banks_opt);
+    end
     banks = {};
     for bank_name_index = 1:nNames
         opt_name = ordered_names{bank_name_index};
