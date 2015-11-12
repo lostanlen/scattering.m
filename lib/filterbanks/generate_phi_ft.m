@@ -18,13 +18,7 @@ switch signal_dimension
             phi_ft = fft(phi_ift);
             energy_sum = energy_sum + phi_ft .* conj(phi_ft);
         elseif bank_spec.phi.is_rectangular
-            assert(strcmp(func2str(bank_spec.handle), 'finitediff_1d'));
-            phi_ift = zeros(original_sizes, 1);
-            half_ift_support = 1:(bank_spec.T/2);
-            normalizer = sqrt(1+bank_spec.T) * sqrt(3);
-            phi_ift(1 + half_ift_support) = 1 / normalizer;
-            phi_ift(1 + end - half_ift_support) = 1 / normalizer;
-            phi_ift(1+0) = 1 / normalizer;
+            phi_ift = rectangular_1d(bank_spec);
             phi_ft = fft(phi_ift);
             energy_sum = energy_sum + phi_ft .* conj(phi_ft);
         elseif bank_spec.phi.is_by_substraction
