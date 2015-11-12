@@ -6,10 +6,9 @@ end
 
 %% Management of default parameters
 spec.T = opt.T;
-if isfield(opt, 'wavelet_handle')
-    if strcmp(func2str(opt.wavelet_handle), 'finitediff_1d')
-        spec.J = opt.J;
-    end
+if isfield(opt, 'wavelet_handle') && ...
+        strcmp(func2str(opt.wavelet_handle), 'finitediff_1d')
+    spec.J = opt.J;
 else
     spec.J = enforce(opt,'J',log2(spec.T));
 end
