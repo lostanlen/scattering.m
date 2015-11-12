@@ -131,8 +131,7 @@ for layer = 2:nLayers
                         field.J = enforce(field, 'J', 2);
                         field.nFilters_per_octave = ...
                             enforce(field, 'nFilters_per_octave', 1);
-                        field.max_Q = ...
-                            enforce(field, 'max_Q', 1);
+                        field.max_Q = enforce(field, 'max_Q', 1);
                         field.nOctaves = enforce(field, 'nOctaves', 2);
                         field.is_spinned = enforce(field, 'is_spinned', false);
                     end
@@ -146,17 +145,18 @@ for layer = 2:nLayers
                 % 4 octaves of octave filtering by default
                 field.T = default(field, 'T', 4);
                 field.dimension = banks{end}.behavior.dimension+1;
-                field.wavelet_handle = default(field,'wavelet_handle',@gammatone_1d);
-                field.invariance = default(field,'invariance','bypassed');
-                field.is_spinned = default(field,'is_spinned',true);
+                field.wavelet_handle = ...
+                    default(field, 'wavelet_handle', @gammatone_1d);
+                field.invariance = default(field, 'invariance', 'bypassed');
+                field.is_spinned = default(field, 'is_spinned', true);
                 field.has_multiple_support = ...
-                    enforce(field,'has_multiple_support',true);
+                    enforce(field, 'has_multiple_support', true);
                 field.key.(root){1}.j = cell(1);
                 field.output_dimension = field.dimension + 1;
                 field.size = enforce(field,'size', ...
                     pow2(nextpow2(nOctaves + field.T)));
-                field.subscripts = ...
-                    default(field,'subscripts',banks{1}.behavior.dimension + 2);
+                field.subscripts = default(field, 'subscripts', ...
+                    banks{1}.behavior.dimension + 2);
                 if isfield(opt,'gamma')
                     % Here we assume that the transformation along gamma is
                     % in second position
