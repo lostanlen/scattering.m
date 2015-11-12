@@ -1,7 +1,7 @@
 function plans = setup_plans(opts)
 %% Initialize cell array of plans
 nLayers = length(opts);
-plans = cell(1,nLayers);
+plans = cell(1, nLayers);
 
 %% First order
 has_custom_invariants = ...
