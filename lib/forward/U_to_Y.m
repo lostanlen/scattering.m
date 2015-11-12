@@ -2,7 +2,7 @@ function layer_Y = U_to_Y(layer_U,arch)
 %% Initialization
 banks = arch.banks;
 nBanks = length(banks);
-layer_Y = cell(1+nBanks,1);
+layer_Y = cell(1 + nBanks, 1);
 
 %% Special case of single-variable scattering
 is_U_single_scattered = nBanks==1 && ...
