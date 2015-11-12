@@ -14,5 +14,8 @@ else
     behavior.subscripts = opt.subscripts;
 end
 behavior.S.log2_oversampling = default(opt, 'S_log2_oversampling', 0);
+
+%% Alphanumeric ordering of field names
+behavior = orderfields(behavior);
 end
 
