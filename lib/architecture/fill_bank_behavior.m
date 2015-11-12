@@ -24,4 +24,7 @@ if isfield(opt,'spiral')
     behavior.spiral = opt.spiral;
 end
 behavior.subscripts = opt.subscripts; % provided in caller setup_plans
+
+%% Alphanumeric ordering of field names
+behavior = orderfields(behavior);
 end
