@@ -1,4 +1,4 @@
-function layer_S = Y_to_S(layer_Y,arch)
+function layer_S = Y_to_S(layer_Y, arch)
 %% Initialization
 banks = arch.banks;
 nBanks = length(banks);
