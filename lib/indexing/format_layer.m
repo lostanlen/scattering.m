@@ -5,7 +5,7 @@ if iscell(layer_S)
     for cell_index = 1:nCells
         cell_S = layer_S{cell_index};
         if ~isempty(cell_S)
-            formatted_cells{cell_index}= ...
+            formatted_cells{cell_index} = ...
                 format_layer(cell_S, spatial_subscripts);
         end
     end
