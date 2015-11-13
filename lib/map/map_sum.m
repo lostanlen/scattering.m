@@ -9,3 +9,6 @@ if iscell(data_in)
     end
     return
 end
+
+%% Tail call
+data_out = sum(data_in, subscripts);
