@@ -1,14 +1,9 @@
 function behavior = fill_invariant_behavior(opt, bank_behavior)
+behavior.key = opt.key; % provided by caller parse_plans
 behavior.S.is_invariant = default(opt, 'is_S_invariant', true);
 behavior.S.is_bypassed = default(opt, 'is_S_bypassed', false);
-if nargin<2
-    behavior.dimension = opt.dimension;
-    behavior.key = opt.key;
-    behavior.output_dimension = opt.output_dimension;
-    behavior.subscripts = opt.subscripts;
-else
+if nargin==2
     behavior.dimension = default(opt, 'dimension', bank_behavior.dimension);
-    behavior.key = default(opt, 'key', bank_behavior.key);
     behavior.subscripts = default(opt, 'subscripts', bank_behavior.subscripts);
     behavior.output_dimension = default(opt, 'output_dimension', ...
         bank_behavior.output_dimension);  
