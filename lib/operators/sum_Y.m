@@ -15,6 +15,6 @@ next_sub_Y = sub_Y;
 next_sub_Y.data = map_sum(sub_Y.data, subscripts);
 
 %% Update ranges
-next_sub_Y.ranges = map_collapse_range(sub_Y.ranges, subscripts);
+next_sub_Y.ranges = map_collapse_ranges(sub_Y.ranges, subscripts);
 end
 
