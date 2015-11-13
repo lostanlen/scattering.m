@@ -1,5 +1,5 @@
-function optimized_banks = optimize_bank(bank_fts,bank_ifts,bank)
-fullsupport_bank = build_fullsupport_bank(bank_fts,bank_ifts,bank);
+function optimized_banks = optimize_bank(bank_fts, bank_ifts, bank)
+fullsupport_bank = build_fullsupport_bank(bank_fts, bank_ifts, bank);
 if ~bank.spec.has_multiple_support
     optimized_banks{1} = fullsupport_bank;
     return;
