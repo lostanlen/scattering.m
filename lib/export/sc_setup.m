@@ -23,4 +23,7 @@ for plan_index = 1:nPlans
     architectures{plan_index} = architecture;
 end
 
+if is_lastlayer_implicit
+    architectures{end}.invariants = architectures{end-1}.invariants;
+end
 end
