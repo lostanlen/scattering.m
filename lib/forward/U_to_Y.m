@@ -1,6 +1,5 @@
-function layer_Y = U_to_Y(layer_U,arch)
+function layer_Y = U_to_Y(layer_U, banks)
 %% Initialization
-banks = arch.banks;
 nBanks = length(banks);
 layer_Y = cell(1 + nBanks, 1);
 
