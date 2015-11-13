@@ -218,11 +218,14 @@ for layer = 2:nLayers
             invariant.behavior = fill_invariant_behavior(field);
             invariant.spec = fill_invariant_spec(field);
         end
-        invariant.behavior = fill_invariant_behavior(field, bank_behavior);
-        invariant.spec = fill_invariant_spec(field, bank_spec);
         invariants = cat(1, invariants, invariant);
     end
-    plan.banks = banks;
+    if ~has_custom_invariants || has_banks
+        plan.banks = banks;
+    end
+    if ~has_custom_invariants || has_invariants
+        plan.invariants = invariants;
+    end
     plan.nonlinearity = fill_nonlinearity(opt);
     plans{layer} = plan;
 end
