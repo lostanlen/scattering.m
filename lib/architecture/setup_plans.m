@@ -193,11 +193,21 @@ for layer = 2:nLayers
     invariants = {};
     for invariant_name_index = 1:nNames
         opt_name = ordered_names{invariant_name_index};
+        if strcmp(opt_name, 'nonlinearity')
+            continue
+        end
         items = strfind(invariant_names, opt_name);
         if all(cellfun(@isempty, items))
             continue
         end
         field = opt.(opt_name);
+        if isfield(banks_opt, opt_name)
+            bank_field = banks_opt.(opt_name);
+            
+        end
+        invariant.behavior = fill_invariant_behavior(field, bank_behavior);
+        invariant.spec = fill_invariant_spec(field, bank_spec);
+        invariants = cat(1, invariants, invariant);
     end
     plan.banks = banks;
     plan.nonlinearity = fill_nonlinearity(opt);
