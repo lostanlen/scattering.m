@@ -6,8 +6,8 @@ is_lastlayer_implicit = isfield(plans{end}, 'banks');
 nLayers = length(plans) + is_lastlayer_implicit;
 architectures = cell(nLayers, 1);
 %%
-for layer = 1:nLayers
-    architecture = plans{layer};
+for plan_index = 1:nPlans
+    architecture = plans{plan_index};
     if isfield(architecture, 'banks')
         for bank_index = 1:length(architecture.banks)
             architecture.banks{bank_index} = ...
@@ -20,7 +20,7 @@ for layer = 1:nLayers
                 setup_invariant(architecture.invariants{invariant_index});
         end
     end
-    architectures{layer} = architecture;
+    architectures{plan_index} = architecture;
 end
 
 end
