@@ -1,12 +1,10 @@
-function zeroth_ranges_out = map_collapse_ranges(zeroth_ranges_in, subscripts)
+function zeroth_ranges = map_collapse_ranges(zeroth_ranges, subscripts)
 %% Cell-wise map
-if iscell(zeroth_range_in)
-    cell_sizes = size(zeroth_ranges_in);
-    zeroth_ranges_out = cell(cell_sizes);
+if iscell(zeroth_ranges)
     nCells = prod(cell_sizes);
     for cell_index = 1:nCells
-        zeroth_ranges_out{cell_index} = ...
-            map_collapse_ranges(zeroth_ranges_in{cell_index}, subscripts);
+        zeroth_ranges{cell_index} = ...
+            map_collapse_ranges(zeroth_ranges{cell_index}, subscripts);
     end
     return
 end
