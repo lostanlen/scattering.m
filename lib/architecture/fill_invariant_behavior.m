@@ -1,5 +1,5 @@
 function behavior = fill_invariant_behavior(opt, bank_behavior)
-behavior.key = opt.key; % provided by caller parse_plans
+behavior.key = opt.key; % provided by caller setup_plans
 behavior.S.is_invariant = default(opt, 'is_S_invariant', true);
 behavior.S.is_bypassed = default(opt, 'is_S_bypassed', false);
 if nargin==2
