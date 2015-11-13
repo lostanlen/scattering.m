@@ -14,12 +14,12 @@ for layer = 1:nLayers
     previous_layer = layer - 1;
     % Scatter iteratively layer U to get sub-layers Y
     if isfield(arch, 'banks')
-        Y{layer} = U_to_Y(U{1 + previous_layer}, arch.banks);
+        Y{layer} = U_to_Y(U{1+previous_layer}, arch.banks);
     else
-        Y{layer} = U{1 + previous_layer};
+        Y{layer} = U{1+previous_layer};
     end
     if isfield(arch, 'nonlinearity')
-        % Apply non-linearity to last sub-layer Y to get layer U
+        % Apply nonlinearity to last sub-layer Y to get layer U
         U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
     end
     
