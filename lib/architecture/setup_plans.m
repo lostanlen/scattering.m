@@ -95,7 +95,7 @@ for layer = 2:nLayers
         if all(cellfun(@isempty, items))
             continue
         end
-        field = opt.(opt_name);
+        field = banks_opt.(opt_name);
         field.name = opt_name;
         switch opt_name
             case root_name
@@ -203,7 +203,7 @@ for layer = 2:nLayers
         if all(cellfun(@isempty, items))
             continue
         end
-        field = opt.(opt_name);
+        field = invariants_opt.(opt_name);
         if isfield(banks_opt, opt_name)
             nBanks = length(banks);
             for bank_index = 1:nBanks
