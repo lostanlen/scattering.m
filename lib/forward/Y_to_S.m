@@ -77,7 +77,7 @@ for variable_index = start_index:nInvariants
             layer_S = blur_Y(layer_S, invariant);
         end
     elseif strcmp(invariant.spec.invariance, 'summed');
-        layer_S = sum_Y(layer_Y, invariant);
+        layer_S = sum_Y(layer_S, invariant);
     end
 end
 end
