@@ -17,6 +17,7 @@ behavior.gamma_bounds = gamma_bounds;
 behavior.is_sibling_padded = default(opt, 'is_sibling_padded', false);
 behavior.is_parallel = default(opt, 'is_parallel', false);
 behavior.key = opt.key; % provided in caller setup_plans
+behavior.name = opt.name; % provided in caller setup_plans
 behavior.output_dimension = opt.output_dimension; % provided in caller
 behavior.padding = parse_padding(default(opt, 'padding', 'periodic'));
 behavior.sibling_mask_factor = default(opt, 'sibling_mask_factor', 1);
