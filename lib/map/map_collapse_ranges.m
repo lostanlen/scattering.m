@@ -1,0 +1,2 @@
+function zeroth_ranges_out = map_collapse_ranges(zeroth_ranges_in)
+end
