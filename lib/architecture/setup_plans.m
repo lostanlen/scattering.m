@@ -68,6 +68,7 @@ nNames = length(ordered_names);
 
 %%
 for layer = 2:nLayers
+    plan = struct();
     opt = opts{layer};
     has_custom_invariants = isfield(opt, 'banks') || isfield(opt, 'invariants');
     if has_custom_invariants
