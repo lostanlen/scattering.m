@@ -9,4 +9,6 @@ if iscell(zeroth_ranges)
     return
 end
 
+%% Tail call
+zeroth_ranges(:, subscripts) = [];
 end
