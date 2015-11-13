@@ -205,8 +205,18 @@ for layer = 2:nLayers
         end
         field = opt.(opt_name);
         if isfield(banks_opt, opt_name)
-            bank_field = banks_opt.(opt_name);
-            
+            nBanks = length(banks);
+            for bank_index = 1:nBanks
+                bank = banks{bank_index};
+                if strcmp(bank.behavior.name, opt_name)
+                    continue
+                end
+            end
+            invariant.behavior = fill_invariant_behavior(field, bank.behavior);
+            invariant.spec = fill_invariant_spec(field, bank.spec);
+        else
+            invariant.behavior = fill_invariant_behavior(field);
+            invariant.spec = fill_invariant_spec(field);
         end
         invariant.behavior = fill_invariant_behavior(field, bank_behavior);
         invariant.spec = fill_invariant_spec(field, bank_spec);
