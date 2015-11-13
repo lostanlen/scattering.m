@@ -1,5 +1,5 @@
 function difference = map_substract(minuend,subtrahend)
-%% Return empty array if any the operand is empty
+%% Return empty array if any of the operands is empty
 if isempty(minuend.data) || isempty(subtrahend.data)
     difference = struct('data',[]);
     return;
