@@ -16,14 +16,15 @@ for layer = 1:nLayers
     if isfield(arch, 'banks')
         Y{layer} = U_to_Y(U{1+previous_layer}, arch.banks);
     else
-        Y{layer} = U{1+previous_layer};
+        Y{layer} = {U{1+previous_layer}};
     end
-    if isfield(arch, 'nonlinearity')
-        % Apply nonlinearity to last sub-layer Y to get layer U
+    
+    % Apply nonlinearity to last sub-layer Y to get layer U
+    if isfield(arch, 'nonlinearity') 
         U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
     end
     
-    % Blur/pool first sub-layer Y to get layer S
+    % Blur/pool first layer Y to get layer S
     if isfield(arch, 'invariants')
         S{1+previous_layer} = Y_to_S(Y{layer}, arch);
     end
