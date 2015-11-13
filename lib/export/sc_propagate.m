@@ -18,8 +18,11 @@ for layer = 1:nLayers
     else
         Y{layer} = U{1 + previous_layer};
     end
-    % Apply non-linearity to last sub-layer Y to get layer U
-    U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
+    if isfield(arch, 'nonlinearity')
+        % Apply non-linearity to last sub-layer Y to get layer U
+        U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
+    end
+    
     % Blur/pool first sub-layer Y to get layer S
     if isfield(arch, 'invariants')
         S{1+previous_layer} = Y_to_S(Y{layer}, arch);
