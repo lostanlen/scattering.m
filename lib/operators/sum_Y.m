@@ -10,5 +10,9 @@ end
 leaf = get_leaf(sub_Y.variable_tree, invariant.behavior.key);
 subscripts = leaf.subscripts;
 
+%% Reduce all tensors along these subscripts
+next_sub_Y = sub_Y;
+next_sub_Y.data = map_sum(sub_Y.data, subscripts);
+
 end
 
