@@ -1,8 +1,10 @@
 function architectures = sc_setup(opts)
 %%
 plans = setup_plans(opts);
-nLayers = length(plans);
-architectures = cell(nLayers,1);
+nPlans = length(plans);
+is_lastlayer_implicit = isfield(plans{end}, 'banks');
+nLayers = length(plans) + is_lastlayer_implicit;
+architectures = cell(nLayers, 1);
 %%
 for layer = 1:nLayers
     architecture = plans{layer};
