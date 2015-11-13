@@ -205,6 +205,14 @@ for layer = 2:nLayers
             continue
         end
         field = invariants_opt.(opt_name);
+        switch opt_name
+            case 'time'
+                field.key.time{1} = [];
+            case 'gamma'
+                field.key.time{1}.gamma{1} = [];
+            case 'j'
+                field.key.time{1}.j{1} = [];
+        end
         if isfield(banks_opt, opt_name)
             nBanks = length(banks);
             for bank_index = 1:nBanks
