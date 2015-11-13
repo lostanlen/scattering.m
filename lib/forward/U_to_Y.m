@@ -1,7 +1,11 @@
 function layer_Y = U_to_Y(layer_U,arch)
 %% Initialization
-banks = arch.banks;
-nBanks = length(banks);
+if isfield(arch, 'banks')
+    banks = arch.banks;
+    nBanks = length(banks);
+else
+    nBanks = 0;
+end
 layer_Y = cell(1 + nBanks, 1);
 
 %% Special case of single-variable scattering
