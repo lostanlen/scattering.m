@@ -93,6 +93,7 @@ for layer = 2:nLayers
             continue
         end
         field = opt.(opt_name);
+        field.name = opt_name;
         switch opt_name
             case root
                 root_plan = plans{layer-1}.banks{1};
