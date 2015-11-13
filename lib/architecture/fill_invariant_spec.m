@@ -30,7 +30,9 @@ else
     spec.has_multiple_support = ...
         default(opt,'has_multiple_support',bank_spec.has_multiple_support);
 end
-spec.J = enforce(opt, 'J', log2(spec.T));
+if isfield(spec, 'T')
+    spec.J = enforce(opt, 'J', log2(spec.T));
+end
 %% Alphanumeric ordering of field names
 spec = orderfields(spec);
 end
