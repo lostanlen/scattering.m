@@ -1,9 +1,17 @@
 function layer_S = Y_to_S(layer_Y, arch)
-%% Initialization
-banks = arch.banks;
-nBanks = length(banks);
+%% Count banks
+if isfield(arch, 'banks')
+    banks = arch.banks;
+    nBanks = length(banks);
+else
+    nBanks = 0;
+end
+
+%% Count Invariants
 invariants = arch.invariants;
 nInvariants = length(invariants);
+
+%% Two initialisation shortcuts
 % This boolean is true at the last layer
 is_U_bypassed = (length(layer_Y)==1);
 % This boolean is true at the first layer (except for videos)
@@ -15,6 +23,8 @@ is_U_single_scattered = nBanks==1 && ...
 invariant_booleans = cellfun(@(x) x.behavior.S.is_invariant, invariants);
 bypassed_booleans = cellfun(@(x) x.behavior.S.is_bypassed, invariants);
 
+
+%% Initialize layer_S in generic case
 if is_U_bypassed || is_U_single_scattered
     layer_S = layer_Y{1};
     start_index = 1;
@@ -43,7 +53,7 @@ else
     end
 end
 
-%% Check that S defines a single invariant
+%% Check that each variable defines a single invariant
 has_multiple_invariants = any(invariant_booleans & bypassed_booleans);
 if has_multiple_invariants
     error('Multiple invariants in Y_to_S not ready yet');
