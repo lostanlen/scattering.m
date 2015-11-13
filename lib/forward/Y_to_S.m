@@ -76,8 +76,8 @@ for variable_index = start_index:nInvariants
             layer_S = perform_ft(layer_S, invariant.behavior.key);
             layer_S = blur_Y(layer_S, invariant);
         end
-    elseif strcmp(invariant.spec.invariance, 'pooled');
-        error('Nonlinear pooling not ready yet');
+    elseif strcmp(invariant.spec.invariance, 'summed');
+        layer_S = sum_Y(layer_Y, invariant);
     end
 end
 end
