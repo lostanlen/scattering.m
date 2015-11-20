@@ -17,11 +17,5 @@ next_sub_Y.data = map_sum(sub_Y.data, subscripts);
 
 %% Update ranges
 next_sub_Y.ranges{1+0} = map_collapse_ranges(sub_Y.ranges{1+0}, subscripts);
-
-%% Remove key from variable tree
-next_sub_Y.variable_tree = remove_key(sub_Y.variable_tree, key);
-
-%% Remove key from jagged array
-next_sub_Y.keys{1+0}(subscripts) = [];
 end
 
