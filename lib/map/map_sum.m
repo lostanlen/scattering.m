@@ -11,4 +11,4 @@ if iscell(data_in)
 end
 
 %% Tail call
-data_out = sum(data_in, subscripts);
+data_out = squeeze(sum(data_in, subscripts));
