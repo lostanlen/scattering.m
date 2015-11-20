@@ -34,6 +34,9 @@ else
     root_field.name = root_name;
     root_field.is_U_blurred = ...
         default(root_field, 'is_U_blurred', false);
+    if isfield(root_field, 'size') && ~isfield(root_field, 'T')
+        root_field.T = root_field.size / 4;
+    end
     root_field.T = drop_trailing(root_field.T);
     root_field.invariance = default(root_field, 'invariance', 'blurred');
     root_field.key.(root_name) = cell(1);
