@@ -10,5 +10,5 @@ if iscell(zeroth_ranges)
 end
 
 %% Tail call
-zeroth_ranges(2, subscripts) = 1;
+zeroth_ranges(:, subscripts) = 1;
 end
