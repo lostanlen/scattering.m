@@ -25,9 +25,11 @@ archs = sc_setup(opts);
 %% Display scalogram (wavelet transform modulus)
 U = sc_unchunk(U);
 scalogram = U{1+1};
+subplot(211);
 display_scalogram(scalogram);
 
 %% Display second-order spectrum at given scale
 modulation_scale_index = 4;
 scattergram = U{1+2}.data{modulation_scale_index}.';
+subplot(212);
 imagesc(scattergram);
