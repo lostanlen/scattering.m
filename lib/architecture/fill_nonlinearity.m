@@ -2,10 +2,11 @@ function nonlinearity = fill_nonlinearity(opt)
 %%
 found = false;
 if isfield(opt,'nonlinearity')
-    nonlinearity = opt.nonlinearity;
     if isfield(opt.nonlinearity, 'denominator')
-        nonlinearity.name = default(nonlinearity, 'name', 'uniform_log');
+        opt.nonlinearity.name = ...
+            default(opt.nonlinearity, 'name', 'uniform_log');
     end
+    nonlinearity = opt.nonlinearity;
     if isfield(opt.nonlinearity,'name')
         switch opt.nonlinearity.name
             case 'modulus'
