@@ -15,6 +15,10 @@ else
     data_sizes = size(data);
     chunk_signal_size = data_sizes(1);
     nChunks = data_sizes(2);
+    if chunk_signal_size == 1
+        unchunked_data = reshape(data, data_sizes(2:end));
+        return
+    end
     hop_signal_size = chunk_signal_size / 2;
     unchunked_signal_size = hop_signal_size * nChunks;
     unchunked_sizes = [unchunked_signal_size,data_sizes(3:end)];
