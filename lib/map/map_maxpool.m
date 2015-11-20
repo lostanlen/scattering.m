@@ -15,5 +15,6 @@ nSubscripts = length(subscripts);
 data_out = data_in;
 
 for subscript_index = 1:nSubscripts
-    data_out = max(data_out, [], subscripts);
+    subscript = subscripts(subscript_index);
+    data_out = max(data_out, [], subscript) * size(data_out, subscript);
 end
