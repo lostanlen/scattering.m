@@ -23,8 +23,6 @@ archs = sc_setup(opts);
 [S,U,Y] = sc_propagate(signal,archs);
 
 %% Display scalogram (wavelet transform modulus)
-scalogram = sc_unchunk(U);
-display_scalogram(scalogram{1+1});
 U = sc_unchunk(U);
 scalogram = U{1+1};
 display_scalogram(scalogram);
