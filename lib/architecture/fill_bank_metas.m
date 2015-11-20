@@ -2,9 +2,9 @@ function bank_metas = fill_bank_metas(bank_spec)
 %%
 nGammas = bank_spec.nFilters_per_octave * bank_spec.J;
 resolutions = 2.^(-(0:nGammas-1)/bank_spec.nFilters_per_octave);
-handle_string = func2str(bank_spec.handle);
+wavelet_handle_string = func2str(bank_spec.wavelet_handle);
 
-switch handle_string
+switch wavelet_handle_string
     case 'morlet_1d'
         morlet_tradeoff = 4;
         unbounded_scales = morlet_tradeoff * bank_spec.max_Q./resolutions;

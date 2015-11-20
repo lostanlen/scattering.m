@@ -1,4 +1,4 @@
-function U0 = initialize_U(tensor,first_bank)
+function U0 = initialize_U(tensor, first_bank)
 bank_spec = first_bank.spec;
 bank_behavior = first_bank.behavior;
 tensor_size = size(tensor);

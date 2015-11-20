@@ -1,4 +1,8 @@
 function unchunked_layer = unchunk_layer(layer)
+if isempty(layer)
+    unchunked_layer = [];
+    return
+end
 if iscell(layer)
     nCells = numel(layer);
     unchunked_layer = cell(size(layer));

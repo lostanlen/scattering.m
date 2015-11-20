@@ -1,5 +1,4 @@
 function scalogram = display_scalogram(U1)
-% TODO: provide multi-channel display of 1D signals
 %% On-the-fly unpadding (TODO)
 
 %% Interpolation

@@ -1,16 +1,29 @@
 function architectures = sc_setup(opts)
 %%
 plans = setup_plans(opts);
-nLayers = length(plans);
-architectures = cell(nLayers,1);
+nPlans = length(plans);
+is_lastlayer_implicit = isfield(plans{end}, 'banks');
+nLayers = length(plans) + is_lastlayer_implicit;
+architectures = cell(nLayers, 1);
 %%
-for layer = 1:nLayers
-    architecture = plans{layer};
-    for variable_index = 1:length(architecture.banks)
-        architecture.banks{variable_index} = ...
-            setup_bank(architecture.banks{variable_index});
+for plan_index = 1:nPlans
+    architecture = plans{plan_index};
+    if isfield(architecture, 'banks')
+        for bank_index = 1:length(architecture.banks)
+            architecture.banks{bank_index} = ...
+                setup_bank(architecture.banks{bank_index});
+        end
     end
-    architectures{layer} = architecture;
+    if isfield(architecture, 'invariants')
+        for invariant_index = 1:length(architecture.invariants)
+            architecture.invariants{invariant_index} = ...
+                setup_invariant(architecture.invariants{invariant_index});
+        end
+    end
+    architectures{plan_index} = architecture;
 end
 
+if is_lastlayer_implicit && isfield(architectures{end-1}, 'invariants')
+    architectures{end}.invariants = architectures{end-1}.invariants;
+end
 end

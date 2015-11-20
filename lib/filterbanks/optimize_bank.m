@@ -1,5 +1,5 @@
-function optimized_banks = optimize_bank(bank_fts,bank_ifts,bank)
-fullsupport_bank = build_fullsupport_bank(bank_fts,bank_ifts,bank);
+function optimized_banks = optimize_bank(bank_fts, bank_ifts, bank)
+fullsupport_bank = build_fullsupport_bank(bank_fts, bank_ifts, bank);
 if ~bank.spec.has_multiple_support
     optimized_banks{1} = fullsupport_bank;
     return;
@@ -34,7 +34,11 @@ else
             'ift', [], 'ift_start', []);
     end
 end
-scales = cat(signal_dimension+1, bank.metas.scale);
+if isfield(bank, 'metas')
+    scales = cat(signal_dimension + 1, bank.metas.scale);
+else
+    scales = bank.spec.T;
+end
 log2_min_scale = floor(log2(min(scales, [], signal_dimension+1)));
 log2_ratios = log2(bank.spec.size) - log2_min_scale;
 nSupports = 1 + min(log2_ratios);

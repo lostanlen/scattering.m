@@ -3,7 +3,7 @@ function bank = setup_bank(bank)
 bank.metas = fill_bank_metas(bank.spec);
 
 %% Construction of the band-pass filters psi's in time domain
-psi_ifts = bank.spec.handle(bank.metas,bank.spec);
+psi_ifts = bank.spec.wavelet_handle(bank.metas,bank.spec);
 
 %% Fourier transform and spinning
 % NB: a wavelet-specific GPU handle should integrate this natively.
@@ -17,7 +17,7 @@ if bank.spec.is_spinned
 end
 
 %% Littlewood-Paley renormalization
-if strcmp(func2str(bank.spec.handle), 'finitediff_1d')
+if strcmp(func2str(bank.spec.wavelet_handle), 'finitediff_1d')
     psi_energy_sum = sum(psi_fts .* conj(psi_fts),2);
 else
     [normalizers,psi_energy_sum] = ...
@@ -39,9 +39,20 @@ end
 bank.psis = optimize_bank(psi_fts,psi_ifts,bank);
 
 %% Construction and trimming of the low-pass filter phi
-[phi_ft,energy_sum] = generate_phi_ft(psi_energy_sum,bank.spec);
-phi_ift = multidimensional_ifft(phi_ft,1:signal_dimension);
+switch func2str(bank.spec.wavelet_handle)
+    case 'morlet_1d'
+        phi_ift = gaussian_1d(bank.spec);
+    case 'gammatone_1d'
+        phi_ift = gamma_1d(bank.spec);
+    case 'finitediff_1d'
+        phi_ift = rectangular_1d(bank.spec);
+end
+phi_ft = multidimensional_fft(phi_ift,1:signal_dimension);
+if bank.spec.has_real_ft
+    phi_ft = real(phi_ft);
+end
 bank.phi = optimize_bank(phi_ft,phi_ift,bank);
+energy_sum = psi_energy_sum + phi_ft .* conj(phi_ft);
 
 %% Generation of dual filter bank if required
 if bank.spec.has_duals

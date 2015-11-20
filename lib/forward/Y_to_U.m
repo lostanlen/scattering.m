@@ -1,7 +1,6 @@
-function layer_U = Y_to_U(layer_Y_end,arch)
+function layer_U = Y_to_U(layer_Y_end, nonlinearity)
 %%
-nonlinearity = arch.nonlinearity;
-routing_sizes = drop_trailing(size(layer_Y_end),1);
+routing_sizes = drop_trailing(size(layer_Y_end), 1);
 mask = false(routing_sizes);
 nRouting_subscripts = length(routing_sizes);
 subsref_structure = substruct('()',replicate_colon(nRouting_subscripts));
@@ -10,5 +9,5 @@ for routing_subscript = 1:nRouting_subscripts
     mask = subsasgn(mask,subsref_structure,true);
     subsref_structure.subs{routing_subscript} = ':';
 end
-layer_U = apply_nonlinearity(nonlinearity,layer_Y_end,mask);
+layer_U = apply_nonlinearity(nonlinearity, layer_Y_end, mask);
 end
