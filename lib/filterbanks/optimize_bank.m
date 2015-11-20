@@ -34,7 +34,11 @@ else
             'ift', [], 'ift_start', []);
     end
 end
-scales = cat(signal_dimension+1, bank.metas.scale);
+if isfield(bank, 'metas')
+    scales = cat(signal_dimension + 1, bank.metas.scale);
+else
+    scales = bank.spec.T;
+end
 log2_min_scale = floor(log2(min(scales, [], signal_dimension+1)));
 log2_ratios = log2(bank.spec.size) - log2_min_scale;
 nSupports = 1 + min(log2_ratios);
