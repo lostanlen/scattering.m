@@ -64,7 +64,7 @@ for variable_index = start_index:nInvariants
     invariant = invariants{variable_index};
     switch invariant.spec.invariance
         case 'blurred'
-            layer_S = perform_ft(layer_S, invariance.behavior.key);
+            layer_S = perform_ft(layer_S, invariant.behavior.key);
             layer_S = blur_Y(layer_S, invariant);
         case 'maxpooled'
             layer_S = maxpool_Y(layer_S, invariant);
