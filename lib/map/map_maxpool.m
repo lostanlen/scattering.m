@@ -11,4 +11,9 @@ if iscell(data_in)
 end
 
 %% Tail call
-data_out = max(data_in, [], subscripts);
+nSubscripts = length(subscripts);
+data_out = data_in;
+
+for subscript_index = 1:nSubscripts
+    data_out = max(data_out, [], subscripts);
+end
