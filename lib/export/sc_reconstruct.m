@@ -2,9 +2,9 @@ function sc_reconstruct(target_signal, archs, reconstruction_opt)
 %% Default argument handling
 stack_trace = dbstack();
 if length(stack_trace)>1
-    prefix = stack_trace(2).name;
+    prefix = default(reconstruction_opt, 'prefix', stack_trace(2).name);
 else
-    prefix = 'summary';
+    prefix = default(reconstruction_opt, 'prefix', 'summary');
 end
 signal_sizes = [archs{1}.banks{1}.spec.size,1];
 reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
