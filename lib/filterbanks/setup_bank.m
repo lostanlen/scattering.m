@@ -48,6 +48,9 @@ switch func2str(bank.spec.wavelet_handle)
         phi_ift = rectangular_1d(bank.spec);
 end
 phi_ft = multidimensional_fft(phi_ift,1:signal_dimension);
+if bank.spec.has_real_ft
+    phi_ft = real(phi_ft);
+end
 bank.phi = optimize_bank(phi_ft,phi_ift,bank);
 energy_sum = psi_energy_sum + phi_ft .* conj(phi_ft);
 
