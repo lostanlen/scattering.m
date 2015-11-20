@@ -5,7 +5,7 @@ tensor_size = size(tensor);
 subscripts = bank_behavior.subscripts;
 unpadded_signal_size = tensor_size(subscripts);
 hop_signal_size = bank_spec.size - 2 * bank_spec.T;
-if ~bank_spec.is_chunked
+if ~bank_behavior.is_chunked
     U0 = initialize_variables_auto(tensor_size);
 elseif isequal(subscripts,1) && unpadded_signal_size<=hop_signal_size
     padded_signal_size = bank_spec.size;
