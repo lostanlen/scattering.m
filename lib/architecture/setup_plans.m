@@ -216,7 +216,7 @@ for layer = 2:nLayers
             case 'j'
                 field.key.time{1}.j{1} = [];
         end
-        if isfield(banks_opt, opt_name)
+        if has_banks && isfield(banks_opt, opt_name)
             nBanks = length(banks);
             for bank_index = 1:nBanks
                 bank = banks{bank_index};
