@@ -22,16 +22,20 @@ end
 if has_custom_invariants
     root_bank_field = opts{1}.banks.(root_name);
     root_bank_field.name = root_name;
+    root_bank_field.is_chunked = ...
+        default(root_bank_field, 'is_chunked', false);
     root_invariant_field = opts{1}.banks.(root_name);
     root_invariant_field.name = root_name;
     root_bank_field.is_U_blurred = ...
-        default(root_bank_field, 'is_U_blurred', false);
+        default(root_bank_field, 'is_U_blurred', true);
     plans{1}.banks{1}.spec = fill_bank_spec(root_bank_field);
     plans{1}.banks{1}.behavior = fill_bank_behavior(root_invariant_field);
     plans{1}.invariants{1}.spec = fill_invariant_spec(root_invariant_field);
 else
     root_field = opts{1}.(root_name);
     root_field.name = root_name;
+    root_field.is_chunked = ...
+        default(root_field, 'is_chunked', true);
     root_field.is_U_blurred = ...
         default(root_field, 'is_U_blurred', false);
     if isfield(root_field, 'size') && ~isfield(root_field, 'T')
