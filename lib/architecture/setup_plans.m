@@ -66,7 +66,7 @@ plans{1}.nonlinearity = fill_nonlinearity(opts{1});
 ordered_names = {root_name,'theta','gamma','j'};
 nNames = length(ordered_names);
 
-%%
+%% Upper orders
 for layer = 2:nLayers
     plan = struct();
     opt = opts{layer};
@@ -82,7 +82,7 @@ for layer = 2:nLayers
         end
     else
         banks_opt = opt;
-        invariants_opt = opt;
+        invariants_opt = struct(root_name, opt.(root_name));
     end
     if has_custom_invariants && ~has_banks
         bank_names = {};
@@ -218,7 +218,7 @@ for layer = 2:nLayers
             for bank_index = 1:nBanks
                 bank = banks{bank_index};
                 if strcmp(bank.behavior.name, opt_name)
-                    continue
+                    break
                 end
             end
             invariant.behavior = fill_invariant_behavior(field, bank.behavior);
