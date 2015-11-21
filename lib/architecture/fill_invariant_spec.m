@@ -6,6 +6,7 @@ spec.invariance = default(opt, 'invariance', 'blurred');
 % The default invariant blurring handle is also specified
 if nargin<2
     if strcmp(spec.invariance, 'blurred')
+        spec.T = opt.T;
         spec.invariant_handle = ...
             default(opt, 'invariant_handle', @gaussian_1d);
         spec.phi_bw_multiplier = ...
