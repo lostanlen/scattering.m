@@ -88,6 +88,7 @@ for layer = 2:nLayers
             invariants_opt = opt.invariants;
         end
     else
+        has_banks = ~isempty(opt);
         banks_opt = opt;
         invariants_opt = struct(root_name, opt.(root_name));
     end
