@@ -7,12 +7,27 @@ spec.invariance = default(opt, 'invariance', 'blurred');
 if nargin<2
     if strcmp(spec.invariance, 'blurred')
         spec.T = opt.T;
+        spec.size = opt.size;
         spec.invariant_handle = ...
             default(opt, 'invariant_handle', @gaussian_1d);
         spec.phi_bw_multiplier = ...
             default(opt, 'phi_bw_multiplier', 2);
         spec.trim_threshold = ...
             default(opt, 'trim_threshold', eps());
+        switch func2str(spec.invariant_handle)
+            case 'gaussian_1d'
+                spec.has_real_ift = true;
+                spec.has_real_ft = true;
+            case 'gamma_1d'
+                spec.has_real_ift = true;
+                spec.has_real_ft = false;
+            case 'rectangular_1d'
+                spec.has_real_ift = true;
+                spec.has_real_ft = true;
+            otherwise
+                disp(spec);
+                error('Unknown handle in "invariant.spec".');
+        end
     end
     spec.has_multiple_support = default(opt,'has_multiple_support',false);
 else
