@@ -7,6 +7,8 @@ if nargin==2
     behavior.subscripts = default(opt, 'subscripts', bank_behavior.subscripts);
     behavior.output_dimension = default(opt, 'output_dimension', ...
         bank_behavior.output_dimension);  
+else
+    behavior.subscripts = opt.subscripts;
 end
 behavior.S.log2_oversampling = default(opt, 'S_log2_oversampling', 0);
 
