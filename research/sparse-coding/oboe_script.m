@@ -34,8 +34,8 @@ addpath(genpath('/Users/ferradans/Documents/Research/AudioSynth/code/toolbox_spa
 
 initnLambda = 4;
 [dicts,error]=learn_Dictionaries(Y2,initnLambda);
-alpha = sparse_forward(Y2,dicts);
-Ybis = sparse_backward(alpha,dicts);
+alpha = sparse_forward(Y2,dicts,initnLambda);
+Ybis = sparse_backward(alpha,dicts,initnLambda);
 
 
 %check the overall error
@@ -44,10 +44,10 @@ errorComp = @(x)sum(x.^2,1);
 for lambda2_index = initnLambda:nLambda2s
     
     aux = dicts{lambda2_index}*alpha{lambda2_index};
-    errorConstr=mean(errorComp(aux - Y2{lambda2_index})./errorComp(Y2{lambda2_index}));
+    errorConstr=mean(errorComp(aux - Y2{lambda2_index}));
     disp(['err on cosntr Y(' num2str(lambda2_index) ')=' num2str(errorConstr) ]);
     
-    errorY=mean(errorComp(Ybis{lambda2_index} - Y2{lambda2_index})./errorComp(Y2{lambda2_index}));
+    errorY=mean(errorComp(Ybis{lambda2_index} - Y2{lambda2_index}));
     disp(['err on Y(' num2str(lambda2_index) ')=' num2str(errorY) ]);
 end 
 
