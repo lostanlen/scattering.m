@@ -12,6 +12,7 @@ addpath(genpath(vincent_path));
 opts{1}.time.T = 2048;
 opts{1}.time.max_scale = 4096; % about 93 ms
 opts{1}.time.max_Q = 8;
+opts{1}.time.size = 32768;
  
 % Nonlinearity between the two orders
 opts{1}.nonlinearity.name = 'modulus';
@@ -39,11 +40,21 @@ for lambda2_index = 1:nLambda2s
     Y2{lambda2_index} = permute(sub_Y2,[2 1]);
 end
 %% Compute the dictionaries
-initnLambda = 4;
+initnLambda = 7;
 [dicts, error] = learn_Dictionaries(Y2, initnLambda);
-alpha = sparse_forward(Y2, dicts, initnLambda);
-Ybis = sparse_backward(alpha, dicts, initnLambda);
+alphas = sparse_forward(Y2, dicts, initnLambda);
+Ytilde = sparse_backward(alphas, dicts, initnLambda);
 
+%% Show Y and DX for 7th lambda2
+lambda2 = 7;
+
+range = 1000:8000;
+subplot(211);
+imagesc(Y2{lambda2}(:,range));
+subplot(212);
+imagesc(alphas{7}(:,range))
+
+%%
 
 %check the overall error
 flat = @(x)x(:);
