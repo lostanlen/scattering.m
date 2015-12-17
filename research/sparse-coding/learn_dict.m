@@ -12,8 +12,8 @@ end
 
 %Only keep the patches with largest energy.
 %[~,I] = sort(sum(Y.^2), 'descend'); %todo:randomly select on each it.
-I = randperm(m);
-Y = Y(:,I(1:p));
+% I = randperm(m);
+% Y = Y(:,I(1:p));
 
 eps=1e-5;
 ProjC = @(D)D ./ repmat( sqrt(sum(D.^2)+eps), [d 1]);% [w, 1] );
@@ -27,7 +27,7 @@ X = sparse(rand(size(D,2),size(Y,2)));
 flat=@(x)x(:);
 norm2=@(D)sqrt(sum(flat(D*D')));
 
-niter=10;
+niter=100;
 for it=1:niter
 
     progressbar(it,niter,20);
@@ -58,18 +58,19 @@ function D = updateD(X,Y,D)
 epsilon = 1e-3;
 t = 2/(norm(X*X')+epsilon);% + lambda*k+ epsilon);
 ProjC = @(D)D ./ repmat( sqrt(sum(D.^2)), [d, 1] );
+ProjP = @(D)max(D,0);
 
 norm2=@(D)sqrt(sum((D(:).^2)));
 
-it = 1000;
+it = 10000;
 
 for j=1:it
-    D = ProjC(D-t*(D*X-Y)*X' );
+    D = ProjP(ProjC(D-t*(D*X-Y)*X' ));
     
     %for debugging
     Err(j) = norm2(Y-D*X);
     if (j>1) 
-        if Err(j-1)-Err(j) < 1e-8
+        if Err(j-1)-Err(j) < 1e-5
               subplot(1,3,1);plot(log10(Err),'-');drawnow;
 
             return;
@@ -91,14 +92,14 @@ t = 2/(norm(flat(D*D')) + epsilon);
 
 norm2=@(D)sqrt(sum((D(:).^2)));
 
-it = 1000; 
+it = 10000; 
 for j=1:it
     X = ProjX(X-t*D'*(D*X-Y),k);
     
     %for debugging
     Err(j) = norm2(Y-D*X);
      if (j>1) 
-        if Err(j-1)-Err(j) < 1e-8
+        if Err(j-1)-Err(j) < 1e-5
             subplot(1,3,2);plot(log10(Err),'-');drawnow;
             return;
         end 

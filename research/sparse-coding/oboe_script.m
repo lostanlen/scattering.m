@@ -41,22 +41,25 @@ for lambda2_index = 1:nLambda2s
 end
 %% Compute the dictionaries
 initnLambda = 7;
-[dicts, error] = learn_Dictionaries(Y2, initnLambda);
+Y2{7}=Y2{7}(:,100:5000);
+
+%%
 alphas = sparse_forward(Y2, dicts, initnLambda);
 Ytilde = sparse_backward(alphas, dicts, initnLambda);
 
 %% Show Y and DX for 7th lambda2
 lambda2 = 7;
 
-range = 1000:8000;
+range = 1:4900;
 subplot(211);
 imagesc(Y2{lambda2}(:,range));
 subplot(212);
-imagesc(alphas{7}(:,range))
+imagesc(dicts{lambda2}*alphas{lambda2}(:,range))
 
 %%
 
-%check the overall error
+%% check the overall error
+disp('Check the error in the approximation of the DB:')
 flat = @(x)x(:);
 errorComp = @(x)sum(x.^2,1);
 for lambda2_index = initnLambda:nLambda2s
