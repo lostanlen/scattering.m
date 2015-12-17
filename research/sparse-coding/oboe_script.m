@@ -27,5 +27,30 @@ for lambda2_index = 1:nLambda2s
     sub_Y2 = Y2{lambda2_index};
     sizes = size(sub_Y2);
     sub_Y2 = reshape(sub_Y2, sizes(1)*sizes(2), sizes(3));
-    Y2{lambda2_index} = sub_Y2;
+    Y2{lambda2_index} = permute(sub_Y2,[2 1]);
 end
+%% Compute the dictionaries
+addpath(genpath('./toolbox_sparsity/'))
+
+initnLambda = 4;
+[dicts,error]=learn_Dictionaries(Y2,initnLambda);
+alpha = sparse_forward(Y2,dicts);
+Ybis = sparse_backward(alpha,dicts);
+
+
+%check the overall error
+flat = @(x)x(:);
+for lambda2_index = initnLambda:nLambda2s
+    
+    aux = dicts{lambda2_index}*alpha{lambda2_index};
+    errorConstr=norm(flat( aux - Y2{lambda2_index}))/norm(flat(Y2{lambda2_index}));
+    disp(['err on cosntr Y(' num2str(lambda2_index) ')=' num2str(errorConstr) ]);
+    
+    errorY=norm(flat(Ybis{lambda2_index} - Y2{lambda2_index}))/norm(flat(Y2{lambda2_index}));
+    disp(['err on Y(' num2str(lambda2_index) ')=' num2str(errorY) ]);
+end 
+
+
+
+
+
