@@ -1,9 +1,13 @@
-function alpha = sparse_forward(Y,D,initnLambda)
+% dict is a structure with three fields:
+% * lambda_start
+% * forward
+% * backward
+function alpha = sparse_forward(Y, dict)
 
-L2 = length(Y);
-for l=initnLambda:L2
+nLambda2s = length(Y.data);
 
-    %Compute the conjugate of the dictionary: alpha(\lambda2) = D^* S(\lambda2)
-    conjD = D{l}';
-    alpha{l} = conjD*Y{l};
+for lambda2_index = dict.lambda_start:L2
+    next_sub_Y{lambda2_index} = ...
+        dict.forward{lambda2_index} * Y.data{lambda2_index};
 end 
+end
