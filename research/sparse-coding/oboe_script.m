@@ -1,3 +1,12 @@
+%% Addpath for Sira
+sira_path = ...
+    '/Users/ferradans/Documents/Research/AudioSynth/code/toolbox_sparsity/';
+addpath(genpath(sira_path));
+
+%% Addpath for Vincent
+vincent_path = '~/MATLAB/toolbox_sparsity';
+addpath(genpath(vincent_path));
+
 %% Setup options
 % Order 1 along time
 opts{1}.time.T = 2048;
@@ -30,12 +39,10 @@ for lambda2_index = 1:nLambda2s
     Y2{lambda2_index} = permute(sub_Y2,[2 1]);
 end
 %% Compute the dictionaries
-addpath(genpath('/Users/ferradans/Documents/Research/AudioSynth/code/toolbox_sparsity/'))
-
 initnLambda = 4;
-[dicts,error]=learn_Dictionaries(Y2,initnLambda);
-alpha = sparse_forward(Y2,dicts,initnLambda);
-Ybis = sparse_backward(alpha,dicts,initnLambda);
+[dicts, error] = learn_Dictionaries(Y2, initnLambda);
+alpha = sparse_forward(Y2, dicts, initnLambda);
+Ybis = sparse_backward(alpha, dicts, initnLambda);
 
 
 %check the overall error
