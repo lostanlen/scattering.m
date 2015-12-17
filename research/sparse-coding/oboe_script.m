@@ -45,7 +45,7 @@ initnLambda = 7;
 Y.data=Y2{7};
 dict.lambda_start = initnLambda;
 
-[dicts, error] = learn_Dictionaries(Y2{7});
+[dicts, error] = learn_Dictionaries(Y2,dict.lambda_start);
 
 alphas = sparse_forward(Y, dicts, initnLambda);
 Ytilde = sparse_backward(alphas, dicts, initnLambda);
