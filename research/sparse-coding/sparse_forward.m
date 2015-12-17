@@ -2,7 +2,7 @@
 % * lambda_start
 % * forward
 % * backward
-function alpha = sparse_forward(Y, dict)
+function next_sub_Y = sparse_forward(Y, dict)
 
 nLambda2s = length(Y.data);
 
