@@ -9,7 +9,7 @@ addpath(genpath(vincent_path));
 
 %% Setup options
 N = 65536;
-T = N / 2;
+T = N / 4;
 opts{1}.time.T = T;
 opts{1}.time.size = N;
 opts{1}.time.max_Q = 16;
