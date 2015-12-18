@@ -31,14 +31,8 @@ oboe_path = 'research/sparse-coding/2366.wav';
 [S,U,Y] = sc_propagate(waveform, archs);
 
 %% Unchunk Y2
-Y2 = Y{1+2}{end}.data;
-nLambda2s = length(Y2);
-for lambda2_index = 1:nLambda2s
-    sub_Y2 = Y2{lambda2_index};
-    sizes = size(sub_Y2);
-    sub_Y2 = reshape(sub_Y2, sizes(1)*sizes(2), sizes(3));
-    Y2{lambda2_index} = permute(sub_Y2,[2 1]);
-end
+Y2 = unchunk_layer(Y{2}{end});
+
 %% Compute the dictionaries
 initnLambda = 7;
 
