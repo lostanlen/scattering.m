@@ -11,7 +11,7 @@ addpath(genpath(vincent_path));
 % Order 1 along time
 opts{1}.time.T = 2048;
 opts{1}.time.max_scale = 4096; % about 93 ms
-opts{1}.time.max_Q = 8;
+opts{1}.time.max_Q = 24;
 opts{1}.time.size = 32768;
  
 % Nonlinearity between the two orders
