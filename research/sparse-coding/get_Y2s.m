@@ -32,4 +32,8 @@ for file_index = 1:nFiles
     end
 end
 
-%%
+%% Save
+for file_index = 1:nFiles
+    file_Y2 = file_Y2s{file_index};
+    save(['Y2s_', num2str(file_index, '%0.2d')], 'file_Y2');
+end
