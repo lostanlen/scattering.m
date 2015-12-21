@@ -22,8 +22,14 @@ parfor file_index = 1:nFiles
         ' at ', datestr(now, 'HH:MM:SS')])
 end
 
-%% Save
-for file_index = 1:nFiles
-    file_Y2 = file_Y2s{file_index};
-    save(['Y2s_', num2str(file_index, '%0.2d')], 'file_Y2')
+%% Subsample
+nLambda2s = length(file_Y2s{1});
+parfor file_index = 1:nFiles
+    for lambda2_index = 1:nLambda2s
+        downsampling = 2^(nLambda2s-lambda_index);
+        file_Y2s{file_index}{lambda2_index} = ...
+            file_Y2s{file_index}{lambda2_index}(1:downsampling:end, :)
+    end
 end
+
+%%
