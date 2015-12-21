@@ -24,11 +24,11 @@ end
 
 %% Subsample
 nLambda2s = length(file_Y2s{1});
-parfor file_index = 1:nFiles
+for file_index = 1:nFiles
     for lambda2_index = 1:nLambda2s
-        downsampling = 2^(nLambda2s-lambda_index);
+        downsampling = 2^(nLambda2s-lambda2_index);
         file_Y2s{file_index}{lambda2_index} = ...
-            file_Y2s{file_index}{lambda2_index}(1:downsampling:end, :)
+            file_Y2s{file_index}{lambda2_index}(1:downsampling:end, :);
     end
 end
 
