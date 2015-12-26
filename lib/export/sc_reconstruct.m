@@ -73,7 +73,8 @@ for layer = 1:nLayers
         S{1+previous_layer} = Y_to_S(Y{layer}, arch);
     end
 end
-S{1+nLayers} = Y_to_S(Y{1+nLayers},arch);
+
+%% First backward
 delta_S = sc_substract(target_S,S);
 previous_signal = signal;
 previous_loss = sc_norm(delta_S);
