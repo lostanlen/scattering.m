@@ -20,15 +20,22 @@ for layer = 1:nLayers
     arch = archs{layer};
     previous_layer = layer - 1;
     % Scatter iteratively layer U to get sub-layers Y
-    target_Y{layer} = U_to_Y(target_U{1+previous_layer},arch);
-    % Apply non-linearity to last sub-layer Y to get layer U
-    target_U{1+layer} = Y_to_U(target_Y{layer}{end},arch);
-    % Blur/pool first sub-layer Y to get layer S
-    target_S{1+previous_layer} = Y_to_S(target_Y{layer},arch);
+    if isfield(arch, 'banks')
+        Y{layer} = U_to_Y(U{1+previous_layer}, arch.banks);
+    else
+        Y{layer} = {U{1+previous_layer}};
+    end
+    
+    % Apply nonlinearity to last sub-layer Y to get layer U
+    if isfield(arch, 'nonlinearity') 
+        U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
+    end
+    
+    % Blur/pool first layer Y to get layer S
+    if isfield(arch, 'invariants')
+        S{1+previous_layer} = Y_to_S(Y{layer}, arch);
+    end
 end
-target_Y{1+nLayers}{1+0} = initialize_Y(target_U{1+nLayers},arch.banks);
-target_S{1+nLayers} = Y_to_S(target_Y{1+nLayers},arch);
-
 %% Initialization
 if isfield(reconstruction_opt, 'initial_signal')
     signal = reconstruction_opt.initial_signal;
