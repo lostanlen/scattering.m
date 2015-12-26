@@ -47,29 +47,32 @@ signal = signal - mean(signal);
 signal = signal * norm(target_signal)/norm(signal);
 signal = signal + mean(target_signal);
 
-%% First update
+%% First forward
 reconstruction_opt.signal_update = zeros(signal_sizes);
 max_nDigits = 1 + floor(log10(reconstruction_opt.nIterations));
 sprintf_format = ['%0.',num2str(max_nDigits),'d'];
 reconstruction_opt.learning_rate = reconstruction_opt.initial_learning_rate;
 [target_norm,layer_target_norms] = sc_norm(target_S);
-nLayers = length(archs);
-S = cell(1,1+nLayers);
-U = cell(1,1+nLayers);
-Y = cell(1,1+nLayers);
+S = cell(1, nLayers);
+U = cell(1,nLayers);
+Y = cell(1,nLayers);
 U{1+0} = initialize_variables_auto(size(signal));
 U{1+0}.data = signal;
 for layer = 1:nLayers
     arch = archs{layer};
     previous_layer = layer - 1;
-    % Scatter iteratively layer U to get sub-layers Y
-    Y{layer} = U_to_Y(U{1+previous_layer},arch);
-    % Apply non-linearity to last sub-layer Y to get layer U
-    U{1+layer} = Y_to_U(Y{layer}{end},arch);
-    % Blur/pool first sub-layer Y to get layer S
-    S{1+previous_layer} = Y_to_S(Y{layer},arch);
+    if isfield(arch, 'banks')
+        Y{layer} = U_to_Y(U{1+previous_layer}, arch.banks);
+    else
+        Y{layer} = U(1+previous_layer);
+    end
+    if isfield(arch, 'nonlinearity') 
+        U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
+    end
+    if isfield(arch, 'invariants')
+        S{1+previous_layer} = Y_to_S(Y{layer}, arch);
+    end
 end
-Y{1+nLayers}{1+0} = initialize_Y(U{1+nLayers},arch.banks);
 S{1+nLayers} = Y_to_S(Y{1+nLayers},arch);
 delta_S = sc_substract(target_S,S);
 previous_signal = signal;
