@@ -12,7 +12,8 @@ if strcmp(invariant.spec.invariance, 'blurred')
         dual_phi_ft = conj(phi_ft);
         dual_phi_ift = ...
             multidimensional_ifft(dual_phi_ft, 1:dimension);
-        bank.dual_phi = optimize_bank(dual_phi_ft, dual_phi_ift, invariant);
+        invariant.dual_phi = ...
+            optimize_bank(dual_phi_ft, dual_phi_ift, invariant);
     end
 end
 end
