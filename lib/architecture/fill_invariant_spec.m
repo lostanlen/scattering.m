@@ -8,6 +8,7 @@ if nargin<2
     if strcmp(spec.invariance, 'blurred')
         spec.T = opt.T;
         spec.size = opt.size;
+        spec.has_duals = default(opt, 'has_duals', false);
         spec.invariant_handle = ...
             default(opt, 'invariant_handle', @gaussian_1d);
         spec.phi_bw_multiplier = ...
