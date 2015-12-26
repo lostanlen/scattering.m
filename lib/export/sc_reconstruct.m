@@ -11,9 +11,9 @@ reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
 
 %% Forward propagation
 nLayers = length(archs);
-target_S = cell(1,1+nLayers);
-target_U = cell(1,1+nLayers);
-target_Y = cell(1,1+nLayers);
+target_S = cell(1, nLayers);
+target_U = cell(1, nLayers);
+target_Y = cell(1, nLayers);
 target_U{1+0} = initialize_variables_auto(size(target_signal));
 target_U{1+0}.data = target_signal;
 for layer = 1:nLayers
