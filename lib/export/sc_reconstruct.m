@@ -21,21 +21,22 @@ for layer = 1:nLayers
     previous_layer = layer - 1;
     % Scatter iteratively layer U to get sub-layers Y
     if isfield(arch, 'banks')
-        Y{layer} = U_to_Y(U{1+previous_layer}, arch.banks);
+        target_Y{layer} = U_to_Y(target_U{1+previous_layer}, arch.banks);
     else
-        Y{layer} = {U{1+previous_layer}};
+        target_Y{layer} = target_U(1+previous_layer);
     end
     
     % Apply nonlinearity to last sub-layer Y to get layer U
     if isfield(arch, 'nonlinearity') 
-        U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
+        target_U{1+layer} = Y_to_U(target_Y{layer}{end}, arch.nonlinearity);
     end
     
     % Blur/pool first layer Y to get layer S
     if isfield(arch, 'invariants')
-        S{1+previous_layer} = Y_to_S(Y{layer}, arch);
+        target_S{1+previous_layer} = Y_to_S(target_Y{layer}, arch);
     end
 end
+
 %% Initialization
 if isfield(reconstruction_opt, 'initial_signal')
     signal = reconstruction_opt.initial_signal;
@@ -46,7 +47,7 @@ signal = signal - mean(signal);
 signal = signal * norm(target_signal)/norm(signal);
 signal = signal + mean(target_signal);
 
-%% Initialization
+%% First update
 reconstruction_opt.signal_update = zeros(signal_sizes);
 max_nDigits = 1 + floor(log10(reconstruction_opt.nIterations));
 sprintf_format = ['%0.',num2str(max_nDigits),'d'];
