@@ -11,7 +11,7 @@ if strcmp(invariant.spec.invariance, 'blurred')
     if invariant.spec.has_duals
         dual_phi_ft = conj(phi_ft);
         dual_phi_ift = ...
-            multidimensional_ifft(dual_phi_ft, 1:signal_dimension);
+            multidimensional_ifft(dual_phi_ft, 1:dimension);
         bank.dual_phi = optimize_bank(dual_phi_ft, dual_phi_ift, invariant);
     end
 end
