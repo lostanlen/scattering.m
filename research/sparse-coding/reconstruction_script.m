@@ -17,6 +17,13 @@ opts{1}.time.nFilters_per_octave = 16;
 opts{1}.time.has_duals = true;
 opts{1}.time.gamma_bounds = [1 128];
 
+opts{2}.time.T = T;
+opts{2}.time.max_scale = Inf;
+opts{2}.time.handle = @gammatone_1d;
+opts{2}.time.sibling_mask_factor = 2;
+opts{2}.time.has_duals = true;
+opts{2}.time.max_Q = 1;
+
 % Build filters
 archs = sc_setup(opts);
 
