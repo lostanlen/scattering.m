@@ -153,22 +153,22 @@ while iteration < reconstruction_opt.nIterations
     if reconstruction_opt.is_verbose
         mod_iteration = mod(iteration,reconstruction_opt.verbosity_period);
         if mod_iteration==0
-            pretty_iteration = sprintf(sprintf_format,iteration);
+            pretty_iteration = sprintf(sprintf_format, iteration);
             layer_distances = ...
                 100 * layer_absolute_distances ./ layer_target_norms;
-            pretty_distances = num2str(layer_distances,'%8.2f%%');
+            pretty_distances = num2str(layer_distances, '%8.2f%%');
             pretty_loss = sprintf('%.2f%%',relative_loss_chart(iteration));
-            iteration_string = ['it = ',pretty_iteration,'  ;  '];
+            iteration_string = ['it = ', pretty_iteration, '  ;  '];
             distances_string = ...
                 ['S_m distances = [ ',pretty_distances, ' ]  ;  '];
-            loss_string = ['Loss = ',pretty_loss];
-            disp([iteration_string,distances_string,loss_string]);
+            loss_string = ['Loss = ', pretty_loss];
+            disp([iteration_string, distances_string, loss_string]);
             toc();
             tic();
         end
     end
     mod_iteration = ...
-        mod(iteration,reconstruction_opt.snapshot_period);
+        mod(iteration, reconstruction_opt.snapshot_period);
     if mod_iteration==0
         %% Make snapshot
         snapshot.reconstruction_opt = reconstruction_opt;
