@@ -34,7 +34,7 @@ oboe_path = 'research/sparse-coding/2366.wav';
 %
 target_signal = waveform(100000 + (1:N));
 
-reconstruction_opt = struct();
+reconstruction_opt = struct('nIterations', 20);
 
 %% Compute reconstruction
 sc_reconstruct(target_signal, archs, reconstruction_opt);
