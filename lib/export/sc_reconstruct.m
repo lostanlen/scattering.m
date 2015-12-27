@@ -9,7 +9,7 @@ end
 signal_sizes = [archs{1}.banks{1}.spec.size,1];
 reconstruction_opt = fill_reconstruction_opt(reconstruction_opt);
 
-%% Forward propagation
+%% Forward propagation of target signal
 nLayers = length(archs);
 target_S = cell(1, nLayers);
 target_U = cell(1, nLayers);
@@ -27,7 +27,7 @@ for layer = 1:nLayers
     end
     
     % Apply nonlinearity to last sub-layer Y to get layer U
-    if isfield(arch, 'nonlinearity') 
+    if isfield(arch, 'nonlinearity')
         target_U{1+layer} = Y_to_U(target_Y{layer}{end}, arch.nonlinearity);
     end
     
@@ -66,7 +66,7 @@ for layer = 1:nLayers
     else
         Y{layer} = U(1+previous_layer);
     end
-    if isfield(arch, 'nonlinearity') 
+    if isfield(arch, 'nonlinearity')
         U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
     end
     if isfield(arch, 'invariants')
@@ -103,24 +103,26 @@ while iteration < reconstruction_opt.nIterations
         update_reconstruction(previous_signal,delta_signal,reconstruction_opt);
     
     %% Scattering propagation
-    nLayers = length(archs);
-    S = cell(1,1+nLayers);
-    U = cell(1,1+nLayers);
-    Y = cell(1,1+nLayers);
+    S = cell(1, nLayers);
+    U = cell(1,nLayers);
+    Y = cell(1,nLayers);
     U{1+0} = initialize_variables_auto(size(signal));
     U{1+0}.data = signal;
     for layer = 1:nLayers
         arch = archs{layer};
         previous_layer = layer - 1;
-        % Scatter iteratively layer U to get sub-layers Y
-        Y{layer} = U_to_Y(U{1+previous_layer},arch);
-        % Apply non-linearity to last sub-layer Y to get layer U
-        U{1+layer} = Y_to_U(Y{layer}{end},arch);
-        % Blur/pool first sub-layer Y to get layer S
-        S{1+previous_layer} = Y_to_S(Y{layer},arch);
+        if isfield(arch, 'banks')
+            Y{layer} = U_to_Y(U{1+previous_layer}, arch.banks);
+        else
+            Y{layer} = U(1+previous_layer);
+        end
+        if isfield(arch, 'nonlinearity')
+            U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
+        end
+        if isfield(arch, 'invariants')
+            S{1+previous_layer} = Y_to_S(Y{layer}, arch);
+        end
     end
-    Y{1+nLayers}{1+0} = initialize_Y(U{1+nLayers},arch.banks);
-    S{1+nLayers} = Y_to_S(Y{1+nLayers},arch);
     
     %% Measurement of distance to target in the scattering domain
     delta_S = sc_substract(target_S,S);
