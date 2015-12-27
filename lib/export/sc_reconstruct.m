@@ -75,10 +75,10 @@ for layer = 1:nLayers
 end
 
 %% First backward
-delta_S = sc_substract(target_S,S);
+delta_S = sc_substract(target_S, S);
 previous_signal = signal;
 previous_loss = sc_norm(delta_S);
-delta_signal = sc_backpropagate(delta_S,U,Y,archs);
+delta_signal = sc_backpropagate(delta_S, U, Y, archs);
 light_archs = lighten_archs(archs);
 
 %% Make a snapshot of the target
@@ -147,7 +147,7 @@ while iteration < reconstruction_opt.nIterations
     reconstruction_opt.learning_rate = ...
         reconstruction_opt.bold_driver_accelerator * ...
         reconstruction_opt.learning_rate;
-    delta_signal = sc_backpropagate(delta_S,U,Y,archs);
+    delta_signal = sc_backpropagate(delta_S, U, Y, archs);
     
     %% Pretty-printing of scattering distances and loss function
     if reconstruction_opt.is_verbose
