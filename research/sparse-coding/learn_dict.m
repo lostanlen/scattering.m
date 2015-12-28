@@ -25,7 +25,7 @@ D =ProjC( sparse(Y(:,sel)));
 X = sparse(rand(size(D,2),size(Y,2)));
 
 flat=@(x)x(:);
-norm2=@(D)sqrt(sum(flat(D*D')));
+norm2=@(D)sqrt(sum(flat(abs(D).^2)));
 
 niter=100;
 for it=1:niter
@@ -35,14 +35,14 @@ for it=1:niter
     D = updateD(X,Y,D);
 
     err(it) = norm2(Y-D*X);
-    subplot(1,3,3);plot(log10(err));drawnow
+    subplot(1,3,3);plot(log10(err+eps));drawnow
     
     if err(it)<1e-4
         return;
     end 
    
 end
-clf;plot(err);
+subplot(1,3,3);plot(log10(err+eps));
 % hold on;
 
 % [~,I] = sort(sum(X.^2,2), 'descend'); %todo:randomly select on each it.
@@ -56,11 +56,11 @@ function D = updateD(X,Y,D)
 
 [d,~]=size(D);
 epsilon = 1e-3;
-t = 2/(norm(X*X')+epsilon);% + lambda*k+ epsilon);
+t = 1.8/(norm(X*X')+epsilon);% + lambda*k+ epsilon);
 ProjC = @(D)D ./ repmat( sqrt(sum(D.^2)), [d, 1] );
 ProjP = @(D)max(D,0);
 
-norm2=@(D)sqrt(sum((D(:).^2)));
+norm2=@(D)sqrt(sum((abs(D(:)).^2)));
 
 it = 10000;
 
@@ -90,7 +90,7 @@ epsilon = 1e-3;
 flat=@(x)x(:);
 t = 2/(norm(flat(D*D')) + epsilon);
 
-norm2=@(D)sqrt(sum((D(:).^2)));
+norm2=@(D)sqrt(sum((abs(D(:)).^2)));
 
 it = 10000; 
 for j=1:it
@@ -103,7 +103,8 @@ for j=1:it
             subplot(1,3,2);plot(log10(Err),'-');drawnow;
             return;
         end 
-    end 
+     end 
+  
 end
    subplot(1,3,2);plot(log10(Err),'*-');drawnow;
             
