@@ -42,8 +42,8 @@ Multivariable scattering
 The theoretical framework of the scattering transform is not limited to translations of one-dimensional signals. In fact, it can be formulated for any source of variability as long as it follows an algebraic structure of group [Mal12]_. Rotation (for images) and frequency transposition (for sounds) are examples of these sources of variability.
 
 
-What's in `scattering.m`
-------------------------
+What's in ``scattering.m``
+--------------------------
 
 The ```scattering.m``` MATLAB toolbox intends to provide a pipeline for multi-variable scattering that is very generic and customizable, yet remaining as seamless and efficient as possible.
 
