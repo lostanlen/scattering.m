@@ -70,7 +70,7 @@ end
 
 %% Setup first-order nonlinearity
 plans{1}.nonlinearity = fill_nonlinearity(opts{1});
-ordered_names = {root_name,'theta','gamma','j'};
+ordered_names = {root_name, 'theta', 'gamma', 'j'};
 nNames = length(ordered_names);
 
 %% Upper orders
@@ -125,7 +125,7 @@ for layer = 2:nLayers
                 nChromas = plans{1}.banks{1}.spec.nFilters_per_octave;
                 nGammas = plans{1}.banks{1}.spec.J * nChromas;
                 % 1 octave of chroma filtering by default
-                field.T = default(field,'T',pow2(nextpow2(nChromas)));
+                field.T = default(field, 'T', pow2(nextpow2(nChromas)));
                 field.dimension = banks{end}.behavior.output_dimension + 1;
                 field.invariance = default(field, 'invariance', 'bypassed');
                 field.is_spinned = enforce(field, 'is_spinned', true);
@@ -136,7 +136,7 @@ for layer = 2:nLayers
                 field.size = enforce(field,'size', ...
                     pow2(nextpow2(nGammas + field.T)));
                 field.subscripts = ...
-                    default(field,'subscripts',banks{1}.behavior.dimension + 1);
+                    default(field, 'subscripts', banks{1}.behavior.dimension + 1);
                 banks{1}.behavior.gamma_padding_length = field.T / 2;
             case 'j'
                 if isfield(field,'wavelet_handle')
@@ -144,7 +144,7 @@ for layer = 2:nLayers
                     % It is better to have the impulsive part of the
                     % gammatone in the lower octaves
                     if strcmp(wavelet_handle_str, 'gammatone_1d') || ...
-                            strcmp(wavelet_handle_str,'RLC_1d')
+                            strcmp(wavelet_handle_str, 'RLC_1d')
                         field.is_ift_flipped = ...
                             default(field, 'is_ift_flipped', true);
                     end

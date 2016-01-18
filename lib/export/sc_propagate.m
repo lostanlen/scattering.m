@@ -16,7 +16,7 @@ for layer = 1:nLayers
     if isfield(arch, 'banks')
         Y{layer} = U_to_Y(U{1+previous_layer}, arch.banks);
     else
-        Y{layer} = {U{1+previous_layer}};
+        Y{layer} = U(1+previous_layer);
     end
     
     % Apply nonlinearity to last sub-layer Y to get layer U

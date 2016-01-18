@@ -8,6 +8,7 @@ if nargin<2
     if strcmp(spec.invariance, 'blurred')
         spec.T = opt.T;
         spec.size = opt.size;
+        spec.has_duals = default(opt, 'has_duals', false);
         spec.invariant_handle = ...
             default(opt, 'invariant_handle', @gaussian_1d);
         spec.phi_bw_multiplier = ...
@@ -34,6 +35,7 @@ else
     spec.size = bank_spec.size;
     spec.T = default(opt, 'T', bank_spec.T);
     if strcmp(spec.invariance, 'blurred')
+        spec.has_duals = default(opt, 'has_duals', false);
         spec.invariant_handle = default(opt, 'invariant_handle', ...
             default_invariant_handle(bank_spec.wavelet_handle));
         spec.phi_bw_multiplier = ...
