@@ -25,6 +25,7 @@ if has_custom_invariants
     root_bank_field.name = root_name;
     root_bank_field.is_chunked = ...
         default(root_bank_field, 'is_chunked', false);
+    signal_dimension = 1;
     root_bank_field.output_dimension = 1;
     root_bank_field.subscripts = 1;
     root_invariant_field = opts{1}.invariants.(root_name);
