@@ -21,16 +21,23 @@ else
 end
 if has_custom_invariants
     root_bank_field = opts{1}.banks.(root_name);
+    root_bank_field.key.(root_name) = cell(1);
     root_bank_field.name = root_name;
     root_bank_field.is_chunked = ...
         default(root_bank_field, 'is_chunked', false);
-    root_invariant_field = opts{1}.banks.(root_name);
+    root_bank_field.output_dimension = 1;
+    root_bank_field.subscripts = 1;
+    root_invariant_field = opts{1}.invariants.(root_name);
+    root_invariant_field.key.(root_name) = cell(1);
+    root_invariant_field.subscripts = 1;
     root_invariant_field.name = root_name;
     root_bank_field.is_U_blurred = ...
         default(root_bank_field, 'is_U_blurred', true);
     plans{1}.banks{1}.spec = fill_bank_spec(root_bank_field);
-    plans{1}.banks{1}.behavior = fill_bank_behavior(root_invariant_field);
+    plans{1}.banks{1}.behavior = fill_bank_behavior(root_bank_field);
     plans{1}.invariants{1}.spec = fill_invariant_spec(root_invariant_field);
+    plans{1}.invariants{1}.behavior = ...
+        fill_invariant_behavior(root_invariant_field);
 else
     root_field = opts{1}.(root_name);
     root_field.name = root_name;
