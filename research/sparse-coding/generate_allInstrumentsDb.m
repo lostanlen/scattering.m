@@ -51,7 +51,7 @@ nLambda2s = length(Yaux{2}{end}.data);
 Y = cell(1, nLambda2s);
 parfor lambda2_index = 1:nLambda2s
     nLambda1s = size(Yaux{2}{end}.data{lambda2_index}, 2);
-    Y{lambda2_index} = zeros(nLambda1s,length(chunk_paths));  
+    Y{lambda2_index} = complex(zeros(nLambda1s,length(chunk_paths)));  
 end 
 
 %% Compute scattering and save in DB
@@ -69,5 +69,6 @@ for n = 1:length(chunk_paths)
         Y{lambda2_index}(:,n) = Y2.data{lambda2_index}(end/2,:);
     end 
 end 
+
 disp('save DB')
 save('../data/allInstrumentsDB.mat','Y','initnLambda');
