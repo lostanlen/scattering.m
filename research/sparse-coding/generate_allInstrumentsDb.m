@@ -27,21 +27,20 @@ opts{2}.time.max_Q = 1;
 
 nLambda2s = log2(T);
 
-
 %% Build filters
 archs = sc_setup(opts);
 
 %% Load database in order to compute the dictionaries
-
+disp('Load paths')
 dataset_path = '~/data/medleydb-single-instruments/'
-paths = get_medleydb_paths(dataset_path, 'training');
+training_paths = get_medleydb_paths(dataset_path, 'training');
 
 stem_paths = [training_paths{:}];
 chunk_paths = [stem_paths{:}];
 
 %% initialize dataset 
+disp('initialize DB')
 [waveform, sample_rate] = audioread_compat(chunk_paths{1});
-
 
 initnLambda = 7;
 [~,~,Yaux] = sc_propagate(waveform, archs);
@@ -53,6 +52,7 @@ parfor lambda2_index = initnLambda:nLambda2s
 end 
 
 %% Compute scattering and save in DB
+disp('generate DB')
 for n=1:length(chunk_paths)
     disp(['waveform:' num2str(n)]);
     [waveform, sample_rate] = audioread_compat(chunk_paths{n});
@@ -67,5 +67,5 @@ for n=1:length(chunk_paths)
         Y{lambda2_index}(:,n) = Y2.data(end/2,:);
     end 
 end 
-
+disp('save DB')
 save('../data/allInstrumentsDB.mat','Y','initnLambda');
