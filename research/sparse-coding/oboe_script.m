@@ -39,10 +39,10 @@ Y2 = unchunk_layer(Y{2}{end});
 %% Compute the dictionaries
 initnLambda = 7;
 
-Y.data=Y2{7};
+Y=Y2.data;
 dict.lambda_start = initnLambda;
 
-[dicts, error] = learn_Dictionaries(Y2,dict.lambda_start);
+[dicts, error] = learn_Dictionaries(Y,dict.lambda_start);
 
 alphas = sparse_forward(Y, dicts, initnLambda);
 Ytilde = sparse_backward(alphas, dicts, initnLambda);
