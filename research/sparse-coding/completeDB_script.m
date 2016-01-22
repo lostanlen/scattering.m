@@ -1,4 +1,9 @@
-load('../data/allInstrumentsDB.mat');%get Y and initnLambda
+
+[Y,initnLambda]=generate_allInstrumentsDb();
+disp('save DB')
+save('./allInstrumentsDB.mat','Y','initnLambda');
+
+%load('../data/allInstrumentsDB.mat');%get Y and initnLambda
 
 %% Compute the dictionaries
 dict.lambda_start = initnLambda;

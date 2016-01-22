@@ -1,4 +1,4 @@
-function generate_allInstrumentsDb()
+function [Y,initnLambda]=generate_allInstrumentsDb()
 
 %%% Addpath for Sira
 %sira_path = ...
@@ -70,5 +70,3 @@ for n = 1:length(chunk_paths)
     end 
 end 
 
-disp('save DB')
-save('../data/allInstrumentsDB.mat','Y','initnLambda');
