@@ -8,12 +8,13 @@ vincent_path = '~/MATLAB/toolbox_sparsity';
 addpath(genpath(vincent_path));
 
 %% Setup options
-N = 65536;
+N = 131072;
 T = N / 4;
 opts{1}.time.T = T;
 opts{1}.time.size = N;
 opts{1}.time.max_Q = 16;
 opts{1}.time.nFilters_per_octave = 16;
+opts{1}.time.is_chunked = false;
 opts{1}.time.has_duals = true;
 opts{1}.time.gamma_bounds = [1 128];
 
