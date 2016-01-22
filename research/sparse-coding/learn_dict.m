@@ -16,7 +16,7 @@ end
 % Y = Y(:,I(1:p));
 
 eps=1e-5;
-ProjC = @(D)D ./ repmat( sqrt(sum(D.^2)+eps), [d 1]);% [w, 1] );
+ProjC = @(D)D ./ repmat( sqrt(sum(real(D).^2+imag(D).^2)+eps), [d 1]);% [w, 1] );
 
 sel = randperm(p); sel = sel(1:k);
 D =ProjC( sparse(Y(:,sel)));
@@ -35,14 +35,16 @@ for it=1:niter
     D = updateD(X,Y,D);
 
     err(it) = norm2(Y-D*X);
-    subplot(1,3,3);plot(log10(err+eps));drawnow
-    
-    if err(it)<1e-4
+%     subplot(1,3,3);plot(log10(err+eps));drawnow
+%     figure(2);subplot(121);imagesc(real(D));colorbar
+%     subplot(122);imagesc(imag(D));colorbar
+%     figure(1);
+     if err(it)<1e-4
         return;
     end 
    
 end
-subplot(1,3,3);plot(log10(err+eps));
+%subplot(1,3,3);plot(log10(err+eps));
 % hold on;
 
 % [~,I] = sort(sum(X.^2,2), 'descend'); %todo:randomly select on each it.
@@ -57,34 +59,36 @@ function D = updateD(X,Y,D)
 [d,~]=size(D);
 epsilon = 1e-3;
 t = 1.8/(norm(X*X')+epsilon);% + lambda*k+ epsilon);
-ProjC = @(D)D ./ repmat( sqrt(sum(D.^2)), [d, 1] );
-ProjP = @(D)max(D,0);
 
-norm2=@(D)sqrt(sum((abs(D(:)).^2)));
+%for complex numbers!
+ProjC = @(D)D ./ repmat( sqrt(sum(real(D).^2+imag(D).^2)), [d, 1] );
+
+norm2=@(D)sqrt(sum(real(D(:)).^2+imag(D(:)).^2));
 
 it = 10000;
 
 for j=1:it
-    D = ProjP(ProjC(D-t*(D*X-Y)*X' ));
+    D = ProjC(D-t*(D*X-Y)*X');
     
     %for debugging
     Err(j) = norm2(Y-D*X);
+    
     if (j>1) 
         if Err(j-1)-Err(j) < 1e-5
-              subplot(1,3,1);plot(log10(Err),'-');drawnow;
+          %    subplot(1,3,1);plot(log10(Err),'-');drawnow;
 
             return;
         end 
     end 
 end
-    subplot(1,3,1);plot(log10(Err),'*-');drawnow;
+%    subplot(1,3,1);plot(log10(Err),'*-');drawnow;
 
 end 
 
 function X = updateX(Y,D,k,X)
 %Update of the Coefficients X
 select = @(A,k)repmat(A(k,:), [size(A,1) 1]);
-ProjX = @(X,k)X .* (abs(X) >= select(sort(abs(X), 'descend'),k));
+ProjX = @(X,k)X .* (abs(X.^2) >= select(sort(abs(X.^2), 'descend'),k));
 
 epsilon = 1e-3;
 flat=@(x)x(:);
@@ -98,15 +102,16 @@ for j=1:it
     
     %for debugging
     Err(j) = norm2(Y-D*X);
-     if (j>1) 
+   
+    if (j>1) 
         if Err(j-1)-Err(j) < 1e-5
-            subplot(1,3,2);plot(log10(Err),'-');drawnow;
+          %  subplot(1,3,2);plot(log10(Err),'-');drawnow;
             return;
         end 
      end 
   
 end
-   subplot(1,3,2);plot(log10(Err),'*-');drawnow;
+%   subplot(1,3,2);plot(log10(Err),'*-');drawnow;
             
 
 end 

@@ -1,10 +1,10 @@
 %Data learning: 
 
 sira_path = ...
-    '/Users/ferradans/Documents/Research/AudioSynth/code/toolbox_sparsity/';
+    '../../../toolbox_sparsity/';
 addpath(genpath(sira_path));
 
-data='/Users/ferradans/Documents/Research/AudioSynth/data/oboe_Y2s/';
+data='../../../../data/oboe_Y2s/';
 
 files = dir([data '*.mat']);
 for j=1:7
@@ -13,14 +13,12 @@ end
 
 %we are leaving the last 3 for testing
 for i=1:length(files)-3
-    
     aux = load([data files(i).name]);
     for j=1:length(aux.file_Y2)
         Data{j} = cat(1,Data{j},aux.file_Y2{j});
-        
     end 
-    
 end 
+
 
 
 %% Compute the dictionaries
@@ -40,6 +38,8 @@ dict.lambda_start = initnLambda;
 
 [dicts, error] = learn_Dictionaries(subsetData,dict.lambda_start,1/1.5);
 dicts.lambda_start = initnLambda;
+TrainingDataset=Data;
+save('./DictionaryOboe.mat','dicts','TrainingDataset');
 
 Y.data = subsetData;
 
@@ -49,7 +49,7 @@ Ytilde = sparse_backward(alphas, dicts);
 
 %% Now test on the test set
 for lambda2_index = initnLambda:length(Y.data)
-    Ytest.data{lambda2_index} = permute(Data{lambda2_index}(I(N+1:end),:),[2 1]);
+    Ytest.data{lambda2_index} = permute(Data{lambda2_index}(N+1:end,:),[2 1]);
 end 
 
 alphas_test = sparse_forward(Ytest, dicts); %Y-D*alphas
@@ -64,7 +64,8 @@ disp('Check the error in the approximation of the DB:')
 nLambda2s = length(Y.data);
 flat = @(x)x(:);
 errorComp = @(x)sum(x.^2,1);
-disp(['For training set: y-D alpha    y-y_tilde ']);
+disp(['For training set:']);
+disp(['indx  y - D alpha    y-y_tilde']);
 for lambda2_index = initnLambda:nLambda2s
     
     aux = dicts.backward{lambda2_index}*alphas.data{lambda2_index};
@@ -74,7 +75,8 @@ for lambda2_index = initnLambda:nLambda2s
     disp(['(' num2str(lambda2_index) ') ' num2str(errorConstr) '   ' num2str(errorY)]); 
 end  
 
-disp(['For test set: y-D alpha    y-y_tilde ']);
+disp(['For test set: ']);
+disp(['indx  y - D alpha    y-y_tilde']);
 for lambda2_index = initnLambda:nLambda2s 
     
     aux = dicts.backward{lambda2_index}*alphas_test.data{lambda2_index};
@@ -86,11 +88,11 @@ end
 
 
 
-%% Show Y and DX for 7th lambda2
-lambda2 = 7;
-
-range = 1:4900;
-subplot(211);
-imagesc(Y2{lambda2}(:,range));
-subplot(212);
-imagesc(dicts{lambda2}*alphas{lambda2}(:,range))
+% %% Show Y and DX for 7th lambda2
+% lambda2 = 7;
+% 
+% range = 1:4900;
+% subplot(211);
+% imagesc(Y2{lambda2}(:,range));
+% subplot(212);
+% imagesc(dicts{lambda2}*alphas{lambda2}(:,range))
