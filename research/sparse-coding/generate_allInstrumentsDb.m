@@ -1,6 +1,7 @@
 %%% Addpath for Sira
-sira_path = ...
-    '/Users/ferradans/Documents/Research/AudioSynth/code/toolbox_sparsity/';
+%sira_path = ...
+%    '/Users/ferradans/Documents/Research/AudioSynth/code/toolbox_sparsity/';
+sira_path='~/code/scattering.m/';
 addpath(genpath(sira_path));
 
 %% Addpath for Vincent
@@ -52,6 +53,7 @@ parfor lambda2_index = initnLambda:nLambda2s
 end 
 
 for n=1:length(chunk_paths)
+    disp(['waveform:' num2str(n)]);
     [waveform, sample_rate] = audioread_compat(chunk_paths{n});
 
     %% Compute scattering
