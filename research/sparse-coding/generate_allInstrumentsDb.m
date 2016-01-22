@@ -34,15 +34,15 @@ archs = sc_setup(opts);
 %% Load database in order to compute the dictionaries
 
 dataset_path = '~/data/medleydb-single-instruments/'
-paths = get_medleydb_paths(dataset_paths, 'training');
+paths = get_medleydb_paths(dataset_path, 'training');
 
 stem_paths = [training_paths{:}];
 chunk_paths = [stem_paths{:}];
 
-%initialize dataset" 
+%% initialize dataset 
 [waveform, sample_rate] = audioread_compat(chunk_paths{1});
 
-%% Compute scattering
+
 initnLambda = 7;
 [~,~,Yaux] = sc_propagate(waveform, archs);
 Y1 = unchunk_layer(Yaux{1}{end});
@@ -52,6 +52,7 @@ parfor lambda2_index = initnLambda:nLambda2s
     Y{lambda2_index} = zeros(nLambda1s,length(chunk_paths));  
 end 
 
+%% Compute scattering and save in DB
 for n=1:length(chunk_paths)
     disp(['waveform:' num2str(n)]);
     [waveform, sample_rate] = audioread_compat(chunk_paths{n});
