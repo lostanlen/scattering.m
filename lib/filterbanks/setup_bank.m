@@ -53,6 +53,7 @@ if bank.spec.has_real_ft
 end
 bank.phi = optimize_bank(phi_ft, phi_ift,bank);
 energy_sum = psi_energy_sum + phi_ft .* conj(phi_ft);
+energy_sum = 0.5 * (energy_sum + energy_sum(end:-1:1));
 
 %% Generation of dual filter bank if required
 if bank.spec.has_duals
@@ -73,7 +74,7 @@ if bank.spec.has_duals
         dual_psi_ifts = [];
     end
     bank.dual_psis = optimize_bank(dual_psi_fts, dual_psi_ifts, bank);
-    dual_phi_ft = conj(phi_ft);
+    dual_phi_ft = conj(phi_ft) ./ energy_sum;
     dual_phi = multidimensional_ifft(dual_phi_ft, 1:signal_dimension);
     bank.dual_phi = optimize_bank(dual_phi_ft, dual_phi, bank);
 end

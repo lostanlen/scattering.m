@@ -42,10 +42,24 @@ Multivariable scattering
 The theoretical framework of the scattering transform is not limited to translations of one-dimensional signals. In fact, it can be formulated for any source of variability as long as it follows an algebraic structure of group [Mal12]_. Rotation (for images) and frequency transposition (for sounds) are examples of these sources of variability.
 
 
-What's in ```scattering.m```
-----------------------------
+What's in ``scattering.m``
+--------------------------
 
-The ```scattering.m``` MATLAB toolbox intends to provide a pipeline for multi-variable scattering that is very generic and customizable, yet remaining as seamless and efficient as possible.
+The ``scattering.m`` MATLAB toolbox intends to provide a pipeline for multi-variable scattering that is very generic and customizable, yet remaining as seamless and efficient as possible.
+
+* Morlet wavelets and auditory Gammatone wavelets
+* Tunable quality factor, maximum scale, and number of filters per octave
+* Pay only for what you use: a fraction of scattering paths can be explicitly spared
+* Logarithmic compression of the wavelet scalogram is opt-in
+* FFT-based convolutions with subsampling in the Fourier domain
+* Efficient products in the Fourier domain with narrowband wavelets
+* Multi-variable scattering: all variables share the same framework
+* Automatic padding of the log-frequency axis
+* Multiple-support filter banks to avoid extraneous padding
+* Spiral scattering by reshaping the log-frequency axis on the fly
+* Long signals are processed by constant-sized chunks. Unchunking is automatic
+* Signal reconstruction from scattering coefficients (even over multiple variables)
+* Efficient formatting into feature vectors for classification
 
 .. [Mal10] Mallat, S. Recursive Interferometric Representations. in European Signal Processing Conference 716–720 (2010).
 .. [Mal12] Mallat, S. Group Invariant Scattering. Communications on Pure and Applied Mathematics, vol. 65, issue 10, pages 1331–1398 (2012).

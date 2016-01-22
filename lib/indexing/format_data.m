@@ -27,7 +27,7 @@ for subscript_index = 1:nSubscripts
     unpadded_sizes(subscript_index) = floor((range(3)-range(1)+1) / range(2));
     subsref_structure.subs{subscript_index} = 1:unpadded_sizes(subscript_index);
 end
-unpadded_data = subsref(data,subsref_structure);
+unpadded_data = subsref(data, subsref_structure);
 
 %% Reshaping to time-feature matrix
 spatial_sizes = unpadded_sizes(spatial_subscripts);

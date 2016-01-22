@@ -1,4 +1,5 @@
 function invariant = setup_invariant(invariant)
+%%
 if strcmp(invariant.spec.invariance, 'blurred')
     phi_ift = invariant.spec.invariant_handle(invariant.spec);
     dimension = get_handle_dimension(invariant.spec.invariant_handle);

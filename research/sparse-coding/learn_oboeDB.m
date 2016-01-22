@@ -3,8 +3,18 @@
 sira_path = ...
     '../../../toolbox_sparsity/';
 addpath(genpath(sira_path));
+addpath(genpath('~/code/scattering.m'))
 
 data='../../../../data/oboe_Y2s/';
+
+dataset_path = '~/data/medleydb-single-instruments'
+paths = get_medleydb_paths(dataset_paths, 'training')
+
+stem_paths = [training_paths{:}];
+chunk_paths = [stem_paths{:}];
+
+chunk_paths{1}
+
 
 files = dir([data '*.mat']);
 for j=1:7
