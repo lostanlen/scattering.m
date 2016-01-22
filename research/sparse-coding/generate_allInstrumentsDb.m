@@ -47,10 +47,10 @@ mono_waveform = mean(stereo_waveform, 2);
 
 [~,~,Yaux] = sc_propagate(mono_waveform, archs);
 
-nLambda2s = length(Yaux{1+2}{end}.data);
+nLambda2s = length(Yaux{2}{end}.data);
 Y = cell(1, nLambda2s);
 parfor lambda2_index = 1:nLambda2s
-    nLambda1s = size(Yaux{1+2}{end}.data{lambda2_index}, 2);
+    nLambda1s = size(Yaux{2}{end}.data{lambda2_index}, 2);
     Y{lambda2_index} = zeros(nLambda1s,length(chunk_paths));  
 end 
 
@@ -63,7 +63,7 @@ for n = 1:length(chunk_paths)
     
     %% Compute scattering
     [~,~,Y_sample] = sc_propagate(mono_waveform, archs);
-    Y2 = Y_sample{1+2}{end};
+    Y2 = Y_sample{2}{end};
     nLambda2s = length(Y2.data);
     for lambda2_index = 1:nLambda2s
         Y{lambda2_index}(:,n) = Y2.data{lambda2_index}(end/2,:);
