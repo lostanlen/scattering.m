@@ -63,7 +63,7 @@ if bank.spec.has_duals
         if ~bank.spec.has_real_ft
             psi_fts = conj(psi_fts);
         end
-        dual_psi_fts = psi_fts;
+        dual_psi_fts = bsxfun(@rdivide, psi_fts, energy_sum);
     else
         dual_psi_fts = [];
     end
