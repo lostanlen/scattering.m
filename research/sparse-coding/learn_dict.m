@@ -80,7 +80,7 @@ for j=1:it
     Err(j) = norm2(Y-D*X);
     if verbose
         if (j>1) 
-            if Err(j-1)-Err(j) < 1e-8
+            if Err(j-1)-Err(j) < 1e-6
                   subplot(1,3,1);plot(log10(Err),'-');drawnow;
 
                 return;
@@ -113,7 +113,7 @@ for j=1:it
     Err(j) = norm2(Y-D*X);
    if verbose
     if (j>1) 
-        if Err(j-1)-Err(j) < 1e-8
+        if Err(j-1)-Err(j) < 1e-6
             subplot(1,3,2);plot(log10(Err),'-');drawnow;
             return;
         end 
