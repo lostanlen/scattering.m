@@ -19,8 +19,8 @@ for l=initnLambda:L2
     n = round(l1*coeff); %we want less atoms than dimensions
     K = round(sparsity*l1);
     [dict.backward{l},X,err]=learn_dict(Y{l},K,n,N);
-    E(l,1)=min(err)
-    E(l,2)=norm(dict.backward{l}*X-Y{l})/norm(dict.backward{l}*X) ; %relative err
+    E(l,1)=min(err);
+    E(l,2)=norm(dict.backward{l}*X-Y{l})/norm(dict.backward{l}*X)  %relative err
      
     dict.forward{l} = pinv(dict.backward{l});
     dict.forward_conjugate{l} = dict.backward{l}';
