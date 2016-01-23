@@ -7,7 +7,9 @@ save('./allInstrumentsDB.mat','Y','initnLambda');
 
 %% Compute the dictionaries
 dict.lambda_start = initnLambda;
-[dicts, error] = learn_Dictionaries(Y,dict.lambda_start,1/1.5);
+k_dim_coeff = 1/1.5;%percentage of dim that we want for the atoms of the dictionary
+sparsity = 0.1;
+[dicts, error] = learn_Dictionaries(Y,dict.lambda_start,1/1.5,sparsity);
 
 save('./Dictionary.mat','dicts','error');
 
