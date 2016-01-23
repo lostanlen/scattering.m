@@ -71,7 +71,7 @@ ProjP = @(D)max(D,0);
 
 norm2=@(D)sqrt(sum((abs(D(:)).^2)));
 
-it = 10000;
+it = 500;
 
 for j=1:it
     D = ProjP(ProjC(D-t*(D*X-Y)*X' ));
@@ -105,7 +105,7 @@ t = 2/(norm(flat(D*D')) + epsilon);
 
 norm2=@(D)sqrt(sum((abs(D(:)).^2)));
 
-it = 10000; 
+it = 500; 
 for j=1:it
     X = ProjX(X-t*D'*(D*X-Y),k);%soft thresholding on the grad desc
     
