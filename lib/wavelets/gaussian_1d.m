@@ -1,6 +1,6 @@
 function gaussian = gaussian_1d(spec)
 %% Definition of half support length and haf size
-half_support_length = spec.T / 2;
+half_support_length = spec.phi_bw_multiplier * spec.T / 2;
 half_size = spec.size / 2;
 full_range = fftshift(-half_size:(half_size-1)).';
 
