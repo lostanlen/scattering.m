@@ -1,4 +1,4 @@
-function layer_dY_1 = dS_backto_dY(layer_dS,arch)
+function layer_dY_1 = dS_backto_dY(layer_dS, arch)
 %% Initialization
 nVariables_to_transform = length(arch.invariants);
 invariants = arch.invariants;
