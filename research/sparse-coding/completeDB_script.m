@@ -1,9 +1,9 @@
 
-[Y,initnLambda]=generate_allInstrumentsDb();
-disp('save DB')
-save('./allInstrumentsDB.mat','Y','initnLambda');
+% [Y,initnLambda]=generate_allInstrumentsDb();
+% disp('save DB')
+% save('./allInstrumentsDB.mat','Y','initnLambda');
 
-%load('../data/allInstrumentsDB.mat');%get Y and initnLambda
+load('../data/allInstrumentsDB.mat');%get Y and initnLambda
 
 %% Compute the dictionaries
 dict.lambda_start = initnLambda;
@@ -12,6 +12,10 @@ sparsity = 0.1;
 [dicts, error] = learn_Dictionaries(Y,dict.lambda_start,1/1.5,sparsity);
 
 save('./Dictionary.mat','dicts','error');
+
+for lambda2=dict.lambda_start:length(Y) 
+    visualizing_dict(dicts.backward{l},lambda2);
+end 
 
 alphas = sparse_forward(Y, dicts, initnLambda);
 Ytilde = sparse_backward(alphas, dicts, initnLambda);

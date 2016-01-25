@@ -21,7 +21,7 @@ end
 % Y = Y(:,I(1:p));
 
 eps=1e-5;
-ProjC = @(D)D ./ repmat( sqrt(sum(D.^2)+eps), [d 1]);% [w, 1] );
+ProjC = @(D)D ./ repmat( sqrt(sum(abs(D).^2)+eps), [d 1]);% [w, 1] );
 
 %select some subset of the data to initialize the dictionary
 sel = randperm(p); sel = sel(1:n);
@@ -66,15 +66,15 @@ function D = updateD(X,Y,D,verbose)
 [d,~]=size(D);
 epsilon = 1e-3;
 t = 1.8/(norm(X*X')+epsilon);% + lambda*k+ epsilon);
-ProjC = @(D)D ./ repmat( sqrt(sum(D.^2)), [d, 1] );
-ProjP = @(D)max(D,0);
+ProjC = @(D)D ./ repmat( sqrt(sum(abs(D).^2)), [d, 1] );
+%ProjP = @(D)max(D,0);
 
 norm2=@(D)sqrt(sum((abs(D(:)).^2)));
 
-it = 500;
+it = 100;
 
 for j=1:it
-    D = ProjP(ProjC(D-t*(D*X-Y)*X' ));
+    D = ProjC(D-t*(D*X-Y)*X' );
     
     %for debugging
     Err(j) = norm2(Y-D*X);
@@ -96,8 +96,13 @@ end
 function X = updateX(Y,D,k,X,verbose)
 
 %Update of the Coefficients X
-select = @(A,k)repmat(A(k,:), [size(A,1) 1]);
-ProjX = @(X,k)X .* (abs(X) >= select(sort(abs(X), 'descend'),k));
+%select = @(A,k)repmat(A(k,:), [size(A,1) 1]);
+%hard thresholding
+%ProjX = @(X,k)X .* (abs(X) >= select(sort(abs(X), 'descend'),k));
+
+%softhresholding (note that X should be real, not complex)
+lambda = k;
+ProjX = @(X,k)max(1-lambda./abs(X),0).*X;
 
 epsilon = 1e-3;
 flat=@(x)x(:);
@@ -105,7 +110,7 @@ t = 2/(norm(flat(D*D')) + epsilon);
 
 norm2=@(D)sqrt(sum((abs(D(:)).^2)));
 
-it = 500; 
+it = 100; 
 for j=1:it
     X = ProjX(X-t*D'*(D*X-Y),k);%soft thresholding on the grad desc
     
