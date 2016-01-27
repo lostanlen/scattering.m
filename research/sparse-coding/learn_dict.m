@@ -102,7 +102,7 @@ function X = updateX(Y,D,k,X,verbose)
 
 %softhresholding (note that X should be real, not complex)
 lambda = k;
-ProjX = @(X,k)max(1-lambda./abs(X),0).*X;
+ProjX = @(X,lambda) max(1-lambda./abs(X),0).*X;
 
 epsilon = 1e-3;
 flat=@(x)x(:);
