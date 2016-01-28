@@ -12,7 +12,8 @@ addpath(genpath(vincent_path));
 
 %% Setup options
 N = 131072;
-T = N / 4;
+%T = N / 4;
+T = N;
 initnLambda = 7;
 opts{1}.time.T = T;
 opts{1}.time.size = N;
