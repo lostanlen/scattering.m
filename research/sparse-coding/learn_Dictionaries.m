@@ -36,7 +36,7 @@ for l=L2:-1:initnLambda
     
     %Normalize the atoms before training: our dict. is going to be normalized 
     norm_data = sqrt(sum(data2.^2,1));
-    data2 = Y{l}./repmat(norm_data,[size(Y{l},1) 1]);
+    data2 = data2./repmat(norm_data,[size(Y{l},1) 1]);
     norm_data=[]; %free memory
     IndexP = [];
     %size of dicts depend on the dims of the atoms

@@ -1,9 +1,9 @@
 
 disp('Generating data from all instruments')
-[Y,initnLambda]=generate_allInstrumentsDb();
-disp('save DB')
-save('../../../../data/allInstrumentsDB_3secs.mat','Y','initnLambda');
-%load('../../../../data/allInstrumentsDB_3secs.mat');
+%[Y,initnLambda]=generate_allInstrumentsDb();
+%disp('save DB')
+%save('../../../../data/allInstrumentsDB_3secs.mat','Y','initnLambda');
+load('../../../../data/allInstrumentsDB_3secs.mat');
 %% Compute the dictionaries
 
  dicts.lambda_start = initnLambda;
