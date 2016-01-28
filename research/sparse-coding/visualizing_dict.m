@@ -1,4 +1,6 @@
 function h=visualizing_dict(D,lambda2)
+% h=visualizing_dict(D,lambda2,mode)
+% This function displays the dictionary associated to lambda2. 
 
 %show both, real and imaginary part
 %sort per peak of maximum frequency 

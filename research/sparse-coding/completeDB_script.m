@@ -24,8 +24,9 @@ load('./Dictionarylambda.mat');
 % save('./Dictionarynolambdanosquared.mat','dicts');
 
 for lambda2=initnLambda:length(dicts.backward)
-    h=visualizing_dict(dicts.backward,lambda2);
-    save(h,['./dicts_' num2str(lambda2) '.png']);
+    visualizing_dict(dicts.backward,lambda2);
+  %  h=visualizing_dict(dicts.backward,lambda2);
+  %  save(h,['./dicts_' num2str(lambda2) '.png']);
 end 
 
 return;
@@ -42,32 +43,20 @@ params.verbose=true;
 
 
 lambda2=4;%length(dicts.backward);
-
 D = dicts.backward{lambda2};
+
+%show dictionary ordered by importance for lambda2 **real**
 alpha_real=mexLasso(real(Y{lambda2}),real(D),params);
-
 [~,peak_lambda1s] = sort(sum(abs(alpha_real)>0.1,2),1,'descend');
+h=visualizing_dict(dicts.backward,lambda2);
+subplot(122);imagesc(real(D(:,peak_lambda1s)));title('real ordered by importance')
 
-imagesc(real(d(:,peak_lambda1s)));
-
-
-
-alpha_complex=mexLasso(imag(Y{lambda2}),imag(D),params);
-
-%postproc
- IndexP = randperm(size(Y{lambda2},2));
- 
- data =real( Y{lambda2}(:,IndexP));
- %data = data-mean(data(:));
- %data = data/max(data(:));
- 
-norm_data = sqrt(sum(data.^2,1));
-data = data./repmat(norm_data,[size(data,1) 1]);
- 
- 
- params.K = size(data,1);%squared dict
- D_real=mexTrainDL_Memory(real(data),params);
-       
+%show dictionary ordered by importance for lambda2 **complex**
+alpha_imag=mexLasso(imag(Y{lambda2}),imag(D),params);
+[~,peak_lambda1s] = sort(sum(abs(alpha_real)>0.1,2),1,'descend');
+h=visualizing_dict(dicts.backward,lambda2);
+subplot(121);imagesc(imag(D(:,peak_lambda1s)));title('imag ordered by importance')
+    
 
 return;
 
