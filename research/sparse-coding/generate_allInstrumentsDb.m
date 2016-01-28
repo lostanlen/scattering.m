@@ -58,8 +58,9 @@ end
 %% Compute scattering and save in DB
 disp('generate DB')
 for n = 1:length(chunk_paths)
-    disp(['waveform: ' chunk_paths{n}]);
-    [stereo_waveform, sample_rate] = audioread_compat(chunk_paths{n});
+    %disp(['waveform: ' chunk_paths{n}]);
+    disp(['waveform: ' num2str(n) '/' num2str(length(chunk_paths))]);
+    [stereo_waveform, ~] = audioread_compat(chunk_paths{n});
     mono_waveform = mean(stereo_waveform, 2);
     
     %% Compute scattering

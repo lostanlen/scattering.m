@@ -1,18 +1,17 @@
 
-% [Y,initnLambda]=generate_allInstrumentsDb();
-% disp('save DB')
-% save('./allInstrumentsDB.mat','Y','initnLambda');
-
-load('../../../../data/Data_allinstrumentsNosat.mat');%get Y and initnLambda
-
+disp('Generating data from all instruments')
+[Y,initnLambda]=generate_allInstrumentsDb();
+disp('save DB')
+save('../../../../data/allInstrumentsDB_3secs.mat','Y','initnLambda');
+%load('../../../../data/allInstrumentsDB_3secs.mat');
 %% Compute the dictionaries
- initnLambda = 1;
+
  dicts.lambda_start = initnLambda;
  k_dim_coeff = 1;%percentage of dim that we want for the atoms of the dictionary
-
+disp(['Learn the dictionaries:'])
 [dicts] = learn_Dictionaries(Y,dicts.lambda_start,k_dim_coeff);
-
-save('./Dictionarylambda_normdata.mat','dicts');
+disp('.. and saving dictionaries ')
+save('../../../../data/Dictionarylambda_normdata_3secs.mat','dicts');
 
 return
 
