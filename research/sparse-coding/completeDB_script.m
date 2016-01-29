@@ -3,42 +3,103 @@ disp('Generating data from all instruments')
 %[Y,initnLambda]=generate_allInstrumentsDb();
 %disp('save DB')
 %save('../../../../data/allInstrumentsDB_3secs.mat','Y','initnLambda');
-load('../../../../data/allInstrumentsDB_3secs.mat');
 %% Compute the dictionaries
 
- dicts.lambda_start = initnLambda;
- k_dim_coeff = 1;%percentage of dim that we want for the atoms of the dictionary
-disp(['Learn the dictionaries:'])
-[dicts] = learn_Dictionaries(Y,dicts.lambda_start,k_dim_coeff);
-disp('.. and saving dictionaries ')
-save('../../../../data/Dictionarylambda_normdata_3secs.mat','dicts');
+% k_dim_coeff = 1;%percentage of dim that we want for the atoms of the dictionary
+% disp(['Learn the dictionaries:'])
+% dicts = learn_Dictionaries(Y,6,k_dim_coeff);
+% save('../../../../data/Dictionarylambda_normdata_3secs_good.mat','dicts');
+% disp('.. and saving dictionaries ')
 
-return
-
-
-load('./Dictionarylambda.mat');
 % k_dim_coeff = 0.8;%percentage of dim that we want for the atoms of the dictionary
 % 
 % [dicts] = learn_Dictionaries(Y,dict.lambda_start,k_dim_coeff);
 % save('./Dictionarynolambdanosquared.mat','dicts');
 
-for lambda2=initnLambda:length(dicts.backward)
-    visualizing_dict(dicts.backward,lambda2);
+for lambda2=1:length(dicts.backward)
+    visualizing_Ordered_dict(dicts.backward{lambda2});
   %  h=visualizing_dict(dicts.backward,lambda2);
   %  save(h,['./dicts_' num2str(lambda2) '.png']);
 end 
 
 return;
 
-%Checking how sparse the representation is
-%take last lambda2
+%% process a single audio file 
+disp('initialize DB')
+path='../../../../data/clarinet_Beethoven_S08_chunk000.wav';
+[stereo_waveform, sample_rate] = audioread_compat(path);
+clarinet = mean(stereo_waveform, 2);
+
+path='../../../../data/piano_SwingJazz_S03_chunk000.wav';
+[stereo_waveform, sample_rate] = audioread_compat(path);
+piano = mean(stereo_waveform, 2);
+
+% Setup options
+N = 131072;
+T = N;
+initnLambda = 7;
+opts{1}.time.T = T;
+opts{1}.time.size = N;
+opts{1}.time.max_Q = 16;
+opts{1}.time.nFilters_per_octave = 16;
+opts{1}.time.is_chunked = false;
+opts{1}.time.has_duals = true;
+opts{1}.time.gamma_bounds = [1 128];
+
+opts{2}.time.T = T;
+opts{2}.time.max_scale = Inf;
+opts{2}.time.handle = @gammatone_1d;
+opts{2}.time.sibling_mask_factor = 2;
+opts{2}.time.gamma_bounds = [initnLambda Inf]
+opts{2}.time.max_Q = 1;
+%example get for the last lambda2
+lambda2=length(dicts.backward);
+D = dicts.backward{lambda2};
+
 params.modeD=0; %atoms with norm 1
 params.mode=1; %l1 norm on the coefs alpha
-params.lambda=0.001;
 params.iter = 3000;
 %params.batchsize=512;
 params.numThreads=-1; % number of threads
 params.verbose=true;
+
+% Build filters
+archs = sc_setup(opts);
+
+% process clarinet
+[~,~,Y_sample] = sc_propagate(clarinet, archs);
+Y2 = Y_sample{2}{end};
+nLambda2s = length(Y2.data);
+for lambda2_index = 1:nLambda2s
+    Y_clarinet{lambda2_index}(:,1) = Y2.data{lambda2_index}(end/2,:);
+end 
+
+%show dictionary ordered by importance for lambda2 **real**
+params.lambda=10;%super sparse
+alpha_clarinet=mexLasso(real(Y_clarinet{lambda2}),real(D),params);
+[abspeaks,abslocs] = findpeaks(abs(alpha_clarinet),'MinPeakHeight',0.2,'MinPeakDistance',3); 
+figure;subplot(121);imagesc(D(:,abslocs))
+subplot(122);plot(alpha_clarinet);hold on;plot(abslocs,alpha_clarinet(abslocs),'*r')
+
+% process piano
+[~,~,Y_sample] = sc_propagate(piano, archs);
+Y2 = Y_sample{2}{end};
+nLambda2s = length(Y2.data);
+for lambda2_index = 1:nLambda2s
+    Y_piano{lambda2_index}(:,1) = Y2.data{lambda2_index}(end/2,:);
+end 
+
+%show dictionary ordered by importance for lambda2 **real**
+params.lambda=10;%super sparse
+alpha_piano=mexLasso(real(Y_piano{lambda2}),real(D),params);
+[abspeaks,abslocs] = findpeaks(abs(alpha_piano),'MinPeakHeight',0.2,'MinPeakDistance',3); 
+figure;subplot(121);imagesc(D(:,abslocs))
+subplot(122);plot(alpha_piano);hold on;plot(abslocs,alpha_piano(abslocs),'*r')
+%%
+
+
+%Checking how sparse the representation is
+%take last lambda2
 
 
 lambda2=4;%length(dicts.backward);

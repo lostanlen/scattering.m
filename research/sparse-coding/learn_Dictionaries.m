@@ -22,7 +22,7 @@ params.verbose=false;
 
 
 %Obtain dictionary backward: Y=D X
-for l=L2:-1:initnLambda
+for l=1:initnLambda
     disp(['l=' num2str(l)]);
     [l1,~]=size(Y{l});
   
@@ -46,7 +46,7 @@ for l=L2:-1:initnLambda
     D=mexTrainDL_Memory(data2,params);
         
     dict.backward{l} = D; 
-    visualizing_dict(dict.backward,l);
+%    visualizing_dict(dict.backward,l);
    
 %% in case we want to compute the alphas...    
 %     alpha_real=mexLasso(real(Y{l}),D,params);
