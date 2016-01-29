@@ -1,14 +1,13 @@
-function dict = fill_dict_behavior(opt)
+function dict = fill_dict_params(dict)
 % modeD = false means that atoms are constrained to have unit norm
-behavior.modeD = false;
+dict.modeD = false;
 % mode = 1 means that the \ell^1 norm is used to induce sparsity
-behavior.mode = 1;
+dict.mode = 1;
 % lambda is the regularization parameter
-behavior.lambda = default(opt, 'lambda', 0.15);
+dict.lambda = default(dict, 'lambda', 0.15);
 % iter is the number of iterations
-behavior.iter = default(opt, 'iter', 3000);
+dict.iter = default(dict, 'iter', 3000);
 % numThreads = -1 means that multithreading is applied if possible
-behavior.numThreads = -1;
-behavior.verbose = default(opt, 'verbose', true);
+dict.numThreads = -1;
+dict.verbose = default(dict, 'verbose', true);
 end
-
