@@ -1,4 +1,9 @@
 function bank = setup_bank(bank)
+%% Special case of a learned dictionary instead of a filter bank
+if isfield(bank, 'dict')
+    return
+end
+
 %% Computation of resolutions and bandwidths
 bank.metas = fill_bank_metas(bank.spec);
 

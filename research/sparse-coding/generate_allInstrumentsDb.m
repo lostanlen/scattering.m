@@ -12,7 +12,6 @@ addpath(genpath(vincent_path));
 
 %% Setup options
 N = 131072;
-%T = N / 4;
 T = N;
 initnLambda = 7;
 opts{1}.time.T = T;
@@ -27,7 +26,7 @@ opts{2}.time.T = T;
 opts{2}.time.max_scale = Inf;
 opts{2}.time.handle = @gammatone_1d;
 opts{2}.time.sibling_mask_factor = 2;
-opts{2}.time.gamma_bounds = [initnLambda Inf]
+opts{2}.time.gamma_bounds = [initnLambda Inf];
 opts{2}.time.max_Q = 1;
 
 %% Build filters
