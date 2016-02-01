@@ -1,4 +1,4 @@
-function [Y,initnLambda]=generate_allInstrumentsDb()
+function [Y,initnLambda]=generate_allInstrumentsDb(dataset_path)
 
 %%% Addpath for Sira
 %sira_path = ...
@@ -34,7 +34,7 @@ archs = sc_setup(opts);
 
 %% Load database in order to compute the dictionaries
 disp('Load paths')
-dataset_path = '~/data/medleydb-single-instruments/';
+%dataset_path = '~/data/medleydb-single-instruments/';
 training_paths = get_medleydb_paths(dataset_path, 'training');
 
 stem_paths = [training_paths{:}];

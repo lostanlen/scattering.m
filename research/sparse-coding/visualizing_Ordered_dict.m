@@ -11,13 +11,21 @@ NonZeroSum3p=[];
 ZeroSumOtherpeaks=[];
 NonZeroSumOtherpeaks=[];
 
-
+mask = zeros(1,16);
 epsilon = 0.1;
 diffPeaks = [];
+pattern_id=[];
 for i=1:size(D,2)
-    % Do the blur.
+   
    [abspeaks,abslocs] = findpeaks(abs(D(:,i)),'MinPeakHeight',0.2,'MinPeakDistance',3); 
    diffPeaks = cat(1,diffPeaks(:),diff(abslocs));
+   
+   mask = mask*0;
+   mask(diff(abslocs))=1;
+   
+   pattern_id(end+1) = bin2dec(num2str(mask));
+   
+   
 
    sumpeaks = sum(D(abslocs,i));
  
@@ -45,8 +53,10 @@ for i=1:size(D,2)
     end 
 end 
 
-
-
+%most common patterns
+histogram_pattern = hist(pattern_id,1:2^16);
+[~,indx]=find(histogram_pattern>0);
+common_patterns = dec2bin(indx);
 figure; 
 subplot(421);imagesc(order_filters(Onepeak));title('One peak'); 
 subplot(422);hist(diffPeaks,1:size(D,1)/2);title('Histogram of the differences between peaks')

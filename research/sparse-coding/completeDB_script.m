@@ -1,24 +1,33 @@
 
 disp('Generating data from all instruments')
-%[Y,initnLambda]=generate_allInstrumentsDb();
-%disp('save DB')
+pathLibri = '~/data/LibriSpeech/';
+[Y,initnLambda]=generate_allInstrumentsDb(pathLibri);
+disp('save DB')
+save('../../../../data/allLibri.mat','Y','initnLambda');
+
 %save('../../../../data/allInstrumentsDB_3secs.mat','Y','initnLambda');
 %% Compute the dictionaries
 
-% k_dim_coeff = 1;%percentage of dim that we want for the atoms of the dictionary
-% disp(['Learn the dictionaries:'])
-% dicts = learn_Dictionaries(Y,6,k_dim_coeff);
+k_dim_coeff = 1;%percentage of dim that we want for the atoms of the dictionary
+disp(['Learn the dictionaries:'])
+dicts = learn_Dictionaries(Y,1,k_dim_coeff);
+save('../../../../data/Dictionary_Libri.mat',dicts);
+
+return
 % save('../../../../data/Dictionarylambda_normdata_3secs_good.mat','dicts');
 % disp('.. and saving dictionaries ')
+
+%load('../../../../data/Dictionarylambda_normdata_3secs_good.mat')
 
 % k_dim_coeff = 0.8;%percentage of dim that we want for the atoms of the dictionary
 % 
 % [dicts] = learn_Dictionaries(Y,dict.lambda_start,k_dim_coeff);
 % save('./Dictionarynolambdanosquared.mat','dicts');
-
-for lambda2=1:length(dicts.backward)
-    visualizing_Ordered_dict(dicts.backward{lambda2});
-  %  h=visualizing_dict(dicts.backward,lambda2);
+Q=16;
+for lambda2=7:length(dicts.backward)
+    d = register_peaks(dicts.backward{lambda2},Q);
+    visualizing_Ordered_dict(d);
+   %  visualizing_dict(d);
   %  save(h,['./dicts_' num2str(lambda2) '.png']);
 end 
 
