@@ -53,7 +53,7 @@ if size(mono_waveform,1) < N
 end 
 
 
-[~,~,Yaux] = sc_propagate(mono_waveform, archs);
+[~,~,Yaux] = sc_propagate(mono_waveform(1:N,1), archs);
 
 nLambda2s = length(Yaux{2}{end}.data);
 Y = cell(1, nLambda2s);
