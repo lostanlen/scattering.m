@@ -2,7 +2,7 @@
 disp('Generating data from all instruments')
 pathLibri = '~/data/LibriSpeech/';
 [Y,initnLambda]=generate_allInstrumentsDb(pathLibri);
-[Y,initnLambda]=generate_DB_frompath(dataset_path);
+
 disp('save DB')
 save('../../../../data/allLibri.mat','Y','initnLambda');
 
