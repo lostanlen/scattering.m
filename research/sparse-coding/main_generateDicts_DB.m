@@ -1,7 +1,7 @@
 disp('Generating data from all instruments')
 pathUrban = '~/data/UrbanSound8K/training/';
 
-[Y,initnLambda]=generate_DB_frompath(pathLibri);
+[Y,initnLambda]=generate_DB_frompath(pathUrban);
 disp('save DB')
 save('../../../../data/allUrban.mat','Y','initnLambda');
 
