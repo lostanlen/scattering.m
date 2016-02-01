@@ -13,13 +13,13 @@ disp(['Learn the dictionaries:'])
 dicts = learn_Dictionaries(Y,1,k_dim_coeff);
 save('../../../../data/Dictionary_Urban.mat',dicts);
 
-returnl 
+return
 
 
 
-d = dir('./training/')
-P = randperm(size(d,1));
-
-for i=1:3000
-    system(['mv ./training/' d(P(i)).name ' ./testing/.' ]);
-end 
+% d = dir('./training/')
+% P = randperm(size(d,1));
+% 
+% for i=1:3000
+%     system(['mv ./training/' d(P(i)).name ' ./testing/.' ]);
+% end 
