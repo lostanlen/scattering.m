@@ -47,7 +47,12 @@ if size(stereo_waveform,2) > 1
     mono_waveform = mean(stereo_waveform, 2);
 else 
     mono_waveform = stereo_waveform;
+end
+if size(mono_waveform,1) < N
+    mono_waveform=cat(1,mono_waveform,zeros(N-size(mono_waveform,1),1));
 end 
+
+
 [~,~,Yaux] = sc_propagate(mono_waveform, archs);
 
 nLambda2s = length(Yaux{2}{end}.data);
@@ -67,7 +72,10 @@ for n = 1:length(chunk_paths)
         mono_waveform = mean(stereo_waveform, 2);
     else 
         mono_waveform = stereo_waveform;
-    end  
+    end 
+    if size(mono_waveform,1) < N
+        mono_waveform=cat(1,mono_waveform,zeros(N-size(mono_waveform,1),1));
+    end
     %% Compute scattering
     [~,~,Y_sample] = sc_propagate(mono_waveform, archs);
     Y2 = Y_sample{2}{end};
