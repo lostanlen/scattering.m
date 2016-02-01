@@ -1,4 +1,4 @@
-function visualizing_Ordered_dict(D)
+function visualizing_Ordered_dict(D,Q)
 
 
 Onepeak=[];
@@ -11,7 +11,7 @@ NonZeroSum3p=[];
 ZeroSumOtherpeaks=[];
 NonZeroSumOtherpeaks=[];
 
-mask = zeros(1,16);
+mask = zeros(1,Q);
 epsilon = 0.1;
 diffPeaks = [];
 pattern_id=[];
@@ -22,11 +22,8 @@ for i=1:size(D,2)
    
    mask = mask*0;
    mask(diff(abslocs))=1;
-   
    pattern_id(end+1) = bin2dec(num2str(mask));
    
-   
-
    sumpeaks = sum(D(abslocs,i));
  
    switch length(abspeaks)
@@ -54,12 +51,12 @@ for i=1:size(D,2)
 end 
 
 %most common patterns
-histogram_pattern = hist(pattern_id,1:2^16);
-[~,indx]=find(histogram_pattern>0);
-common_patterns = dec2bin(indx);
+histogram_pattern = hist(pattern_id,1:2^Q);
+[~,indx]=find(histogram_pattern>1);
+common_patterns = dec2bin(indx,Q);
 figure; 
 subplot(421);imagesc(order_filters(Onepeak));title('One peak'); 
-subplot(422);hist(diffPeaks,1:size(D,1)/2);title('Histogram of the differences between peaks')
+subplot(422);imagesc(double(common_patterns)');title('Most common patterns')%hist(diffPeaks,1:size(D,1)/2);title('Histogram of the differences between peaks')
 subplot(423);imagesc(order_filters(ZeroSum2p));title('Two peaks zero sum')
 subplot(424);imagesc(order_filters(NonZeroSum2p));title('Two peaks non-zero sum')
 subplot(425);imagesc(order_filters(ZeroSum3p));title('Three peaks zero sum')

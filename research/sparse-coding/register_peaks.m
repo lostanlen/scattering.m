@@ -7,7 +7,7 @@ for i=1:size(D,2)
      
      %get the greatest peak
      [~,Mpi] = max(abspeaks);
-     loc = abslocs(Mpi)
+     loc = abslocs(Mpi);
      m = max(loc-(Q/2),1);
      M = min(loc+(Q/2)-1,size(D,1)-1);
      sigma = round((M-m)/2);

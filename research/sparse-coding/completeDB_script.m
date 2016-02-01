@@ -17,7 +17,7 @@ return
 % save('../../../../data/Dictionarylambda_normdata_3secs_good.mat','dicts');
 % disp('.. and saving dictionaries ')
 
-%load('../../../../data/Dictionarylambda_normdata_3secs_good.mat')
+load('../../../../data/Dictionarylambda_normdata_3secs_good.mat')
 
 % k_dim_coeff = 0.8;%percentage of dim that we want for the atoms of the dictionary
 % 
@@ -26,7 +26,7 @@ return
 Q=16;
 for lambda2=7:length(dicts.backward)
     d = register_peaks(dicts.backward{lambda2},Q);
-    visualizing_Ordered_dict(d);
+    visualizing_Ordered_dict(d,Q);
    %  visualizing_dict(d);
   %  save(h,['./dicts_' num2str(lambda2) '.png']);
 end 
