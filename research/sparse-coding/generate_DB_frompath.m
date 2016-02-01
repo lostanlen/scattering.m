@@ -64,7 +64,7 @@ end
 disp('generate DB')
 for n = 1:length(chunk_paths)
     %disp(['waveform: ' chunk_paths{n}]);
-    disp(['waveform: ' num2str(n) '/' num2str(length(chunk_paths)) ' path  ' chunk_paths{n}]);
+    disp(['waveform: ' num2str(n) '/' num2str(length(chunk_paths)) ' path  ' chunk_paths(n).name]);
     [stereo_waveform, ~] = audioread_compat([dataset_path '/' chunk_paths(n).name]);
     if size(stereo_waveform,2) > 1
         mono_waveform = mean(stereo_waveform, 2);
