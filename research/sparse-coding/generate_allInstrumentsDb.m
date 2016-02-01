@@ -43,8 +43,11 @@ chunk_paths = [stem_paths{:}];
 %% initialize dataset 
 disp('initialize DB')
 [stereo_waveform, sample_rate] = audioread_compat(chunk_paths{1});
-mono_waveform = mean(stereo_waveform, 2);
-
+if size(stereo_waveform,2) > 1
+    mono_waveform = mean(stereo_waveform, 2);
+else 
+    mono_waveform = stereo_waveform;
+end 
 [~,~,Yaux] = sc_propagate(mono_waveform, archs);
 
 nLambda2s = length(Yaux{2}{end}.data);
@@ -60,8 +63,11 @@ for n = 1:length(chunk_paths)
     %disp(['waveform: ' chunk_paths{n}]);
     disp(['waveform: ' num2str(n) '/' num2str(length(chunk_paths))]);
     [stereo_waveform, ~] = audioread_compat(chunk_paths{n});
-    mono_waveform = mean(stereo_waveform, 2);
-    
+    if size(stereo_waveform,2) > 1
+        mono_waveform = mean(stereo_waveform, 2);
+    else 
+        mono_waveform = stereo_waveform;
+    end  
     %% Compute scattering
     [~,~,Y_sample] = sc_propagate(mono_waveform, archs);
     Y2 = Y_sample{2}{end};
