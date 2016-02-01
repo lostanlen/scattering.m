@@ -77,7 +77,7 @@ for n = 1:length(chunk_paths)
         mono_waveform=cat(1,mono_waveform,zeros(N-size(mono_waveform,1),1));
     end
     %% Compute scattering
-    [~,~,Y_sample] = sc_propagate(mono_waveform, archs);
+    [~,~,Y_sample] = sc_propagate(mono_waveform(1:N,1), archs);
     Y2 = Y_sample{2}{end};
     nLambda2s = length(Y2.data);
     for lambda2_index = 1:nLambda2s
