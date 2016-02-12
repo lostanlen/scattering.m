@@ -4,6 +4,7 @@ if nargin<2
 end
 
 %% Get number of features by running the transform on a probe signal
+N = archs{1}.banks{1}.spec.size;
 S = sc_propagate(randn(N,1), archs);
 feature_vector = horzcat(format_layer(S{1+1}, 1), format_layer(S{1+2}, 1));
 nFeatures = length(feature_vector);
