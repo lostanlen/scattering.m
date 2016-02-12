@@ -37,8 +37,8 @@ classifier_options = statset('UseParallel', true);
 NumTrees = 100;
 [nSamples_per_class, ~] = hist(Y_training, 0:7);
 class_frequencies = nSamples_per_class / sum(nSamples_per_class);
-class_weights = 1 ./ class_frequencies
-
+class_weights = 1 ./ class_frequencies;
+cost_matrix = repmat(class_weights.', 1, 8) - diag(class_weights);
 %%
 
 B = TreeBagger(NumTrees, ...
