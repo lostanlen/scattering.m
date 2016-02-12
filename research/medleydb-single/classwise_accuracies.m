@@ -5,5 +5,6 @@ for sample_index = 1:length(Y_predicted)
     cm(1 + Y_predicted(sample_index), 1 + Y_true(sample_index)) = ...
         cm(1 + Y_predicted(sample_index), 1 + Y_true(sample_index)) + 1;
 end
-accuracies = diag(cm) / sum(cm(:));
+cm = bsxfun(@rdivide, cm, sum(cm, 1));
+accuracies = diag(cm);
 end
