@@ -14,14 +14,14 @@ training_paths = get_medleydb_paths(dataset_path, 'training');
 stem_paths = [training_paths{:}];
 chunk_paths = [stem_paths{:}];
 nSamples = length(chunk_paths);
-X_train = zeros(nFeatures, nSamples);
+X_train = zeros(nSamples, nFeatures);
 parfor sample_index = 1:nSamples
     chunk_path = chunk_paths{sample_index};
     stereo_waveform = audioread_compat(chunk_path);
     mono_waveform = mean(stereo_waveform, 2);
     S = sc_propagate(mono_waveform, archs);
-    X_train(:, sample_index) = ...
-        [format_layer(S{1+1}, 1), format_layer(S{1+2}, 1)];
+    X_train(sample_index, nFeatures) = ...
+        [format_layer(S{1+1}, 1), format_layer(S{1+2}, 1)].';
     disp(chunk_path)
 end
 
@@ -30,14 +30,14 @@ test_paths = get_medleydb_paths(dataset_path, 'test');
 stem_paths = [test_paths{:}];
 chunk_paths = [stem_paths{:}];
 nSamples = length(chunk_paths);
-X_test = zeros(nFeatures, nSamples);
+X_test = zeros(nSamples, nFeatures);
 parfor sample_index = 1:nSamples
     chunk_path = chunk_paths{sample_index};
     stereo_waveform = audioread_compat(chunk_path);
     mono_waveform = mean(stereo_waveform, 2);
     S = sc_propagate(mono_waveform, archs);
-    X_test(:, sample_index) = ...
-        [format_layer(S{1+1}, 1), format_layer(S{1+2}, 1)];
+    X_test(sample_index, :) = ...
+        [format_layer(S{1+1}, 1), format_layer(S{1+2}, 1)].';
     disp(chunk_path)
 end
 end
