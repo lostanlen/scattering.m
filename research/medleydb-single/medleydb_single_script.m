@@ -31,3 +31,17 @@ data.opts = opts;
 
 mdbjoint_data = data;
 save('mdb_joint', 'mdbjoint_data');
+
+%%
+classifier_options = statset('UseParallel', true);
+NumTrees = 100;
+[nSamples_per_class, ~] = hist(Y_training, 0:7);
+class_frequencies = nSamples_per_class / sum(nSamples_per_class);
+class_weights = 1 ./ class_frequencies
+
+%%
+
+B = TreeBagger(NumTrees, ...
+    X_training, ...
+    Y_training, ...
+    'Options', classifier_options);
