@@ -1,5 +1,5 @@
 function [Y_training, Y_test] = get_medleydb_labels(dataset_path)
-if nargin<2
+if nargin<1
     dataset_path = '~/datasets/medleydb-single-instruments';
 end
 

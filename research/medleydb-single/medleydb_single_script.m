@@ -20,3 +20,6 @@ archs = sc_setup(opts);
 
 %%
 [X_train, X_test] = get_medleydb_features(archs);
+
+%%
+[Y_train, Y_test] = get_medleydb_labels();
