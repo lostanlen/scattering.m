@@ -16,12 +16,12 @@ U{1+0} = initialize_variables_auto(size(signal));
 U{1+0}.data = signal;
 
 %% Emptys scalogram
-Y{1} = U_to_Y(U{1+0}, archs{1});
-U{1+1} = Y_to_U(Y{1}{end}, archs{1});
+Y{1} = U_to_Y(U{1+0}, archs{1}.banks);
+U{1+1} = Y_to_U(Y{1}{end}, archs{1}.nonlinearity);
 
 %% A Dirac is set within the scalogram structure
-U{1+1}.data{round(fraction*end)}(end/2) = 1;
+U{1+1}{1}.data{round(fraction*end)}(end/2) = 1;
 
 %% Second-order scattering
-Y2 = U_to_Y(U{1+1}, archs{2});
+Y2 = U_to_Y(U{1+1}{1}, archs{2}.banks);
 end
