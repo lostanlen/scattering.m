@@ -19,7 +19,15 @@ opts{2}.invariants.time.invariance = 'summed';
 archs = sc_setup(opts);
 
 %%
-[X_train, X_test] = get_medleydb_features(archs);
+[X_training, X_test] = get_medleydb_features(archs);
+[Y_training, Y_test] = get_medleydb_labels();
 
 %%
-[Y_train, Y_test] = get_medleydb_labels();
+data.X_training = X_training;
+data.X_test = X_test;
+data.Y_training = Y_training;
+data.Y_test = Y_test;
+data.opts = opts;
+
+mdbjoint_data = data;
+save('mdb_joint', 'mdbjoint_data');
