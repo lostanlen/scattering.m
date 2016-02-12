@@ -20,9 +20,10 @@ parfor sample_index = 1:nSamples
     stereo_waveform = audioread_compat(chunk_path);
     mono_waveform = mean(stereo_waveform, 2);
     S = sc_propagate(mono_waveform, archs);
-    X_train(sample_index, nFeatures) = ...
+    X_train(sample_index, :) = ...
         [format_layer(S{1+1}, 1), format_layer(S{1+2}, 1)].';
-    disp(chunk_path)
+    [folder_name, chunk_name] = fileparts(chunk_path);
+    disp(chunk_name)
 end
 
 %% Get test set features
@@ -38,7 +39,8 @@ parfor sample_index = 1:nSamples
     S = sc_propagate(mono_waveform, archs);
     X_test(sample_index, :) = ...
         [format_layer(S{1+1}, 1), format_layer(S{1+2}, 1)].';
-    disp(chunk_path)
+    [folder_name, chunk_name] = fileparts(chunk_path);
+    disp(chunk_name)
 end
 end
 
