@@ -47,7 +47,7 @@ B = TreeBagger(NumTrees, ...
     'Cost', cost_matrix, ...
     'Options', classifier_options);
 
-Y_predicted = predict(B,X_test)
+Y_predicted = predict(B, X_test);
 Y_predicted = cellfun(@str2double, Y_predicted);
 %%
 accuracies = classwise_accuracies(Y_predicted, Y_test)
