@@ -1,4 +1,5 @@
-function [band_refs, gamma_bands] = get_band_refs(archs, hertz_bands, sample_rate)
+function [band_refs, gamma_bands] = ...
+    get_band_refs(archs, hertz_bands, sample_rate)
 %% Setup gamma bands
 gamma_bounds = archs{1}.banks{1}.behavior.gamma_bounds;
 min_gamma = max(gamma_bounds(1), 1);
@@ -10,12 +11,14 @@ nGammas = length(frequencies);
 nBands = size(hertz_bands, 2);
 gamma_bands = zeros(2, nBands);
 for band_index = 1:nBands
-    min_gamma = find(frequencies < hertz_bands(2, band_index), 1);
-    min_gamma(isempty(min_gamma)) = 1;
-    gamma_bands(1, band_index) = min_gamma;
-    max_gamma = find(frequencies > hertz_bands(1, band_index), 1, 'last'); 
-    max_gamma(isempty(max_gamma)) = nGammas;
-    gamma_bands(2, band_index) = max_gamma;
+    band_min_gamma = (min_gamma - 1) + ...
+        find(frequencies < hertz_bands(2, band_index), 1);
+    band_min_gamma(isempty(band_min_gamma)) = min_gamma;
+    gamma_bands(1, band_index) = band_min_gamma;
+    band_max_gamma = (min_gamma - 1) + ...
+        find(frequencies > hertz_bands(1, band_index), 1, 'last'); 
+    band_max_gamma(isempty(band_max_gamma)) = max_gamma;
+    gamma_bands(2, band_index) = band_max_gamma;
 end
 
 %% Generate probe signal
@@ -29,7 +32,12 @@ nRefs = length(refs);
 ref_gammas = zeros(1, nRefs);
 
 for ref_index = 1:nRefs
-    ref_gammas(ref_index) = refs(3,ref_index).subs{2};
+    gamma2_index = refs(1, ref_index).subs{1};
+    gamma_gamma_index = refs(2, ref_index).subs{1};
+    gamma_index = refs(3, ref_index).subs{2};
+    gamma_start = S{1+2}{1}.ranges{1+0}{gamma2_index}{gamma_gamma_index}(1, 2);
+    gamma_hop = S{1+2}{1}.ranges{1+0}{gamma2_index}{gamma_gamma_index}(2, 2);
+    ref_gammas(ref_index) = gamma_start + (gamma_index-1) * gamma_hop;
 end
 
 %% Get references corresponding to bands
