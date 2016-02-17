@@ -40,7 +40,7 @@ nGammas = length(bank_metas);
 for gamma = nGammas:-1:1
     resolution = bank_metas(gamma).resolution;
     max_sibling_gamma_index = ...
-        find(resolution < sibling_mask_factor*sibling_bandwidths,1,'last');
+        find(resolution < sibling_mask_factor*sibling_bandwidths, 1, 'last');
     if ~isempty(max_sibling_gamma_index)
         max_sibling_gamma = sibling_gammas(max_sibling_gamma_index);
         bank.metas(gamma).max_sibling_gamma = max_sibling_gamma;
