@@ -23,7 +23,7 @@ end
 
 %% Generate probe signal
 N = archs{1}.banks{1}.spec.size;
-x = randn(N, 1);
+x = randn(N/4, 1);
 S = sc_propagate(x, archs);
 
 %% Get gammas corresponding to references

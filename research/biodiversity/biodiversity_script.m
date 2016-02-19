@@ -1,5 +1,4 @@
 %%
-clear opts;
 hertz_bands = ...
     [125 250 ; ...
     200 500 ; ...
@@ -13,22 +12,30 @@ nFilters_per_octave = 12;
 ROI_duration = 1.0; % in seconds
 nTemporal_modulations = 14;
 nSpectral_modulations = 2;
+mode = 'plain'; % can be either 'plain' or 'joint'
 
+%%
+T = pow2(nextpow2(round(ROI_duration * sample_rate * 0.5)));
 
-%
-T = pow2(nextpow2(round(ROI_duration * sample_rate)));
-
+clear opts;
 opts{1}.time.nFilters_per_octave = nFilters_per_octave;
 opts{1}.time.T = T;
 opts{1}.time.size = 4*T;
 
 opts{2}.time.nFilters_per_octave = 1;
 opts{2}.time.sibling_mask_factor = 2; % controls the inequality j1 < j2
-opts{2}.time.T = 2^nTemporal_modulations;
-opts{2}.gamma.T = 2^nSpectral_modulations;
-opts{2}.gamma.U_log2_oversampling = Inf;
+opts{2}.time.T = T;
+opts{2}.time.gamma_bounds = [1 nTemporal_modulations];
+switch mode
+    case 'plain'
+        % nothing
+    case 'joint'
+        opts{2}.gamma.T = 2^nSpectral_modulations;
+end
 
 archs = sc_setup(opts);
+
+%%
 [band_refs, gamma_bands] = get_band_refs(archs, hertz_bands, sample_rate);
 
 %%
@@ -47,7 +54,7 @@ S = sc_propagate(x, archs);
 %% Stack scattering coefficients according to bands
 nBands = length(band_refs);
 bands = cell(1, nBands);
-nTime_frames = length(S{1+2}{1}.data{1}{1});
+nTime_frames = size(S{1+2}{1}.data{1}{1}, 1);
 refs = generate_refs(S{1+2}{1}.data, 1, S{1+2}{1}.ranges{1+0});
 for band_index = 1:nBands
     nCoefficients = length(band_refs{band_index});
