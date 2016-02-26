@@ -2,16 +2,21 @@ dataset_path = '~/datasets/medleydb-single-instruments';
 
 %%
 N = 131072;
+octave_bounds = [2 8];
+nfo = 12;
+gamma_bounds = [(octave_bounds(1)-1)*nfo octave_bounds(2)*nfo-1];
+
 clear opts;
-opts{1}.banks.time.nFilters_per_octave = 12;
+opts{1}.banks.time.nFilters_per_octave = nfo;
 opts{1}.banks.time.size = N;
-opts{1}.banks.time.T = 32768;
+opts{1}.banks.time.T = N;
 opts{1}.banks.is_chunked = false;
+opts{1}.banks.gamma_bounds = gamma_bounds;
 opts{1}.banks.wavelet_handle = @gammatone_1d;
 opts{1}.invariants.time.invariance = 'summed';
-opts{2}.banks.time.nFilters_per_octave = 2;
+opts{2}.banks.time.nFilters_per_octave = 1;
 opts{2}.banks.gamma.nFilters_per_octave = 1;
-opts{2}.banks.gamma.J = 4;
+opts{2}.banks.gamma.T = 2^5;
 opts{2}.banks.wavelet_handle = @gammatone_1d;
 opts{2}.invariants.time.invariance = 'summed';
 
