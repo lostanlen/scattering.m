@@ -1,10 +1,10 @@
 function [ren_S, S] = sc_propagate_renorm(signal, archs)
-nLayers = length(archs);
+nLayers = length(archs) - 1;
 
 %% Layer 1 scattering
 U0 = initialize_U(signal,archs{1}.banks{1});
-Y1 = U_to_Y(U0, archs{1});
-U1 = Y_to_U(Y1{end},archs{1});
+Y1 = U_to_Y(U0, archs{1}.banks);
+U1 = Y_to_U(Y1{end},archs{1}.nonlinearity);
 S0 = Y_to_S(Y1, archs{1});
 S0 = unchunk_layer(S0);
 
@@ -16,7 +16,7 @@ switch nLayers
         S1 = unchunk_layer(S1);
     case 2
         % Layer 2 scattering
-        Y2 = U_to_Y(U1, archs{2});
+        Y2 = U_to_Y(U1, archs{2}.banks);
         S1 = Y_to_S(Y2, archs{2});
         % Layer 1 averaging
         S1 = unchunk_layer(S1);
@@ -37,7 +37,7 @@ if nLayers == 1
     S = {S0, S1};
 elseif nLayers == 2
     %% Layer 2 modulus and averaging
-    U2 = Y_to_U(Y2{end}, archs{2});
+    U2 = Y_to_U(Y2{end}, archs{2}.nonlinearity);
     Y3{1+0} = initialize_Y(U2, archs{1}.banks);
     S2 = Y_to_S(Y3, archs{2});
     S2 = unchunk_layer(S2);
