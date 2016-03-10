@@ -33,6 +33,9 @@ nSpins = 1 + spec.is_spinned;
 spec.nThetas = nSpins * nOrientations;
 spec.cutoff_in_dB = default(opt, 'cutoff_in_dB', 3);
 spec.has_duals = default(opt, 'has_duals', false);
+if spec.has_duals
+    spec.duality = default(opt, 'duality', 'hermitian');
+end
 spec.has_multiple_support = default(opt, 'has_multiple_support', false);
 spec.periodization_extent = default(opt, 'periodization_extent', 1);
 spec.is_double_precision = enforce(opt, 'is_double_precision', true);
