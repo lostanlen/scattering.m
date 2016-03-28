@@ -39,7 +39,7 @@ end
 
 %% Snapshots
 reconstruction_opt.snapshot_period = ...
-    default(reconstruction_opt, 'snapshot_period', 10);
+    default(reconstruction_opt, 'snapshot_period', 0);
 
 %% Alphanumeric ordering of field names
 reconstruction_opt = orderfields(reconstruction_opt);

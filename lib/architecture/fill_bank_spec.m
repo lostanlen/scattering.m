@@ -32,7 +32,7 @@ spec.is_spinned = default(opt, 'is_spinned', false);
 nSpins = 1 + spec.is_spinned;
 spec.nThetas = nSpins * nOrientations;
 spec.cutoff_in_dB = default(opt, 'cutoff_in_dB', 3);
-spec.has_duals = default(opt, 'has_duals', false);
+spec.has_duals = default(opt, 'has_duals', isfield(opt, 'duality'));
 if spec.has_duals
     spec.duality = default(opt, 'duality', 'hermitian');
 end
