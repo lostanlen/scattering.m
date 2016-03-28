@@ -92,7 +92,6 @@ if bank.spec.has_duals
             dual_phi_ft = phi_ft;
             dual_phi_ft(2:end) = phi_ft(end:-1:2, :);
     end
-    dual_phi_ft = conj(phi_ft) ./ energy_sum;
     dual_phi = multidimensional_ifft(dual_phi_ft, 1:signal_dimension);
     bank.dual_phi = optimize_bank(dual_phi_ft, dual_phi, bank);
 end
