@@ -158,7 +158,7 @@ while iteration < reconstruction_opt.nIterations
             pretty_iteration = sprintf(sprintf_format, iteration);
             layer_distances = ...
                 100 * layer_absolute_distances ./ layer_target_norms;
-            pretty_distances = num2str(layer_distances, '%8.2f%%');
+            pretty_distances = num2str(layer_distances(2:end), '%8.2f%%');
             pretty_loss = sprintf('%.2f%%',relative_loss_chart(iteration));
             iteration_string = ['it = ', pretty_iteration, '  ;  '];
             distances_string = ...
