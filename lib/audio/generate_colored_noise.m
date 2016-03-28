@@ -1,5 +1,5 @@
-function colored_noise = generate_pink_noise(signal)
-signal_dimension = sum(signal_sizes~=1);
+function colored_noise = generate_colored_noise(signal)
+esignal_dimension = sum(size(signal)~=1);
 switch signal_dimension
     case 1
         N = size(signal, 1);
