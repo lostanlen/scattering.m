@@ -87,9 +87,9 @@ if bank.spec.has_duals
     bank.dual_psis = optimize_bank(dual_psi_fts, dual_psi_ifts, bank);
     switch bank.spec.duality
         case 'pseudo-inverse'
-            dual_phi_ft = bsxfun(@rdivide, phi_fts, energy_sum);
+            dual_phi_ft = bsxfun(@rdivide, phi_ft, energy_sum);
         case 'hermitian'
-            dual_phi_ft = phi_fts;
+            dual_phi_ft = phi_ft;
             dual_phi_ft(2:end) = phi_ft(end:-1:2, :);
     end
     dual_phi_ft = conj(phi_ft) ./ energy_sum;
