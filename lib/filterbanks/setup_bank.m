@@ -70,10 +70,11 @@ if bank.spec.has_duals
         end
         switch bank.spec.duality
             case 'pseudo-inverse'
-                dual_psi_fts = bsxfun(@rdivide, psi_fts, energy_sum);
+                dual_psi_fts = bsxfun(@rdivide, conj(psi_fts), energy_sum);
+                dual_psi_fts = dual_psi_fts(end:-1:2, :);
             case 'hermitian'
-                dual_psi_fts = psi_fts;
-                dual_psi_fts(2:end, :) = psi_fts(end:-1:2, :);
+                dual_psi_fts = conj(psi_fts);
+                dual_psi_fts(2:end, :) = dual_psi_fts(end:-1:2, :);
         end
     else
         dual_psi_fts = [];
@@ -87,10 +88,11 @@ if bank.spec.has_duals
     bank.dual_psis = optimize_bank(dual_psi_fts, dual_psi_ifts, bank);
     switch bank.spec.duality
         case 'pseudo-inverse'
-            dual_phi_ft = bsxfun(@rdivide, phi_ft, energy_sum);
+            dual_phi_ft = bsxfun(@rdivide, conj(phi_ft), energy_sum);
+            dual_phi_ft(2:end) = dual_phi_ft(end:-1:2, :);
         case 'hermitian'
-            dual_phi_ft = phi_ft;
-            dual_phi_ft(2:end) = phi_ft(end:-1:2, :);
+            dual_phi_ft = conj(phi_ft);
+            dual_phi_ft(2:end) = dual_phi_ft(end:-1:2, :);
     end
     dual_phi = multidimensional_ifft(dual_phi_ft, 1:signal_dimension);
     bank.dual_phi = optimize_bank(dual_phi_ft, dual_phi, bank);
