@@ -8,13 +8,16 @@ if nargin<2
     if strcmp(spec.invariance, 'blurred')
         spec.T = opt.T;
         spec.size = opt.size;
-        spec.has_duals = default(opt, 'has_duals', false);
         spec.invariant_handle = ...
             default(opt, 'invariant_handle', @gaussian_1d);
         spec.phi_bw_multiplier = ...
             default(opt, 'phi_bw_multiplier', 2);
         spec.trim_threshold = ...
             default(opt, 'trim_threshold', eps());
+        spec.has_duals = default(opt, 'has_duals', isfield(opt, 'duality'));
+        if spec.has_duals
+            spec.duality = default(opt, 'duality', 'hermitian');
+        end
         switch func2str(spec.invariant_handle)
             case 'gaussian_1d'
                 spec.has_real_ift = true;
