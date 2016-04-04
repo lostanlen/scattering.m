@@ -15,6 +15,7 @@ stem_paths = [training_paths{:}];
 chunk_paths = [stem_paths{:}];
 nSamples = length(chunk_paths);
 X_train = zeros(nSamples, nFeatures);
+parfor_progress(nSamples);
 parfor sample_index = 1:nSamples
     chunk_path = chunk_paths{sample_index};
     stereo_waveform = audioread_compat(chunk_path);
@@ -22,9 +23,9 @@ parfor sample_index = 1:nSamples
     S = sc_propagate(mono_waveform, archs);
     X_train(sample_index, :) = ...
         [format_layer(S{1+1}, 1), format_layer(S{1+2}, 1)].';
-    [~, chunk_name] = fileparts(chunk_path);
-    disp(chunk_name);
+    parfor_progress();
 end
+parfor_progress(0);
 
 %% Get test set features
 test_paths = get_medleydb_paths(dataset_path, 'test');
@@ -32,6 +33,7 @@ stem_paths = [test_paths{:}];
 chunk_paths = [stem_paths{:}];
 nSamples = length(chunk_paths);
 X_test = zeros(nSamples, nFeatures);
+parfor_progress(nSamples);
 parfor sample_index = 1:nSamples
     chunk_path = chunk_paths{sample_index};
     stereo_waveform = audioread_compat(chunk_path);
@@ -39,8 +41,8 @@ parfor sample_index = 1:nSamples
     S = sc_propagate(mono_waveform, archs);
     X_test(sample_index, :) = ...
         [format_layer(S{1+1}, 1), format_layer(S{1+2}, 1)].';
-    [~, chunk_name] = fileparts(chunk_path);
-    disp(chunk_name);
+    parfor_progress();
 end
+parfor_progress(0);
 end
 
