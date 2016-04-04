@@ -1,5 +1,5 @@
 dataset_path = '~/datasets/medleydb-single-instruments';
-
+method = 'plain';
 %%
 N = 131072;
 octave_bounds = [2 8];
@@ -15,8 +15,10 @@ opts{1}.banks.gamma_bounds = gamma_bounds;
 opts{1}.banks.wavelet_handle = @gammatone_1d;
 opts{1}.invariants.time.invariance = 'summed';
 opts{2}.banks.time.nFilters_per_octave = 1;
-opts{2}.banks.gamma.nFilters_per_octave = 1;
-opts{2}.banks.gamma.T = 2^5;
+if strcmp(method, 'joint')
+    opts{2}.banks.gamma.nFilters_per_octave = 1;
+    opts{2}.banks.gamma.T = 2^5;
+end
 opts{2}.banks.wavelet_handle = @gammatone_1d;
 opts{2}.invariants.time.invariance = 'summed';
 
@@ -34,8 +36,9 @@ data.Y_training = Y_training;
 data.Y_test = Y_test;
 data.opts = opts;
 
-mdbjoint_data = data;
-save('mdb_joint', 'mdbjoint_data');
+data_name = ['mdb', method, '_data'];
+eval([data_name, ' = data']);
+save(['mdb', data_name], data);
 
 %%
 classifier_options = statset('UseParallel', true);
