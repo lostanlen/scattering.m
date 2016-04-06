@@ -1,4 +1,4 @@
-function archs = eca_setup(Q1, T, modulation)
+function archs = eca_setup(Q1, T, modulations)
 % Q1 is the number of filters per octave
 % T is the amount of invariance with respect to temporal translation
 % modulation is a string which can either be set to

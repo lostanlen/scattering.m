@@ -36,10 +36,10 @@ end
 
 %% Verbosity
 reconstruction_opt.is_verbose = default(reconstruction_opt, 'is_verbose', true);
-if reconstruction_opt.is_verbose && ...
-        ~isfield(reconstruction_opt, 'verbosity_period')
-    reconstruction_opt.verbosity_period = 1;
-end
+
+%% Display
+reconstruction_opt.is_displayed = ...
+    default(reconstruction_opt, 'is_displayed', false);
 
 %% Snapshots
 reconstruction_opt.snapshot_period = ...
