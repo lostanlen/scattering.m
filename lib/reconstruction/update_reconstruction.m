@@ -1,16 +1,15 @@
-function [signal,reconstruction_opt] = ...
-    update_reconstruction(signal,delta_signal,reconstruction_opt)
+function signal = ...
+    update_reconstruction(signal, delta_signal, reconstruction_opt)
 %% Regularization if required
 if reconstruction_opt.is_regularized
-    delta_signal = ...
-        delta_signal - 2 * reconstruction_opt.regularizer * signal;
+    signal = signal - 2 * reconstruction_opt.regularizer * signal;
 end
 
 %% Signal update
-reconstruction_opt.signal_update = ...
+signal_update = ...
     reconstruction_opt.momentum * reconstruction_opt.signal_update + ...
     reconstruction_opt.learning_rate * delta_signal;
-signal = signal + reconstruction_opt.signal_update;
+signal = signal + signal_update;
 
 %% Soft thresholding if required
 if reconstruction_opt.is_thresholded
@@ -18,6 +17,6 @@ if reconstruction_opt.is_thresholded
         (signal>reconstruction_opt.target_max);
     soft_thresholding_signal = abs(signal) .* trespassing_signal * ...
         reconstruction_opt.soft_thresholding_factor;
-    signal = signal + soft_thresholding_signal;
+    signal = signal - soft_thresholding_signal;
 end
 end
