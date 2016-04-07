@@ -1,6 +1,20 @@
-function x = eca_synthesize(y, archs, opts)
+function iterations = eca_synthesize(y, archs, opts)
 %% Default options
+opts.is_displayed = true;
 opts = fill_reconstruction_opt(opts);
+
+%% Initialization
+if isfield(opts, 'initial_signal')
+    init = opts.initial_signal;
+else
+    init = generate_colored_noise(y);
+end
+init = init - mean(init);
+init = init * norm(init)/norm(init);
+init = init + mean(init);
+
+iterations = cell(1, opts.nIterations);
+iterations{1+0} = init;
 
 %% Forward propagation of target signal
 nLayers = length(archs);
@@ -30,16 +44,6 @@ for layer = 1:nLayers
     end
 end
 
-%% Initialization
-if isfield(opts, 'initial_signal')
-    x = opts.initial_signal;
-else
-    x = generate_colored_noise(y);
-end
-x = x - mean(x);
-x = x * norm(x)/norm(x);
-x = x + mean(x);
-
 %% First forward
 opts.signal_update = zeros(size(y));
 max_nDigits = 1 + floor(log10(opts.nIterations));
@@ -50,7 +54,7 @@ S = cell(1, nLayers);
 U = cell(1,nLayers);
 Y = cell(1,nLayers);
 U{1+0} = initialize_variables_auto(size(y));
-U{1+0}.data = x;
+U{1+0}.data = init;
 for layer = 1:nLayers
     arch = archs{layer};
     previous_layer = layer - 1;
@@ -69,40 +73,38 @@ end
 
 %% First backward
 delta_S = sc_substract(target_S, S);
-previous_signal = x;
+previous_signal = init;
 previous_loss = sc_norm(delta_S);
 delta_signal = sc_backpropagate(delta_S, U, Y, archs);
-light_archs = lighten_archs(archs);
 
-%% Make a snapshot of the target
-if opts.snapshot_period ~= 0
-    snapshot.datetime = date();
-    snapshot.reconstruction_opt = opts;
-    snapshot.light_archs = light_archs;
-    snapshot.S = target_S;
-    snapshot.U1 = target_U{1+1};
-    snapshot.Y1 = target_Y{1};
-    snapshot.signal = x;
-    target_file_name = [prefix, '_target'];
-    eval([target_file_name, ' = snapshot;']);
-    save(target_file_name, target_file_name);
+%% First display and sonification
+figure_handle = figure(1);
+colormap rev_gray;
+set(figure_handle, 'WindowStyle', 'docked');
+subplot(211);
+plot(iterations{1+0});
+subplot(212);
+scalogram = display_scalogram(U{1+1});
+imagesc(log1p(scalogram./10.0));
+if opts.is_sonified
+    soundsc(iterations{1}, 44100);
 end
 
 %% Iterated reconstruction
 relative_loss_chart = zeros(opts.nIterations, 1);
-iteration = 0;
+iteration = 1;
 tic();
-while iteration < opts.nIterations
+while (iteration <= opts.nIterations) && ishandle(figure_handle)
     %% Signal update
-    [y,opts] = ...
-        update_reconstruction(previous_signal,delta_signal,opts);
+    iterations{1+iteration} = ...
+        update_reconstruction(previous_signal, delta_signal, opts);
     
     %% Scattering propagation
     S = cell(1, nLayers);
     U = cell(1,nLayers);
     Y = cell(1,nLayers);
     U{1+0} = initialize_variables_auto(size(y));
-    U{1+0}.data = x;
+    U{1+0}.data = iterations{1+iteration};
     for layer = 1:nLayers
         arch = archs{layer};
         previous_layer = layer - 1;
@@ -126,24 +128,27 @@ while iteration < opts.nIterations
     [loss,layer_absolute_distances] = sc_norm(delta_S);
     if loss>previous_loss
         opts.learning_rate = ...
-            opts.bold_driver_brake * ...
-            opts.learning_rate;
+            opts.bold_driver_brake * opts.learning_rate;
         opts.signal_update = ...
-            opts.bold_driver_brake * ...
-            opts.signal_update;
+            opts.bold_driver_brake * opts.signal_update;
+        disp(['Learning rate = ', num2str(opts.learning_rate)]);
         continue
     end
     
     %% If loss has decreased, step confirmation and bold driver "acceleration"
     iteration = iteration + 1;
     relative_loss_chart(iteration) = 100 * loss / target_norm;
-    previous_signal = x;
+    previous_signal = iterations{iteration};
     previous_loss = loss;
+    opts.signal_update = ...
+        opts.momentum * opts.signal_update + ...
+        opts.learning_rate * delta_signal;
     opts.learning_rate = ...
         opts.bold_driver_accelerator * ...
         opts.learning_rate;
+    
+    %% Backpropagation
     delta_signal = sc_backpropagate(delta_S, U, Y, archs);
-    x = x + opts.learning_rate * delta_signal;
     
     %% Pretty-printing of scattering distances and loss function
     if opts.is_verbose
@@ -157,41 +162,27 @@ while iteration < opts.nIterations
             ['S_m distances = [ ',pretty_distances, ' ]  ;  '];
         loss_string = ['Loss = ', pretty_loss];
         disp([iteration_string, distances_string, loss_string]);
-        disp(['Learning rate = ', opts.learning_rate]);
+        disp(['Learning rate = ', num2str(opts.learning_rate)]);
         toc();
         tic();
     end
+    
     %% Display
-    if opts.is_displayed
-        subplot(211);
-        plot(x);
-        subplot(212);
-        U0 = initialize_U(x, archs{1}.banks{1});
-        scalogram = display_scalogram(U{1+1});
-        imagesc(log1p(scalogram./10.0));
-        colormap rev_gray;
-        drawnow();
-    end
+    subplot(211);
+    plot(iterations{iteration});
+    subplot(212);
+    scalogram = display_scalogram(U{1+1});
+    imagesc(log1p(scalogram./10.0));
+    colormap rev_gray;
+    drawnow();
+    
     %% Sonify
     if opts.is_sonified
-        soundsc(x, 44100);
-    end
-    mod_iteration = mod(iteration, opts.snapshot_period);
-    if mod_iteration==0
-        %% Make snapshot
-        snapshot.reconstruction_opt = opts;
-        snapshot.light_archs = light_archs;
-        snapshot.S = S;
-        snapshot.U1 = U{1+1};
-        snapshot.Y1 = Y{1};
-        snapshot.signal = x;
-        snapshot.relative_loss_chart = relative_loss_chart(1:iteration);
-        snapshot.datetime = date();
-        pretty_iteration = sprintf(sprintf_format, iteration);
-        file_name = [prefix, '_it', pretty_iteration];
-        eval([file_name, ' = snapshot;']);
-        save(file_name, file_name);
+        soundsc(iterations{iteration}, 44100);
     end
 end
 toc();
+
+%% In case of early stopping, remove empty iterations
+iterations = iterations(cellfun(@(x) ~isempty(x), iterations));
 end
