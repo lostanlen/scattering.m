@@ -1,21 +1,23 @@
-addpath(genpath('~/MATLAB/scattering.m'));
-
 %% Setup
-N = 2^17; % = 131072, about 3 seconds. Length
+N = 2^17; % 2^17 = 131072, about 3 seconds.
 Q1 = 8; % number of filters per octave at first order
 T = 2^15; % amount of invariance with respect to time translation
 % The modulation setting is either 'none', 'time', or 'time-frequency'
-modulations = 'none';
-archs = eca_setup(Q1, T, modulations);
+modulations = 'time-frequency';
+archs = eca_setup(N, Q1, T, modulations);
 
-% Load
-original_path = '~/datasets/eca/modulator_1m28s.wav';
-[y, sample_rate] = audioread(original_path);
+%% Load
+audio_path = '~/datasets/eca/modulator_1m28s.wav';
+[y, sample_rate] = audioread(audio_path);
+y = y(1:N);
 
 eca_display(y, archs);
 
 %% Re-synthesize
-opts.is_displayed = true;
-opts.is_sonified = false;
+opts.is_sonified = true;
 opts.nIterations = 50;
-x = eca_synthesize(y, archs, opts);
+iterations = eca_synthesize(y, archs, opts);
+
+%% Export
+export_mode = 'all'; % can be 'last' or 'all'
+eca_export(iterations, audio_path, export_mode, sample_rate);
