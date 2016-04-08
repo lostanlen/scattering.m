@@ -1,4 +1,5 @@
-function [iterations, init_loss, delta_signal] = eca_init(y, archs, opts)
+function [iterations, init_loss, delta_signal] = ...
+    eca_init(y, target_S, archs, opts)
 %% Random initialization
 if isfield(opts, 'initial_signal')
     init = opts.initial_signal;
@@ -12,6 +13,7 @@ init = init + mean(init);
 %% First forward
 opts.signal_update = zeros(size(init));
 opts.learning_rate = opts.initial_learning_rate;
+nLayers = length(archs);
 S = cell(1, nLayers);
 U = cell(1,nLayers);
 Y = cell(1,nLayers);
