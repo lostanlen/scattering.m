@@ -3,19 +3,6 @@ function iterations = eca_synthesize(y, archs, opts)
 opts.is_displayed = true;
 opts = fill_reconstruction_opt(opts);
 
-%% Initialization
-if isfield(opts, 'initial_signal')
-    init = opts.initial_signal;
-else
-    init = generate_colored_noise(y);
-end
-init = init - mean(init);
-init = init * norm(init)/norm(init);
-init = init + mean(init);
-
-iterations = cell(1, opts.nIterations);
-iterations{1+0} = init;
-
 %% Forward propagation of target signal
 nLayers = length(archs);
 target_S = cell(1, nLayers);
@@ -44,55 +31,14 @@ for layer = 1:nLayers
     end
 end
 
-%% First forward
-opts.signal_update = zeros(size(y));
-max_nDigits = 1 + floor(log10(opts.nIterations));
-sprintf_format = ['%0.',num2str(max_nDigits),'d'];
-opts.learning_rate = opts.initial_learning_rate;
-[target_norm,layer_target_norms] = sc_norm(target_S);
-S = cell(1, nLayers);
-U = cell(1,nLayers);
-Y = cell(1,nLayers);
-U{1+0} = initialize_variables_auto(size(y));
-U{1+0}.data = init;
-for layer = 1:nLayers
-    arch = archs{layer};
-    previous_layer = layer - 1;
-    if isfield(arch, 'banks')
-        Y{layer} = U_to_Y(U{1+previous_layer}, arch.banks);
-    else
-        Y{layer} = U(1+previous_layer);
-    end
-    if isfield(arch, 'nonlinearity')
-        U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
-    end
-    if isfield(arch, 'invariants')
-        S{1+previous_layer} = Y_to_S(Y{layer}, arch);
-    end
-end
-
-%% First backward
-delta_S = sc_substract(target_S, S);
-previous_signal = init;
-previous_loss = sc_norm(delta_S);
-delta_signal = sc_backpropagate(delta_S, U, Y, archs);
-
-%% First display and sonification
-figure_handle = figure(1);
-colormap rev_gray;
-set(figure_handle, 'WindowStyle', 'docked');
-subplot(211);
-plot(iterations{1+0});
-subplot(212);
-scalogram = display_scalogram(U{1+1});
-imagesc(log1p(scalogram./10.0));
-if opts.is_sonified
-    soundsc(iterations{1}, 44100);
-end
+%% Initialization
+[iterations, previous_loss, delta_signal] = eca_init(y, archs, opts);
 
 %% Iterated reconstruction
 relative_loss_chart = zeros(opts.nIterations, 1);
 iteration = 1;
+failure_counter = 0;
+
 tic();
 while (iteration <= opts.nIterations) && ishandle(figure_handle)
     %% Signal update
@@ -132,7 +78,20 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         opts.signal_update = ...
             opts.bold_driver_brake * opts.signal_update;
         disp(['Learning rate = ', num2str(opts.learning_rate)]);
-        continue
+        failure_counter = failure_counter + 1;
+        if failure_counter >= 5
+            continue
+        else
+            disp('Too many retracted steps. Resuming algorithm.');
+            iteration = 0;
+            failure_counter = 0;
+            [iterations, previous_loss, delta_signal] = ...
+                eca_init(y, archs, opts);
+            relative_loss_chart = zeros(opts.nIterations, 1);
+            opts.signal_update = zeros(size(init));
+            opts.learning_rate = opts.initial_learning_rate;
+            continue
+        end
     end
     
     %% If loss has decreased, step confirmation and bold driver "acceleration"
