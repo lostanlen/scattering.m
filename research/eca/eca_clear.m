@@ -27,10 +27,13 @@ is_valid = false;
 while ~(is_valid)
     switch prompt_str
         case 'n'
+            disp('Canceled.');
             return
         case 'N'
+            disp('Canceled.');
             return
         case 'no'
+            disp('Canceled.');
             return
         case 'y'
             break
