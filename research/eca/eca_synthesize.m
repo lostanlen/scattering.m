@@ -4,41 +4,20 @@ opts.is_displayed = true;
 opts = fill_reconstruction_opt(opts);
 
 %% Forward propagation of target signal
+target_S = eca_target(y, archs);
 nLayers = length(archs);
-target_S = cell(1, nLayers);
-target_U = cell(1, nLayers);
-target_Y = cell(1, nLayers);
-target_U{1+0} = initialize_variables_auto(size(y));
-target_U{1+0}.data = y;
-for layer = 1:nLayers
-    arch = archs{layer};
-    previous_layer = layer - 1;
-    % Scatter iteratively layer U to get sub-layers Y
-    if isfield(arch, 'banks')
-        target_Y{layer} = U_to_Y(target_U{1+previous_layer}, arch.banks);
-    else
-        target_Y{layer} = target_U(1+previous_layer);
-    end
-    
-    % Apply nonlinearity to last sub-layer Y to get layer U
-    if isfield(arch, 'nonlinearity')
-        target_U{1+layer} = Y_to_U(target_Y{layer}{end}, arch.nonlinearity);
-    end
-    
-    % Blur/pool first layer Y to get layer S
-    if isfield(arch, 'invariants')
-        target_S{1+previous_layer} = Y_to_S(target_Y{layer}, arch);
-    end
-end
 
 %% Initialization
-[iterations, previous_loss, delta_signal] = eca_init(y, archs, opts);
+[iterations, previous_loss, delta_signal] = eca_init(y, target_S, archs, opts);
+previous_signal = iterations{1+0};
+relative_loss_chart = zeros(opts.nIterations, 1);
+opts.signal_update = zeros(size(iterations{1+0}));
+opts.learning_rate = opts.initial_learning_rate;
 
 %% Iterated reconstruction
-relative_loss_chart = zeros(opts.nIterations, 1);
 iteration = 1;
 failure_counter = 0;
-
+figure_handle = gcf();
 tic();
 while (iteration <= opts.nIterations) && ishandle(figure_handle)
     %% Signal update
@@ -87,8 +66,9 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
             failure_counter = 0;
             [iterations, previous_loss, delta_signal] = ...
                 eca_init(y, archs, opts);
+            previous_signal = iterations{1+0};
             relative_loss_chart = zeros(opts.nIterations, 1);
-            opts.signal_update = zeros(size(init));
+            opts.signal_update = zeros(size(iterations{1+0}));
             opts.learning_rate = opts.initial_learning_rate;
             continue
         end
