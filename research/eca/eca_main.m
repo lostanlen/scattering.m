@@ -8,7 +8,15 @@ archs = eca_setup(N, Q1, T, modulations);
 
 %% Load
 audio_path = '~/datasets/eca/modulator_1m28s.wav';
-[y, sample_rate] = audioread(audio_path);
+[y, sample_rate] = audioread(audio_path, 'native');
+switch class(y)
+    case 'int16'
+        bit_depth = 16;
+        y = double(y) / 2^16;
+    case 'int32'
+        bit_depth = 24;
+        y = double(y) / 2^32;
+end
 y = y(1:N);
 
 eca_display(y, archs);
