@@ -23,6 +23,7 @@ eca_display(y, archs);
 
 %% Re-synthesize
 opts.is_sonified = true;
+% (close Figure 1 to abort early)
 opts.nIterations = 50;
 iterations = eca_synthesize(y, archs, opts);
 
@@ -30,3 +31,6 @@ iterations = eca_synthesize(y, archs, opts);
 export_mode = 'all'; % can be 'last' or 'all'
 eca_export(iterations, audio_path, export_mode, sample_rate, bit_depth, ...
     Q1, T, modulations);
+
+%% Clear (run only if necessary)
+eca_clear(audio_path, Q1, T, modulations);
