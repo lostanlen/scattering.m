@@ -1,4 +1,4 @@
-function [total_ellp_norm,ellp_norms] = sc_norm(S,p)
+function [total_ellp_norm, ellp_norms] = sc_norm(S, p)
 if nargin<2
     p = 2;
 end
