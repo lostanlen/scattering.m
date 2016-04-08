@@ -5,6 +5,7 @@ opts = fill_reconstruction_opt(opts);
 
 %% Forward propagation of target signal
 target_S = eca_target(y, archs);
+[target_norm, layer_target_norms] = sc_norm(target_S);
 nLayers = length(archs);
 
 %% Initialization
@@ -13,6 +14,8 @@ previous_signal = iterations{1+0};
 relative_loss_chart = zeros(opts.nIterations, 1);
 opts.signal_update = zeros(size(iterations{1+0}));
 opts.learning_rate = opts.initial_learning_rate;
+max_nDigits = 1 + floor(log10(opts.nIterations));
+sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
 
 %% Iterated reconstruction
 iteration = 1;
@@ -51,21 +54,21 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     
     %% If loss has increased, step retraction and bold driver "brake"
     [loss,layer_absolute_distances] = sc_norm(delta_S);
-    if loss>previous_loss
+    if loss > previous_loss
         opts.learning_rate = ...
             opts.bold_driver_brake * opts.learning_rate;
         opts.signal_update = ...
             opts.bold_driver_brake * opts.signal_update;
         disp(['Learning rate = ', num2str(opts.learning_rate)]);
         failure_counter = failure_counter + 1;
-        if failure_counter >= 5
+        if failure_counter < 5
             continue
         else
             disp('Too many retracted steps. Resuming algorithm.');
             iteration = 0;
             failure_counter = 0;
             [iterations, previous_loss, delta_signal] = ...
-                eca_init(y, archs, opts);
+                eca_init(y, target_S, archs, opts);
             previous_signal = iterations{1+0};
             relative_loss_chart = zeros(opts.nIterations, 1);
             opts.signal_update = zeros(size(iterations{1+0}));
@@ -76,6 +79,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     
     %% If loss has decreased, step confirmation and bold driver "acceleration"
     iteration = iteration + 1;
+    failure_counter = 0;
     relative_loss_chart(iteration) = 100 * loss / target_norm;
     previous_signal = iterations{iteration};
     previous_loss = loss;
