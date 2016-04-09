@@ -12,7 +12,7 @@ opts{1}.time.nFilters_per_octave = Q1;
 opts{1}.time.T = T;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
-opts{1}.time.gamma_bounds = [1 Q1*8];
+opts{1}.time.gamma_bounds = [1 Q1*9];
 opts{1}.time.duality = 'hermitian';
 
 if strcmp(modulations, 'time') || strcmp(modulations, 'time-frequency')
