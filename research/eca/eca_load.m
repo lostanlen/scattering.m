@@ -12,7 +12,7 @@ if size(y, 2) == 2
     y = 0.5 * sum(y, 2);
 end
 if length(y) < N
-    y = cat(1, y, zeros(N - length(y)));
+    y = cat(1, y, zeros(N - length(y), 1));
 else
     y = y(1:N);
 end
