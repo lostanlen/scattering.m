@@ -19,6 +19,9 @@ switch class(y)
 end
 y = y(1:N);
 
+if size(y, 1) == 1
+    y = y.';
+end
 eca_display(y, archs);
 
 %% Re-synthesize
