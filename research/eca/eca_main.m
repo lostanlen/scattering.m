@@ -18,8 +18,8 @@ opts.nIterations = 50;
 iterations = eca_synthesize(y, archs, opts);
 
 %% Export
-export_mode = 'all'; % can be 'last' or 'all'
-eca_export(iterations, audio_path, export_mode, sample_rate, bit_depth, ...
+opts.export_mode = 'all'; % can be 'last' or 'all'
+eca_export(iterations, audio_path, opts, sample_rate, bit_depth, ...
     Q1, T, modulations);
 
 %% Clear (run only if necessary)
