@@ -8,7 +8,7 @@ archs = eca_setup(N, Q1, T, modulations);
 
 %% Load
 audio_path = 'research/gretsi15/Vc-scale-chr-asc.wav';
-[y, sample_rate, bit_depth] = eca_load(audio_path);
+[y, sample_rate, bit_depth] = eca_load(audio_path, N);
 eca_display(y, archs);
 
 %% Re-synthesize

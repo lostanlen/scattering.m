@@ -1,4 +1,4 @@
-function [y, sample_rate, bit_depth] = eca_load(audio_path)
+function [y, sample_rate, bit_depth] = eca_load(audio_path, N)
 [y, sample_rate] = audioread(audio_path, 'native');
 switch class(y)
     case 'int16'
