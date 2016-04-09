@@ -61,7 +61,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
             opts.bold_driver_brake * opts.signal_update;
         disp(['Learning rate = ', num2str(opts.learning_rate)]);
         failure_counter = failure_counter + 1;
-        if failure_counter < 5
+        if failure_counter < 10
             continue
         else
             disp('Too many retracted steps. Resuming algorithm.');
