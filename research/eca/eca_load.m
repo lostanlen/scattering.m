@@ -8,8 +8,8 @@ switch class(y)
         bit_depth = 24;
         y = double(y) / 2^32;
 end
-if size(y, 1) == 1 && size(y, 2) > 1
-     y = y.';
+if size(y, 2) == 2
+    y = 0.5 * sum(y, 2);
 end
 if length(y) < N
     y = cat(1, y, zeros(N - length(y)));
