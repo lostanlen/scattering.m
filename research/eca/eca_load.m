@@ -7,6 +7,10 @@ switch class(y)
     case 'int32'
         bit_depth = 24;
         y = double(y) / 2^32;
+    case 'single'
+        bit_depth = 32;
+    case 'double'
+        bit_depth = 64;
 end
 if size(y, 2) == 2
     y = 0.5 * sum(y, 2);
