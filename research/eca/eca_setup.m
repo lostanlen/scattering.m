@@ -15,7 +15,9 @@ opts{1}.time.is_chunked = false;
 opts{1}.time.gamma_bounds = [1 Q1*9];
 opts{1}.time.duality = 'hermitian';
 
-if strcmp(modulations, 'time') || strcmp(modulations, 'time-frequency')
+if strcmp(modulations, 'time') || ...
+        strcmp(modulations, 'time-frequency') || ...
+        strcmp(modulations, 'spiral')
     % Options for temporal modulations
     opts{2}.time.nFilters_per_octave = 1;
     opts{2}.time.wavelet_handle = @morlet_1d;
@@ -23,9 +25,15 @@ if strcmp(modulations, 'time') || strcmp(modulations, 'time-frequency')
 end
     
 % Options for frequential modulations
-if strcmp(modulations, 'time-frequency')
+if strcmp(modulations, 'time-frequency') || strcmp(modulations, 'spiral')
     opts{2}.gamma.duality = 'hermitian';
     opts{2}.gamma.nFilters_per_octave = 1;
+end
+
+% Options for octave modulations
+if strcmp(modulations, 'spiral')
+    opts{2}.j.duality = 'hermitian';
+    opts{2}.j.nFilters_per_octave = 1;
 end
 
 % Setup
