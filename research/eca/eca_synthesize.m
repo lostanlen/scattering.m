@@ -54,7 +54,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     
     %% If loss has increased, step retraction and bold driver "brake"
     [loss,layer_absolute_distances] = sc_norm(delta_S);
-    if loss > previous_loss
+    if opts.adapt_learning_rate && (loss > previous_loss)
         opts.learning_rate = ...
             opts.bold_driver_brake * opts.learning_rate;
         opts.signal_update = ...
