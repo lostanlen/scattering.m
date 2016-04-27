@@ -7,7 +7,7 @@ y_length = length(y);
 
 %% Initialize chunk matrix
 hop_length = N / 2;
-nChunks = y_length / hop_length;
+nChunks = 1 + y_length / hop_length;
 chunks = zeros(N, nChunks);
 
 %% Fill in chunks
@@ -16,7 +16,7 @@ chunks((1+hop_length):N, 1) = y(1:hop_length);
 
 % General case
 for chunk_index = 2:(nChunks-1)
-    chunk_start = (chunk_index-1) * hop_length + 1;
+    chunk_start = (chunk_index-2) * hop_length + 1;
     chunk_stop = chunk_start + 2 * hop_length - 1;
     chunks(:, chunk_index) = y(chunk_start:chunk_stop);
 end
