@@ -1,13 +1,6 @@
 function paths = get_medleydb_paths(dataset_path, subfolder)
 %%
-switch subfolder
-    case 'training'
-        set_path = [dataset_path, '/', 'training'];
-    case 'test'
-        set_path = [dataset_path, '/', 'test'];
-    case 'validation'
-        set_path = [dataset_path, '/', 'validation'];
-end
+set_path = fullfile(dataset_path, subfolder);
 
 %%
 instrument_dirs = list_dir(set_path);
