@@ -1,9 +1,5 @@
 function [X_training, X_validation, X_test] = ...
     get_medleydb_features(archs, dataset_path)
-if nargin<2
-    dataset_path = '~/datasets/medleydb-single-instruments';
-end
-
 %% Get number of features by running the transform on a probe signal
 N = archs{1}.banks{1}.spec.size;
 S = sc_propagate(randn(N,1), archs);

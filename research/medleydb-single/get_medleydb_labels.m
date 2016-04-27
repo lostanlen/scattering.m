@@ -1,8 +1,4 @@
 function [Y_training, Y_validation, Y_test] = get_medleydb_labels(dataset_path)
-if nargin<1
-    dataset_path = '~/datasets/medleydb-single-instruments';
-end
-
 %% Initialize
 subfolders = {'training', 'validation', 'test'};
 nSubfolders = length(subfolders);
