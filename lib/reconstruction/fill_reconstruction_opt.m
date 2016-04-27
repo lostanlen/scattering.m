@@ -2,12 +2,14 @@ function reconstruction_opt = fill_reconstruction_opt(reconstruction_opt)
 %% Method
 reconstruction_opt.nIterations = ...
     default(reconstruction_opt, 'nIterations', 100);
-% It appears that a learning rate of 1.0, which is considered very high
+% It appears that a learning rate of 0.1, which is considered very high
 % in machine learning, is a good initial estimate for the reconstruction
 % problem. The learning rate policy is subsequently adapted according
 % to a bold driver heuristic (see below).
+reconstruction_opt.adapt_learning_rate = ...
+    default(reconstruction_opt, 'adapt_learning_rate', true);
 reconstruction_opt.initial_learning_rate = ...
-    default(reconstruction_opt, 'initial_learning_rate', 1.0);
+    default(reconstruction_opt, 'initial_learning_rate', 0.1);
 reconstruction_opt.momentum = ...
     default(reconstruction_opt, 'momentum', 0.9);
 reconstruction_opt.bold_driver_accelerator = ...
