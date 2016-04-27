@@ -12,7 +12,8 @@ nSubfolders = length(subfolders);
 Xs = cell(1, nSubfolders);
 
 for subfolder_index = 1:nSubfolders
-    paths = get_medleydb_paths(dataset_path, 'training');
+    subfolder = subfolders{subfolder_index};
+    paths = get_medleydb_paths(dataset_path, subfolder);
     stem_paths = [paths{:}];
     chunk_paths = [stem_paths{:}];
     nSamples = length(chunk_paths);

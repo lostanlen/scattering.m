@@ -6,7 +6,8 @@ Ys = cell(1, nSubfolders);
 
 %% Get labels
 for subfolder_index = 1:nSubfolders
-    paths = get_medleydb_paths(dataset_path, 'training');
+    subfolder = subfolders{subfolder_index};
+    paths = get_medleydb_paths(dataset_path, subfolder);
     paths = [paths{:}];
     paths = [paths{:}];
     nSamples = length(paths);

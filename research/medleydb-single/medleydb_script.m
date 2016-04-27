@@ -31,8 +31,9 @@ for method_index = 1:nMethods
 
     archs = sc_setup(opts);
 
-    [X_training, X_validation, X_test] = get_medleydb_features(archs);
-    [Y_training, Y_validation, Y_test] = get_medleydb_labels();
+    [X_training, X_validation, X_test] = ...
+        get_medleydb_features(archs, dataset_path);
+    [Y_training, Y_validation, Y_test] = get_medleydb_labels(dataset_path);
 
     data.X_training = X_training;
     data.X_validation = X_validation;
