@@ -22,7 +22,7 @@ else
     hop_signal_size = chunk_signal_size / 2;
     unchunked_signal_size = hop_signal_size * nChunks;
     unchunked_sizes = [unchunked_signal_size,data_sizes(3:end)];
-    unchunked_data = zeros([unchunked_sizes,1]);
+    unchunked_data = zeros([unchunked_sizes, 1]);
     rhs_indices = (1+hop_signal_size/2):(3*hop_signal_size/2);
     nSubscripts = length(data_sizes);
     subsref_structure = substruct('()',replicate_colon(nSubscripts));
@@ -30,13 +30,15 @@ else
     subsasgn_structure = substruct('()',replicate_colon(nSubscripts-1));
     for chunk_index = 1:nChunks
         subsref_structure.subs{2} = chunk_index;
-        unpadded_chunk = subsref(data,subsref_structure);
+        unpadded_chunk = subsref(data, subsref_structure);
         lhs_start = hop_signal_size * (chunk_index-1) + 1;
         lhs_end = (lhs_start-1) + hop_signal_size;
         lhs_indices = lhs_start:lhs_end;
         subsasgn_structure.subs{1} = lhs_indices;
+        unpadded_chunk = unpadded_chunk + ...
+            subsref(unchunked_data, subsasgn_structure);
         unchunked_data = ...
-            subsasgn(unchunked_data,subsasgn_structure,unpadded_chunk);
+            subsasgn(unchunked_data, subsasgn_structure, unpadded_chunk);
     end
 end
 end
