@@ -1,14 +1,29 @@
 function [iterations, init_loss, delta_signal] = ...
     eca_init(y, target_S, archs, opts)
 %% Random initialization
+[N, nChunks] = size(y);
 if isfield(opts, 'initial_signal')
-    init = opts.initial_signal;
+    if nChunks > 1
+        init = eca_split(opts.initial_signal, N);
+    else
+        init = opts.initial_signal;
+    end
 else
-    init = generate_colored_noise(y);
+    init = zeros(size(y));
+    for chunk_index = 1:nChunks
+        init(:, chunk_index) = generate_colored_noise(y(:, chunk_index));
+    end
 end
-init = init - mean(init);
-init = init * norm(init)/norm(init);
-init = init + mean(init);
+
+%% Standardization 
+for chunk_index = 1:nChunks
+    init_chunk = init(:, chunk_index);
+    y_chunk = y(:, chunk_index);
+    init_chunk = init_chunk - mean(init_chunk);
+    init_chunk = init_chunk * norm(y_chunk) / (eps() + norm(init_chunk));
+    init_chunk = init_chunk + mean(y_chunk);
+    init(:, chunk_index) = init_chunk;
+end
 
 %% First forward
 opts.signal_update = zeros(size(init));
@@ -17,7 +32,11 @@ nLayers = length(archs);
 S = cell(1, nLayers);
 U = cell(1,nLayers);
 Y = cell(1,nLayers);
-U{1+0} = initialize_variables_auto(size(y));
+if nChunks > 1
+    U{1+0} = initialize_variables_custom(size(y), {'time', 'chunk'});
+else
+    U{1+0} = initialize_variables_auto(size(y));
+end
 U{1+0}.data = init;
 for layer = 1:nLayers
     arch = archs{layer};
@@ -39,6 +58,13 @@ end
 delta_S = sc_substract(target_S, S);
 init_loss = sc_norm(delta_S);
 delta_signal = sc_backpropagate(delta_S, U, Y, archs);
+
+%% Unchunking if required
+if nChunks > 1
+    U = U(1:2);
+    U = sc_unchunk(U);
+    init = eca_overlap_add(init);
+end
 
 %% First display and sonification
 figure_handle = figure(1);
