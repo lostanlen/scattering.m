@@ -1,4 +1,4 @@
-function U0 = initialize_variables_custom(original_sizes,names)
+function U0 = initialize_variables_custom(original_sizes, names)
 variable_tree = struct();
 nNames = length(names);
 keys{1+0} = cell(1,nNames);
