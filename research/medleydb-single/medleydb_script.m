@@ -1,61 +1,43 @@
-dataset_path = '~/datasets/mdbsi-val';
-methods = {'plain', 'joint'};
+%% Load MAT files
+mdbplain_struct = load('mdbplain.mat');
+mdbplain_struct = mdbplain_struct.mdbplain_data;
+
+mdbjoint_struct = load('mdbjoint.mat');
+mdbjoint_struct = mdbjoint_struct.mdbjoint_data;
 
 %%
-N = 131072;
-octave_bounds = [2 8];
-nfo = 12;
-gamma_bounds = [(octave_bounds(1)-1)*nfo octave_bounds(2)*nfo-1];
-
-nMethods = length(methods);
-for method_index = 1:nMethods
-    method = methods{method_index};
-    clear opts;
-    opts{1}.banks.time.nFilters_per_octave = nfo;
-    opts{1}.banks.time.size = N;
-    opts{1}.banks.time.T = N;
-    opts{1}.banks.is_chunked = false;
-    opts{1}.banks.gamma_bounds = gamma_bounds;
-    opts{1}.banks.wavelet_handle = @gammatone_1d;
-    opts{1}.invariants.time.invariance = 'summed';
-    opts{2}.banks.time.nFilters_per_octave = 1;
-    if strcmp(method, 'joint')
-        opts{2}.banks.gamma.nFilters_per_octave = 1;
-        opts{2}.banks.gamma.T = 2^5;
-    end
-    opts{2}.banks.wavelet_handle = @gammatone_1d;
-    opts{2}.invariants.time.invariance = 'summed';
-
-    file_name = ['mdb', method];
-    var_name = ['mdb', method, '_data'];
-
-    archs = sc_setup(opts);
-
-    [X_training, X_validation, X_test] = ...
-        get_medleydb_features(archs, dataset_path);
-    [Y_training, Y_validation, Y_test] = get_medleydb_labels(dataset_path);
-
-    data.X_training = X_training;
-    data.X_validation = X_validation;
-    data.X_test = X_test;
-    data.Y_training = Y_training;
-    data.Y_validation = Y_validation;
-    data.Y_test = Y_test;
-    data.opts = opts;
-    eval([var_name, ' = data']);
-    save(file_name, var_name);
-end
+mdb_struct = mdbplain_struct;
+X_training = mdb_struct.X_training;
+X_validation = mdb_struct.X_validation;
+X_test = mdb_struct.X_test;
+Y_training = mdb_struct.Y_training;
+Y_validation = mdb_struct.Y_validation;
+Y_test = mdb_struct.Y_test;
 
 %% Standardize features
-X_mean = mean(X_training, 2);
-X_std = std(X_training, 2);
-X_training_centered = bsxfun(@minus, X_training, X_mean);
-X_training_std = bsxfun(@rdivide, X_training, X_std);
+X_mean = mean(X_training);
+X_std = std(X_training);
+X_training = bsxfun(@minus, X_training, X_mean);
+X_training = bsxfun(@rdivide, X_training, X_std);
+
+X_validation = bsxfun(@minus, X_validation, X_validation);
+X_validation = bsxfun(@rdivide, X_validation, X_validation);
+
+X_test = bsxfun(@minus, X_test, X_test);
+X_test = bsxfun(@rdivide, X_test, X_test);
+
 X_test_centered = bsxfun(@minus, X_training, X_mean);
 X_test_std = bsxfun(@rdivide, X_test, X_std);
 
-%% 
+%% Estimate weights
 [nSamples_per_class, ~] = hist(Y_training, 0:7);
 class_frequencies = nSamples_per_class / sum(nSamples_per_class);
 class_weights = 1 ./ class_frequencies;
 cost_matrix = repmat(class_weights.', 1, 8) - diag(class_weights);
+
+%%
+rf_options = statset('UseParallel', true);
+nTrees = 50;
+B = TreeBagger(nTrees, X_training, Y_training, 'Options', rf_options);
+
+B.
