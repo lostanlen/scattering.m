@@ -1,4 +1,4 @@
-function [iterations, init_loss, delta_signal] = ...
+function [iterations, init_loss, delta_chunks] = ...
     eca_init(y, target_S, archs, opts)
 %% Random initialization
 [N, nChunks] = size(y);
@@ -11,7 +11,7 @@ if isfield(opts, 'initial_signal')
 else
     init = zeros(size(y));
     for chunk_index = 1:nChunks
-        init(:, chunk_index) = generate_colored_noise(y(:, chunk_index));
+        init(:, chunk_index) = rand(); %generate_colored_noise(y(:, chunk_index));
     end
 end
 
@@ -57,12 +57,16 @@ end
 %% First backward
 delta_S = sc_substract(target_S, S);
 init_loss = sc_norm(delta_S);
-delta_signal = sc_backpropagate(delta_S, U, Y, archs);
+delta_chunks = sc_backpropagate(delta_S, U, Y, archs);
+delta_signal = eca_overlap_add(delta_chunks);
+delta_chunks = eca_split(delta_signal, N);
 
 %% Unchunking if required
 if nChunks > 1
     U = U(1:2);
     U = sc_unchunk(U);
+    init = eca_overlap_add(init);
+    init = eca_split(init, N);
     init = eca_overlap_add(init);
 end
 
