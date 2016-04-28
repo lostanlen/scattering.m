@@ -5,6 +5,7 @@ N = archs{1}.banks{1}.spec.size;
 S = sc_propagate(randn(N,1), archs);
 feature_vector = horzcat(format_layer(S{1+1}, 1), format_layer(S{1+2}, 1));
 nFeatures = length(feature_vector);
+w = hamming(N);
 
 %% Get features
 subfolders = {'training', 'validation', 'test'};
@@ -22,7 +23,7 @@ for subfolder_index = 1:nSubfolders
     parfor sample_index = 1:nSamples
         chunk_path = chunk_paths{sample_index};
         stereo_waveform = audioread_compat(chunk_path);
-        mono_waveform = mean(stereo_waveform, 2);
+        mono_waveform = w .* mean(stereo_waveform, 2);
         S = sc_propagate(mono_waveform, archs);
         X(sample_index, :) = ...
             [format_layer(S{1+1}, 1), format_layer(S{1+2}, 1)].';
