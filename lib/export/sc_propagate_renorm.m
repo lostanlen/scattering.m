@@ -33,16 +33,16 @@ Yabs1{1+0} = initialize_Y(Uabs0, archs{1}.banks);
 Sabs0 =  Y_to_S(Yabs1, archs{1});
 Sabs0 = unchunk_layer(Sabs0);
 
-ren_S1 = S1;
 if iscell(S1.data) % summed invariant
-    nNodes = numel(S1.data);
-    for node_index = 1:nNodes
-        ren_S1.data{node_index} = bsxfun(@rdivide, ...
-            S1.data{node_index}, eps() + max(Sabs0.data, 0));
-    end
+    nSubscripts = length(S1.keys{1});
+    gamma1_in_S1_subscript = 1 + nSubscripts;
+    S1.data = cat(gamma1_in_S1_subscript, S1.data{:});
 else
-    ren_S1.data = bsxfun(@rdivide, ren_S1.data, eps() + max(Sabs0.data, 0));
+    gamma1_in_S1_subscript = ...
+        S1.variable_tree.time{1}.gamma{1}.leaf.subscripts;
 end
+ren_S1 = S1;
+ren_S1.data = bsxfun(@rdivide, ren_S1.data, eps() + max(Sabs0.data, 0));
 
 %%
 if nLayers == 1
@@ -53,14 +53,16 @@ elseif nLayers == 2
     U2 = Y_to_U(Y2{end}, archs{2}.nonlinearity);
     Y3{1+0} = initialize_Y(U2, archs{1}.banks);
     S2 = Y_to_S(Y3, archs{2});
-    S2 = unchunk_layer(S2);
+    if iscell(S2)
+        S2 = unchunk_layer(S2{1});
+    else
+        S2 = unchunk_layer(S2);
+    end
     %% Layer 2 renormalization
     ren_S2 = S2;
-    % gamma1 has subscript 2 in S1 after unchunking
-    gamma1_in_S1_subscript = 2;
     % gamma1 has subscript 2 in S2 after unchunking
-    gamma1_in_S2_subscript = 2;
-    nSubscripts = size(S1.ranges{1}, 2);
+    gamma1_in_S2_subscript = S2.variable_tree.time{1}.gamma{1}.leaf.subscripts;
+    nSubscripts = ndims(S1.data);
     subsref_structure = substruct('()', replicate_colon(nSubscripts));
     for gamma2_index = 1:length(S2.data)
         node_S2 = S2.data{gamma2_index};
