@@ -39,5 +39,3 @@ cost_matrix = repmat(class_weights.', 1, 8) - diag(class_weights);
 rf_options = statset('UseParallel', true);
 nTrees = 50;
 B = TreeBagger(nTrees, X_training, Y_training, 'Options', rf_options);
-
-B.
