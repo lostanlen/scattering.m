@@ -1,12 +1,12 @@
 %% Setup
 sample_rate = 32000;
-required_duration = 1.0; % in seconds
+required_duration = 0.3; % in seconds
 N = 2^(round(log2(required_duration * sample_rate)));
 actual_duration = N / sample_rate;
 Q1 = 8; % number of filters per octave at first order
 T = N/2; % amount of invariance with respect to time translation
 % The modulation setting is either 'none', 'time', or 'time-frequency'
-modulations = 'time';
+modulations = 'none';
 archs = eca_setup(N, Q1, T, modulations);
 
 %%
@@ -20,4 +20,5 @@ opts.bold_driver_accelerator = 1.0;
 opts.initial_learning_rate = 0.1;
 opts.is_displayed = true;
 opts.is_sonified = true;
-eca_synthesize_chunks(y, archs, opts)
+
+it = eca_synthesize_chunks(y, archs, opts)
