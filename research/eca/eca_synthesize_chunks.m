@@ -13,7 +13,7 @@ target_S = eca_target(target_chunks, archs);
 nLayers = length(archs);
 
 %% Initialization
-[iterations, previous_loss, delta_signal] = ...
+[iterations, previous_loss, delta_chunks] = ...
     eca_init(target_chunks, target_S, archs, opts);
 previous_chunks = eca_split(iterations{1+0}, N);
 relative_loss_chart = zeros(opts.nIterations, 1);
@@ -29,7 +29,7 @@ figure_handle = gcf();
 tic();
 while (iteration <= opts.nIterations) && ishandle(figure_handle)
     %% Signal update
-    new_chunks = update_reconstruction(previous_chunks, delta_signal, opts);
+    new_chunks = update_reconstruction(previous_chunks, delta_chunks, opts);
     iterations{1+iteration} = eca_overlap_add(new_chunks);
     
     %% Scattering propagation
@@ -73,7 +73,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
             disp('Too many retracted steps. Resuming algorithm.');
             iteration = 0;
             failure_counter = 0;
-            [iterations, previous_loss, delta_signal] = ...
+            [iterations, previous_loss, delta_chunks] = ...
                 eca_init(target_chunks, target_S, archs, opts);
             previous_chunks = eca_split(iterations{1+0}, N);
             relative_loss_chart = zeros(opts.nIterations, 1);
@@ -91,13 +91,13 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     previous_loss = loss;
     opts.signal_update = ...
         opts.momentum * opts.signal_update + ...
-        opts.learning_rate * delta_signal;
+        opts.learning_rate * delta_chunks;
     opts.learning_rate = ...
         opts.bold_driver_accelerator * ...
         opts.learning_rate;
     
     %% Backpropagation
-    delta_signal = sc_backpropagate(delta_S, U, Y, archs);
+    delta_chunks = sc_backpropagate(delta_S, U, Y, archs);
     
     %% Pretty-printing of scattering distances and loss function
     if opts.is_verbose
