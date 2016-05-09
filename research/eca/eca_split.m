@@ -1,6 +1,12 @@
 function chunks = eca_split(y, N)
-%% Pad y
+%% If y has length N, return
 y_length = length(y);
+if y_length == N;
+    chunks = y;
+    return
+end
+    
+%% Pad y
 padded_length = 2^nextpow2(y_length);
 y = cat(1, y, zeros(padded_length - length(y), 1));
 y_length = length(y);
