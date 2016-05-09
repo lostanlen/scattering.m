@@ -27,7 +27,11 @@ subplot(211);
 display_scalogram(scalogram);
 
 %% Display second-order spectrum at given scale
-modulation_scale_index = 4;
-scattergram = U_unchunked{1+2}.data{modulation_scale_index}.';
+temporal_modulation_index = 4; % between 1 and 4
+frequential_modulation_index = 3; % between 1 and 3
+frequential_modulation_sign = 2; % between 1 and 2
+scattergram =  U_unchunked{1+2}{1,1}.data{ ...
+    temporal_modulation_index}{frequential_modulation_index}( ...
+    :, :, frequential_modulation_sign).';
 subplot(212);
 imagesc(scattergram);

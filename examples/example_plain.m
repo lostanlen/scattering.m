@@ -20,7 +20,7 @@ opts{2}.time = struct();
 archs = sc_setup(opts);
 
 %% Compute scattering representation
-[S,U,Y] = sc_propagate(signal,archs);
+[S,U,Y] = sc_propagate(signal, archs);
 
 %% Display scalogram (wavelet transform modulus)
 U_unchunked = sc_unchunk(U);
