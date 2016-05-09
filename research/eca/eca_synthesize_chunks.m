@@ -67,20 +67,10 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
             opts.bold_driver_brake * opts.signal_update;
         disp(['Learning rate = ', num2str(opts.learning_rate)]);
         failure_counter = failure_counter + 1;
-        if failure_counter < 10
-            continue
-        else
-            disp('Too many retracted steps. Resuming algorithm.');
-            iteration = 0;
-            failure_counter = 0;
-            [iterations, previous_loss, delta_chunks] = ...
-                eca_init(target_chunks, target_S, archs, opts);
-            previous_chunks = eca_split(iterations{1+0}, N);
-            relative_loss_chart = zeros(opts.nIterations, 1);
-            opts.signal_update = zeros(size(target_chunks));
+        if failure_counter > 9
             opts.learning_rate = opts.initial_learning_rate;
-            continue
         end
+        continue
     end
     
     %% If loss has decreased, step confirmation and bold driver "acceleration"
