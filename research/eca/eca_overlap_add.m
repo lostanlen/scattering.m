@@ -1,6 +1,14 @@
 function y = eca_overlap_add(chunks)
 %% Initialize y with zero
 [N, nChunks] = size(chunks);
+
+%% If there is only one chunk, return
+if nChunks == 1
+    y = chunks;
+    return
+end
+
+%% 
 hop_length = N/2;
 y_length = hop_length * (nChunks - 1);
 y = zeros(y_length, 1);
