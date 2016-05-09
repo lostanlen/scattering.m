@@ -7,7 +7,8 @@ if y_length == N;
 end
     
 %% Pad y
-padded_length = 2^nextpow2(y_length);
+hop_length = N / 2;
+padded_length = hop_length * ceil(y_length / hop_length);
 y = cat(1, y, zeros(padded_length - length(y), 1));
 y_length = length(y);
 
@@ -31,6 +32,6 @@ end
 chunks(1:hop_length, end) = y((end-hop_length+1):end);
 
 %% Window
-w = hamming(N) / 1.08;
+w = hann(N);
 chunks = bsxfun(@times, w, chunks);
 end
