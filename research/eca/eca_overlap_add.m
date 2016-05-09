@@ -8,25 +8,24 @@ if nChunks == 1
     return
 end
 
-%% 
-hop_length = N/2;
-y_length = hop_length * (nChunks - 1);
+%%
+nHops_per_chunk = 4;
+hop_length = N / nHops_per_chunk;
+y_length = hop_length * (nChunks - nHops_per_chunk + 1);
 y = zeros(y_length, 1);
 
-% Case of first chunk
-y(1:hop_length) = chunks((1+hop_length):end, 1);
-
-% General case
-for chunk_index = 2:(nChunks-1)
-    chunk_start = (chunk_index-2) * hop_length + 1;
-    chunk_stop = chunk_start + 2 * hop_length - 1;
-    y(chunk_start:chunk_stop) = ...
-        y(chunk_start:chunk_stop) + ...
-        chunks(:, chunk_index);
+for chunk_index = 1:nChunks
+    chunk_start = (chunk_index-nHops_per_chunk) * hop_length + 1;
+    chunk_stop = chunk_start + N - 1;
+    if chunk_start < 1
+        chunk_in = chunks((2-chunk_start):end, chunk_index);
+        chunk_start = 1;
+    elseif chunk_stop > y_length
+        chunk_in = chunks(1:(end-chunk_stop+y_length), chunk_index);
+        chunk_stop = y_length;
+    else
+        chunk_in = chunks(:, chunk_index);
+    end
+    y(chunk_start:chunk_stop) = y(chunk_start:chunk_stop) + chunk_in;
 end
-
-% Case of last chunk
-y((end-hop_length+1):end) = ...
-    y((end-hop_length+1):end) + ...
-    chunks((1:hop_length), end);
 end
