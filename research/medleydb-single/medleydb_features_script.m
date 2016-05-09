@@ -1,4 +1,4 @@
-dataset_path = '~/datasets/mdbsi-val';
+dataset_path = '~/datasets/mdbsi';
 methods = {'plain', 'joint'};
 
 %%
