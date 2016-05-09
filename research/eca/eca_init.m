@@ -76,9 +76,6 @@ plot(init);
 subplot(212);
 scalogram = display_scalogram(U{1+1});
 imagesc(log1p(scalogram./10.0));
-if opts.is_sonified
-    soundsc(init, 44100);
-end
 
 %%
 iterations = cell(1, opts.nIterations);
