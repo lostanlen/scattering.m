@@ -9,10 +9,7 @@ if isfield(opts, 'initial_signal')
         init = opts.initial_signal;
     end
 else
-    init = zeros(size(y));
-    for chunk_index = 1:nChunks
-        init(:, chunk_index) = generate_colored_noise(y(:, chunk_index));
-    end
+    init = eca_split(generate_colored_noise(eca_overlap_add(y)), N);
 end
 
 %% Standardization 
