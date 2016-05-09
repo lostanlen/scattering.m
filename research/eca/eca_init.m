@@ -11,7 +11,7 @@ if isfield(opts, 'initial_signal')
 else
     init = zeros(size(y));
     for chunk_index = 1:nChunks
-        init(:, chunk_index) = rand(); %generate_colored_noise(y(:, chunk_index));
+        init(:, chunk_index) = generate_colored_noise(y(:, chunk_index));
     end
 end
 
