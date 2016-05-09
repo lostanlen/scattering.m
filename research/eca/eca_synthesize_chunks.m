@@ -67,10 +67,11 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
             opts.bold_driver_brake * opts.signal_update;
         disp(['Learning rate = ', num2str(opts.learning_rate)]);
         failure_counter = failure_counter + 1;
-        if failure_counter > 9
+        if failure_counter > 5
             opts.learning_rate = opts.initial_learning_rate;
+        else
+            continue
         end
-        continue
     end
     
     %% If loss has decreased, step confirmation and bold driver "acceleration"
