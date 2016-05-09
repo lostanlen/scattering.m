@@ -7,31 +7,32 @@ if y_length == N;
 end
     
 %% Pad y
-hop_length = N / 2;
+nHops_per_chunk = 4;
+hop_length = N / nHops_per_chunk;
 padded_length = hop_length * ceil(y_length / hop_length);
 y = cat(1, y, zeros(padded_length - length(y), 1));
 y_length = length(y);
 
 %% Initialize chunk matrix
-hop_length = N / 2;
-nChunks = 1 + y_length / hop_length;
+nChunks = nHops_per_chunk - 1 + y_length / hop_length;
 chunks = zeros(N, nChunks);
 
 %% Fill in chunks
-% Case of first chunk
-chunks((1+hop_length):N, 1) = y(1:hop_length);
-
-% General case
-for chunk_index = 2:(nChunks-1)
-    chunk_start = (chunk_index-2) * hop_length + 1;
-    chunk_stop = chunk_start + 2 * hop_length - 1;
-    chunks(:, chunk_index) = y(chunk_start:chunk_stop);
+for chunk_index = 1:nChunks
+    chunk_start = (chunk_index-nHops_per_chunk) * hop_length + 1;
+    chunk_stop = chunk_start + N - 1;
+    if chunk_start < 1
+        chunks(:, chunk_index) = ...
+            cat(1, zeros(1-chunk_start, 1), y(1:chunk_stop));
+    elseif chunk_stop > y_length
+        chunks(:, chunk_index) = ...
+            cat(1, y(chunk_start:end), zeros(chunk_stop-y_length, 1));
+    else
+        chunks(:, chunk_index) = y(chunk_start:chunk_stop);
+    end
 end
 
-% Case of last chunk
-chunks(1:hop_length, end) = y((end-hop_length+1):end);
-
 %% Window
-w = hann(N);
+w = 2/3 * hann(N).^2;
 chunks = bsxfun(@times, w, chunks);
 end
