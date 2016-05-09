@@ -8,4 +8,5 @@ scalogram_opt.time.max_Q = Q;
 scalogram_opt.time.max_scale = ...
     pow2(nextpow2((max_scale_in_seconds*sample_rate)-1));
 scalogram_opt.time.size = N;
+scalogram_opt.time.is_chunked = false;
 end
