@@ -26,7 +26,7 @@ Y_test = np.ravel(data["Y_test"][0][0])
 X_training = np.concatenate((X_training, X_validation))
 Y_training = np.concatenate((Y_training, Y_validation))
 
-# Discard features with less than 5% of the energy
+# Discard features with less than 10% of the energy
 energies = X_training * X_training
 feature_energies = np.mean(X_training, axis=0)
 feature_energies /= np.sum(feature_energies)
@@ -65,54 +65,34 @@ for feature_id in range(n_features):
         X_test[:, feature_id] = np.log1p(X_test[:, feature_id] / midpoint)
 
 
-# PCA
-centerer = sklearn.preprocessing.StandardScaler(with_std=False)
-centerer.fit(X_training)
-X_training = centerer.transform(X_training)
-X_test = centerer.transform(X_test)
-pca = sklearn.decomposition.PCA()
-X_training = pca.fit_transform(X_training)
-X_test = pca.transform(X_test)
-Xtr = X_training
-Xte = X_test
 
-
-X_training = Xtr[:, :20]
-X_test = Xte[:, :20]
 # Standardize features
 scaler = sklearn.preprocessing.StandardScaler().fit(X_training)
 X_training = scaler.transform(X_training)
 X_test = scaler.transform(X_test)
 
-Cs = [1e5]
+
 report = []
 output_file = open('mdb' + method + 'svm_y.pkl', 'wb')
 pickle.dump(report, output_file)
 output_file.close()
 
-for C in Cs:
-    print(C)
-    print datetime.datetime.now().time()
-    clf = sklearn.svm.LinearSVC(C=C, class_weight="balanced")
-    clf.fit(X_training, Y_training)
-    Y_training_predicted = clf.predict(X_training)
-    Y_test_predicted = clf.predict(X_test)
-    dictionary = {'C': C,
-        'Y_test': Y_test,
-        'Y_test_predicted': Y_test_predicted,
-        'Y_training': Y_training,
-        'Y_training_predicted': Y_training_predicted}
-    output_file = open('mdb' +  method +  '_svm_y.pkl', 'wb')
-    report.append(dictionary)
-    pickle.dump(report, output_file)
-    output_file.close()
-
-i = 0
-dictionary = report
-Y_training = dictionary[i]["Y_training"]
-Y_training_predicted = dictionary[i]["Y_training_predicted"]
-Y_test = dictionary[i]["Y_test"]
-Y_test_predicted = dictionary[i]["Y_test_predicted"]
-print(dictionary[i]["C"])
-print(sklearn.metrics.classification_report(Y_training, Y_training_predicted))
-print(sklearn.metrics.classification_report(Y_test, Y_test_predicted))
+for C in [1e6, 1e8, 1e10]:
+    for gamma in [0.5]:
+        print(C, gamma)
+        print datetime.datetime.now().time()
+        clf = sklearn.svm.SVC(C=C, gamma=gamma, class_weight="balanced")
+        clf.fit(X_training, Y_training)
+        Y_training_predicted = clf.predict(X_training)
+        Y_test_predicted = clf.predict(X_test)
+        dictionary = {'C': C,
+            'Y_test': Y_test,
+            'Y_test_predicted': Y_test_predicted,
+            'Y_training': Y_training,
+            'Y_training_predicted': Y_training_predicted}
+        Y_training = dictionary["Y_training"]
+        Y_training_predicted = dictionary["Y_training_predicted"]
+        Y_test = dictionary["Y_test"]
+        Y_test_predicted = dictionary["Y_test_predicted"]
+        #print(sklearn.metrics.classification_report(Y_training, Y_training_predicted))
+        print(sklearn.metrics.classification_report(Y_test, Y_test_predicted))
