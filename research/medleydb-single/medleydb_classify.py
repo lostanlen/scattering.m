@@ -5,6 +5,7 @@ import scipy.io
 import scipy.stats
 import sklearn.decomposition
 import sklearn.ensemble
+import sklearn.linear_model
 import sklearn.metrics
 import sklearn.preprocessing
 
@@ -73,7 +74,9 @@ for C in [1e3]:
         print(C, gamma)
         print("Training")
         print datetime.datetime.now().time()
-        clf = sklearn.svm.LinearSVC(C=C, class_weight="balanced")
+        clf = sklearn.linear_model.LogisticRegression(
+            class_weight="balanced", n_jobs=-1)
+        #clf = sklearn.svm.LinearSVC(C=C, class_weight="balanced")
         clf.fit(X_training, Y_training)
         print("Evaluation")
         Y_training_predicted = clf.predict(X_training)
