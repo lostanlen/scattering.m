@@ -1,10 +1,10 @@
 dataset_path = '~/datasets/mdbsi';
-methods = {'plain', 'joint'};
+methods = {'plain', 'joint', 'spiral'};
 
 %%
 N = 131072;
 octave_bounds = [2 8];
-nfo = 12;
+nfo = 16;
 gamma_bounds = [(octave_bounds(1)-1)*nfo octave_bounds(2)*nfo-1];
 
 nMethods = length(methods);
@@ -14,16 +14,19 @@ for method_index = 1:nMethods
     opts{1}.banks.time.nFilters_per_octave = nfo;
     opts{1}.banks.time.size = N;
     opts{1}.banks.time.T = N;
-    opts{1}.banks.is_chunked = false;
-    opts{1}.banks.gamma_bounds = gamma_bounds;
-    opts{1}.banks.wavelet_handle = @gammatone_1d;
+    opts{1}.banks.time.is_chunked = false;
+    opts{1}.banks.time.gamma_bounds = gamma_bounds;
+    opts{1}.banks.time.wavelet_handle = @gammatone_1d;
     opts{1}.invariants.time.invariance = 'summed';
     opts{2}.banks.time.nFilters_per_octave = 1;
-    if strcmp(method, 'joint')
+    opts{2}.banks.time.wavelet_handle = @gammatone_1d;
+    if strcmp(method, 'joint') || strcmp(method, 'spiral')
         opts{2}.banks.gamma.nFilters_per_octave = 1;
         opts{2}.banks.gamma.T = 2^5;
     end
-    opts{2}.banks.wavelet_handle = @gammatone_1d;
+    if strcmp(method, 'spiral')
+        opts{2}.banks.j.nFilters_per_octave = 1;
+    end
     opts{2}.invariants.time.invariance = 'summed';
 
     file_name = ['mdb', method];
