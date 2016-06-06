@@ -13,6 +13,7 @@ opts{1}.time.T = T;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
 opts{1}.time.gamma_bounds = [1 Q1*9];
+opts{1}.time.max_scale = Inf;
 opts{1}.time.duality = 'hermitian';
 
 if strcmp(modulations, 'time') || ...
