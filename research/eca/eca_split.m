@@ -33,6 +33,6 @@ for chunk_index = 1:nChunks
 end
 
 %% Window
-w = 2/3 * hann(N).^2;
+w = 0.5 * hann(N);
 chunks = bsxfun(@times, w, chunks);
 end
