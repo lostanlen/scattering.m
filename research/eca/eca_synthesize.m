@@ -26,7 +26,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     %% Signal update
     iterations{1+iteration} = ...
         update_reconstruction(previous_signal, delta_signal, opts);
-    
+
     %% Scattering propagation
     S = cell(1, nLayers);
     U = cell(1,nLayers);
@@ -48,10 +48,10 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
             S{1+previous_layer} = Y_to_S(Y{layer}, arch);
         end
     end
-    
+
     %% Measurement of distance to target in the scattering domain
     delta_S = sc_substract(target_S,S);
-    
+
     %% If loss has increased, step retraction and bold driver "brake"
     [loss,layer_absolute_distances] = sc_norm(delta_S);
     if opts.adapt_learning_rate && (loss > previous_loss)
@@ -61,22 +61,13 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
             opts.bold_driver_brake * opts.signal_update;
         disp(['Learning rate = ', num2str(opts.learning_rate)]);
         failure_counter = failure_counter + 1;
-        if failure_counter < 10
-            continue
-        else
-            disp('Too many retracted steps. Resuming algorithm.');
-            iteration = 0;
-            failure_counter = 0;
-            [iterations, previous_loss, delta_signal] = ...
-                eca_init(y, target_S, archs, opts);
-            previous_signal = iterations{1+0};
-            relative_loss_chart = zeros(opts.nIterations, 1);
-            opts.signal_update = zeros(size(iterations{1+0}));
+        if failure_counter > 5
             opts.learning_rate = opts.initial_learning_rate;
+        else
             continue
         end
     end
-    
+
     %% If loss has decreased, step confirmation and bold driver "acceleration"
     iteration = iteration + 1;
     failure_counter = 0;
@@ -89,10 +80,10 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     opts.learning_rate = ...
         opts.bold_driver_accelerator * ...
         opts.learning_rate;
-    
+
     %% Backpropagation
     delta_signal = sc_backpropagate(delta_S, U, Y, archs);
-    
+
     %% Pretty-printing of scattering distances and loss function
     if opts.is_verbose
         pretty_iteration = sprintf(sprintf_format, iteration);
@@ -109,7 +100,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         toc();
         tic();
     end
-    
+
     %% Display
     subplot(211);
     plot(iterations{iteration});
@@ -118,7 +109,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     imagesc(log1p(scalogram./10.0));
     colormap rev_gray;
     drawnow();
-    
+
     %% Sonify
     if opts.is_sonified
         soundsc(iterations{iteration}, 44100);
