@@ -147,25 +147,28 @@ for layer = 2:nLayers
                     default(field, 'subscripts', banks{1}.behavior.dimension + 1);
                 banks{1}.behavior.gamma_padding_length = field.T / 2;
             case 'j'
-                if isfield(field,'wavelet_handle')
-                    wavelet_handle_str = func2str(field.wavelet_handle);
-                    % It is better to have the impulsive part of the
-                    % gammatone in the lower octaves
-                    if strcmp(wavelet_handle_str, 'gammatone_1d') || ...
-                            strcmp(wavelet_handle_str, 'RLC_1d')
-                        field.is_ift_flipped = ...
-                            default(field, 'is_ift_flipped', true);
-                    end
-                    % If wavelets are replaced by finite differences
-                    if strcmp(wavelet_handle_str, 'finitediff_1d')
-                        field.T = enforce(field, 'T', 2);
-                        field.J = enforce(field, 'J', 2);
-                        field.nFilters_per_octave = ...
-                            enforce(field, 'nFilters_per_octave', 1);
-                        field.max_Q = enforce(field, 'max_Q', 1);
-                        field.nOctaves = enforce(field, 'nOctaves', 2);
-                        field.is_spinned = enforce(field, 'is_spinned', false);
-                    end
+                field.wavelet_handle = ...
+                    default(field, 'wavelet_handle', @finitediff_1d);
+                wavelet_handle_str = func2str(field.wavelet_handle);
+                % It is better to have the impulsive part of the
+                % gammatone in the lower octaves
+                if strcmp(wavelet_handle_str, 'gammatone_1d') || ...
+                        strcmp(wavelet_handle_str, 'RLC_1d')
+                    field.is_ift_flipped = ...
+                        default(field, 'is_ift_flipped', true);
+                end
+                % If wavelets are replaced by finite differences
+                if strcmp(wavelet_handle_str, 'finitediff_1d')
+                    field.T = enforce(field, 'T', 2);
+                    field.J = enforce(field, 'J', 2);
+                    field.nFilters_per_octave = ...
+                        enforce(field, 'nFilters_per_octave', 1);
+                    field.max_Q = enforce(field, 'max_Q', 1);
+                    field.nOctaves = enforce(field, 'nOctaves', 2);
+                    field.is_spinned = enforce(field, 'is_spinned', false);
+                else
+                    % 4 octaves of octave filtering by default
+                    field.T = default(field, 'T', 4);
                 end
                 gamma_bounds = plans{1}.banks{1}.behavior.gamma_bounds;
                 nGammas_bound = gamma_bounds(2) - gamma_bounds(1) + 1;
@@ -173,11 +176,7 @@ for layer = 2:nLayers
                     plans{1}.banks{1}.spec.nFilters_per_octave;
                 nOctaves_bound = ceil(nGammas_bound / nFilters_per_octave);
                 nOctaves = min(plans{1}.banks{1}.spec.J, nOctaves_bound);
-                % 4 octaves of octave filtering by default
-                field.T = default(field, 'T', 4);
                 field.dimension = banks{end}.behavior.dimension+1;
-                field.wavelet_handle = ...
-                    default(field, 'wavelet_handle', @gammatone_1d);
                 field.invariance = default(field, 'invariance', 'bypassed');
                 field.is_spinned = default(field, 'is_spinned', true);
                 field.has_multiple_support = ...
@@ -188,7 +187,7 @@ for layer = 2:nLayers
                     pow2(nextpow2(nOctaves + field.T)));
                 field.subscripts = default(field, 'subscripts', ...
                     banks{1}.behavior.dimension + 2);
-                if isfield(opt,'gamma')
+                if isfield(banks_opt, 'gamma')
                     % Here we assume that the transformation along gamma is
                     % in second position
                     spiral.nChromas = ...
