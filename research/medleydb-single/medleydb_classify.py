@@ -10,6 +10,9 @@ import sklearn.metrics
 import sklearn.preprocessing
 
 np.set_printoptions(precision=2)
+#method = 'joint'
+#compression = True
+#selection = True
 
 for method in ['plain', 'joint']:
     for selection in [False, True]:
@@ -51,21 +54,13 @@ for method in ['plain', 'joint']:
                 X_validation = X_validation[:, dominant_indices]
                 X_test = X_test[:, dominant_indices]
 
-            # Box-Cox power transformation.
-            # Lambda is estimated by maximum likelihood
+            # Log transformation
             if compression:
                 print(
                     datetime.datetime.now().time().strftime('%H:%M:%S') +
                     " Compression")
-                lambdas = []
-                for feature_id in range(X_training.shape[1]):
-                    X_training[:, feature_id], lambda_ =\
-                        scipy.stats.boxcox(X_training[:, feature_id])
-                    X_validation[:, feature_id] =\
-                        scipy.stats.boxcox(X_validation[:, feature_id], lambda_)
-                    X_test[:, feature_id] =\
-                        scipy.stats.boxcox(X_test[:, feature_id], lambda_)
-                    lambdas.append(lambda_)
+                X_training = np.log(1e-16 + X_training)
+                X_test = np.log(1e-16 + X_test)
 
             # Standardize features
             print(datetime.datetime.now().time().strftime('%H:%M:%S') +
@@ -92,16 +87,19 @@ for method in ['plain', 'joint']:
             average_recall = sklearn.metrics.recall_score(
                 Y_test, Y_test_predicted, average="macro")
             average_miss_rate = 1.0 - average_recall
-            print "Average miss rate = " + 100 * average_miss_rate
+            print "Average miss rate = " + str(100 * average_miss_rate)
             print ""
             dictionary = {
                 'average_miss_rate': average_miss_rate,
                 'C': 1e3,
                 'compression': compression,
                 'method': method,
-                'method_str': method_str
+                'method_str': method_str,
                 'selection': selection,
                 'Y_test': Y_test,
                 'Y_test_predicted': Y_test_predicted,
                 'Y_training': Y_training,
                 'Y_training_predicted': Y_training_predicted}
+            output_file = open(method_str + '.pkl', 'wb')
+            pickle.dump(dictionary, output_file)
+            output_file.close()
