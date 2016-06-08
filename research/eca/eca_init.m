@@ -12,16 +12,6 @@ else
     init = eca_split(generate_colored_noise(eca_overlap_add(y)), N);
 end
 
-%% Standardization 
-for chunk_index = 1:nChunks
-    init_chunk = init(:, chunk_index);
-    y_chunk = y(:, chunk_index);
-    init_chunk = init_chunk - mean(init_chunk);
-    init_chunk = init_chunk * norm(y_chunk) / (eps() + norm(init_chunk));
-    init_chunk = init_chunk + mean(y_chunk);
-    init(:, chunk_index) = init_chunk;
-end
-
 %% First forward
 opts.signal_update = zeros(size(init));
 opts.learning_rate = opts.initial_learning_rate;

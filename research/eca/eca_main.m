@@ -1,14 +1,13 @@
 %% Setup
-N = 2^17; % 2^17 = 131072, about 3 seconds.
-Q1 = 8; % number of filters per octave at first order
-T = 2^15; % amount of invariance with respect to time translation
+Q1 = 12; % number of filters per octave at first order
+T = 2^13; % amount of invariance with respect to time translation
 % The modulation setting is either 'none', 'time', or 'time-frequency'
 modulations = 'time-frequency';
-archs = eca_setup(N, Q1, T, modulations);
+archs = eca_setup(Q1, T, modulations);
 
 %% Load
-audio_path = 'research/gretsi15/Vc-scale-chr-asc.wav';
-[y, sample_rate, bit_depth] = eca_load(audio_path, N);
+audio_path = '/Users/vlostan/Documents/TrENSmissions/expliquer/camille/140806_0804_ech_bear.wav';
+[y, sample_rate, bit_depth] = eca_load(audio_path, 12*T);
 eca_display(y, archs);
 
 %% Re-synthesize

@@ -9,7 +9,7 @@ if nChunks == 1
 end
 
 %%
-nHops_per_chunk = 4;
+nHops_per_chunk = 2;
 hop_length = N / nHops_per_chunk;
 y_length = hop_length * (nChunks - nHops_per_chunk + 1);
 y = zeros(y_length, 1);

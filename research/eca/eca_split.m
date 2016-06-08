@@ -7,7 +7,7 @@ if y_length == N;
 end
     
 %% Pad y
-nHops_per_chunk = 4;
+nHops_per_chunk = 2;
 hop_length = N / nHops_per_chunk;
 padded_length = hop_length * ceil(y_length / hop_length);
 y = cat(1, y, zeros(padded_length - length(y), 1));
