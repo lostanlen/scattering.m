@@ -63,18 +63,11 @@ energy_sum = 0.5 * (energy_sum + energy_sum(end:-1:1));
 %% Generation of dual filter bank if required
 if bank.spec.has_duals
     if bank.spec.domain.is_ft
-        % If the wavelets are complex in the Fourier domain (e.g.
-        % Gammatones), we do in-place conjugation to compute the duals.
-        if ~bank.spec.has_real_ft
-            psi_fts = conj(psi_fts);
-        end
         switch bank.spec.duality
             case 'pseudo-inverse'
                 dual_psi_fts = bsxfun(@rdivide, conj(psi_fts), energy_sum);
-                dual_psi_fts = dual_psi_fts(end:-1:2, :);
             case 'hermitian'
                 dual_psi_fts = conj(psi_fts);
-                dual_psi_fts(2:end, :) = dual_psi_fts(end:-1:2, :);
         end
     else
         dual_psi_fts = [];
@@ -89,10 +82,8 @@ if bank.spec.has_duals
     switch bank.spec.duality
         case 'pseudo-inverse'
             dual_phi_ft = bsxfun(@rdivide, conj(phi_ft), energy_sum);
-            dual_phi_ft(2:end) = dual_phi_ft(end:-1:2, :);
         case 'hermitian'
             dual_phi_ft = conj(phi_ft);
-            dual_phi_ft(2:end) = dual_phi_ft(end:-1:2, :);
     end
     dual_phi = multidimensional_ifft(dual_phi_ft, 1:signal_dimension);
     bank.dual_phi = optimize_bank(dual_phi_ft, dual_phi, bank);
