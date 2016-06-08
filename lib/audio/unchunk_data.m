@@ -13,32 +13,38 @@ if iscell(data)
 %% Data unchunking
 else
     data_sizes = size(data);
-    chunk_signal_size = data_sizes(1);
+    chunk_length = data_sizes(1);
     nChunks = data_sizes(2);
-    if chunk_signal_size == 1
+    if chunk_length == 1
         unchunked_data = reshape(data, [data_sizes(2:end),1]);
         return
     end
-    hop_signal_size = chunk_signal_size / 2;
-    unchunked_signal_size = hop_signal_size * nChunks;
-    unchunked_sizes = [unchunked_signal_size,data_sizes(3:end)];
+    nHops_per_chunk = 2;
+    hop_length = chunk_length / nHops_per_chunk;
+    unchunked_length = hop_length * (nChunks - nHops_per_chunk + 1);
+    unchunked_sizes = [unchunked_length, data_sizes(3:end)];
     unchunked_data = zeros([unchunked_sizes, 1]);
-    rhs_indices = (1+hop_signal_size/2):(3*hop_signal_size/2);
     nSubscripts = length(data_sizes);
-    subsref_structure = substruct('()',replicate_colon(nSubscripts));
-    subsref_structure.subs{1} = rhs_indices;
-    subsasgn_structure = substruct('()',replicate_colon(nSubscripts-1));
+    subsref_structure = substruct('()', replicate_colon(nSubscripts));
+    subsasgn_structure = substruct('()', replicate_colon(nSubscripts-1));
     for chunk_index = 1:nChunks
         subsref_structure.subs{2} = chunk_index;
-        unpadded_chunk = subsref(data, subsref_structure);
-        lhs_start = hop_signal_size * (chunk_index-1) + 1;
-        lhs_end = (lhs_start-1) + hop_signal_size;
-        lhs_indices = lhs_start:lhs_end;
-        subsasgn_structure.subs{1} = lhs_indices;
-        unpadded_chunk = unpadded_chunk + ...
+        chunk_start = hop_length * (chunk_index-nHops_per_chunk) + 1;
+        chunk_stop = chunk_start + chunk_length - 1;
+        if chunk_start < 1
+            subsref_structure.subs{1} = (2-chunk_start):chunk_length;
+            chunk_start = 1;
+        elseif chunk_stop > unchunked_length
+            subsref_structure.subs{1} = 1:(chunk_length-chunk_stop+unchunked_length);
+            chunk_stop = unchunked_length;
+        else
+            subsref_structure.subs{1} = ':';
+        end
+        subsasgn_structure.subs{1} = chunk_start:chunk_stop;
+        chunk = subsref(data, subsref_structure) + ...
             subsref(unchunked_data, subsasgn_structure);
         unchunked_data = ...
-            subsasgn(unchunked_data, subsasgn_structure, unpadded_chunk);
+            subsasgn(unchunked_data, subsasgn_structure, chunk);
     end
 end
 end
