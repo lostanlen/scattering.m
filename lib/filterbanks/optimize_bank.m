@@ -81,6 +81,8 @@ for support_index = 2:nSupports
         for subscript = 1:length(pos_bigger_sizes)
             pos_subsref_structure.subs{subscript} = ...
                 1:2:pos_bigger_sizes(subscript);
+        end
+        for subscript = 1:length(neg_bigger_sizes)
             neg_subsref_structure.subs{subscript} = ...
                 1:2:neg_bigger_sizes(subscript);
         end
