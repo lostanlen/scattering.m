@@ -10,6 +10,10 @@ audio_path = '/Users/vlostan/Documents/TrENSmissions/expliquer/camille/140806_08
 [y, sample_rate, bit_depth] = eca_load(audio_path, 12*T);
 eca_display(y, archs);
 
+%%
+text = eca_text(y, archs, sample_rate);
+disp(text)
+
 %% Re-synthesize
 opts.is_sonified = true;
 % (close Figure 1 to abort early)
