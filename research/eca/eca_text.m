@@ -7,85 +7,133 @@ chunks = eca_split(y, N);
 S = eca_target(chunks, archs);
 
 %%
-gamma1_metas = S{1+1}.variable_tree.time{1}.gamma{1}.leaf.metas;
-gamma1_mother_frequency = ...
-    sample_rate * S{1+1}.variable_tree.time{1}.gamma{1}.leaf.spec.mother_xi;
+gamma1_start = S{1+1}.ranges{1}(1,3);
+S1_refs = generate_refs(S{1+1}.data, [1, 2], S{1+1}.ranges{1});
+nS1_refs = length(S1_refs);
+S1_paths(1:nS1_refs) = ...
+    struct('gamma', [], 'gamma2', [], 'gammagamma', [], 'thetagamma', []);
+S1_norms = zeros(1, nS1_refs);
+for ref_index = 1:nS1_refs
+    gamma1_index = S1_refs(ref_index).subs{3};
+    gamma1 = (gamma1_index - 1) + gamma1_start;
+    S1_paths(ref_index).gamma = gamma1;
+    S1_tensor = subsref(S{1+1}.data, S1_refs(:, ref_index));
+    S1_norms(ref_index) = sum(sum(S1_tensor.*S1_tensor, 1), 2).';
+end
 
-S1_data = S{1+1}.data;
-S1_norms = squeeze(sum(sum(S1_data.*S1_data, 1), 2)).';
-S1_range = S{1+1}.ranges{1}(:,3);
-gamma1_metas = gamma1_metas(S1_range(1):S1_range(2):S1_range(3));
-S1_gamma1_resolutions = [gamma1_metas.resolution];
-S1_gamma1_frequencies = S1_gamma1_resolutions * gamma1_mother_frequency;
-[S1_sorted_norms, S1_sorting_indices] = sort(S1_norms, 'descend');
-S1_sorted_ppms = round((S1_sorted_norms / sum(S1_sorted_norms)) * 10^6);
-S1_gamma1_frequencies = round(S1_gamma1_frequencies(S1_sorting_indices));
-S1_text = arrayfun(@(ppm, f1) ...
-    sprintf([repmat(' ', 1, 4 - floor(log10(ppm))), ...
-    num2str(ppm), ' ppm  ', ...
-    repmat(' ', 1, 4 - floor(log10(f1))), ...
-    num2str(f1), ' Hz\n']), ...
-    S1_sorted_ppms, S1_gamma1_frequencies, ...
-        'UniformOutput', false);
-S1_text = [S1_text{:}];
-
-%% psi-psi
 S2psi_refs = generate_refs(S{1+2}{1}.data, [1, 2], S{1+2}{1}.ranges{1});
 nS2psi_refs = length(S2psi_refs);
-first_tensor = subsref(S{1+2}{1}.data, S2psi_refs(:,3));
-S2_psi_data = zeros(size(first_tensor, 1), size(first_tensor, 2), nS2psi_refs);
-
+S2psi_paths(1:nS2psi_refs) = ...
+    struct('gamma', [], 'gamma2', [], 'gammagamma', [], 'thetagamma', []);
+S2psi_norms = zeros(1, nS2psi_refs);
+gamma2_start = S{1+2}{1}.ranges{3}(1);
 for ref_index = 1:nS2psi_refs
-    S2psi_data(:,:,ref_index) = ...
-        subsref(S{1+2}{1}.data, S2psi_refs(:, ref_index));
+    S2psi_path = ...
+        struct('gamma', [], 'gamma2', [], 'gammagamma', [], 'thetagamma', []);
+    S2psi_tensor = subsref(S{1+2}{1}.data, S2psi_refs(:, ref_index));
+    S2psi_norms(ref_index) = sum(sum(S2psi_tensor.*S2psi_tensor, 1), 2).';
+    gamma2_index = S2psi_refs(1,ref_index).subs{1};
+    S2psi_path.gamma2 = gamma2_index + (gamma2_start - 1);
+    gammagamma_index = S2psi_refs(2,ref_index).subs{1};
+    gammagamma_start = S{1+2}{1}.ranges{2}{gamma2_index}(1);
+    S2psi_path.gammagamma = gammagamma_index + (gammagamma_start - 1);
+    gamma1_index = S2psi_refs(3,ref_index).subs{3};
+    gamma1_range = ...
+        S{1+2}{1}.ranges{1}{gamma2_index}{gammagamma_index}(:,3);
+    gamma1_start = gamma1_range(1);
+    gamma1_hop = gamma1_range(2);
+    S2psi_path.gamma = (gamma1_index - 1) * gamma1_hop + gamma1_start;
+    thetagamma_index = S2psi_refs(3,ref_index).subs{4};
+    S2psi_path.thetagamma = thetagamma_index * 2 - 3;
+    S2psi_paths(ref_index) = S2psi_path;
 end
-S2psi_norms = squeeze(sum(sum(S2psi_data.*S2psi_data, 1), 2)).';
+
+S2phi_refs = generate_refs(S{1+2}{1,2}.data, [1, 2], S{1+2}{1,2}.ranges{1});
+nS2phi_refs = length(S2phi_refs);
+S2phi_paths(1:nS2phi_refs) = ...
+    struct('gamma', [], 'gamma2', [], 'gammagamma', [], 'thetagamma', []);
+gamma2_start = S{1+2}{1,2}.ranges{2}(1);
+S2phi_norms = zeros(1, nS2phi_refs);
+for ref_index = 1:nS2phi_refs
+    S2phi_path = ...
+        struct('gamma', [], 'gamma2', [], 'gammagamma', [], 'thetagamma', []);
+    S2phi_tensor = subsref(S{1+2}{1,2}.data, S2phi_refs(:, ref_index));
+    S2phi_norms(ref_index) = sum(sum(S2phi_tensor.*S2phi_tensor, 1), 2).';
+    gamma2_index = S2phi_refs(1,ref_index).subs{1};
+    S2phi_path.gamma2 = gamma2_index + (gamma2_start - 1);
+    gamma1_index = S2phi_refs(2,ref_index).subs{3};
+    gamma1_range = ...
+        S{1+2}{1,2}.ranges{1}{gamma2_index}(:,3);
+    gamma1_start = gamma1_range(1);
+    gamma1_hop = gamma1_range(2);
+    S2phi_path.gamma = (gamma1_index - 1) * gamma1_hop + gamma1_start;
+    S2phi_paths(ref_index) = S2phi_path;
+end
+
+S_norms = [S1_norms, S2phi_norms, S2psi_norms];
+S_paths = [S1_paths, S2phi_paths, S2psi_paths];
 %%
+
+[S_sorted_norms, S_sorting_indices] = sort(S_norms, 'descend');
+S_sorted_ppms = round((S_sorted_norms / sum(S_sorted_norms)) * 10^6);
+ppm_threshold = 1000; % in ppm
+nLines = find(S_sorted_ppms>ppm_threshold,1, 'last');
+S_sorted_norms = S_sorted_norms(1:nLines);
+S_sorting_indices = S_sorting_indices(1:nLines);
+
+%
+gamma1_motherfrequency = sample_rate * ...
+    S{1+1}.variable_tree.time{1}.gamma{1}.leaf.spec.mother_xi;
+gamma1_frequencies = gamma1_motherfrequency * ...
+    [S{1+1}.variable_tree.time{1}.gamma{1}.leaf.metas.resolution];
 gamma2_motherfrequency = sample_rate * ...
     S{1+2}{1}.variable_tree.time{1}.gamma{2}.leaf.spec.mother_xi;
-S2psi_gamma2_subs = [S2psi_refs(1,:).subs];
-S2psi_gamma2_indices = [S2psi_gamma2_subs{:}];
-S2psi_gamma2s = S2psi_gamma2_indices + (S{1+2}{1}.ranges{3}(1) - 1);
-S2psi_gamma2_metas = ...
-    S{1+2}{1}.variable_tree.time{1}.gamma{2}.leaf.metas(S2psi_gamma2s);
-S2psi_gamma2_resolutions = [S2psi_gamma2_metas.resolution];
-S2psi_gamma2_frequencies = S2psi_gamma2_resolutions * gamma2_motherfrequency;
-%%
-gammagamma_motherfreqency = ...
+gamma2_frequencies = gamma2_motherfrequency * ...
+    [S{1+2}{1}.variable_tree.time{1}.gamma{1}.leaf.metas.resolution];
+gammagamma_motherfrequency = ...
     S{1+2}{1}.variable_tree.time{1}.gamma{1}.leaf.spec.nFilters_per_octave * ...
     S{1+2}{1}.variable_tree.time{1}.gamma{1}.gamma{1}.leaf.spec.mother_xi;
-gammagamma_subs = [S2psi_refs(2,:).subs];
-gammagamma_indices = [gammagamma_subs{:}];
-gammagammas = zeros(1, nS2psi_refs);
-for ref_index = 1:nS2psi_refs
-    gamma2_index = S2psi_gamma2_indices(ref_index);
-    gammagammas(ref_index) = gammagamma_indices(ref_index) + ...
-        (S{1+2}{1}.ranges{2}{gamma2_index}(1) - 1);
-end
-S2psi_gammagamma_metas = ...
-    S{1+2}{1}.variable_tree.time{1}.gamma{1}.gamma{1}.leaf.metas(gammagammas);
-S2psi_gammagamma_resolutions = [S2psi_gammagamma_metas.resolution];
-S2psi_gammagamma_frequencies = ...
-    S2psi_gammagamma_resolutions * gammagamma_motherfreqency;
-%%
-S2psi_gamma1_subs = [S2psi_refs(2,:).subs];
-S2psi_gamma1_subs = S2psi_gamma1_subs(3, :);
-S2psi_gamma1_indices = [S2psi_gamma1_subs{:}];
-S2psi_gamma1s = zeros(1, nS2psi_refs);
-for ref_index = 1:nS2psi_refs
-    gamma2_index = S2psi_gamma2_indices(ref_index);
-    gammagamma_index = gammagamma_indices(ref_index);
-    S2psi_gamma1s(ref_index) = ...
-        (S{1+2}{1}.ranges{1}{gamma2_index}{gammagamma_index}(1) - 1);
-    %S2psi_gamma1s(ref_index) = S2psi_gamma1_indices(ref_index) + ...
-    %    (S{1+2}{1}.ranges{1}{gamma2_index}{gammagamma_index}(1) - 1);
-end
-S2psi_gamma1_resolutions = [gamma1_metas(S2psi_gamma1s).resolution];
-S2psi_gamma1_frequencies = S2psi_gamma1_resolutions * gamma1_mother_frequency;
-%%
-S2_psi_thetagamma_subs = [S2psi_refs(3,:).subs];
-S2psi_thetagamma_indices = S2_psi_thetagamma_subs(4, :);
-S2psi_thetagammas = 2 * [S2psi_thetagamma_indices{:}] - 3;
+gammagamma_frequencies = gammagamma_motherfrequency * ...
+    [S{1+2}{1}.variable_tree.time{1}.gamma{1}.gamma{1}.leaf.metas.resolution];
+    
 
-%%
-
+S_sorted_paths = S_paths(S_sorting_indices);
+S_lines = cell(1, nLines);
+for line_index = 1:nLines
+    ppm = S_sorted_ppms(line_index);
+    S_path = S_sorted_paths(line_index);
+    gamma1 = S_path.gamma;
+    gamma2 = S_path.gamma2;
+    gammagamma = S_path.gammagamma;
+    thetagamma = S_path.thetagamma;
+    ppm_string = [repmat(' ', 1, 6 - floor(log10(ppm))), num2str(ppm), ' ppm'];
+    f1 = gamma1_frequencies(gamma1);
+    f1_string = ...
+        [repmat(' ', 1, 5 - floor(log10(f1))), num2str(round(f1)), ' Hz'];
+    f2 = gamma2_frequencies(gamma2);
+    if f2
+        f2_string = ...
+            [repmat(' ', 1, 4 - floor(log10(f2))), num2str(round(f2)), ' Hz'];
+    else
+        f2_string = [];
+    end
+    fgamma = gammagamma_frequencies(gammagamma);
+    if fgamma
+        if thetagamma == 1
+            sign_str = '+';
+        elseif thetagamma == -1
+            sign_str = '-';
+        end
+        fgamma_string = [sign_str, num2str(fgamma), ' c/o'];
+    else
+        fgamma_string = [];
+    end
+    S_line = [ppm_string, '  ', ...
+        f1_string, '  ', ...
+        f2_string, '  ', ...
+        fgamma_string, ...
+        '\n'];
+    S_lines{line_index} = S_line;
+end
+text = sprintf([S_lines{:}]);
+end
