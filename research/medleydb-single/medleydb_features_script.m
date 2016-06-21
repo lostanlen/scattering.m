@@ -45,8 +45,8 @@ for method_index = 1:nMethods
     end
     opts{2}.invariants.time.invariance = 'summed';
 
-    file_name = ['mdb', method];
-    var_name = ['mdb', method, '_data'];
+    file_name = ['mdb_', method];
+    var_name = ['mdb_', method, '_data'];
 
     archs = sc_setup(opts);
 
