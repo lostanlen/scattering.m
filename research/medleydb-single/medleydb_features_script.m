@@ -1,5 +1,8 @@
 dataset_path = '~/datasets/mdbsi';
-methods = {'plain', 'joint', 'spiral'};
+methods = { ...
+    'time_morlet', 'time-frequency_morlet', 'spiral_morlet', ...
+    'time_gammatone', 'time-frequency_gammatone', 'spiral_gammatone', ...
+    'time_mixed', 'time-frequency_mixed', 'spiral_mixed'};
 
 %%
 N = 131072;
@@ -7,24 +10,37 @@ octave_bounds = [2 8];
 nfo = 16;
 gamma_bounds = [(octave_bounds(1)-1)*nfo octave_bounds(2)*nfo-1];
 
+
 nMethods = length(methods);
 for method_index = 1:nMethods
     method = methods{method_index};
+    split_keywords = strsplit(method, '_');
+    modulation_keyword = split_keywords{1};
+    wavelet_keyword = split_keywords{1};
     clear opts;
     opts{1}.banks.time.nFilters_per_octave = nfo;
     opts{1}.banks.time.size = N;
     opts{1}.banks.time.T = N;
     opts{1}.banks.time.is_chunked = false;
     opts{1}.banks.time.gamma_bounds = gamma_bounds;
-    opts{1}.banks.time.wavelet_handle = @gammatone_1d;
+    if strcmp(wavelet_keyword, 'morlet')
+        opts{1}.banks.time.wavelet_handle = @morlet_1d;
+    else
+        opts{1}.banks.time.wavelet_handle = @gammatone_1d;
+    end
     opts{1}.invariants.time.invariance = 'summed';
     opts{2}.banks.time.nFilters_per_octave = 1;
-    opts{2}.banks.time.wavelet_handle = @gammatone_1d;
-    if strcmp(method, 'joint') || strcmp(method, 'spiral')
+    if strcmp(wavelet_keyword, 'gammatone')
+        opts{2}.time.wavelet_handle = @gammatone_1d;
+    else
+        opts{2}.banks.time.wavelet_handle = @morlet_1d;
+    end
+    if strcmp(modulation_keyword, 'time-frequency') || ...
+            strcmp(modulation_keyword, 'spiral')
         opts{2}.banks.gamma.nFilters_per_octave = 1;
         opts{2}.banks.gamma.T = 2^5;
     end
-    if strcmp(method, 'spiral')
+    if strcmp(modulation_keyword, 'spiral')
         opts{2}.banks.j.nFilters_per_octave = 1;
     end
     opts{2}.invariants.time.invariance = 'summed';
