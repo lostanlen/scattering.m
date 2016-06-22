@@ -31,6 +31,8 @@ for layer = 1:nLayers
 end
 
 %% Unchunk if necessary
-S = sc_unchunk(S);
+if archs{1}.banks{1}.behavior.is_chunked
+    S = sc_unchunk(S);
+end
 
 end
