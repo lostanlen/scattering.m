@@ -16,7 +16,7 @@ for method_index = 1:nMethods
     method = methods{method_index};
     split_keywords = strsplit(method, '_');
     modulation_keyword = split_keywords{1};
-    wavelet_keyword = split_keywords{1};
+    wavelet_keyword = split_keywords{2};
     clear opts;
     opts{1}.banks.time.nFilters_per_octave = nfo;
     opts{1}.banks.time.size = N;
@@ -62,5 +62,5 @@ for method_index = 1:nMethods
     data.Y_test = Y_test;
     data.opts = opts;
     eval([var_name, ' = data']);
-    save(file_name, var_name);
+    save(file_name, var_name, '-v7.3');
 end
