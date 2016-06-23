@@ -14,10 +14,4 @@ for layer_index = layers
 end
 
 formatted_S = [formatted_layers{:}].';
-
-%% Unpadding of spatial variable
-unpadded_length = S{2+0}.variable_tree.time{1}.leaf.unpadded_size;
-hop_length = S{2+0}.ranges{1}(2,1);
-nSamples = ceil(unpadded_length / hop_length);
-formatted_S = formatted_S(:, 1:nSamples);
 end
