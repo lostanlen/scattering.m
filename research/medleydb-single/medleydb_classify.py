@@ -1,7 +1,7 @@
 import datetime
+import h5py
 import numpy as np
 import pickle
-import scipy.io
 import scipy.stats
 import sklearn.decomposition
 import sklearn.ensemble
@@ -25,14 +25,15 @@ for modulation in ['time', 'timefrequency', 'spiral']:
                 # Load
                 print(datetime.datetime.now().time().strftime('%H:%M:%S') +
                     " Loading")
-                mat = scipy.io.loadmat("mdb" + method + ".mat")
-                data = mat["mdb" + method + "_data"]
-                X_training = data["X_training"][0][0]
-                X_validation = data["X_validation"][0][0]
-                X_test = data["X_test"][0][0]
-                Y_training = np.ravel(data["Y_training"][0][0])
-                Y_validation = np.ravel(data["Y_validation"][0][0])
-                Y_test = np.ravel(data["Y_test"][0][0])
+                hdf5_str = "mdb_" + modulation + "_" + wavelet + ".mat"
+                hdf5_file = h5py.File(hdf5_str)
+                data = hdf5_file["mdb_" + modulation + "_" + wavelet + "_data"]
+                X_training = np.transpose(data["X_training"][:,:])
+                X_validation = np.transpose(data["X_validation"][:,:])
+                X_test = np.transpose(data["X_test"][:,:])
+                Y_training = np.ravel(data["Y_training"])
+                Y_validation = np.ravel(data["Y_validation"])
+                Y_test = np.ravel(data["Y_test"])
                 X_training = np.concatenate((X_training, X_validation))
                 Y_training = np.concatenate((Y_training, Y_validation))
 
@@ -66,7 +67,8 @@ for modulation in ['time', 'timefrequency', 'spiral']:
                 X_training = scaler.transform(X_training)
                 X_test = scaler.transform(X_test)
                 report = []
-                output_file = open('mdb' + method + 'svm_y.pkl', 'wb')
+                output_file = open(
+                    "mdb_" + modulation + "_" + wavelet + ".pkl", 'wb')
                 pickle.dump(report, output_file)
                 output_file.close()
 
