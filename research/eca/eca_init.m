@@ -58,14 +58,16 @@ if nChunks > 1
 end
 
 %% First display and sonification
-figure_handle = figure(1);
-colormap rev_gray;
-set(figure_handle, 'WindowStyle', 'docked');
-subplot(211);
-plot(init);
-subplot(212);
-scalogram = display_scalogram(U{1+1});
-imagesc(log1p(scalogram./10.0));
+if opts.is_displayed
+    figure_handle = figure(1);
+    colormap rev_gray;
+    set(figure_handle, 'WindowStyle', 'docked');
+    subplot(211);
+    plot(init);
+    subplot(212);
+    scalogram = display_scalogram(U{1+1});
+    imagesc(log1p(scalogram./10.0));
+end
 
 %%
 iterations = cell(1, opts.nIterations);
