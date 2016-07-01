@@ -1,0 +1,281 @@
+compression is logarithmic
+selection is based on 90% energy
+
+time_morlet
+04:08:14 Loading
+04:08:15 Standardization
+04:08:16 Training
+04:08:53 Evaluation
+Average miss rate = 38.6089961541
+
+time_morlet
+04:08:53 Loading
+04:08:55 Compression
+04:08:56 Standardization
+04:08:56 Training
+04:09:15 Evaluation
+Average miss rate = 31.9987799233
+
+time_morlet
+04:09:15 Loading
+04:09:17 Selection
+04:09:17 Standardization
+04:09:17 Training
+04:09:44 Evaluation
+Average miss rate = 46.6296799233
+
+time_morlet
+04:09:44 Loading
+04:09:45 Selection
+04:09:46 Compression
+04:09:46 Standardization
+04:09:46 Training
+04:09:58 Evaluation
+Average miss rate = 40.3157775023
+
+time_gammatone
+04:09:59 Loading
+04:10:00 Standardization
+04:10:00 Training
+04:10:37 Evaluation
+Average miss rate = 39.5462207303
+
+time_gammatone
+04:10:37 Loading
+04:10:39 Compression
+04:10:40 Standardization
+04:10:40 Training
+04:10:59 Evaluation
+Average miss rate = 31.3774894074
+
+time_gammatone
+04:10:59 Loading
+04:11:01 Selection
+04:11:01 Standardization
+04:11:01 Training
+04:11:25 Evaluation
+Average miss rate = 45.8757949183
+
+time_gammatone
+04:11:25 Loading
+04:11:27 Selection
+04:11:27 Compression
+04:11:28 Standardization
+04:11:28 Training
+04:11:41 Evaluation
+Average miss rate = 39.0996681685
+
+time_mixed
+04:11:41 Loading
+04:11:42 Standardization
+04:11:43 Training
+04:12:21 Evaluation
+Average miss rate = 37.5146767693
+
+time_mixed
+04:12:21 Loading
+04:12:23 Compression
+04:12:24 Standardization
+04:12:24 Training
+04:12:44 Evaluation
+Average miss rate = 31.3407197697
+
+time_mixed
+04:12:44 Loading
+04:12:45 Selection
+04:12:46 Standardization
+04:12:46 Training
+04:13:12 Evaluation
+Average miss rate = 45.6858677891
+
+time_mixed
+04:13:12 Loading
+04:13:13 Selection
+04:13:14 Compression
+04:13:14 Standardization
+04:13:15 Training
+04:13:28 Evaluation
+Average miss rate = 39.786827701
+
+timefrequency_morlet
+04:13:28 Loading
+04:13:40 Standardization
+04:13:43 Training
+04:21:27 Evaluation
+Average miss rate = 31.1138537111
+
+timefrequency_morlet
+04:21:28 Loading
+04:21:39 Compression
+04:21:46 Standardization
+04:21:50 Training
+04:27:11 Evaluation
+Average miss rate = 21.9688865863
+
+timefrequency_morlet
+04:27:12 Loading
+04:27:23 Selection
+04:27:26 Standardization
+04:27:28 Training
+04:31:06 Evaluation
+Average miss rate = 34.330722187
+
+timefrequency_morlet
+04:31:06 Loading
+04:31:17 Selection
+04:31:21 Compression
+04:31:25 Standardization
+04:31:26 Training
+04:33:35 Evaluation
+Average miss rate = 21.643091909
+
+timefrequency_gammatone
+04:33:36 Loading
+04:33:48 Standardization
+04:33:51 Training
+04:41:47 Evaluation
+Average miss rate = 31.1074191463
+
+timefrequency_gammatone
+04:41:48 Loading
+04:42:00 Compression
+04:42:07 Standardization
+04:42:10 Training
+04:47:46 Evaluation
+Average miss rate = 20.8974617003
+
+timefrequency_gammatone
+04:47:47 Loading
+04:47:58 Selection
+04:48:02 Standardization
+04:48:03 Training
+04:51:38 Evaluation
+Average miss rate = 33.0873959552
+
+timefrequency_gammatone
+04:51:39 Loading
+04:51:50 Selection
+04:51:54 Compression
+04:51:58 Standardization
+04:51:59 Training
+04:54:08 Evaluation
+Average miss rate = 21.3533131032
+
+timefrequency_mixed
+04:54:09 Loading
+04:54:20 Standardization
+04:54:23 Training
+05:02:15 Evaluation
+Average miss rate = 31.1579660048
+
+timefrequency_mixed
+05:02:16 Loading
+05:02:27 Compression
+05:02:34 Standardization
+05:02:37 Training
+05:08:04 Evaluation
+Average miss rate = 20.8780936585
+
+timefrequency_mixed
+05:08:05 Loading
+05:08:16 Selection
+05:08:19 Standardization
+05:08:20 Training
+05:11:55 Evaluation
+Average miss rate = 32.6427053111
+
+spiral_morlet
+05:14:26 Loading
+05:14:52 Standardization
+05:15:02 Training
+05:55:07 Evaluation
+Average miss rate = 32.9390313359
+
+spiral_morlet
+05:55:10 Loading
+05:55:35 Compression
+05:56:00 Standardization
+05:56:10 Training
+06:30:35 Evaluation
+Average miss rate = 19.8892690799
+
+spiral_morlet
+06:30:39 Loading
+06:31:04 Selection
+06:31:16 Standardization
+06:31:22 Training
+06:52:18 Evaluation
+Average miss rate = 34.5014259331
+
+spiral_morlet
+06:52:20 Loading
+06:52:45 Selection
+06:52:57 Compression
+06:53:11 Standardization
+06:53:15 Training
+07:08:22 Evaluation
+Average miss rate = 19.8576782058
+
+spiral_gammatone
+07:08:24 Loading
+07:08:50 Standardization
+07:08:59 Training
+07:49:23 Evaluation
+Average miss rate = 33.5393374499
+
+spiral_gammatone
+07:49:26 Loading
+07:49:51 Compression
+07:50:12 Standardization
+07:50:21 Training
+08:25:26 Evaluation
+Average miss rate = 20.018946169
+
+spiral_gammatone
+08:25:29 Loading
+08:25:54 Selection
+08:26:06 Standardization
+08:26:10 Training
+08:47:49 Evaluation
+Average miss rate = 35.9082874062
+
+spiral_gammatone
+08:47:51 Loading
+08:48:15 Selection
+08:48:27 Compression
+08:48:41 Standardization
+08:48:45 Training
+09:04:54 Evaluation
+Average miss rate = 20.9212992089
+
+spiral_mixed
+09:04:56 Loading
+09:05:21 Standardization
+09:05:30 Training
+09:45:50 Evaluation
+Average miss rate = 33.2286753745
+
+spiral_mixed
+09:45:53 Loading
+09:46:18 Compression
+09:46:39 Standardization
+09:46:48 Training
+10:21:17 Evaluation
+Average miss rate = 20.3898143635
+
+spiral_mixed
+10:21:20 Loading
+10:21:44 Selection
+10:21:56 Standardization
+10:22:00 Training
+10:43:42 Evaluation
+Average miss rate = 34.4013596498
+
+spiral_mixed
+10:43:44 Loading
+10:44:09 Selection
+10:44:21 Compression
+10:44:35 Standardization
+10:44:40 Training
+11:00:30 Evaluation
+Average miss rate = 21.3867071736
