@@ -1,9 +1,11 @@
 %% Setup
 Q1 = 12; % number of filters per octave at first order
-T = 2^13; % amount of invariance with respect to time translation
+T = 2^14; % amount of invariance with respect to time translation
 % The modulation setting is either 'none', 'time', or 'time-frequency'
+% The wavelets setting is either 'morlet' or 'gammatone'
 modulations = 'time-frequency';
-archs = eca_setup(Q1, T, modulations);
+wavelets = 'gammatone';
+archs = eca_setup(Q1, T, modulations, wavelets);
 
 %% Load
 audio_path = '/Users/vlostan/Documents/TrENSmissions/expliquer/camille/140806_0804_ech_bear.wav';
