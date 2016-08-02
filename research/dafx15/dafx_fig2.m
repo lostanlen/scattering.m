@@ -17,11 +17,13 @@ opts{1}.time.size = N;
 opts{1}.time.T = 2^10;
 opts{1}.time.max_scale = 16*opts{1}.time.T;
 opts{1}.time.nFilters_per_octave = 16;
+opts{1}.time.is_chunked = false;
 
 % Options for scattering along time
-opts{2}.time.handle = @morlet_1d;
+opts{2}.time.wavelet_handle = @morlet_1d;
 opts{2}.time.max_scale = Inf;
 opts{2}.time.U_log2_oversampling = 2;
+opts{2}.time.T = N;
 
 % Options for scattering along chromas
 opts{2}.gamma.invariance = 'bypassed';
@@ -29,8 +31,9 @@ opts{2}.gamma.U_log2_oversampling = Inf;
 
 % Options for scattering along octaves
 opts{2}.j.invariance = 'bypassed';
-opts{2}.j.T = 4;
-opts{2}.j.handle = @morlet_1d;
+opts{2}.j.T = 8;
+opts{2}.j.max_scale = Inf;
+opts{2}.j.wavelet_handle = @morlet_1d;
 opts{2}.j.mother_xi = 0.4;
 opts{2}.j.cutoff_in_dB = 5;
 
@@ -116,6 +119,7 @@ for gammachroma_index = 1:width_offset
     portrait(gamma_height,gamma_width) = multiplier * ...
         tensor(time_index,chroma_index,octave_index,2,1);
 end
+multiplier = 1;
 
 % phi-psi case
 phipsi_data = U{1+2}{1,2,1}.data{gamma2};
@@ -131,7 +135,7 @@ for gammaheight_index = 1:height_offset
     
     gamma_width = 1 + width_offset;
     gamma_height = gammaheight_index;
-    multiplier = prod(ranges(2,2:end));
+    %multiplier = prod(ranges(2,2:end));
     portrait(gamma_height,gamma_width) = multiplier * ...
         tensor(time_index,chroma_index,octave_index,1,1);
     
@@ -139,7 +143,7 @@ for gammaheight_index = 1:height_offset
     portrait(gamma_height,gamma_width) = multiplier * ...
         tensor(time_index,chroma_index,octave_index,2,1);
 end
-
+multiplier = 1;
 
 % phi-phi case
 phiphi_data = U{1+2}{1,2,2}.data{gamma2};
@@ -147,12 +151,14 @@ ranges = U{1+2}{1,2,2}.ranges{1+0}{gamma2};
 time_index = 1 + floor((t-ranges(1,1))/ranges(2,1));
 chroma_index = 1 + floor((chroma1-ranges(1,2)) / ranges(2,2));
 octave_index = 1 + floor((j1-ranges(1,3)) / ranges(2,3));
-multiplier = prod(ranges(2,2:end));
+%multiplier = prod(ranges(2,2:end));
 portrait(1+height_offset,1+width_offset) = multiplier * ...
     phiphi_data(time_index,chroma_index,octave_index);
 
-%% Export
-colormap rev_gray;
+% Export
+colormap rev_magma;
 imagesc(portrait);
 axis off
+
+%%
 export_fig dafx_fig2b.png -transparent

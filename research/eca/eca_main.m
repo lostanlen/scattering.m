@@ -1,6 +1,6 @@
 %% Setup
 Q1 = 12; % number of filters per octave at first order
-T = 2^14; % amount of invariance with respect to time translation
+T = 2^10; % amount of invariance with respect to time translation
 % The modulation setting is either 'none', 'time', or 'time-frequency'
 % The wavelets setting is either 'morlet' or 'gammatone'
 modulations = 'time-frequency';
@@ -8,12 +8,12 @@ wavelets = 'gammatone';
 archs = eca_setup(Q1, T, modulations, wavelets);
 
 %% Load
-audio_path = '/Users/vlostan/Documents/TrENSmissions/expliquer/camille/140806_0804_ech_bear.wav';
-[y, sample_rate, bit_depth] = eca_load(audio_path, 12*T);
+audio_path = '/Users/vlostan/datasets/eca/modulator_7m04s.wav';
+[y, sample_rate, bit_depth] = eca_load(audio_path);
 eca_display(y, archs);
 
 %%
-text = eca_text(y, archs, sample_rate);
+[text, S_sorted_paths] = eca_text(y, archs, sample_rate);
 disp(text)
 
 %% Re-synthesize

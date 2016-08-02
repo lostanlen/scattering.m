@@ -1,4 +1,4 @@
-function text = eca_text(y, archs, sample_rate)
+function [text, S_sorted_paths] = eca_text(y, archs, sample_rate)
 %% Divide into chunks
 N = archs{1}.banks{1}.spec.size;
 chunks = eca_split(y, N);
