@@ -1,12 +1,4 @@
-function [text, S_sorted_paths] = eca_text(y, archs, sample_rate)
-%% Divide into chunks
-N = archs{1}.banks{1}.spec.size;
-chunks = eca_split(y, N);
-
-%%
-S = eca_target(chunks, archs);
-
-%%
+function [text, S_sorted_paths] = eca_text(S, sample_rate)
 gamma1_start = S{1+1}.ranges{1}(1,3);
 S1_refs = generate_refs(S{1+1}.data, [1, 2], S{1+1}.ranges{1});
 nS1_refs = length(S1_refs);
