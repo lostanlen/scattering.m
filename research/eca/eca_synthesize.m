@@ -1,6 +1,8 @@
-function iterations = eca_synthesize(y, archs, opts)
+function [sounds, texts] = eca_synthesize(y, archs, opts)
 %% Default options
 opts.is_displayed = true;
+opts.generate_text = default(opts, 'generate_text', true);
+opts.display_text = default(opts, 'display_text', false);
 opts = fill_reconstruction_opt(opts);
 
 %% Divide into chunks
@@ -13,14 +15,15 @@ target_S = eca_target(target_chunks, archs);
 nLayers = length(archs);
 
 %% Initialization
-[iterations, previous_loss, delta_chunks] = ...
+[sounds, previous_loss, delta_chunks] = ...
     eca_init(target_chunks, target_S, archs, opts);
-previous_chunks = eca_split(iterations{1+0}, N);
+previous_chunks = eca_split(sounds{1+0}, N);
 relative_loss_chart = zeros(opts.nIterations, 1);
 opts.signal_update = zeros(size(target_chunks));
 opts.learning_rate = opts.initial_learning_rate;
 max_nDigits = 1 + floor(log10(opts.nIterations));
 sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
+texts = {};
 
 %% Iterated reconstruction
 iteration = 1;
@@ -30,7 +33,7 @@ tic();
 while (iteration <= opts.nIterations) && ishandle(figure_handle)
     %% Signal update
     new_chunks = update_reconstruction(previous_chunks, delta_chunks, opts);
-    iterations{1+iteration} = eca_overlap_add(new_chunks);
+    sounds{1+iteration} = eca_overlap_add(new_chunks);
     
     %% Scattering propagation
     S = cell(1, nLayers);
@@ -78,7 +81,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     iteration = iteration + 1;
     failure_counter = 0;
     relative_loss_chart(iteration) = 100 * loss / target_norm;
-    previous_chunks = eca_split(iterations{iteration}, N);
+    previous_chunks = eca_split(sounds{iteration}, N);
     previous_loss = loss;
     opts.signal_update = ...
         opts.momentum * opts.signal_update + ...
@@ -86,6 +89,10 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     opts.learning_rate = ...
         opts.bold_driver_accelerator * ...
         opts.learning_rate;
+    if opts.generate_text
+        text = eca_text(S, opts.sample_rate);
+        texts = cat(1, texts, text);
+    end
     
     %% Backpropagation
     delta_chunks = sc_backpropagate(delta_S, U, Y, archs);
@@ -103,13 +110,16 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         loss_string = ['Loss = ', pretty_loss];
         disp([iteration_string, distances_string, loss_string]);
         disp(['Learning rate = ', num2str(opts.learning_rate)]);
+        if opts.generate_text && opts.display_text
+            disp(text);
+        end
         toc();
         tic();
     end
     
     %% Display
     subplot(211);
-    plot(iterations{iteration});
+    plot(sounds{iteration});
     subplot(212);
     U = sc_unchunk(U(1:2));
     scalogram = display_scalogram(U{1+1});
@@ -119,10 +129,11 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     
     %% Sonify
     if opts.is_sonified
-        soundsc(iterations{iteration}, 44100);
+        soundsc(sounds{iteration}, 44100);
     end
 end
 toc();
 
+sounds(cellfun(@isempty, sounds)) = [];
 end
 
