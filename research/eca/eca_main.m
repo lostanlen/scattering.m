@@ -1,5 +1,4 @@
 %% Setup
-addpath(genpath('../../'))
 Q1 = 12; % number of filters per octave at first order
 T = 2^13; % amount of invariance with respect to time translation
 % The modulation setting is either 'none', 'time', or 'time-frequency'
