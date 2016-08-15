@@ -1,5 +1,5 @@
-function signal = ...
-    update_reconstruction(signal, delta_signal, reconstruction_opt)
+function [signal, signal_update] = update_reconstruction( ...
+    signal, delta_signal, signal_update, learning_rate, reconstruction_opt)
 %% Regularization if required
 if reconstruction_opt.is_regularized
     signal = signal - 2 * reconstruction_opt.regularizer * signal;
@@ -7,8 +7,8 @@ end
 
 %% Signal update
 signal_update = ...
-    reconstruction_opt.momentum * reconstruction_opt.signal_update + ...
-    reconstruction_opt.learning_rate * delta_signal;
+    reconstruction_opt.momentum * signal_update + ...
+    learning_rate * delta_signal;
 signal = signal + signal_update;
 
 %% Soft thresholding if required
