@@ -1,5 +1,5 @@
 %% Setup
-Q1 = 8; % number of filters per octave at first order
+Q1 = 12; % number of filters per octave at first order
 T = 2^13; % amount of invariance with respect to time translation
 % The modulation setting is either 'none', 'time', or 'time-frequency'
 % The wavelets setting is either 'morlet' or 'gammatone'
@@ -7,11 +7,11 @@ modulations = 'time-frequency';
 wavelets = 'morlet';
 archs = eca_setup(Q1, T, modulations, wavelets);
 
-%% Load
-audio_path = '/Users/vlostan/datasets/MedleyDB/Audio/MusicDelta_ModalJazz/MusicDelta_ModalJazz_MIX.wav';
+% Load
+audio_path = '/Users/vlostan/datasets/MedleyDB/Audio/MusicDelta_LatinJazz/MusicDelta_LatinJazz_MIX.wav';
 [y, sample_rate, bit_depth] = eca_load(audio_path, 2^18);
 
-%%
+%
 eca_display(y, archs);
 
 %% Re-synthesize
