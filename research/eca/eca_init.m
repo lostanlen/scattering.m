@@ -1,5 +1,4 @@
-function [iterations, init_loss, delta_chunks] = ...
-    eca_init(y, target_S, archs, opts)
+function [init, init_loss, delta_chunks] = eca_init(y, target_S, archs, opts)
 %% Random initialization
 [N, nChunks] = size(y);
 if isfield(opts, 'initial_signal')
@@ -47,30 +46,4 @@ init_loss = sc_norm(delta_S);
 delta_chunks = sc_backpropagate(delta_S, U, Y, archs);
 delta_signal = eca_overlap_add(delta_chunks);
 delta_chunks = eca_split(delta_signal, N);
-
-%% Unchunking if required
-if nChunks > 1
-    U = U(1:2);
-    U = sc_unchunk(U);
-    init = eca_overlap_add(init);
-    init = eca_split(init, N);
-    init = eca_overlap_add(init);
-end
-
-%% First display and sonification
-if opts.is_displayed
-    figure_handle = figure(1);
-    colormap rev_gray;
-    set(figure_handle, 'WindowStyle', 'docked');
-    subplot(211);
-    plot(init);
-    subplot(212);
-    scalogram = display_scalogram(U{1+1});
-    imagesc(log1p(scalogram./10.0));
-end
-
-%%
-iterations = cell(1, opts.nIterations);
-iterations{1+0} = init;
-
 end
