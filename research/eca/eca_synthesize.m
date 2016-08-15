@@ -37,7 +37,7 @@ for batch_index = 0:(nBatches-1)
         eca_propagate(target_batches{1+batch_index}, archs);
 end
 
-%% Initialization (new)
+%% Initialization
 loss_batches = zeros(nBatches, opts.nIterations);
 signal_update_batches = ...
     arrayfun(@(x) zeros(N, x), batch_sizes, 'UniformOutput', false);
