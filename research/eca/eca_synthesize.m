@@ -32,7 +32,7 @@ end
 
 %% Forward propagation of target
 target_S_batches = cell(1, nBatches);
-for batch_index = 0:(nBatches-1)
+parfor batch_index = 0:(nBatches-1)
     target_S_batches{1+batch_index} = ...
         eca_propagate(target_batches{1+batch_index}, archs);
 end
@@ -46,9 +46,12 @@ max_nDigits = 1 + floor(log10(opts.nIterations));
 sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
 texts = {};
 sounds = cell(1, 1 + opts.nIterations);
+hann_window = hann(N);
+chunks = zeros(N, nChunks);
 for chunk_index = 0:(nChunks-1)
-    chunks(:, 1+chunk_index) = ...
-        generate_colored_noise(target_chunks(:, 1+chunk_index));
+    chunk = generate_colored_noise(target_chunks(:, 1+chunk_index));
+    chunk = chunk .* hann_window;
+    chunks(:, 1+chunk_index) = chunk;
 end
 sounds{1+0} = eca_overlap_add(chunks);
 
@@ -62,6 +65,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     chunks = eca_split(sounds{iteration}, N);
     
     %% Batch computation
+    batches = cell(1, nBatches);
     for batch_index = 0:(nBatches-1)
         % Select chunks
         batch_start = 1 + batch_index * nChunks_per_batch;
@@ -69,60 +73,36 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         if batch_stop == (nChunks - 1)
             batch_stop = nChunks;
         end
-        batch = chunks(:, batch_start:batch_stop);
+        batches{1+batch_index} = chunks(:, batch_start:batch_stop);
+    end
+    parfor batch_index = 0:(nBatches-1)
+        % Load batch
+        batch = batches{1+batch_index};
         % Forward propagation
         [S, U, Y] = eca_propagate(batch, archs);
         U_batches{1+batch_index} = U;
         target_S = target_S_batches{1+batch_index};
-        % Loss measure
-        if iteration > 1
-            previous_loss = loss_batches(1+batch_index, (iteration-1));
-        else
-            previous_loss = Inf;
-        end
         % Substraction
         delta_S = sc_substract(target_S, S);
-        [loss, layer_absolute_distances] = sc_norm(delta_S);
         % Backpropagation
         delta_batch = sc_backpropagate(delta_S, U, Y, archs);
         % Get learning rate and momentum
         learning_rate = learning_rate_batches(1+batch_index);
         signal_update = signal_update_batches{1+batch_index};
-        if ~opts.adapt_learning_rate
-            [batch, signal_update] = update_reconstruction(batch, delta_batch, ...
-                signal_update, learning_rate, opts);
-            chunks(:, batch_start:batch_stop) = batch;
-            learning_rate_batches(1+batch_index) = learning_rate;
-            signal_update_batches{1+batch_index} = signal_update;
-        elseif (loss > previous_loss)
-            % If loss has decreased
-            % Confirm the step
-            [batch, signal_update] = update_reconstruction( ...
-                batch, delta_batch, signal_update, learning_rate, opts);
-            chunks(:, batch_start:batch_stop) = batch;        
-            % Bold driver "acceleration"
-            next_learning_rate = opts.bold_driver_accelerator * learning_rate;
-            next_learning_rate = min(next_learning_rate, 1.0);
-            accelerator = next_learning_rate / learning_rate;
-            learning_rate_batches(1+batch_index) = next_learning_rate;
-            signal_update_batches{1+batch_index} = accelerator * signal_update;
-        else
-            % If loss has increased
-            % retract the step
-            % bold driver "brake"
-            next_learning_rate = opts.bold_driver_brake * learning_rate;
-            next_learning_rate = max(next_learning_rate, 0.001);
-            brake = next_learning_rate / learning_rate;
-            learning_rate_batches(1+batch_index) = next_learning_rate;
-            signal_update_batches{1+batch_index} = brake * signal_update;
-        end
+        % Update signal
+        [batch, signal_update] = update_reconstruction(batch, delta_batch, ...
+            signal_update, learning_rate, opts);
+        batches{1+batch_index} = batch;
+        % Update learning rate and momentum
+        learning_rate_batches(1+batch_index) = learning_rate;
+        signal_update_batches{1+batch_index} = signal_update;
     end
-    loss_batches(1+batch_index, 1+iteration) = loss;
+    chunks = [batches{:}];
     sounds{1+iteration} = eca_overlap_add(chunks);
     
     %% Pretty-printing of scattering distances and loss function
      if opts.is_verbose
-          disp(mean(loss_batches(:, 1+iteration)));
+          %disp(norm(loss_batches(:, 1+iteration), 2));
 %         pretty_iteration = sprintf(sprintf_format, iteration);
 %         layer_distances = ...
 %             100 * layer_absolute_distances ./ layer_target_norms;
