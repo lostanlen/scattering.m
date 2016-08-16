@@ -17,8 +17,8 @@ eca_display(y, archs);
 %% Re-synthesize
 clear opts;
 opts.nChunks_per_batch = 2; % must be > 1
-opts.is_sonified = true;
-opts.is_spectrogram_displayed = true;
+opts.is_sonified = false;
+opts.is_spectrogram_displayed = false;
 % (close Figure 1 to abort early)
 opts.nIterations = 20;
 opts.sample_rate = sample_rate;

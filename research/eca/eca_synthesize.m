@@ -80,7 +80,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         batch = batches{1+batch_index};
         % Forward propagation
         [S, U, Y] = eca_propagate(batch, archs);
-        U_batches{1+batch_index} = U;
+        U_batches{1+batch_index} = U(1:2);
         target_S = target_S_batches{1+batch_index};
         % Substraction
         delta_S = sc_substract(target_S, S);
