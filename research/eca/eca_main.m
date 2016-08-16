@@ -8,10 +8,10 @@ wavelets = 'morlet';
 archs = eca_setup(Q1, T, modulations, wavelets);
 
 % Load
-audio_path = '/Users/vlostan/datasets/MedleyDB/Audio/MusicDelta_LatinJazz/MusicDelta_LatinJazz_MIX.wav';
-[y, sample_rate, bit_depth] = eca_load(audio_path, 2^18);
+audio_path = '~/datasets/solosDb/Pn/2985.wav';
+[y, sample_rate, bit_depth] = eca_load(audio_path, 2^22);
 
-%
+%%
 eca_display(y, archs);
 
 %% Re-synthesize
@@ -20,7 +20,7 @@ opts.nChunks_per_batch = 2; % must be > 1
 opts.is_sonified = true;
 opts.is_spectrogram_displayed = true;
 % (close Figure 1 to abort early)
-opts.nIterations = 50;
+opts.nIterations = 20;
 opts.sample_rate = sample_rate;
 opts.generate_text = false;
 opts.is_verbose = true;
