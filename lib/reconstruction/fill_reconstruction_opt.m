@@ -1,4 +1,8 @@
 function reconstruction_opt = fill_reconstruction_opt(reconstruction_opt)
+%% Initialization
+reconstruction_opt.is_initialization_localized = ...
+    default(reconstruction_opt, 'is_initialization_localized', false);
+
 %% Method
 reconstruction_opt.nIterations = ...
     default(reconstruction_opt, 'nIterations', 100);

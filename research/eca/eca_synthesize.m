@@ -48,12 +48,16 @@ texts = {};
 sounds = cell(1, 1 + opts.nIterations);
 hann_window = hann(N);
 chunks = zeros(N, nChunks);
-for chunk_index = 0:(nChunks-1)
-    chunk = generate_colored_noise(target_chunks(:, 1+chunk_index));
-    chunk = chunk .* hann_window;
-    chunks(:, 1+chunk_index) = chunk;
+if opts.is_initialization_localized
+    for chunk_index = 0:(nChunks-1)
+        chunk = generate_colored_noise(target_chunks(:, 1+chunk_index));
+        chunk = chunk .* hann_window;
+        chunks(:, 1+chunk_index) = chunk;
+    end
+    sounds{1+0} = eca_overlap_add(chunks);
+else
+    sounds{1+0} = generate_colored_noise(y);
 end
-sounds{1+0} = eca_overlap_add(chunks);
 
 %% Iterated reconstruction
 iteration = 1;
