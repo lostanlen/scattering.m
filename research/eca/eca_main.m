@@ -9,7 +9,7 @@ archs = eca_setup(Q1, T, modulations, wavelets);
 
 % Load
 audio_path = '~/datasets/solosDb/Pn/2985.wav';
-[y, sample_rate, bit_depth] = eca_load(audio_path, 2^22);
+[y, sample_rate, bit_depth] = eca_load(audio_path);
 
 %%
 eca_display(y, archs);
