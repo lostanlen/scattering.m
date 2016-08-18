@@ -103,7 +103,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
             ['S_m distances = [ ',pretty_distances, ' ]  ;  '];
         loss_string = ['Loss = ', pretty_loss];
         disp([iteration_string, distances_string, loss_string]);
-        disp(['Learning rate = ', num2str(opts.learning_rate)]);
+        disp(['Learning rate = ', num2str(learning_rate)]);
         toc();
         tic();
     end
