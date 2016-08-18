@@ -1,10 +1,10 @@
 %% Setup scattering options
 Q1 = 12; % number of filters per octave at first order
-T = 2^13; % amount of invariance with respect to time translation
+T = 2^8; % amount of invariance with respect to time translation
 % The modulation setting is either 'none', 'time', or 'time-frequency'
 % The wavelets setting is either 'morlet' or 'gammatone'
-modulations = 'time-frequency';
-wavelets = 'gammatone';
+modulations = 'none';
+wavelets = 'morlet';
 N = 2^17; % length of the signal
 
 % Load
@@ -25,7 +25,7 @@ opts.initial_learning_rate = 0.1;
 
 %% Multi-chunk mode
 archs_multichunk = eca_setup(Q1, T, modulations, wavelets);
-sounds = eca_synthesize(y, archs_multichunk, opts);
+chunk_sounds = eca_synthesize(y, archs_multichunk, opts);
 
 %% Single-chunk mode
 archs_singlechunk = eca_setup_1chunk(Q1, T, modulations, wavelets, N);
