@@ -9,12 +9,14 @@ target_S = eca_target(y, archs);
 nLayers = length(archs);
 
 %% Initialization
-[iterations, previous_loss, delta_signal] = ...
+[init, previous_loss, delta_signal] = ...
     eca_init(y, target_S, archs, opts);
+iterations = cell(1, opts.nIterations);
+iterations{1+0} = init;
 previous_signal = iterations{1+0};
 relative_loss_chart = zeros(opts.nIterations, 1);
-opts.signal_update = zeros(size(iterations{1+0}));
-opts.learning_rate = opts.initial_learning_rate;
+signal_update = zeros(size(iterations{1+0}));
+learning_rate = opts.initial_learning_rate;
 max_nDigits = 1 + floor(log10(opts.nIterations));
 sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
 
@@ -26,7 +28,11 @@ tic();
 while (iteration <= opts.nIterations) && ishandle(figure_handle)
     %% Signal update
     iterations{1+iteration} = ...
-        update_reconstruction(previous_signal, delta_signal, opts);
+        update_reconstruction(previous_signal, ...
+        delta_signal, ...
+        signal_update, ...
+        learning_rate, ...
+        opts);
     
     %% Scattering propagation
     S = cell(1, nLayers);
@@ -56,14 +62,14 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     %% If loss has increased, step retraction and bold driver "brake"
     [loss,layer_absolute_distances] = sc_norm(delta_S);
     if opts.adapt_learning_rate && (loss > previous_loss)
-        opts.learning_rate = ...
-            opts.bold_driver_brake * opts.learning_rate;
-        opts.signal_update = ...
-            opts.bold_driver_brake * opts.signal_update;
-        disp(['Learning rate = ', num2str(opts.learning_rate)]);
+        learning_rate = ...
+            opts.bold_driver_brake * learning_rate;
+        signal_update = ...
+            opts.bold_driver_brake * signal_update;
+        disp(['Learning rate = ', num2str(learning_rate)]);
         failure_counter = failure_counter + 1;
         if failure_counter > 3
-            opts.learning_rate = opts.initial_learning_rate;
+            learning_rate = opts.initial_learning_rate;
         else
             continue
         end
@@ -75,12 +81,12 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     relative_loss_chart(iteration) = 100 * loss / target_norm;
     previous_signal = iterations{iteration};
     previous_loss = loss;
-    opts.signal_update = ...
-        opts.momentum * opts.signal_update + ...
-        opts.learning_rate * delta_signal;
-    opts.learning_rate = ...
+    signal_update = ...
+        opts.momentum * signal_update + ...
+        learning_rate * delta_signal;
+    learning_rate = ...
         opts.bold_driver_accelerator * ...
-        opts.learning_rate;
+        learning_rate;
     
     %% Backpropagation
     delta_signal = sc_backpropagate(delta_S, U, Y, archs);
