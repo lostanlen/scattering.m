@@ -48,8 +48,8 @@ end
 reconstruction_opt.is_verbose = default(reconstruction_opt, 'is_verbose', true);
 
 %% Display
-reconstruction_opt.is_spectrogram_displayed = ...
-    default(reconstruction_opt, 'is_spectrogram_displayed', false);
+reconstruction_opt.is_displayed = ...
+    default(reconstruction_opt, 'is_displayed', false);
 
 %% Sonification
 reconstruction_opt.is_sonified = ...

@@ -1,6 +1,5 @@
 function iterations = eca_synthesize_1chunk(y, archs, opts)
 %% Default options
-opts.is_displayed = true;
 opts = fill_reconstruction_opt(opts);
 
 %% Forward propagation of target signal
@@ -23,9 +22,13 @@ sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
 %% Iterated reconstruction
 iteration = 1;
 failure_counter = 0;
-figure_handle = gcf();
+is_display_active = opts.is_displayed;
+if is_display_active
+    figure_handle = gcf();
+end
 tic();
-while (iteration <= opts.nIterations) && ishandle(figure_handle)
+
+while (iteration <= opts.nIterations) && is_display_active
     %% Signal update
     iterations{1+iteration} = ...
         update_reconstruction(previous_signal, ...
@@ -109,14 +112,17 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     end
     
     %% Display
-    subplot(211);
-    plot(iterations{iteration});
-    subplot(212);
-    U = sc_unchunk(U(1:2));
-    scalogram = display_scalogram(U{1+1});
-    imagesc(log1p(scalogram./10.0));
-    colormap rev_gray;
-    drawnow();
+    if is_display_active
+        subplot(211);
+        plot(iterations{iteration});
+        subplot(212);
+        U = sc_unchunk(U(1:2));
+        scalogram = display_scalogram(U{1+1});
+        imagesc(log1p(scalogram./10.0));
+        colormap rev_gray;
+        drawnow();
+        is_display_active = ishandle(figure_handle);
+    end
     
     %% Sonify
     if opts.is_sonified
