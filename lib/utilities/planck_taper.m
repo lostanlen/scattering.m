@@ -13,5 +13,4 @@ w(1) = 0;
 w(2:t2) = 1 ./ (exp(Z_plus(2:t2)) + 1);
 w((t3+1):end-1) = 1 ./ (exp(Z_minus((t3+1):end-1)) + 1);
 w(end) = 0;
-plot(w);
 end
