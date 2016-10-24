@@ -1,4 +1,5 @@
-function iterations = eca_synthesize_1chunk(y, archs, opts)
+function [iterations, relative_loss_chart, relative_layer_loss_chart] = ...
+    eca_synthesize_1chunk(y, archs, opts)
 %% Default options
 opts = fill_reconstruction_opt(opts);
 
@@ -13,7 +14,8 @@ nLayers = length(archs);
 iterations = cell(1, opts.nIterations);
 iterations{1+0} = init;
 previous_signal = iterations{1+0};
-relative_loss_chart = zeros(opts.nIterations, 1);
+relative_loss_chart = zeros(1, opts.nIterations);
+relative_layer_loss_chart = zeros(nLayers, opts.nIterations);
 signal_update = zeros(size(iterations{1+0}));
 learning_rate = opts.initial_learning_rate;
 max_nDigits = 1 + floor(log10(opts.nIterations));
@@ -28,7 +30,7 @@ if is_display_active
 end
 tic();
 
-while (iteration <= opts.nIterations) && is_display_active
+while (iteration <= opts.nIterations) && (~opts.is_displayed || is_display_active)
     %% Signal update
     iterations{1+iteration} = ...
         update_reconstruction(previous_signal, ...
@@ -63,7 +65,7 @@ while (iteration <= opts.nIterations) && is_display_active
     delta_S = sc_substract(target_S,S);
     
     %% If loss has increased, step retraction and bold driver "brake"
-    [loss,layer_absolute_distances] = sc_norm(delta_S);
+    [loss, layer_absolute_distances] = sc_norm(delta_S);
     if opts.adapt_learning_rate && (loss > previous_loss)
         learning_rate = ...
             opts.bold_driver_brake * learning_rate;
@@ -82,6 +84,8 @@ while (iteration <= opts.nIterations) && is_display_active
     iteration = iteration + 1;
     failure_counter = 0;
     relative_loss_chart(iteration) = 100 * loss / target_norm;
+    relative_layer_loss_chart(:, iteration) = ...
+        100 * layer_absolute_distances / target_norm;
     previous_signal = iterations{iteration};
     previous_loss = loss;
     signal_update = ...
