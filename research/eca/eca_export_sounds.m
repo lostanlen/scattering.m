@@ -1,4 +1,4 @@
-function eca_export_sounds(sounds, audio_path, opts, sample_rate, ...
+function eca_export_sounds(sounds, folder, name, opts, sample_rate, ...
     bit_depth, Q1, T, modulations)
 switch modulations
     case 'none'
@@ -12,6 +12,11 @@ arch_str = ...
     ['_Q=', num2str(Q1, '%0.2d'), ...
      '_J=', num2str(log2(T), '%0.2d'), ...
      '_sc=', scattering_str];
+folder_out = [folder, arch_str];
+if ~exist(folder_out, 'dir')
+  mkdir(folder_out);
+end
+audio_path = fullfile(folder_out, name);
 switch opts.export_mode
     case 'last'
         last_it = length(sounds) - 1;
