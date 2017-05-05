@@ -33,10 +33,13 @@ for name_index = 1:nNames
     disp(repmat('-', 1, nChars));
     disp(header_str);
     audio_path = fullfile(folder, name);
-    [y, sample_rate, bit_depth] = eca_load(audio_path, N);
+    [y, sample_rate, bit_depth] = eca_load(audio_path);
+    opts.sample_rate = sample_rate;
+    padding_length = ceil(length(y)/N) * N - length(y);
+    y = cat(1, y, zeros(padding_length, 1));
     iterations = eca_synthesize(y, archs, opts);
-    eca_export(iterations, audio_path, opts, sample_rate, bit_depth, ...
-        Q1, T, modulations);
+    eca_export_sounds(iterations, folder, name, opts, ...
+        sample_rate, bit_depth, Q1, T, modulations);
 end
 
 end
