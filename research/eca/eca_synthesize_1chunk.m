@@ -28,7 +28,9 @@ is_display_active = opts.is_displayed;
 if is_display_active
     figure_handle = gcf();
 end
-tic();
+if opts.is_verbose
+    tic();
+end
 
 while (iteration <= opts.nIterations) && (~opts.is_displayed || is_display_active)
     %% Signal update
@@ -71,7 +73,9 @@ while (iteration <= opts.nIterations) && (~opts.is_displayed || is_display_activ
             opts.bold_driver_brake * learning_rate;
         signal_update = ...
             opts.bold_driver_brake * signal_update;
-        disp(['Learning rate = ', num2str(learning_rate)]);
+        if opts.is_verbose
+            disp(['Learning rate = ', num2str(learning_rate)]);
+        end
         failure_counter = failure_counter + 1;
         if failure_counter > 3
             learning_rate = opts.initial_learning_rate;
@@ -133,7 +137,9 @@ while (iteration <= opts.nIterations) && (~opts.is_displayed || is_display_activ
         soundsc(iterations{iteration}, 44100);
     end
 end
-toc();
+if opts.is_verbose
+    toc();
+end
 
 end
 
