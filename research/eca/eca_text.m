@@ -1,4 +1,12 @@
-function [text, S_sorted_paths] = eca_text(S, sample_rate)
+function [text, S_sorted_paths] = eca_text(archs, audio_path, nLines)
+N = archs{1}.banks{1}.spec.size;
+[y, sample_rate] = eca_load(audio_path);
+padding_length = ceil(length(y)/N) * N - length(y);
+y = cat(1, y, zeros(padding_length, 1));
+y_chunks = eca_split(y, N);
+S = sc_propagate(y_chunks, archs);
+
+%%
 gamma1_start = S{1+1}.ranges{1}(1,3);
 S1_refs = generate_refs(S{1+1}.data, [1, 2], S{1+1}.ranges{1});
 nS1_refs = length(S1_refs);
@@ -64,13 +72,13 @@ end
 
 S_norms = [S1_norms, S2phi_norms, S2psi_norms];
 S_paths = [S1_paths, S2phi_paths, S2psi_paths];
-%%
 
+%%
 [S_sorted_norms, S_sorting_indices] = sort(S_norms, 'descend');
 S_sorted_ppms = round((S_sorted_norms / sum(S_sorted_norms)) * 10^6);
-ppm_threshold = 1000; % in ppm
-nLines = find(S_sorted_ppms>ppm_threshold,1, 'last');
-S_sorted_norms = S_sorted_norms(1:nLines);
+if isnan(nLines)
+    nLines = find(S_sorted_ppms > 0, 1, 'last');
+end
 S_sorting_indices = S_sorting_indices(1:nLines);
 
 %
@@ -81,7 +89,7 @@ gamma1_frequencies = gamma1_motherfrequency * ...
 gamma2_motherfrequency = sample_rate * ...
     S{1+2}{1}.variable_tree.time{1}.gamma{2}.leaf.spec.mother_xi;
 gamma2_frequencies = gamma2_motherfrequency * ...
-    [S{1+2}{1}.variable_tree.time{1}.gamma{1}.leaf.metas.resolution];
+    [S{1+2}{1}.variable_tree.time{1}.gamma{2}.leaf.metas.resolution];
 gammagamma_motherfrequency = ...
     S{1+2}{1}.variable_tree.time{1}.gamma{1}.leaf.spec.nFilters_per_octave * ...
     S{1+2}{1}.variable_tree.time{1}.gamma{1}.gamma{1}.leaf.spec.mother_xi;
@@ -105,7 +113,7 @@ for line_index = 1:nLines
     f2 = gamma2_frequencies(gamma2);
     if f2
         f2_string = ...
-            [repmat(' ', 1, 4 - floor(log10(f2))), num2str(round(f2)), ' Hz'];
+            [repmat(' ', 1, 3 - floor(log10(f2))), num2str(round(f2)), ' Hz'];
     else
         f2_string = [];
     end
