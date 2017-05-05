@@ -106,23 +106,9 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     
     %% Pretty-printing of scattering distances and loss function
      if opts.is_verbose
-          %disp(norm(loss_batches(:, 1+iteration), 2));
-%         pretty_iteration = sprintf(sprintf_format, iteration);
-%         layer_distances = ...
-%             100 * layer_absolute_distances ./ layer_target_norms;
-%         pretty_distances = num2str(layer_distances(2:end), '%8.2f%%');
-%         pretty_loss = sprintf('%.2f%%',relative_loss_chart(iteration));
-%         iteration_string = ['it = ', pretty_iteration, '  ;  '];
-%         distances_string = ...
-%             ['S_m distances = [ ',pretty_distances, ' ]  ;  '];
-%         loss_string = ['Loss = ', pretty_loss];
-%         disp([iteration_string, distances_string, loss_string]);
          average_learning_rate = mean(learning_rate_batches);
          average_learning_rate_str = num2str(average_learning_rate, '%0.4f');
          disp(['Average learning rate = ', average_learning_rate_str]);
-%         if opts.generate_text && opts.display_text
-%             disp(text);
-%         end
          toc();
          tic();
      end
@@ -153,7 +139,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     
     %% Sonification
     if opts.is_sonified
-        soundsc(sounds{1+iteration}, 44100);
+        soundsc(sounds{1+iteration}, opts.sample_rate);
     end
     
     %% Clock tick
