@@ -23,7 +23,6 @@ opts.nIterations = 20;
 opts.is_sonified = false;
 opts.is_spectrogram_displayed = true;
 % (close Figure 1 to abort early)
-opts.generate_text = false;
 opts.is_verbose = true;
 opts.initial_learning_rate = 0.1;
 
