@@ -24,15 +24,16 @@ sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
 %% Iterated reconstruction
 iteration = 1;
 failure_counter = 0;
-is_display_active = opts.is_displayed;
+is_display_active = opts.is_spectrogram_displayed;
 if is_display_active
     figure_handle = gcf();
+    set(figure_handle, 'WindowStyle', 'docked');
 end
 if opts.is_verbose
     tic();
 end
 
-while (iteration <= opts.nIterations) && (~opts.is_displayed || is_display_active)
+while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_display_active)
     %% Signal update
     iterations{1+iteration} = ...
         update_reconstruction(previous_signal, ...
@@ -108,7 +109,7 @@ while (iteration <= opts.nIterations) && (~opts.is_displayed || is_display_activ
         layer_distances = ...
             100 * layer_absolute_distances ./ layer_target_norms;
         pretty_distances = num2str(layer_distances(2:end), '%8.2f%%');
-        pretty_loss = sprintf('%.2f%%',relative_loss_chart(iteration));
+        pretty_loss = sprintf('%.2f%%', relative_loss_chart(iteration));
         iteration_string = ['it = ', pretty_iteration, '  ;  '];
         distances_string = ...
             ['S_m distances = [ ',pretty_distances, ' ]  ;  '];
