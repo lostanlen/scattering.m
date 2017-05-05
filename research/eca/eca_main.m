@@ -1,5 +1,3 @@
-addpath(genpath('../..'));
-
 %% Setup scattering options
 Q1 = 12; % number of filters per octave at first order
 T = 2^10; % amount of invariance with respect to time translation
