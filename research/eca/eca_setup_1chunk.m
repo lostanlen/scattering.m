@@ -43,7 +43,7 @@ if strcmp(modulations, 'time') || ...
             opts{2}.time.wavelet_handle = @gammatone_1d;
         otherwise
             error(['Unrecognized field wavelets: ', wavelets]);
-        end
+    end
 elseif ~strcmp(modulations, 'none')
     error(['Unrecognized field modulations: ', modulations]);
 end
