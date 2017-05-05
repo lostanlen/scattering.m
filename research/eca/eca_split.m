@@ -1,7 +1,7 @@
 function chunks = eca_split(y, N)
 %% If y has length N, return
 y_length = length(y);
-if y_length == N;
+if y_length == N
     chunks = y;
     return
 end
