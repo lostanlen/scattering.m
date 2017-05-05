@@ -18,14 +18,14 @@ clear opts;
 opts.nChunks_per_batch = 2; % must be > 1
 opts.is_sonified = false;
 opts.is_spectrogram_displayed = true;
-% (close Figure 1 to abort early)
-opts.nIterations = 50;
+opts.nIterations = 3;
 opts.sample_rate = sample_rate;
 opts.generate_text = false;
-opts.is_verbose = false;
+opts.is_verbose = true;
 opts.initial_learning_rate = 0.1;
 
 %% Multi-chunk mode
+% (close Figure 1 to abort early)
 archs_multichunk = eca_setup(Q1, T, modulations, wavelets);
 sounds_multichunk = eca_synthesize(y, archs_multichunk, opts);
 
