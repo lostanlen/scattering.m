@@ -45,7 +45,8 @@ else
 end
 
 %% Verbosity
-reconstruction_opt.is_verbose = default(reconstruction_opt, 'is_verbose', true);
+reconstruction_opt.is_verbose = ...
+    default(reconstruction_opt, 'is_verbose', true);
 
 %% Display
 reconstruction_opt.is_displayed = ...
