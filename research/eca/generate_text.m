@@ -23,5 +23,5 @@ padding_length = ceil(length(y)/N) * N - length(y);
 y = cat(1, y, zeros(padding_length, 1));
 y_chunks = eca_split(y, N);
 S = sc_propagate(y_chunks, archs);
-[text, S_sorted_paths] = eca_text(archs, audio_path, nLines);
+[text, S_sorted_paths] = eca_text(S, nLines, sample_rate);
 disp(text)
