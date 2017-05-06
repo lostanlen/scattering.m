@@ -12,8 +12,16 @@ T = 2^10; % amount of invariance with respect to time translation
 modulations = 'time-frequency';
 wavelets = 'morlet';
 archs = eca_setup(Q1, T, modulations, wavelets);
+N = archs{1}.banks{1}.spec.size;
 
 %%
-nLines = NaN; % set to NaN ("not a number") to get all lines
+% set to Inf to get all lines
+% set to NaN ("not a number") to get all lines with >0 ppm
+nLines = Inf; 
+[y, sample_rate] = eca_load(audio_path);
+padding_length = ceil(length(y)/N) * N - length(y);
+y = cat(1, y, zeros(padding_length, 1));
+y_chunks = eca_split(y, N);
+S = sc_propagate(y_chunks, archs);
 [text, S_sorted_paths] = eca_text(archs, audio_path, nLines);
 disp(text)
