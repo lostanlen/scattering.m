@@ -100,7 +100,8 @@ for line_index = 1:nLines
     gamma2 = S_path.gamma2;
     gammagamma = S_path.gammagamma;
     thetagamma = S_path.thetagamma;
-    ppm_string = [repmat(' ', 1, 6 - floor(log10(ppm))), num2str(ppm), ' ppm'];
+    ppm_string = [repmat(' ', 1, 6 - floor(log10(max(ppm, 1)))), ...
+        num2str(ppm), ' ppm'];
     f1 = gamma1_frequencies(gamma1);
     f1_string = ...
         [repmat(' ', 1, 5 - floor(log10(f1))), num2str(round(f1)), ' Hz'];
