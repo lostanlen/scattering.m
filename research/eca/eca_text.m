@@ -1,12 +1,4 @@
-function [text, S_sorted_paths] = eca_text(archs, audio_path, nLines)
-N = archs{1}.banks{1}.spec.size;
-[y, sample_rate] = eca_load(audio_path);
-padding_length = ceil(length(y)/N) * N - length(y);
-y = cat(1, y, zeros(padding_length, 1));
-y_chunks = eca_split(y, N);
-S = sc_propagate(y_chunks, archs);
-
-%%
+function [text, S_sorted_paths] = eca_text(S, nLines)
 gamma1_start = S{1+1}.ranges{1}(1,3);
 S1_refs = generate_refs(S{1+1}.data, [1, 2], S{1+1}.ranges{1});
 nS1_refs = length(S1_refs);
@@ -78,6 +70,8 @@ S_paths = [S1_paths, S2phi_paths, S2psi_paths];
 S_sorted_ppms = round((S_sorted_norms / sum(S_sorted_norms)) * 10^6);
 if isnan(nLines)
     nLines = find(S_sorted_ppms > 0, 1, 'last');
+elseif isinf(nLines)
+    nLines = length(S_sorted_ppms);
 end
 S_sorting_indices = S_sorting_indices(1:nLines);
 
