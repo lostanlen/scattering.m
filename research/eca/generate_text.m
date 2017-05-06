@@ -2,7 +2,7 @@
 toolbox_path = '~/scattering.m';
 audio_path = '~/datasets/eca/bach1.wav';
 
-addpath(genpath('scattering.m'));
+addpath(genpath(toolbox_path));
 
 %%
 Q1 = 12; % number of filters per octave at first order
