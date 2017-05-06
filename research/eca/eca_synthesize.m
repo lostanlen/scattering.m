@@ -1,6 +1,9 @@
 function [sounds, texts] = eca_synthesize(y, archs, opts)
 %% Default options
 opts.generate_text = default(opts, 'generate_text', false);
+if opts.generate_text
+    opts.nLines = default(opts, 'nLines', Inf);
+end
 opts.display_text = default(opts, 'display_text', false);
 opts.adapt_learning_rate = default(opts, 'adapt_learning_rate', false);
 opts = fill_reconstruction_opt(opts);
