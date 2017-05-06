@@ -1,5 +1,28 @@
 function eca_export_sounds(sounds, folder, name, opts, sample_rate, ...
-    bit_depth, Q1, T, modulations)
+    bit_depth, archs)
+%% Retrieve parameters
+Q1 = archs{1}.banks{1}.spec.nFilters_per_octave;
+T = archs{1}.banks{1}.spec.T;
+if length(archs) == 2
+    modulations = 'none';
+else
+    switch length(archs{2}.banks)
+        case 1
+            modulations = 'time';
+        case 2
+            modulations = 'time-frequency';
+        case 3
+            modulations = 'spiral';
+    end
+end
+wavelet_handle_str = func2str(archs{1}.banks{1}.spec.wavelet_handle);
+switch wavelet_handle_str
+    case 'morlet_1d'
+        wavelet_str = 'mor';
+    case 'gammatone_1d'
+        wavelet_str = 'gam';
+end
+%% Generate arch_str
 switch modulations
     case 'none'
         scattering_str = 'no';
@@ -11,7 +34,8 @@ end
 arch_str = ...
     ['_Q=', num2str(Q1, '%0.2d'), ...
      '_J=', num2str(log2(T), '%0.2d'), ...
-     '_sc=', scattering_str];
+     '_sc=', scattering_str, ...
+     '_wvlt=', wavelet_str];
 folder_out = [folder, arch_str];
 if ~exist(folder_out, 'dir')
   mkdir(folder_out);
