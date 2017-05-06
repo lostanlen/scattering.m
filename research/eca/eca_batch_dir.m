@@ -9,20 +9,6 @@ sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
 
 %% Retrieve parameters
 N = archs{1}.banks{1}.spec.size;
-Q1 = archs{1}.banks{1}.spec.nFilters_per_octave;
-T = archs{1}.banks{1}.spec.T;
-if length(archs) == 2
-    modulations = 'none';
-else
-    switch length(archs{2}.banks)
-        case 1
-            modulations = 'time';
-        case 2
-            modulations = 'time-frequency';
-        case 3
-            modulations = 'spiral';
-    end
-end
 
 %% Re-synthesize all files found in folder
 for name_index = 1:nNames
@@ -37,9 +23,12 @@ for name_index = 1:nNames
     opts.sample_rate = sample_rate;
     padding_length = ceil(length(y)/N) * N - length(y);
     y = cat(1, y, zeros(padding_length, 1));
-    iterations = eca_synthesize(y, archs, opts);
+    [iterations, texts] = eca_synthesize(y, archs, opts);
     eca_export_sounds(iterations, folder, name, opts, ...
-        sample_rate, bit_depth, Q1, T, modulations);
+        sample_rate, bit_depth, archs);
+    if opts.generate_text
+        eca_export_texts(texts, folder, name, opts, archs);
+    end
 end
 
 end
