@@ -148,11 +148,18 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         soundsc(sounds{1+iteration}, opts.sample_rate);
     end
     
+    %% Text generation
+    if opts.generate_text
+        text = eca_text(S, opts.nLines, opts.sample_rate);
+        texts{1+iteration} = text;
+    end
+    
     %% Clock tick
     iteration = iteration + 1;
 end
 toc();
 
 sounds(cellfun(@isempty, sounds)) = [];
+texts(cellfun(@isempty, texts)) = [];
 end
 
