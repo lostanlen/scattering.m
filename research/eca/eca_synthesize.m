@@ -109,9 +109,12 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     
     %% Pretty-printing of scattering distances and loss function
      if opts.is_verbose
-         average_learning_rate = mean(learning_rate_batches);
-         average_learning_rate_str = num2str(average_learning_rate, '%0.4f');
-         disp(['Average learning rate = ', average_learning_rate_str]);
+         if opts.adapt_learning_rate
+            average_learning_rate = mean(learning_rate_batches);
+            average_learning_rate_str = ...
+                num2str(average_learning_rate, '%0.4f');
+            disp(['Average learning rate = ', average_learning_rate_str]);
+         end
          toc();
          tic();
      end
