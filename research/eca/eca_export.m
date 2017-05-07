@@ -1,4 +1,4 @@
-function eca_export_sounds(sounds, folder, name, opts, sample_rate, ...
+function eca_export(sounds, texts, folder, name, opts, sample_rate, ...
     bit_depth, archs)
 %% Retrieve parameters
 Q1 = archs{1}.banks{1}.spec.nFilters_per_octave;
@@ -22,6 +22,7 @@ switch wavelet_handle_str
     case 'gammatone_1d'
         wavelet_str = 'gam';
 end
+
 %% Generate arch_str
 switch modulations
     case 'none'
@@ -38,9 +39,10 @@ arch_str = ...
      '_wvlt=', wavelet_str];
 folder_out = [folder, arch_str];
 if ~exist(folder_out, 'dir')
-  mkdir(folder_out);
+    mkdir(folder_out);
 end
 audio_path = fullfile(folder_out, name);
+generate_text = opts.generate_text;
 switch opts.export_mode
     case 'last'
         last_it = length(sounds) - 1;
@@ -48,6 +50,11 @@ switch opts.export_mode
         last_path = [audio_path(1:(end-4)), suffix, '.wav'];
         audiowrite(last_path, sounds{end}, sample_rate, ...
             'BitsPerSample', bit_depth);
+        if generate_text
+            file_id = fopen(last_path, 'w');
+            fprintf(file_id, '%s', texts{end}); 
+            fclose(file_id);
+        end
         disp(['Exported last iteration (#', num2str(last_it), ') ', ...
               'at ', last_path, ...
               ' (', num2str(sample_rate), ' Hz, ', ...
@@ -59,6 +66,11 @@ switch opts.export_mode
             it_path = [audio_path(1:(end-4)), suffix, '.wav'];
             audiowrite(it_path, sounds{1+it}, sample_rate, ...
                 'BitsPerSample', bit_depth);
+            if generate_text
+                file_id = fopen(it_path, 'w');
+                fprintf(file_id, '%s', texts{1+it}); 
+                fclose(file_id);
+            end
         end
         disp(['Exported iterations 0 to ', num2str(nIterations-1), ' at ', ...
               audio_path(1:(end-4)), arch_str, '_it=*.wav ', ...
