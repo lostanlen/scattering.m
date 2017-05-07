@@ -13,7 +13,8 @@ N = archs{1}.banks{1}.spec.size;
 %% Re-synthesize all files found in folder
 for name_index = 1:nNames
     name = names{name_index};
-    header_str = [' **** FILE #', num2str(name_index, sprintf_format), ': ', ...
+    header_str = [' **** FILE #', ...
+        num2str(name_index, sprintf_format), ': ', ...
         name, ' **** '];
     nChars = length(header_str);
     disp(repmat('-', 1, nChars));
