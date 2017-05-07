@@ -61,28 +61,6 @@ if opts.is_initialization_localized
 else
     sounds{1+0} = generate_colored_noise(y);
 end
-%% Text generation
-if opts.generate_text
-    chunks = eca_split(sounds{1+0}, N);
-    S_batches = cell(1, nBatches);
-    batches = cell(1, nBatches);
-    for batch_index = 0:(nBatches-1)
-        % Select chunks
-        batch_start = 1 + batch_index * nChunks_per_batch;
-        batch_stop = min((batch_index+1) * nChunks_per_batch, nChunks);
-        if batch_stop == (nChunks - 1)
-            batch_stop = nChunks;
-        end
-        batches{1+batch_index} = chunks(:, batch_start:batch_stop);
-    end
-    parfor batch_index = 0:(nBatches-1)
-        % Load batch
-        batch = batches{1+batch_index};
-        % Forward propagation
-        S_batches{1+batch_index} = eca_propagate(batch, archs);
-    end
-    texts{1+0} = eca_text(S_batches, opts.nLines, opts.sample_rate);
-end
 
 %% Iterated reconstruction
 generate_text = opts.generate_text;
@@ -188,6 +166,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
 end
 toc();
 
+sounds{1+0} = [];
 sounds(cellfun(@isempty, sounds)) = [];
 texts(cellfun(@isempty, texts)) = [];
 end
