@@ -23,12 +23,9 @@ for name_index = 1:nNames
     opts.sample_rate = sample_rate;
     padding_length = ceil(length(y)/N) * N - length(y);
     y = cat(1, y, zeros(padding_length, 1));
-    [iterations, texts] = eca_synthesize(y, archs, opts);
-    eca_export_sounds(iterations, folder, name, opts, ...
+    [sounds, texts] = eca_synthesize(y, archs, opts);
+    eca_export(sounds, texts, folder, name, opts, ...
         sample_rate, bit_depth, archs);
-    if opts.generate_text
-        eca_export_texts(texts, folder, name, opts, archs);
-    end
 end
 
 end
