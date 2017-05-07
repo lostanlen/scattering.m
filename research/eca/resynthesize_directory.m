@@ -18,6 +18,7 @@ clear opts;
 opts.nChunks_per_batch = 2; % must be > 1
 opts.export_mode = 'all'; % should be 'all' or 'last'
 opts.nIterations = 20;
+opts.generate_text = true; % will work only with time-frequency scattering
 
 % Do not change the parameters below
 opts.is_sonified = false;
