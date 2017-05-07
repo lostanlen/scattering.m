@@ -63,6 +63,7 @@ else
 end
 
 %% Iterated reconstruction
+generate_text = opts.generate_text;
 iteration = 1;
 U_batches = cell(1, nBatches);
 figure_handle = gcf();
@@ -82,11 +83,17 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         end
         batches{1+batch_index} = chunks(:, batch_start:batch_stop);
     end
+    if opts.generate_text
+        S_batches = cell(1, nBatches);
+    end
     parfor batch_index = 0:(nBatches-1)
         % Load batch
         batch = batches{1+batch_index};
         % Forward propagation
         [S, U, Y] = eca_propagate(batch, archs);
+        if generate_text
+            S_batches{1+batch_index} = S;
+        end
         U_batches{1+batch_index} = U(1:2);
         target_S = target_S_batches{1+batch_index};
         % Substraction
@@ -150,7 +157,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     
     %% Text generation
     if opts.generate_text
-        text = eca_text(S, opts.nLines, opts.sample_rate);
+        text = eca_text(S_batches, opts.nLines, opts.sample_rate);
         texts{1+iteration} = text;
     end
     
