@@ -51,6 +51,7 @@ switch opts.export_mode
         audiowrite(last_path, sounds{end}, sample_rate, ...
             'BitsPerSample', bit_depth);
         if generate_text
+            last_path = [audio_path(1:(end-4)), suffix, '.txt'];
             file_id = fopen(last_path, 'w');
             fprintf(file_id, '%s', texts{end}); 
             fclose(file_id);
@@ -67,6 +68,7 @@ switch opts.export_mode
             audiowrite(it_path, sounds{1+it}, sample_rate, ...
                 'BitsPerSample', bit_depth);
             if generate_text
+                it_path = [audio_path(1:(end-4)), suffix, '.txt'];
                 file_id = fopen(it_path, 'w');
                 fprintf(file_id, '%s', texts{1+it}); 
                 fclose(file_id);
