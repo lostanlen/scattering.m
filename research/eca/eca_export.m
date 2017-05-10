@@ -31,6 +31,8 @@ switch modulations
         scattering_str = 't';
     case 'time-frequency'
         scattering_str = 'tf';
+    case 'spiral'
+        scattering_str = 'sp';
 end
 arch_str = ...
     ['_Q=', num2str(Q1, '%0.2d'), ...
