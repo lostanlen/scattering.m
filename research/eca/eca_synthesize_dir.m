@@ -1,4 +1,4 @@
-function eca_batch_dir(archs, folder, opts)
+function eca_synthesize_dir(archs, folder, opts)
 %% List files
 listing = list_dir(fullfile(folder, '*.wav'));
 names = {listing.name};
