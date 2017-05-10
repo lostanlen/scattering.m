@@ -1,9 +1,4 @@
-function [text, S_sorted_paths] = eca_text(S, nLines, sample_rate)
-if iscell(S)
-    S_batches = S;
-else
-    S_batches = {S};
-end
+function [text, S_sorted_paths] = eca_text(S_batches, nLines, sample_rate)
 nBatches = length(S_batches);
 S_batch_norms = cell(1, nBatches);
 
