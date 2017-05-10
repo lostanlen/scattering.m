@@ -28,4 +28,4 @@ opts.is_verbose = true;
 opts.initial_learning_rate = 0.1;
 
 %% Run re-synthesis for all sounds in sounds_folder
-eca_batch_dir(archs, sounds_folder, opts)
+eca_synthesize_dir(archs, sounds_folder, opts)
