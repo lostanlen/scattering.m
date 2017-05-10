@@ -17,4 +17,4 @@ archs = eca_setup(Q1, T, modulations, wavelets);
 % set to Inf to get all lines
 % set to NaN ("not a number") to get all lines with >0 ppm
 nLines = Inf; 
-eca_text_dir(archs, folder, nLines)
+eca_text_dir(archs, folder, nLines);
