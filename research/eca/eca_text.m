@@ -124,7 +124,7 @@ for line_index = 1:nLines
     if f2
         f2_string = ['\t', num2str(round(f2)), ' Hz'];
     else
-        f2_string = [];
+        f2_string = '\t';
     end
     fgamma = gammagamma_frequencies(gammagamma);
     if fgamma
@@ -135,7 +135,7 @@ for line_index = 1:nLines
         end
         fgamma_string = ['\t', sign_str, num2str(fgamma), ' c/o'];
     else
-        fgamma_string = [];
+        fgamma_string = '\t';
     end
     S_line = [ppm_string, f1_string, f2_string, fgamma_string, '\n'];
     S_lines{line_index} = S_line;
