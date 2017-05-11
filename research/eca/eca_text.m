@@ -117,15 +117,12 @@ for line_index = 1:nLines
     gamma2 = S_path.gamma2;
     gammagamma = S_path.gammagamma;
     thetagamma = S_path.thetagamma;
-    ppm_string = [repmat(' ', 1, 6 - floor(log10(max(ppm, 1)))), ...
-        num2str(ppm), ' ppm'];
+    ppm_string = [num2str(ppm), ' ppm'];
     f1 = gamma1_frequencies(gamma1);
-    f1_string = ...
-        [repmat(' ', 1, 5 - floor(log10(f1))), num2str(round(f1)), ' Hz'];
+    f1_string = ['\t', num2str(round(f1)), ' Hz'];
     f2 = gamma2_frequencies(gamma2);
     if f2
-        f2_string = ...
-            [repmat(' ', 1, 3 - floor(log10(f2))), num2str(round(f2)), ' Hz'];
+        f2_string = ['\t', num2str(round(f2)), ' Hz'];
     else
         f2_string = [];
     end
@@ -136,15 +133,11 @@ for line_index = 1:nLines
         elseif thetagamma == -1
             sign_str = '-';
         end
-        fgamma_string = [sign_str, num2str(fgamma), ' c/o'];
+        fgamma_string = ['\t', sign_str, num2str(fgamma), ' c/o'];
     else
         fgamma_string = [];
     end
-    S_line = [ppm_string, '  ', ...
-        f1_string, '  ', ...
-        f2_string, '  ', ...
-        fgamma_string, ...
-        '\n'];
+    S_line = [ppm_string, f1_string, f2_string, fgamma_string, '\n'];
     S_lines{line_index} = S_line;
 end
 text = sprintf([S_lines{:}]);
