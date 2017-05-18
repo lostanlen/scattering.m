@@ -135,7 +135,7 @@ while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_d
     
     %% Sonify
     if opts.is_sonified
-        soundsc(iterations{iteration}, 44100);
+        soundsc(iterations{iteration}, opts.sample_rate);
     end
 end
 if opts.is_verbose
