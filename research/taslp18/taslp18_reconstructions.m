@@ -16,7 +16,7 @@ archs = taslp18_setup(Q1, T, modulations, wavelets, N);
 
 
 % Compute scattering transform.
-[target_S, target_U] = taslp18_propagate(target_waveform, sample_rate);
+[target_S, target_U] = sc_propagate(target_waveform, archs);
 
 
 subplot(212);
