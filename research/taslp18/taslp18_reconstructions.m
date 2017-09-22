@@ -20,8 +20,7 @@ archs = taslp18_setup(Q1, T, modulations, wavelets, N);
 
 
 subplot(212);
-target_U = sc_unchunk(U(1:2));
-target_scalogram = display_scalogram(U{1+1});
+target_scalogram = display_scalogram(target_U{1+1});
 imagesc(log1p(target_scalogram./10.0));
 colormap rev_magma;
 drawnow();
