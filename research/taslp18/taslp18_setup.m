@@ -29,8 +29,7 @@ switch wavelets
     otherwise
         error(['Unrecognized field wavelets: ', wavelets]);
 end
-if strcmp(modulations, 'time') || ...
-        strcmp(modulations, 'time-frequency') || ...
+if strcmp(modulations, 'time') || strcmp(modulations, 'time-frequency')
     % Options for temporal modulations
     opts{2}.time.nFilters_per_octave = 1;
     opts{2}.time.wavelet_handle = @morlet_1d;
