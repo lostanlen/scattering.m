@@ -1,4 +1,4 @@
-function [S, U, Y]  = eca_target(y, archs)
+function [S, U, Y]  = taslp18_propagate(y, archs)
 nLayers = length(archs);
 S = cell(1, nLayers);
 U = cell(1, nLayers);
