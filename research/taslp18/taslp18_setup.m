@@ -33,9 +33,10 @@ end
 
 % Define options for low-pass filtering of time-frequency representation.
 opts{2}.invariants.time.T = T;
+opts{2}.invariants.subscripts = [1];
 
 if strcmp(modulations, 'time') || strcmp(modulations, 'time-frequency')
-    % Options for temporal modulations
+    % Options for temporal modulations.
     opts{2}.banks.time.nFilters_per_octave = 1;
     opts{2}.banks.time.wavelet_handle = @morlet_1d;
     opts{2}.banks.time.duality = 'hermitian';
@@ -50,7 +51,7 @@ if strcmp(modulations, 'time') || strcmp(modulations, 'time-frequency')
 elseif ~strcmp(modulations, 'none')
     error(['Unrecognized field modulations: ', modulations]);
 end
-% Options for frequential modulations
+% Options for frequential modulations.
 if strcmp(modulations, 'time-frequency')
     opts{2}.banks.gamma.duality = 'hermitian';
     opts{2}.banks.gamma.nFilters_per_octave = 1;
