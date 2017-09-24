@@ -7,7 +7,8 @@ N = 131072;
 
 
 % Load waveform.
-audio_path = 'taslp18_flute.wav';
+%audio_path = 'taslp18_flute.wav';
+audio_path = 'taslp18_dog-bark.wav';
 [target_waveform, sample_rate] = taslp18_load(audio_path, N);
 
 
