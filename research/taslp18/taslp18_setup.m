@@ -33,7 +33,8 @@ end
 
 % Define options for low-pass filtering of time-frequency representation.
 opts{2}.invariants.time.T = T;
-opts{2}.invariants.subscripts = [1];
+opts{2}.invariants.time.size = N;
+opts{2}.invariants.time.subscripts = [1];
 
 if strcmp(modulations, 'time') || strcmp(modulations, 'time-frequency')
     % Options for temporal modulations.
