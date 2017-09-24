@@ -19,7 +19,7 @@ opts{1}.time.T = 2^8;
 opts{1}.time.max_scale = 8192;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
-opts{1}.time.gamma_bounds = [1+Q1*1 Q1*9];
+opts{1}.time.gamma_bounds = [1+Q1*1 Q1*8];
 opts{1}.time.duality = 'hermitian';
 switch wavelets
     case 'morlet'
