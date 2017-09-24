@@ -1,6 +1,6 @@
 % Define parameters.
 Q1 = 8;
-T = 32;
+T = 512;
 modulations = 'none';
 wavelets = 'morlet';
 N = 131072;
@@ -22,6 +22,7 @@ archs = taslp18_setup(Q1, T, modulations, wavelets, N);
 target_scalogram = display_scalogram(target_U{1+1});
 imagesc(log1p(target_scalogram./10.0));
 colormap rev_magma;
+axis off;
 drawnow();
 
 export_fig fig.png
