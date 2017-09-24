@@ -22,7 +22,7 @@ archs = taslp18_setup(Q1, T, modulations, wavelets, N);
 target_scalogram = display_scalogram(target_U{1+1});
 imagesc(log1p(target_scalogram./10.0));
 colormap rev_magma;
-%axis off;
+axis off;
 drawnow();
 
 export_fig fig.png
