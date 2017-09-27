@@ -25,5 +25,8 @@ imagesc(log1p(target_scalogram./10.0));
 colormap rev_magma;
 axis off;
 drawnow();
-
 export_fig fig.png
+
+%% Iterated reconstruction
+iteration = 1;
+failure_counter = 0;
