@@ -130,7 +130,7 @@ for audio_name_id = 1:length(audio_names)
             learning_rate;
 
         %% Backpropagation
-        delta_signal = sc_backpropagate(delta_S, U, Y, archs);
+        delta_signal = sc_backpropagate(delta_S, U, Y, rec_archs);
 
         %% Pretty-printing of scattering distances and loss function
         if opts.is_verbose

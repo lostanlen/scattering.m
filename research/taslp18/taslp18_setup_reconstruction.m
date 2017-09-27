@@ -35,6 +35,7 @@ end
 opts{2}.invariants.time.T = T;
 opts{2}.invariants.time.size = N;
 opts{2}.invariants.time.subscripts = [1];
+opts{2}.invariants.time.duality = 'hermitian';
 
 if strcmp(modulations, 'time') || strcmp(modulations, 'time-frequency')
     % Options for temporal modulations.
