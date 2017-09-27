@@ -3,7 +3,7 @@ Q1 = 24;
 wavelet_str = 'morlet';
 N = 131072;
 modulations_strs = {'none', 'time', 'time-frequency'};
-Ts = {9, 13, 17};
+Ts = [2^9, 2^13, 2^17};
 
 
 % Load waveform.
@@ -35,9 +35,11 @@ for audio_name_id = 1:length(audio_names)
 
     % Loop on modulations.
     for modulations_id = 1:length(modulations_strs)
+        modulations_str = modulations_strs{modulations_id};
+
         for T_id = 1:length(Ts)
             % Construct wavelet filter banks for reconstruction.
-            modulations_str = modulations_strs{modulations_id};
+            T = Ts(T_id);
             rec_archs = taslp18_setup_reconstruction( ...
                 Q1, T, modulations_str, wavelet_str, N);
 
