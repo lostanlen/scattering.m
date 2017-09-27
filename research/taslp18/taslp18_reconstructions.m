@@ -43,7 +43,7 @@ for audio_name_id = 1:length(audio_names)
 
     %% Default options.
     opts = struct();
-    opt.nIterations = 50;
+    opts.nIterations = 50;
     opts = fill_reconstruction_opt(opts);
     max_nDigits = 1 + floor(log10(opts.nIterations));
     sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
