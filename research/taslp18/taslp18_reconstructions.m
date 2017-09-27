@@ -1,7 +1,7 @@
 % Define parameters.
 Q1 = 24;
 T = 512;
-wavelets = 'morlet';
+wavelet_str = 'morlet';
 N = 131072;
 modulations_strs = {'none', 'time', 'time-frequency'};
 
@@ -20,7 +20,7 @@ for audio_name_id = 1:length(audio_names)
     audio_path = [audio_name, '.wav'];
     [target_waveform, sample_rate] = taslp18_load(audio_path, N);
 
-    % Compute scattering transform.
+    % Compute scalogram.
     target_U0 = initialize_U(target_waveform, vis_archs{1}.banks{1});
     target_Y1 = U_to_Y(target_U0, vis_archs{1}.banks);
     target_U1 = Y_to_U(target_Y1{end}, vis_archs{1}.nonlinearity);
@@ -33,12 +33,12 @@ for audio_name_id = 1:length(audio_names)
     drawnow();
     export_fig([audio_name, '_original.png']);
 
-    % Loop on modulations
+    % Loop on modulations.
     for modulations_id = 1:length(modulations_strs)
         % Construct wavelet filter banks for reconstruction.
-        modulations = modulations_strs{modulations_id};
+        modulations_str = modulations_strs{modulations_id};
         rec_archs = taslp18_setup_reconstruction( ...
-            Q1, T, modulations, wavelets, N);
+            Q1, T, modulations_str, wavelet_str, N);
 
         % Reconstruct.
         iteration = 1;
@@ -156,10 +156,19 @@ for audio_name_id = 1:length(audio_names)
     end
 
     % Display reconstructed scalogram.
-    target_scalogram = display_scalogram(U{1+1});
-    imagesc(log1p(target_scalogram));
+    rec_U0 = initialize_U(iterations{end}, vis_archs{1}.banks{1});
+    rec_Y1 = U_to_Y(rec_U0, vis_archs{1}.banks);
+    rec_U1 = Y_to_U(rec_Y1{end}, vis_archs{1}.nonlinearity);
+    rec_scalogram = display_scalogram(rec_U1);
+    imagesc(log1p(rec_scalogram));
     colormap rev_magma;
     axis off;
     drawnow();
-    export_fig([audio_name, '_reconstructed.png']);
+    export_fig([ ...
+        audio_name, ...
+         '_Q=', num2str(Q1, '%0.2d'), ...
+         '_J=', num2str(log2(T), '%0.2d'), ...
+         '_sc=', modulations_str, ...
+         '_wvlt=', wavelet_str, ...
+         '.png']);
 end
