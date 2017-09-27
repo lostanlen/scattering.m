@@ -7,7 +7,7 @@ N = 131072;
 
 
 % Load waveform.
-audio_names = {'taslp18_dog-bark.wav', 'taslp18_flute.wav'};
+audio_names = {'taslp18_dog-bark', 'taslp18_flute'};
 
 for audio_name_id = 1:length(audio_names)
     audio_name = audio_names{audio_name_id};
@@ -28,6 +28,7 @@ for audio_name_id = 1:length(audio_names)
     drawnow();
 
     export_fig([audio_name, '_original.png']);
+end
 
 %% Iterated reconstruction
 iteration = 1;
