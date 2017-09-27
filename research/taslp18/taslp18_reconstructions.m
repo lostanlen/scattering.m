@@ -1,9 +1,9 @@
 % Define parameters.
-Q1 = 24;
+Q1 = 8;
 wavelet_str = 'morlet';
 N = 131072;
 modulations_strs = {'none', 'time', 'time-frequency'};
-Ts = [2^9, 2^13, 2^17];
+Ts = [2^11, 2^13, 2^15, 2^17];
 
 
 % Load waveform.
@@ -11,7 +11,7 @@ audio_names = {'taslp18_dog-bark', 'taslp18_flute'};
 
 
 % Construct wavelet filter bank for visualization.
-vis_archs = taslp18_setup_visualization(Q1, N);
+vis_archs = taslp18_setup_visualization(24, N);
 
 
 for audio_name_id = 1:length(audio_names)
