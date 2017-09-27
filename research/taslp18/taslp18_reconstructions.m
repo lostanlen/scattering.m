@@ -18,6 +18,10 @@ vis_archs = taslp18_setup_visualization(Q1, N);
 rec_archs = taslp18_setup_reconstruction(Q1, T, modulations, wavelets, N);
 
 
+%% Default options.
+opts = fill_reconstruction_opt(opts);
+
+
 for audio_name_id = 1:length(audio_names)
     % Load waveform.
     audio_name = audio_names{audio_name_id};
@@ -38,6 +42,9 @@ for audio_name_id = 1:length(audio_names)
     export_fig([audio_name, '_original.png']);
 
     % Reconstruct.
+    iteration = 1;
+    failure_counter = 0;
+
     while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_display_active)
         %% Signal update
         iterations{1+iteration} = update_reconstruction( ...
