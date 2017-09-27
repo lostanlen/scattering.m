@@ -13,7 +13,7 @@ audio_path = 'taslp18_dog-bark.wav';
 
 
 % Construct wavelet filter banks.
-archs = taslp18_setup(Q1, T, modulations, wavelets, N);
+archs = taslp18_setup_visualization(Q1, N);
 
 
 % Compute scattering transform.
