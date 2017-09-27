@@ -25,7 +25,8 @@ imagesc(log1p(target_scalogram./10.0));
 colormap rev_magma;
 axis off;
 drawnow();
-export_fig fig.png
+
+export_fig(['taslp18_dog-bark_', 'original.png']);
 
 %% Iterated reconstruction
 iteration = 1;
