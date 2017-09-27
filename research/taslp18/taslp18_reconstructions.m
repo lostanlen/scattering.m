@@ -1,5 +1,5 @@
 % Define parameters.
-Q1 = 8;
+Q1 = 16;
 T = 512;
 modulations = 'none';
 wavelets = 'morlet';
