@@ -27,7 +27,7 @@ for audio_name_id = 1:length(audio_names)
     axis off;
     drawnow();
 
-    export_fig([audio_path, '_original.png']);
+    export_fig([audio_name, '_original.png']);
 
 %% Iterated reconstruction
 iteration = 1;
