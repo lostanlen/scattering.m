@@ -125,8 +125,12 @@ for audio_name_id = 1:length(audio_names)
             tic();
         end
     end
-end
 
-%% Iterated reconstruction
-iteration = 1;
-failure_counter = 0;
+    % Display reconstructed scalogram.
+    target_scalogram = display_scalogram(U{1+1});
+    imagesc(log1p(target_scalogram));
+    colormap rev_magma;
+    axis off;
+    drawnow();
+    export_fig([audio_name, '_reconstructed.png']);
+end
