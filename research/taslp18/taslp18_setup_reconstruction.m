@@ -1,4 +1,4 @@
-function archs = taslp18_setup(Q1, T, modulations, wavelets, N)
+function archs = taslp18_setup_reconstruction(Q1, T, modulations, wavelets, N)
 % T is the amount of invariance with respect to temporal translation.
 % It should be a power of 2.
 
