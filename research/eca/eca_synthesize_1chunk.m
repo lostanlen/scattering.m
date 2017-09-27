@@ -41,7 +41,7 @@ while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_d
         signal_update, ...
         learning_rate, ...
         opts);
-    
+
     %% Scattering propagation
     S = cell(1, nLayers);
     U = cell(1,nLayers);
@@ -63,10 +63,10 @@ while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_d
             S{1+previous_layer} = Y_to_S(Y{layer}, arch);
         end
     end
-    
+
     %% Measurement of distance to target in the scattering domain
     delta_S = sc_substract(target_S,S);
-    
+
     %% If loss has increased, step retraction and bold driver "brake"
     [loss, layer_absolute_distances] = sc_norm(delta_S);
     if opts.adapt_learning_rate && (loss > previous_loss)
@@ -84,7 +84,7 @@ while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_d
             continue
         end
     end
-    
+
     %% If loss has decreased, step confirmation and bold driver "acceleration"
     iteration = iteration + 1;
     failure_counter = 0;
@@ -99,10 +99,10 @@ while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_d
     learning_rate = ...
         opts.bold_driver_accelerator * ...
         learning_rate;
-    
+
     %% Backpropagation
     delta_signal = sc_backpropagate(delta_S, U, Y, archs);
-    
+
     %% Pretty-printing of scattering distances and loss function
     if opts.is_verbose
         pretty_iteration = sprintf(sprintf_format, iteration);
@@ -119,7 +119,7 @@ while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_d
         toc();
         tic();
     end
-    
+
     %% Display
     if is_display_active
         subplot(211);
@@ -132,7 +132,7 @@ while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_d
         drawnow();
         is_display_active = ishandle(figure_handle);
     end
-    
+
     %% Sonify
     if opts.is_sonified
         soundsc(iterations{iteration}, opts.sample_rate);
@@ -143,4 +143,3 @@ if opts.is_verbose
 end
 
 end
-
