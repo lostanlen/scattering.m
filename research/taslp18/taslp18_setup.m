@@ -16,7 +16,7 @@ function archs = taslp18_setup(Q1, T, modulations, wavelets, N)
 
 opts{1}.time.nFilters_per_octave = Q1;
 opts{1}.time.T = 2^8;
-opts{1}.time.max_scale = 8192;
+opts{1}.time.max_scale = 4096;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
 opts{1}.time.gamma_bounds = [1 Q1*7];
