@@ -63,6 +63,7 @@ for audio_name_id = 1:length(audio_names)
     relative_layer_loss_chart = zeros(nLayers, opts.nIterations);
     signal_update = zeros(size(iterations{1+0}));
     learning_rate = opts.initial_learning_rate;
+    tic();
 
     while (iteration <= opts.nIterations)
         %% Signal update
