@@ -18,10 +18,6 @@ vis_archs = taslp18_setup_visualization(Q1, N);
 rec_archs = taslp18_setup_reconstruction(Q1, T, modulations, wavelets, N);
 
 
-%% Default options.
-opts = fill_reconstruction_opt(opts);
-
-
 for audio_name_id = 1:length(audio_names)
     % Load waveform.
     audio_name = audio_names{audio_name_id};
@@ -45,7 +41,28 @@ for audio_name_id = 1:length(audio_names)
     iteration = 1;
     failure_counter = 0;
 
-    while (iteration <= opts.nIterations) && (~opts.is_spectrogram_displayed || is_display_active)
+    %% Default options.
+    opts = struct();
+    opt.nIterations = 50;
+    opts = fill_reconstruction_opt(opts);
+
+    %% Forward propagation of target signal
+    target_S = eca_target(target_waveform, rec_archs);
+    [target_norm, layer_target_norms] = sc_norm(target_S);
+    nLayers = length(rec_archs);
+
+    %% Initialization
+    [init, previous_loss, delta_signal] = ...
+        eca_init(target_waveform, target_S, rec_archs, opts);
+    iterations = cell(1, opts.nIterations);
+    iterations{1+0} = init;
+    previous_signal = iterations{1+0};
+    relative_loss_chart = zeros(1, opts.nIterations);
+    relative_layer_loss_chart = zeros(nLayers, opts.nIterations);
+    signal_update = zeros(size(iterations{1+0}));
+    learning_rate = opts.initial_learning_rate;
+
+    while (iteration <= opts.nIterations)
         %% Signal update
         iterations{1+iteration} = update_reconstruction( ...
             previous_signal, ...
