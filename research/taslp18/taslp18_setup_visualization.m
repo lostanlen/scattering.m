@@ -9,7 +9,6 @@ opts{1}.time.max_scale = 2048;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
 opts{1}.time.gamma_bounds = [1+Q1*1 Q1*7];
-opts{1}.time.duality = 'hermitian';
 opts{1}.time.wavelet_handle = @morlet_1d;
 
 archs = sc_setup(opts);
