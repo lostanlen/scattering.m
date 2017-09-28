@@ -1,5 +1,5 @@
 % Define parameters.
-Q1 = 8;
+Q1 = 16;
 wavelet_str = 'morlet';
 N = 131072;
 modulations_strs = {'none', 'time', 'time-frequency'};
