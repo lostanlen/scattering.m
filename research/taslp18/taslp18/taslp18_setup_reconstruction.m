@@ -42,7 +42,6 @@ if strcmp(modulations, 'time') || strcmp(modulations, 'time-frequency')
     opts{2}.banks.time.nFilters_per_octave = 1;
     opts{2}.banks.time.wavelet_handle = @morlet_1d;
     opts{2}.banks.time.duality = 'hermitian';
-    opts{2}.banks.time.T = T;
     switch wavelets
         case 'morlet'
             opts{2}.banks.time.wavelet_handle = @morlet_1d;
@@ -56,7 +55,6 @@ elseif ~strcmp(modulations, 'none')
 end
 % Options for frequential modulations.
 if strcmp(modulations, 'time-frequency')
-    opts{2}.banks.gamma.T = 2^nextpow2(3*Q1);
     opts{2}.banks.gamma.duality = 'hermitian';
     opts{2}.banks.gamma.nFilters_per_octave = 1;
     opts{2}.banks.gamma.subscripts = 2;
