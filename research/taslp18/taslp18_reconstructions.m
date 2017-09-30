@@ -3,7 +3,7 @@ Q1 = 16;
 wavelet_str = 'morlet';
 N = 131072;
 modulations_strs = {'none', 'time', 'time-frequency'};
-Ts = [2^11, 2^13, 2^15, 2^17];
+Ts = [2^11, 2^14, 2^17];
 
 
 % Load waveform.
