@@ -3,13 +3,15 @@ function archs = taslp18_setup_visualization(Q1, N)
 % N is the length of the input.
 % It should be a power of 2.
 
+nfo = 2*Q1;
+
 opts{1}.time.max_Q = Q1;
 opts{1}.time.nFilters_per_octave = 2*Q1;
 opts{1}.time.T = 2^8;
 opts{1}.time.max_scale = 2048;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
-opts{1}.time.gamma_bounds = [1+Q1*1 Q1*7];
+opts{1}.time.gamma_bounds = [1+nfo*1 nfo*7];
 opts{1}.time.wavelet_handle = @morlet_1d;
 
 archs = sc_setup(opts);
