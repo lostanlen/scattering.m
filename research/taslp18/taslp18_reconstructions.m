@@ -1,6 +1,6 @@
 % Define parameters.
 Q1 = 16;
-wavelet_strs = {'morlet', 'gammatone'};
+wavelet_strs = {'morlet'};
 N = 131072;
 modulations_strs = {'none', 'time', 'time-frequency'};
 Ts = [2^11, 2^14, 2^17];
