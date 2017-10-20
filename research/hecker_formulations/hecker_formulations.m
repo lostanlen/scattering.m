@@ -9,12 +9,9 @@ Q1 = 12;
 T = 2^8;
 modulations = 'time-frequency';
 wavelets = 'morlet';
-N = 2^14;
-archs = eca_setup_1chunk(Q1, T, modulations, wavelets, N);
-
+archs = eca_setup(Q1, T, modulations, wavelets);
 
 file_id = 1;
-%for file_id = 1:n_files
 
 file_name = file_names{file_id};
 file_path = fullfile(data_dir, file_name);
@@ -35,4 +32,6 @@ for chunk_id = 0:(n_chunks-1)
 end
 toc();
 
-nLines = inf;
+function [text, S_sorted_paths] = eca_text(S_batches, nLines, sample_rate)
+nBatches = length(S_batches);
+S_batch_norms = cell(1, nBatches);
