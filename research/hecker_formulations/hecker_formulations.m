@@ -1,3 +1,4 @@
+% List files.
 addpath(genpath('../..'));
 data_dir = '/scratch/vl1019/hecker_formulations_data';
 files = list_dir(data_dir);
@@ -5,6 +6,7 @@ file_names = {files.name};
 file_names = sort(file_names);
 n_files = length(file_names);
 
+% Build architectures.
 Q1 = 6;
 T = 2^17;
 batch_length = 2^20;
@@ -13,26 +15,32 @@ wavelets = 'morlet';
 nLines = inf;
 archs = eca_setup(Q1, T, modulations, wavelets);
 
+% Load waveform.
 file_id = 1;
 file_name = file_names{file_id};
 file_path = fullfile(data_dir, file_name);
 [waveform, sample_rate] = audioread(file_path);
 waveform_length = length(waveform);
 
+% Initialize batches.
 n_batches = floor(waveform_length / batch_length);
-n_batches = 2;
 S_batches = cell(1, n_batches);
 
+% Loop over batches.
 for batch_id = 1:n_batches
+
+    % Extract batch.
     batch_start = 1 + (batch_id-1) * batch_length;
     batch_stop = batch_id * batch_length;
     waveform_batch = waveform(batch_start:batch_stop);
 
+    % Initialize scattering transform.
     nLayers = length(archs);
     S = cell(1, nLayers);
     U = cell(1, nLayers);
     Y = cell(1, nLayers);
 
+    % Chunk waveform batch.
     U{1+0} = initialize_U(waveform_batch, archs{1}.banks{1});
 
     %% Propagation cascade
@@ -57,14 +65,20 @@ for batch_id = 1:n_batches
         end
     end
 
+    % Store batch.
     S_batches{batch_id} = S;
 end
 
+
+% Loop over batches.
 nBatches = length(S_batches);
 S_batch_norms = cell(1, nBatches);
-
 for batch_index = 0:(nBatches-1)
+
+    % Load batch.
     S = S_batches{1+batch_index};
+
+    % Compute norms for first-order scattering.
     gamma1_start = S{1+1}.ranges{1}(1,3);
     S1_refs = generate_refs(S{1+1}.data, [1, 2], S{1+1}.ranges{1});
     nS1_refs = length(S1_refs);
@@ -80,6 +94,7 @@ for batch_index = 0:(nBatches-1)
         S1_norms(ref_index) = transpose(sum(sum(S1_tensor.*S1_tensor, 1), 2));
     end
 
+    % Compute norms for second-order scattering (psi-psi).
     S2psi_refs = generate_refs(S{1+2}{1}.data, [1, 2], ...
         S{1+2}{1}.ranges{1});
     nS2psi_refs = length(S2psi_refs);
@@ -111,6 +126,7 @@ for batch_index = 0:(nBatches-1)
         S2psi_paths(ref_index) = S2psi_path;
     end
 
+    % Compute norms for second-order scattering (psi-phi).
     S2phi_refs = generate_refs(S{1+2}{1,2}.data, [1, 2], ...
         S{1+2}{1,2}.ranges{1});
     nS2phi_refs = length(S2phi_refs);
@@ -136,16 +152,22 @@ for batch_index = 0:(nBatches-1)
         S2phi_path.gamma = (gamma1_index - 1) * gamma1_hop + gamma1_start;
         S2phi_paths(ref_index) = S2phi_path;
     end
+
+    % Concatenate norms and paths.
     S_norms = [S1_norms, S2phi_norms, S2psi_norms];
     S_batch_norms{1+batch_index} = S_norms;
     S_paths = [S1_paths, S2phi_paths, S2psi_paths];
 end
+
+% Concatenate batches.
 S_batch_norms = cat(1, S_batch_norms{:});
 S_norms = sqrt(sum(S_batch_norms .* S_batch_norms, 1));
 
-%%
+% Compute parts per million (ppm).
 [S_sorted_norms, S_sorting_indices] = sort(S_norms, 'descend');
 S_sorted_ppms = round((S_sorted_norms / sum(S_sorted_norms)) * 10^6);
+
+% Truncate to a given number of lines.
 if isnan(nLines)
     nLines = find(S_sorted_ppms > 0, 1, 'last');
 elseif isinf(nLines)
@@ -153,7 +175,7 @@ elseif isinf(nLines)
 end
 S_sorting_indices = S_sorting_indices(1:nLines);
 
-%
+% Compute mother frequencies.
 gamma1_motherfrequency = sample_rate * ...
     S{1+1}.variable_tree.time{1}.gamma{1}.leaf.spec.mother_xi;
 gamma1_frequencies = gamma1_motherfrequency * ...
@@ -168,7 +190,7 @@ gammagamma_motherfrequency = ...
 gammagamma_frequencies = gammagamma_motherfrequency * ...
     [S{1+2}{1}.variable_tree.time{1}.gamma{1}.gamma{1}.leaf.metas.resolution];
 
-
+% Loop over lines.
 S_sorted_paths = S_paths(S_sorting_indices);
 S_lines = cell(1, nLines);
 for line_index = 1:nLines
@@ -201,4 +223,6 @@ for line_index = 1:nLines
     S_line = [ppm_string, f1_string, f2_string, fgamma_string, '\n'];
     S_lines{line_index} = S_line;
 end
+
+% Compute text by concatenating lines.
 text = sprintf([S_lines{:}]);
