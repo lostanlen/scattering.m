@@ -5,9 +5,9 @@ file_names = {files.name};
 file_names = sort(file_names);
 n_files = length(file_names);
 
-Q1 = 12;
-T = 2^8;
-batch_length = 2^17;
+Q1 = 6;
+T = 2^17;
+batch_length = 2^20;
 modulations = 'time-frequency';
 wavelets = 'morlet';
 nLines = inf;
@@ -77,7 +77,7 @@ for batch_index = 0:(nBatches-1)
         gamma1 = (gamma1_index - 1) + gamma1_start;
         S1_paths(ref_index).gamma = gamma1;
         S1_tensor = subsref(S{1+1}.data, S1_refs(:, ref_index));
-        S1_norms(ref_index) = sum(sum(S1_tensor.*S1_tensor, 1), 2).';
+        S1_norms(ref_index) = transpose(sum(sum(S1_tensor.*S1_tensor, 1), 2));
     end
 
     S2psi_refs = generate_refs(S{1+2}{1}.data, [1, 2], ...
@@ -94,7 +94,7 @@ for batch_index = 0:(nBatches-1)
             'gammagamma', [], 'thetagamma', []);
         S2psi_tensor = subsref(S{1+2}{1}.data, S2psi_refs(:, ref_index));
         S2psi_norms(ref_index) = ...
-            sum(sum(S2psi_tensor.*S2psi_tensor, 1), 2).';
+            transpose(sum(sum(S2psi_tensor.*S2psi_tensor, 1), 2));
         gamma2_index = S2psi_refs(1,ref_index).subs{1};
         S2psi_path.gamma2 = gamma2_index + (gamma2_start - 1);
         gammagamma_index = S2psi_refs(2,ref_index).subs{1};
@@ -125,7 +125,7 @@ for batch_index = 0:(nBatches-1)
             'gammagamma', [], 'thetagamma', []);
         S2phi_tensor = subsref(S{1+2}{1,2}.data, S2phi_refs(:, ref_index));
         S2phi_norms(ref_index) = ...
-            tranpose(sum(sum(S2phi_tensor.*S2phi_tensor, 1), 2));
+            transpose(sum(sum(S2phi_tensor.*S2phi_tensor, 1), 2));
         gamma2_index = S2phi_refs(1,ref_index).subs{1};
         S2phi_path.gamma2 = gamma2_index + (gamma2_start - 1);
         gamma1_index = S2phi_refs(2,ref_index).subs{3};
@@ -178,25 +178,25 @@ for line_index = 1:nLines
     gamma2 = S_path.gamma2;
     gammagamma = S_path.gammagamma;
     thetagamma = S_path.thetagamma;
-    ppm_string = ['\t', num2str(ppm), ' ppm'];
+    ppm_string = [num2str(ppm)];
     f1 = gamma1_frequencies(gamma1);
-    f1_string = ['\t', num2str(round(f1)), ' Hz'];
+    f1_string = [',', num2str(round(f1))];
     f2 = gamma2_frequencies(gamma2);
     if f2
-        f2_string = ['\t', num2str(round(f2)), ' Hz'];
+        f2_string = [',', num2str(round(f2))];
     else
-        f2_string = '\t';
+        f2_string = ',';
     end
     fgamma = gammagamma_frequencies(gammagamma);
     if fgamma
         if thetagamma == 1
-            sign_str = '+';
+            sign_str = ' ';
         elseif thetagamma == -1
             sign_str = '-';
         end
-        fgamma_string = ['\t', sign_str, num2str(fgamma), ' c/o'];
+        fgamma_string = [',', sign_str, num2str(fgamma)];
     else
-        fgamma_string = '\t';
+        fgamma_string = ',';
     end
     S_line = [ppm_string, f1_string, f2_string, fgamma_string, '\n'];
     S_lines{line_index} = S_line;
