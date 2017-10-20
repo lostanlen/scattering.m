@@ -8,7 +8,7 @@ n_files = length(file_names);
 
 % Build architectures.
 Q1 = 6;
-T = 2^17;
+T = 2^16;
 batch_length = 2^20;
 modulations = 'time-frequency';
 wavelets = 'morlet';
@@ -16,7 +16,6 @@ nLines = inf;
 archs = eca_setup(Q1, T, modulations, wavelets);
 
 % Load waveform.
-file_id = 1;
 file_name = file_names{file_id};
 file_path = fullfile(data_dir, file_name);
 [waveform, sample_rate] = audioread(file_path);
