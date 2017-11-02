@@ -53,8 +53,8 @@ for audio_name_str in audio_names:
                     f.write("module load/matlab2017a\n")
                     f.write("\n")
                     f.write("matlab -nosplash -nodesktop -nodisplay -r " +
-                        "\"audio_name = " + audio_name_str + "; " +
-                        "modulations_str = " + modulations_str + "; " +
+                        "\"audio_name = \'" + audio_name_str + "\'; " +
+                        "modulations_str = \'" + modulations_str + "\'; " +
                         "J = " + J_str + "; " +
-                        "wavelet_str = " + wavelet_str + "; "
+                        "wavelet_str = \'" + wavelet_str + "\'; "
                         "run('../taslp18_reconstructions.m');\"")
