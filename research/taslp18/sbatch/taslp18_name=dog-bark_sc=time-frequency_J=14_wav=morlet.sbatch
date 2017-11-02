@@ -9,6 +9,6 @@
 #SBATCH --output=../slurm/slurm_taslp18_name=dog-bark_sc=time-frequency_J=14_wav=morlet_%j.out
 
 module purge
-module load matlab2017a
+module load matlab/2017a
 
 matlab -nosplash -nodesktop -nodisplay -r "audio_name_str = 'taslp18_dog-bark'; modulations_str = 'time-frequency'; J = 14; wavelet_str = 'morlet'; addpath(genpath('~/scattering.m')); addpath(genpath('~/export_fig')); run('../taslp18_reconstructions.m');"
