@@ -5,7 +5,7 @@
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --time=0:30:00
-#SBATCH --mem=32GB
+#SBATCH --mem=8GB
 #SBATCH --output=../slurm/slurm_taslp18_name=flute_sc=none_J=17_wav=gammatone_%j.out
 
 module purge
