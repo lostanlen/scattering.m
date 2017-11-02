@@ -1,0 +1,36 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017a (9.2.0.556344) 64-bit (glnxa64)
+                               March 27, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+display_period =
+
+    10
+
+it = 002  ;  S_m distances = [ 94.82%  102.72% ]  ;  Loss = 95.75%
+Learning rate = 0.11
+Elapsed time is 2.818086 seconds.
+{Subscript indices must either be real positive integers or logicals.
+
+Error in firstborn_scatter (line 35)
+psis = bank.psis{support_index};
+
+Error in scatter_Y (line 44)
+            firstborn_scatter(sub_Y.data_ft,bank,ranges);
+
+Error in U_to_Y (line 14)
+    layer_Y{1+1} = scatter_Y(layer_Y{1+0},banks{1});
+
+Error in taslp18_reconstructions (line 162)
+        rec_Y1 = U_to_Y(rec_U0, vis_archs{1}.banks);
+
+Error in run (line 86)
+evalin('caller', [script ';']);
+} 
+>> 
