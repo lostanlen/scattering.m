@@ -41,7 +41,7 @@ rec_archs = taslp18_setup_reconstruction( ...
 % Reconstruct.
 iteration = 1;
 failure_counter = 0;
-display_period = 10
+display_period = 10;
 
 
 %% Default options.
