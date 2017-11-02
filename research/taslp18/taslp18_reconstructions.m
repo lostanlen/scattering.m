@@ -34,17 +34,18 @@ for audio_name_id = 1:length(audio_names)
     export_fig([audio_name, '_original.png']);
 
     % Loop on modulations.
-    for modulations_id = 1:length(modulations_strs)
-        modulations_str = modulations_strs{modulations_id};
+    for modulations_id = length(modulations_strs):-1:1
 
         % Loop on T.
-        for T_id = 1:length(Ts)
-            T = Ts(T_id);
+        for T_id = length(Ts):-1:1
 
             % Loop on wavelet kinds.
             for wavelet_id = 1:length(wavelet_strs)
 
+                modulations_str = modulations_strs{modulations_id};
+                T = Ts(T_id);
                 wavelet_str = wavelet_strs{wavelet_id};
+
                 % Construct wavelet filter banks for reconstruction.
                 rec_archs = taslp18_setup_reconstruction( ...
                     Q1, T, modulations_str, wavelet_str, N);
@@ -55,7 +56,7 @@ for audio_name_id = 1:length(audio_names)
 
                 %% Default options.
                 opts = struct();
-                opts.nIterations = 100;
+                opts.nIterations = 2;
                 opts = fill_reconstruction_opt(opts);
                 max_nDigits = 1 + floor(log10(opts.nIterations));
                 sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
