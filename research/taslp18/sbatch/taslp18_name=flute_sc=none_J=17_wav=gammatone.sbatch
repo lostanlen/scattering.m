@@ -11,4 +11,4 @@
 module purge
 module load/matlab2017a
 
-matlab -nosplash -nodesktop -nodisplay -r "audio_name = 'taslp18_flute'; modulations_str = 'none'; J = 17; wavelet_str = 'gammatone'; addpath('~/scattering.m'); addpath('~/export_fig'); run('../taslp18_reconstructions.m');"
+matlab -nosplash -nodesktop -nodisplay -r "audio_name_str = 'taslp18_flute'; modulations_str = 'none'; J = 17; wavelet_str = 'gammatone'; addpath(genpath('~/scattering.m')) addpath(genpath('~/export_fig')); run('../taslp18_reconstructions.m');"
