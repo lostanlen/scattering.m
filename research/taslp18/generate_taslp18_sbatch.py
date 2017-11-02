@@ -1,18 +1,12 @@
 import os
 import sys
 
-audio_name_id = 1
-modulations_id = 1
-T_id = 1
-wavelet_id = 1
-audio_names = {'taslp18_dog-bark', 'taslp18_flute'};
-modulations_strs = {'none', 'time', 'time-frequency'};
-wavelet_strs = {'morlet', 'gammatone'};
+
+audio_names = ['taslp18_dog-bark', 'taslp18_flute'];
+modulations_strs = ['none', 'time', 'time-frequency'];
+wavelet_strs = ['morlet', 'gammatone'];
 Js = [11, 14, 17];
 
-modulations_str = modulations_strs{modulations_id};
-T = Ts(T_id);
-wavelet_str = wavelet_strs{wavelet_id};
 
 os.makedirs("sbatch", exist_ok=True)
 os.makedirs("slurm", exist_ok=True)
