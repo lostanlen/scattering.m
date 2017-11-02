@@ -56,5 +56,7 @@ for audio_name_str in audio_names:
                         "\"audio_name = \'" + audio_name_str + "\'; " +
                         "modulations_str = \'" + modulations_str + "\'; " +
                         "J = " + J_str + "; " +
-                        "wavelet_str = \'" + wavelet_str + "\'; "
+                        "wavelet_str = \'" + wavelet_str + "\'; " +
+                        "addpath(\'~/scattering.m\'); " +
+                        "addpath(\'~/export_fig\'); " +
                         "run('../taslp18_reconstructions.m');\"")
