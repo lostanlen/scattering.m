@@ -51,7 +51,7 @@ for audio_name_str in audio_namess:
                     f.write("\n")
                     f.write("module purge\n")
                     f.write("module load/matlab2017a\n")
-                    f.write("\n")s
+                    f.write("\n")
                     f.write("matlab -nosplash -nodesktop -nodisplay -r " +
                         "\"audio_name = " + audio_name_str + "; " +
                         "modulations_str = " + modulations_str + "; " +
