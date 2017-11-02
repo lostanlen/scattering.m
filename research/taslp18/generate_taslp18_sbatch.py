@@ -12,7 +12,7 @@ os.makedirs("sbatch", exist_ok=True)
 os.makedirs("slurm", exist_ok=True)
 
 # Loop over recording units.
-for audio_name_str in audio_namess:
+for audio_name_str in audio_names:
 
     # Loop over modulations.
     for modulations_str in modulations_strs:
@@ -23,7 +23,7 @@ for audio_name_str in audio_namess:
             J_str = str(J)
 
             # Loop over wavelets.
-            for wavelet_str in wavelet_str:
+            for wavelet_str in wavelet_strs:
 
                 # Define file path.
                 job_name = "_".join([
