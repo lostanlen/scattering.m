@@ -9,6 +9,6 @@
 #SBATCH --output=../slurm/slurm_taslp18_name=flute_sc=none_J=14_wav=gammatone_%j.out
 
 module purge
-module load/matlab2017a
+module load matlab2017a
 
 matlab -nosplash -nodesktop -nodisplay -r "audio_name_str = 'taslp18_flute'; modulations_str = 'none'; J = 14; wavelet_str = 'gammatone'; addpath(genpath('~/scattering.m')); addpath(genpath('~/export_fig')); run('../taslp18_reconstructions.m');"
