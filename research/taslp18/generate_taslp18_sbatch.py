@@ -2,7 +2,7 @@ import os
 import sys
 
 
-audio_names = ['taslp18_dog-bark', 'taslp18_flute'];
+audio_names = ['dog-bark', 'flute'];
 modulations_strs = ['none', 'time', 'time-frequency'];
 wavelet_strs = ['morlet', 'gammatone'];
 Js = [11, 14, 17];
@@ -28,10 +28,10 @@ for audio_name_str in audio_names:
                 # Define file path.
                 job_name = "_".join([
                     "taslp18",
-                    audio_name_str,
-                    modulations_str,
-                    J_str,
-                    wavelet_str
+                    "name=" + audio_name_str,
+                    "sc=" + modulations_str,
+                    "J=" + J_str,
+                    "wav=" + wavelet_str
                 ])
                 file_name = job_name + ".sbatch"
                 file_path = os.path.join("sbatch", file_name)
@@ -53,7 +53,7 @@ for audio_name_str in audio_names:
                     f.write("module load/matlab2017a\n")
                     f.write("\n")
                     f.write("matlab -nosplash -nodesktop -nodisplay -r " +
-                        "\"audio_name = \'" + audio_name_str + "\'; " +
+                        "\"audio_name = \'taslp18_" + audio_name_str + "\'; " +
                         "modulations_str = \'" + modulations_str + "\'; " +
                         "J = " + J_str + "; " +
                         "wavelet_str = \'" + wavelet_str + "\'; " +
