@@ -46,7 +46,7 @@ for audio_name_str in audio_names:
                     f.write("#SBATCH --tasks-per-node=1\n")
                     f.write("#SBATCH --cpus-per-task=1\n")
                     f.write("#SBATCH --time=0:30:00\n")
-                    f.write("#SBATCH --mem=32GB\n")
+                    f.write("#SBATCH --mem=8GB\n")
                     f.write("#SBATCH --output=../slurm/slurm_" + job_name + "_%j.out\n")
                     f.write("\n")
                     f.write("module purge\n")
