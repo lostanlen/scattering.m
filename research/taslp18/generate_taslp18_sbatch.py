@@ -50,7 +50,7 @@ for audio_name_str in audio_names:
                     f.write("#SBATCH --output=../slurm/slurm_" + job_name + "_%j.out\n")
                     f.write("\n")
                     f.write("module purge\n")
-                    f.write("module load matlab2017a\n")
+                    f.write("module load matlab/2017a\n")
                     f.write("\n")
                     f.write("matlab -nosplash -nodesktop -nodisplay -r " +
                         "\"audio_name_str = \'taslp18_" + audio_name_str + "\'; " +
