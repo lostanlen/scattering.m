@@ -11,4 +11,4 @@
 module purge
 module load/matlab2017a
 
-matlab -nosplash -nodesktop -nodisplay -r "audio_name = 'taslp18_dog-bark'; modulations_str = 'time'; J = 17; wavelet_str = 'morlet'; run('../taslp18_reconstructions.m');"
+matlab -nosplash -nodesktop -nodisplay -r "audio_name = 'taslp18_dog-bark'; modulations_str = 'time'; J = 17; wavelet_str = 'morlet'; addpath('~/scattering.m'); addpath('~/export_fig'); run('../taslp18_reconstructions.m');"
