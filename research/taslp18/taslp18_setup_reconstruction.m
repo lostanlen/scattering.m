@@ -16,17 +16,17 @@ function archs = taslp18_setup_reconstruction(Q1, T, modulations, wavelets, N)
 
 opts{1}.time.nFilters_per_octave = Q1;
 opts{1}.time.T = 2^8;
-opts{1}.time.max_scale = 2048;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
 opts{1}.time.duality = 'hermitian';
+opts{1}.time.gamma_bounds = [1 Q1*7];
 switch wavelets
     case 'morlet'
         opts{1}.time.wavelet_handle = @morlet_1d;
-        opts{1}.time.gamma_bounds = [1 Q1*7];
+        opts{1}.time.max_scale = 2048;
     case 'gammatone'
         opts{1}.time.wavelet_handle = @gammatone_1d;
-        opts{1}.time.gamma_bounds = [1 Q1*10];
+        opts{1}.time.max_scale = Inf;
     otherwise
         error(['Unrecognized field wavelets: ', wavelets]);
 end
