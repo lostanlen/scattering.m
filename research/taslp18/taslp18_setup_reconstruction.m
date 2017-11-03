@@ -19,13 +19,14 @@ opts{1}.time.T = 2^8;
 opts{1}.time.max_scale = 2048;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
-opts{1}.time.gamma_bounds = [1 Q1*7];
 opts{1}.time.duality = 'hermitian';
 switch wavelets
     case 'morlet'
         opts{1}.time.wavelet_handle = @morlet_1d;
+        opts{1}.time.gamma_bounds = [1 Q1*7];
     case 'gammatone'
         opts{1}.time.wavelet_handle = @gammatone_1d;
+        opts{1}.time.gamma_bounds = [1 Q1*10];
     otherwise
         error(['Unrecognized field wavelets: ', wavelets]);
 end
