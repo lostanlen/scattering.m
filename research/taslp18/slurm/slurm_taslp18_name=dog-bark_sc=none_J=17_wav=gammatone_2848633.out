@@ -1,0 +1,1226 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017a (9.2.0.556344) 64-bit (glnxa64)
+                               March 27, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+it = 002  ;  S_m distances = [ 71.51% ]  ;  Loss = 71.51%
+Learning rate = 0.11
+Elapsed time is 2.077033 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 003  ;  S_m distances = [ 59.67% ]  ;  Loss = 59.67%
+Learning rate = 0.121
+Elapsed time is 16.609568 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 004  ;  S_m distances = [ 43.42% ]  ;  Loss = 43.42%
+Learning rate = 0.1331
+Elapsed time is 7.058215 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 005  ;  S_m distances = [ 24.60% ]  ;  Loss = 24.60%
+Learning rate = 0.14641
+Elapsed time is 7.210728 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 006  ;  S_m distances = [ 6.11% ]  ;  Loss = 6.11%
+Learning rate = 0.16105
+Elapsed time is 7.693641 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+Learning rate = 0.080526
+it = 007  ;  S_m distances = [ 4.70% ]  ;  Loss = 4.70%
+Learning rate = 0.088578
+Elapsed time is 9.133807 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+Learning rate = 0.044289
+Learning rate = 0.022145
+Learning rate = 0.011072
+Learning rate = 0.0055361
+it = 008  ;  S_m distances = [ 5.40% ]  ;  Loss = 5.40%
+Learning rate = 0.11
+Elapsed time is 10.015882 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 009  ;  S_m distances = [ 5.20% ]  ;  Loss = 5.20%
+Learning rate = 0.121
+Elapsed time is 7.822818 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 010  ;  S_m distances = [ 4.70% ]  ;  Loss = 4.70%
+Learning rate = 0.1331
+Elapsed time is 7.370803 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 011  ;  S_m distances = [ 3.97% ]  ;  Loss = 3.97%
+Learning rate = 0.14641
+Elapsed time is 6.941212 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 012  ;  S_m distances = [ 3.18% ]  ;  Loss = 3.18%
+Learning rate = 0.16105
+Elapsed time is 7.012453 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 013  ;  S_m distances = [ 2.60% ]  ;  Loss = 2.60%
+Learning rate = 0.17716
+Elapsed time is 7.281685 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 014  ;  S_m distances = [ 2.53% ]  ;  Loss = 2.53%
+Learning rate = 0.19487
+Elapsed time is 7.596481 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+Learning rate = 0.097436
+Learning rate = 0.048718
+Learning rate = 0.024359
+Learning rate = 0.012179
+it = 015  ;  S_m distances = [ 2.56% ]  ;  Loss = 2.56%
+Learning rate = 0.11
+Elapsed time is 9.779739 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 016  ;  S_m distances = [ 2.54% ]  ;  Loss = 2.54%
+Learning rate = 0.121
+Elapsed time is 7.463132 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 017  ;  S_m distances = [ 2.50% ]  ;  Loss = 2.50%
+Learning rate = 0.1331
+Elapsed time is 7.181752 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 018  ;  S_m distances = [ 2.46% ]  ;  Loss = 2.46%
+Learning rate = 0.14641
+Elapsed time is 7.621820 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 019  ;  S_m distances = [ 2.41% ]  ;  Loss = 2.41%
+Learning rate = 0.16105
+Elapsed time is 7.769315 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 020  ;  S_m distances = [ 2.38% ]  ;  Loss = 2.38%
+Learning rate = 0.17716
+Elapsed time is 7.300645 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 021  ;  S_m distances = [ 2.36% ]  ;  Loss = 2.36%
+Learning rate = 0.19487
+Elapsed time is 7.154504 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 022  ;  S_m distances = [ 2.35% ]  ;  Loss = 2.35%
+Learning rate = 0.21436
+Elapsed time is 6.776912 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 023  ;  S_m distances = [ 2.34% ]  ;  Loss = 2.34%
+Learning rate = 0.23579
+Elapsed time is 7.294995 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 024  ;  S_m distances = [ 2.32% ]  ;  Loss = 2.32%
+Learning rate = 0.25937
+Elapsed time is 7.604702 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 025  ;  S_m distances = [ 2.29% ]  ;  Loss = 2.29%
+Learning rate = 0.28531
+Elapsed time is 7.536880 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 026  ;  S_m distances = [ 2.26% ]  ;  Loss = 2.26%
+Learning rate = 0.31384
+Elapsed time is 7.196190 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 027  ;  S_m distances = [ 2.22% ]  ;  Loss = 2.22%
+Learning rate = 0.34523
+Elapsed time is 8.156613 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 028  ;  S_m distances = [ 2.19% ]  ;  Loss = 2.19%
+Learning rate = 0.37975
+Elapsed time is 7.430968 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 029  ;  S_m distances = [ 2.17% ]  ;  Loss = 2.17%
+Learning rate = 0.41772
+Elapsed time is 6.892449 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 030  ;  S_m distances = [ 2.13% ]  ;  Loss = 2.13%
+Learning rate = 0.4595
+Elapsed time is 7.255251 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 031  ;  S_m distances = [ 2.08% ]  ;  Loss = 2.08%
+Learning rate = 0.50545
+Elapsed time is 7.475599 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 032  ;  S_m distances = [ 2.03% ]  ;  Loss = 2.03%
+Learning rate = 0.55599
+Elapsed time is 7.192152 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 033  ;  S_m distances = [ 1.98% ]  ;  Loss = 1.98%
+Learning rate = 0.61159
+Elapsed time is 7.367101 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 034  ;  S_m distances = [ 1.93% ]  ;  Loss = 1.93%
+Learning rate = 0.67275
+Elapsed time is 6.873300 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 035  ;  S_m distances = [ 1.87% ]  ;  Loss = 1.87%
+Learning rate = 0.74002
+Elapsed time is 7.748230 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 036  ;  S_m distances = [ 1.81% ]  ;  Loss = 1.81%
+Learning rate = 0.81403
+Elapsed time is 7.624408 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 037  ;  S_m distances = [ 1.74% ]  ;  Loss = 1.74%
+Learning rate = 0.89543
+Elapsed time is 7.437817 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 038  ;  S_m distances = [ 1.67% ]  ;  Loss = 1.67%
+Learning rate = 0.98497
+Elapsed time is 7.408961 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 039  ;  S_m distances = [ 1.59% ]  ;  Loss = 1.59%
+Learning rate = 1.0835
+Elapsed time is 7.671424 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 040  ;  S_m distances = [ 1.51% ]  ;  Loss = 1.51%
+Learning rate = 1.1918
+Elapsed time is 7.487128 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 041  ;  S_m distances = [ 1.43% ]  ;  Loss = 1.43%
+Learning rate = 1.311
+Elapsed time is 6.919012 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 042  ;  S_m distances = [ 1.34% ]  ;  Loss = 1.34%
+Learning rate = 1.4421
+Elapsed time is 7.741991 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 043  ;  S_m distances = [ 1.24% ]  ;  Loss = 1.24%
+Learning rate = 1.5863
+Elapsed time is 7.539485 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 044  ;  S_m distances = [ 1.15% ]  ;  Loss = 1.15%
+Learning rate = 1.7449
+Elapsed time is 7.558350 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 045  ;  S_m distances = [ 1.05% ]  ;  Loss = 1.05%
+Learning rate = 1.9194
+Elapsed time is 7.368059 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 046  ;  S_m distances = [ 0.95% ]  ;  Loss = 0.95%
+Learning rate = 2.1114
+Elapsed time is 7.591675 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 047  ;  S_m distances = [ 0.85% ]  ;  Loss = 0.85%
+Learning rate = 2.3225
+Elapsed time is 7.303031 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 048  ;  S_m distances = [ 0.75% ]  ;  Loss = 0.75%
+Learning rate = 2.5548
+Elapsed time is 7.648722 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 049  ;  S_m distances = [ 0.66% ]  ;  Loss = 0.66%
+Learning rate = 2.8102
+Elapsed time is 7.614891 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 050  ;  S_m distances = [ 0.56% ]  ;  Loss = 0.56%
+Learning rate = 3.0913
+Elapsed time is 7.609624 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 051  ;  S_m distances = [ 0.48% ]  ;  Loss = 0.48%
+Learning rate = 3.4004
+Elapsed time is 7.658883 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 052  ;  S_m distances = [ 0.41% ]  ;  Loss = 0.41%
+Learning rate = 3.7404
+Elapsed time is 7.415867 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 053  ;  S_m distances = [ 0.35% ]  ;  Loss = 0.35%
+Learning rate = 4.1145
+Elapsed time is 7.045358 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 054  ;  S_m distances = [ 0.31% ]  ;  Loss = 0.31%
+Learning rate = 4.5259
+Elapsed time is 7.113407 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 055  ;  S_m distances = [ 0.30% ]  ;  Loss = 0.30%
+Learning rate = 4.9785
+Elapsed time is 7.626198 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 056  ;  S_m distances = [ 0.30% ]  ;  Loss = 0.30%
+Learning rate = 5.4764
+Elapsed time is 7.534946 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+Learning rate = 2.7382
+it = 057  ;  S_m distances = [ 0.29% ]  ;  Loss = 0.29%
+Learning rate = 3.012
+Elapsed time is 8.476899 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+Learning rate = 1.506
+Learning rate = 0.753
+it = 058  ;  S_m distances = [ 0.29% ]  ;  Loss = 0.29%
+Learning rate = 0.8283
+Elapsed time is 9.326262 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 059  ;  S_m distances = [ 0.28% ]  ;  Loss = 0.28%
+Learning rate = 0.91113
+Elapsed time is 7.732100 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 060  ;  S_m distances = [ 0.28% ]  ;  Loss = 0.28%
+Learning rate = 1.0022
+Elapsed time is 7.680355 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 061  ;  S_m distances = [ 0.28% ]  ;  Loss = 0.28%
+Learning rate = 1.1025
+Elapsed time is 7.634072 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 062  ;  S_m distances = [ 0.27% ]  ;  Loss = 0.27%
+Learning rate = 1.2127
+Elapsed time is 7.445556 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 063  ;  S_m distances = [ 0.26% ]  ;  Loss = 0.26%
+Learning rate = 1.334
+Elapsed time is 7.935014 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 064  ;  S_m distances = [ 0.25% ]  ;  Loss = 0.25%
+Learning rate = 1.4674
+Elapsed time is 7.736255 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 065  ;  S_m distances = [ 0.25% ]  ;  Loss = 0.25%
+Learning rate = 1.6141
+Elapsed time is 7.640079 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 066  ;  S_m distances = [ 0.24% ]  ;  Loss = 0.24%
+Learning rate = 1.7755
+Elapsed time is 7.957206 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 067  ;  S_m distances = [ 0.22% ]  ;  Loss = 0.22%
+Learning rate = 1.9531
+Elapsed time is 7.352404 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 068  ;  S_m distances = [ 0.21% ]  ;  Loss = 0.21%
+Learning rate = 2.1484
+Elapsed time is 7.527529 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 069  ;  S_m distances = [ 0.20% ]  ;  Loss = 0.20%
+Learning rate = 2.3632
+Elapsed time is 7.861136 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 070  ;  S_m distances = [ 0.19% ]  ;  Loss = 0.19%
+Learning rate = 2.5996
+Elapsed time is 7.382977 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 071  ;  S_m distances = [ 0.17% ]  ;  Loss = 0.17%
+Learning rate = 2.8595
+Elapsed time is 7.550880 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 072  ;  S_m distances = [ 0.16% ]  ;  Loss = 0.16%
+Learning rate = 3.1455
+Elapsed time is 7.270732 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 073  ;  S_m distances = [ 0.15% ]  ;  Loss = 0.15%
+Learning rate = 3.46
+Elapsed time is 7.834270 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 074  ;  S_m distances = [ 0.13% ]  ;  Loss = 0.13%
+Learning rate = 3.806
+Elapsed time is 7.708026 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 075  ;  S_m distances = [ 0.12% ]  ;  Loss = 0.12%
+Learning rate = 4.1866
+Elapsed time is 7.611116 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 076  ;  S_m distances = [ 0.11% ]  ;  Loss = 0.11%
+Learning rate = 4.6053
+Elapsed time is 7.779915 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 077  ;  S_m distances = [ 0.10% ]  ;  Loss = 0.10%
+Learning rate = 5.0658
+Elapsed time is 7.693871 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 078  ;  S_m distances = [ 0.09% ]  ;  Loss = 0.09%
+Learning rate = 5.5724
+Elapsed time is 7.581158 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 079  ;  S_m distances = [ 0.09% ]  ;  Loss = 0.09%
+Learning rate = 6.1296
+Elapsed time is 7.329013 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+Learning rate = 3.0648
+it = 080  ;  S_m distances = [ 0.08% ]  ;  Loss = 0.08%
+Learning rate = 3.3713
+Elapsed time is 8.246988 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 081  ;  S_m distances = [ 0.08% ]  ;  Loss = 0.08%
+Learning rate = 3.7084
+Elapsed time is 7.643787 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 082  ;  S_m distances = [ 0.08% ]  ;  Loss = 0.08%
+Learning rate = 4.0793
+Elapsed time is 7.799263 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 083  ;  S_m distances = [ 0.07% ]  ;  Loss = 0.07%
+Learning rate = 4.4872
+Elapsed time is 7.171572 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 084  ;  S_m distances = [ 0.07% ]  ;  Loss = 0.07%
+Learning rate = 4.9359
+Elapsed time is 7.074007 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 085  ;  S_m distances = [ 0.06% ]  ;  Loss = 0.06%
+Learning rate = 5.4295
+Elapsed time is 7.408839 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+Learning rate = 2.7148
+it = 086  ;  S_m distances = [ 0.06% ]  ;  Loss = 0.06%
+Learning rate = 2.9862
+Elapsed time is 7.975682 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 087  ;  S_m distances = [ 0.05% ]  ;  Loss = 0.05%
+Learning rate = 3.2849
+Elapsed time is 7.269590 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 088  ;  S_m distances = [ 0.05% ]  ;  Loss = 0.05%
+Learning rate = 3.6133
+Elapsed time is 7.243273 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 089  ;  S_m distances = [ 0.05% ]  ;  Loss = 0.05%
+Learning rate = 3.9747
+Elapsed time is 7.485528 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+Learning rate = 1.9873
+it = 090  ;  S_m distances = [ 0.04% ]  ;  Loss = 0.04%
+Learning rate = 2.1861
+Elapsed time is 7.944719 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 091  ;  S_m distances = [ 0.04% ]  ;  Loss = 0.04%
+Learning rate = 2.4047
+Elapsed time is 6.871663 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 092  ;  S_m distances = [ 0.04% ]  ;  Loss = 0.04%
+Learning rate = 2.6451
+Elapsed time is 6.865005 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 093  ;  S_m distances = [ 0.04% ]  ;  Loss = 0.04%
+Learning rate = 2.9097
+Elapsed time is 7.006048 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+Learning rate = 1.4548
+it = 094  ;  S_m distances = [ 0.04% ]  ;  Loss = 0.04%
+Learning rate = 1.6003
+Elapsed time is 7.640814 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 095  ;  S_m distances = [ 0.03% ]  ;  Loss = 0.03%
+Learning rate = 1.7603
+Elapsed time is 6.612575 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 096  ;  S_m distances = [ 0.03% ]  ;  Loss = 0.03%
+Learning rate = 1.9364
+Elapsed time is 7.410275 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 097  ;  S_m distances = [ 0.03% ]  ;  Loss = 0.03%
+Learning rate = 2.13
+Elapsed time is 6.765919 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 098  ;  S_m distances = [ 0.03% ]  ;  Loss = 0.03%
+Learning rate = 2.343
+Elapsed time is 7.264906 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 099  ;  S_m distances = [ 0.03% ]  ;  Loss = 0.03%
+Learning rate = 2.5773
+Elapsed time is 6.721058 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 100  ;  S_m distances = [ 0.03% ]  ;  Loss = 0.03%
+Learning rate = 2.8351
+Elapsed time is 6.922848 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
+it = 101  ;  S_m distances = [ 0.03% ]  ;  Loss = 0.03%
+Learning rate = 3.1186
+Elapsed time is 7.017608 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 169)
+  In run (line 86)] 
