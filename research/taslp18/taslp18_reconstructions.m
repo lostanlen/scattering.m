@@ -5,7 +5,7 @@
 % * wavelet_str
 
 % Define parameters.
-Q1 = 16;
+Q1 = 8; %16;
 N = 131072;
 T = 2^J;
 
