@@ -5,7 +5,7 @@ import sys
 audio_names = ['dog-bark', 'flute'];
 modulations_strs = ['none', 'time', 'time-frequency'];
 wavelet_strs = ['morlet', 'gammatone'];
-Js = [11, 14, 17];
+Js = [13, 15, 17];
 
 
 os.makedirs("sbatch", exist_ok=True)
