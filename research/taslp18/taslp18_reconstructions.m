@@ -59,6 +59,21 @@ nLayers = length(rec_archs);
 
 
 %% Initialization
+S1_energy = sqrt(sum(target_S{1+1}.data.^2, 1));
+resolutions = ...
+    [target_S{1+1}.variable_tree.time{1}.gamma{1}.leaf.metas.resolution];
+mother_xi = rec_archs{1+0}.banks{1}.spec.mother_xi;
+frequencies = transpose(cat(2, round(N * mother_xi * resolutions), 0.0));
+S1_energy = transpose(cat(2, S1_energy, ...
+    zeros(1, 1 + length(resolutions) - length(S1_energy))));
+frequencies = cat(1, N - frequencies(end:-1:1), frequencies);
+S1_energy = cat(1, S1_energy(end:-1:1), S1_energy);
+colored_noise_abs_ft = transpose(interp1(frequencies, S1_energy, 0:(N-1)));
+phasors = exp(2i * pi * rand(N, 1));
+colored_noise_ft = colored_noise_abs_ft .* phasors;
+colored_noise = real(ifft(colored_noise_ft));
+colored_noise = colored_noise * norm(target_waveform) / norm(colored_noise);
+opts.initial_signal = colored_noise;
 [init, previous_loss, delta_signal] = ...
     eca_init(target_waveform, target_S, rec_archs, opts);
 iterations = cell(1, opts.nIterations);
