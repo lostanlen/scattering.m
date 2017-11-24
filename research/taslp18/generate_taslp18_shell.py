@@ -4,7 +4,7 @@ import sys
 
 audio_names = ['dog-bark', 'flute'];
 modulations_strs = ['none', 'time', 'time-frequency'];
-wavelet_strs = ['morlet', 'gammatone'];
+wavelet_strs = ['gammatone'];
 Js = [13, 15, 17];
 
 
