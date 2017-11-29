@@ -15,7 +15,8 @@ vis_archs = taslp18_setup_visualization(24, N);
 
 % Load waveform.
 audio_path = ['media/', audio_name_str, '.wav'];
-[target_waveform, sample_rate] = taslp18_load(audio_path, N);
+[target_waveform, sample_rate] = taslp18_load(audio_path, N / 2);
+target_waveform = cat(1, target_waveform, target_waveform);
 
 
 % Compute scalogram.
@@ -185,7 +186,8 @@ while (iteration <= opts.nIterations)
 
     if iteration % display_period == 0
         % Display reconstructed scalogram.
-        rec_U0 = initialize_U(iterations{iteration}, vis_archs{1}.banks{1});
+        rec_U0 = initialize_U( ...
+            iterations{iteration}(1:(end/2)), vis_archs{1}.banks{1});
         rec_Y1 = U_to_Y(rec_U0, vis_archs{1}.banks);
         rec_U1 = Y_to_U(rec_Y1{end}, vis_archs{1}.nonlinearity);
         rec_scalogram = display_scalogram(rec_U1);
@@ -214,7 +216,7 @@ while (iteration <= opts.nIterations)
              '_wvlt=', wavelet_str, ...
              '_it=', num2str(iteration, '%0.3d'), ...
              '.wav'], ...
-             iterations{iteration}, ...
+             iterations{iteration}(1:(end/2)), ...
              sample_rate, ...
             'BitsPerSample', 16);
     end
