@@ -2,7 +2,7 @@ import os
 import sys
 
 
-audio_names = ['dog-bark', 'flute', 'timit'];
+audio_names = ['dog-bark', 'flute', 'speech'];
 modulations_strs = ['none', 'time', 'time-frequency'];
 wavelet_strs = ['gammatone', 'morlet'];
 Js = [12, 13, 14, 15, 16, 17];
