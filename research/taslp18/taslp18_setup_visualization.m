@@ -11,7 +11,7 @@ opts{1}.time.T = 2^8;
 opts{1}.time.max_scale = 2048;
 opts{1}.time.size = N / 2;
 opts{1}.time.is_chunked = false;
-opts{1}.time.gamma_bounds = [1+nfo*1 nfo*7];
+opts{1}.time.gamma_bounds = [1+nfo*1 nfo*6];
 opts{1}.time.wavelet_handle = @morlet_1d;
 
 archs = sc_setup(opts);
