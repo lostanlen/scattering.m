@@ -2,7 +2,7 @@ import os
 import sys
 
 
-audio_names = ['dog-bark', 'flute'];
+audio_names = ['dog-bark', 'flute', 'speech'];
 modulations_strs = ['none', 'time', 'time-frequency'];
 wavelet_strs = ['gammatone', 'morlet'];
 Js = [13, 15, 17];
@@ -53,7 +53,7 @@ for audio_name_str in audio_names:
                     f.write("module load matlab/2017a\n")
                     f.write("\n")
                     f.write("matlab -nosplash -nodesktop -nodisplay -r " +
-                        "\"audio_name_str = \'taslp18_" + audio_name_str + "\'; " +
+                        "\"audio_name_str = \'" + audio_name_str + "\'; " +
                         "modulations_str = \'" + modulations_str + "\'; " +
                         "J = " + J_str + "; " +
                         "wavelet_str = \'" + wavelet_str + "\'; " +
