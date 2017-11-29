@@ -2,10 +2,10 @@ import os
 import sys
 
 
-audio_names = ['dog-bark', 'flute'];
+audio_names = ['dog-bark', 'flute', 'timit'];
 modulations_strs = ['none', 'time', 'time-frequency'];
 wavelet_strs = ['gammatone', 'morlet'];
-Js = [13, 15, 17];
+Js = [12, 13, 14, 15, 16, 17];
 
 
 os.makedirs("sbatch", exist_ok=True)
