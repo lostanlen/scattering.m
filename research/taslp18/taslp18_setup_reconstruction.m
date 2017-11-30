@@ -15,7 +15,7 @@ function archs = taslp18_setup_reconstruction(Q1, T, modulations, wavelets, N)
 % It should be a power of 2.
 
 opts{1}.time.nFilters_per_octave = Q1;
-opts{1}.time.T = 2^7;
+opts{1}.time.T = 2^6;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
 opts{1}.time.duality = 'hermitian';
