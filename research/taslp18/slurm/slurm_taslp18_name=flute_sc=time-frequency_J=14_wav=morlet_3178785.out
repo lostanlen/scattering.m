@@ -1,0 +1,149 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017a (9.2.0.556344) 64-bit (glnxa64)
+                               March 27, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+it = 002  ;  S_m distances = [ 110.92%   91.51% ]  ;  Loss = 102.29%
+Learning rate = 0.11
+Elapsed time is 2.969920 seconds.
+
+------------------------------------------------------------------------
+             Bus error detected at Fri Dec  1 13:15:44 2017
+------------------------------------------------------------------------
+
+Configuration:
+  Crash Decoding      : Disabled - No sandbox or build area path
+  Crash Mode          : continue (default)
+  Current Graphics Driver: Unknown software 
+  Current Visual      : None
+  Default Encoding    : UTF-8
+  Deployed            : false
+  GNU C Library       : 2.17 stable
+  Host Name           : c12-03
+  MATLAB Architecture : glnxa64
+  MATLAB Entitlement ID: 1144772
+  MATLAB Root         : /share/apps/matlab/2017a
+  MATLAB Version      : 9.2.0.556344 (R2017a)
+  OpenGL              : software
+  Operating System    : Linux 3.10.0-514.10.2.el7.x86_64 #1 SMP Fri Mar 3 00:04:05 UTC 2017 x86_64
+  Processor ID        : x86 Family 6 Model 79 Stepping 1, GenuineIntel
+  Virtual Machine     : Java 1.7.0_60-b19 with Oracle Corporation Java HotSpot(TM) 64-Bit Server VM mixed mode
+  Window System       : No active display
+
+Fault Count: 1
+
+
+Abnormal termination:
+Bus error
+
+Register State (from fault):
+  RAX = 0000000000000000  RBX = 00002b471539e360
+  RCX = 0000000000000000  RDX = 0000000000000000
+  RSP = 00002b471539e2b0  RBP = 00002b471539e3f0
+  RSI = 0000000000000000  RDI = 00000000000002a6
+
+   R8 = 00000000000002a6   R9 = 0000000000000000
+  R10 = 0000000000000003  R11 = 0000000000000246
+  R12 = 00002b46eae2f000  R13 = 0000000000000000
+  R14 = 00000000000002a6  R15 = 00002b472804b060
+
+  RIP = 00002b46a822e69b  EFL = 0000000000010246
+
+   CS = 0033   FS = 0000   GS = 0000
+
+Stack Trace (from fault):
+[  0] 0x00002b46a822e69b                          /lib64/libfontconfig.so.1+00034459
+[  1] 0x00002b46a822ea49                          /lib64/libfontconfig.so.1+00035401
+[  2] 0x00002b46a822e184                          /lib64/libfontconfig.so.1+00033156
+[  3] 0x00002b46a822eb97                          /lib64/libfontconfig.so.1+00035735 FcDirCacheLoad+00000055
+[  4] 0x00002b46a8236c32                          /lib64/libfontconfig.so.1+00068658 FcDirCacheRead+00000050
+[  5] 0x00002b46a82327db                          /lib64/libfontconfig.so.1+00051163
+[  6] 0x00002b46a823288b                          /lib64/libfontconfig.so.1+00051339 FcConfigBuildFonts+00000059
+[  7] 0x00002b46a823c266                          /lib64/libfontconfig.so.1+00090726
+[  8] 0x00002b46a8230157                          /lib64/libfontconfig.so.1+00041303
+[  9] 0x00002b46a823c306                          /lib64/libfontconfig.so.1+00090886 FcInitBringUptoDate+00000006
+[ 10] 0x00002b46a823eb0e                          /lib64/libfontconfig.so.1+00101134 FcFontList+00000142
+[ 11] 0x00002b4708b49686 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/headless/libmawt.so+00013958 Java_sun_awt_X11FontManager_getFontPathNative+00000422
+[ 12] 0x00002b46aac5878f                                   <unknown-module>+00000000
+[ 13] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 14] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 15] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 16] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 17] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 18] 0x00002b46aac4b350                                   <unknown-module>+00000000
+[ 19] 0x00002b46aac4b8e1                                   <unknown-module>+00000000
+[ 20] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 21] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 22] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 23] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 24] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 25] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 26] 0x00002b46aac454e7                                   <unknown-module>+00000000
+[ 27] 0x00002b46a06008f5 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06289653
+[ 28] 0x00002b46a05ff358 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06284120
+[ 29] 0x00002b46a05c37ca /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06039498
+[ 30] 0x00002b46a05c3a24 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06040100
+[ 31] 0x00002b46a05c3e7a /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06041210
+[ 32] 0x00002b46a0745b0e /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+07621390
+[ 33] 0x00002b46a0745c76 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+07621750
+[ 34] 0x00002b46a05f8d1f /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06257951
+[ 35] 0x00002b46aac62e7a                                   <unknown-module>+00000000
+[ 36] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 37] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 38] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 39] 0x00002b46aac4b706                                   <unknown-module>+00000000
+[ 40] 0x00002b46aac4b706                                   <unknown-module>+00000000
+[ 41] 0x00002b46aac4b8e1                                   <unknown-module>+00000000
+[ 42] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 43] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 44] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 45] 0x00002b46aac4b8e1                                   <unknown-module>+00000000
+[ 46] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 47] 0x00002b46aac4b706                                   <unknown-module>+00000000
+[ 48] 0x00002b46aac4b706                                   <unknown-module>+00000000
+[ 49] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 50] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 51] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 52] 0x00002b46aac454e7                                   <unknown-module>+00000000
+[ 53] 0x00002b46a06008f5 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06289653
+[ 54] 0x00002b46a05ff358 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06284120
+[ 55] 0x00002b46a0685c74 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06835316 JVM_DoPrivileged+00000676
+[ 56] 0x00002b46aac57d98                                   <unknown-module>+00000000
+[ 57] 0x00002b46aac4b233                                   <unknown-module>+00000000
+[ 58] 0x00002b46aac4b8e1                                   <unknown-module>+00000000
+[ 59] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 60] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 61] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 62] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 63] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 64] 0x00002b46aac4b058                                   <unknown-module>+00000000
+[ 65] 0x00002b46aac454e7                                   <unknown-module>+00000000
+[ 66] 0x00002b46a06008f5 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06289653
+[ 67] 0x00002b46a05ff358 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06284120
+[ 68] 0x00002b46a05ff627 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06284839
+[ 69] 0x00002b46a05ff747 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06285127
+[ 70] 0x00002b46a067c1d5 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+06795733
+[ 71] 0x00002b46a0959bdf /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+09800671
+[ 72] 0x00002b46a0959ce5 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+09800933
+[ 73] 0x00002b46a08207f8 /share/apps/matlab/2017a/sys/java/jre/glnxa64/jre/lib/amd64/server/libjvm.so+08517624
+[ 74] 0x00002b4672620dc5                             /lib64/libpthread.so.0+00032197
+[ 75] 0x00002b467292c73d                                   /lib64/libc.so.6+01013565 clone+00000109
+[ 76] 0x0000000000000000                                   <unknown-module>+00000000
+
+
+If this problem is reproducible, please submit a Service Request via:
+    http://www.mathworks.com/support/contact_us/
+
+A technical support engineer might contact you with further information.
+
+Thank you for your help.** This crash report has been saved to disk as /home/vl1019/matlab_crash_dump.137603-1 **
+
+
+
+MATLAB is exiting because of fatal error
+/opt/slurm/data/slurmd/job3178785/slurm_script: line 14: 137603 Killed                  matlab -nosplash -nodesktop -nodisplay -r "audio_name_str = 'flute'; modulations_str = 'time-frequency'; J = 14; wavelet_str = 'morlet'; addpath(genpath('~/scattering.m')); addpath(genpath('~/export_fig')); run('../taslp18_reconstructions.m');"
