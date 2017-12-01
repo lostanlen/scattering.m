@@ -19,7 +19,7 @@ opts{1}.time.T = 2^6;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
 opts{1}.time.duality = 'hermitian';
-opts{1}.time.gamma_bounds = [1+Q1*1 Q1*6];
+opts{1}.time.gamma_bounds = [1+Q1*1 Q1*7];
 switch wavelets
     case 'morlet'
         opts{1}.time.wavelet_handle = @morlet_1d;
