@@ -60,8 +60,10 @@ resolutions = ...
     [target_S{1+1}.variable_tree.time{1}.gamma{1}.leaf.metas.resolution];
 mother_xi = rec_archs{1+0}.banks{1}.spec.mother_xi;
 frequencies = transpose(cat(2, round(N * mother_xi * resolutions), 0.0));
-S1_energy = transpose(cat(2, S1_energy, ...
-    zeros(1, 1 + length(resolutions) - length(S1_energy))));
+S1_energy = cat(2, zeros(1, 1*Q1), S1_energy);
+S1_energy = cat(2, S1_energy, ...
+    zeros(1, 1 + length(resolutions) - length(S1_energy)));
+S1_energy = transpose(S1_energy);
 frequencies = cat(1, N - frequencies(end:-1:1), frequencies);
 S1_energy = cat(1, S1_energy(end:-1:1), S1_energy);
 colored_noise_abs_ft = transpose(interp1(frequencies, S1_energy, 0:(N-1)));
