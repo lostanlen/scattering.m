@@ -29,15 +29,6 @@ target_U1 = Y_to_U(target_Y1{end}, vis_archs{1}.nonlinearity);
 target_waveform = cat(1, target_waveform, target_waveform);
 
 
-% Display original scalogram.
-%target_scalogram = display_scalogram(target_U1);
-%imagesc(log1p(target_scalogram));
-%colormap rev_magma;
-%axis off;
-%drawnow();
-%export_fig([audio_name_str, '_original.png']);
-
-
 % Construct wavelet filter banks for reconstruction.
 rec_archs = taslp18_setup_reconstruction( ...
     Q1, T, modulations_str, wavelet_str, N);
