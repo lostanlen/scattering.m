@@ -2,9 +2,7 @@
 % * audio_name_str
 
 % Define parameters.
-Q1 = 8;
 N = 131072;
-T = 2^J;
 
 
 % Construct wavelet filter bank for visualization.
