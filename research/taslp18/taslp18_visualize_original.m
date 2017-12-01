@@ -28,4 +28,4 @@ imagesc(log1p(target_scalogram));
 colormap rev_magma;
 axis off;
 drawnow();
-export_fig([audio_name_str, '_original.png']);
+export_fig(['media/', audio_name_str, '_original.png']);
