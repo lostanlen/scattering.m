@@ -181,7 +181,7 @@ while (iteration <= opts.nIterations)
         tic();
     end
 
-    if iteration % display_period == 0
+    if mod(iteration, display_period) == 0
         % Display reconstructed scalogram.
         rec_U0 = initialize_U( ...
             iterations{iteration}(1:(end/2)), vis_archs{1}.banks{1});
