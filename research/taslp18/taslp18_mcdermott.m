@@ -1,9 +1,6 @@
 % Script arguments:
 % * audio_name_str
 
-% Add McDermott toolbox.
-addpath(genpath('~/Sound_Texture_Synthesis_Toolbox/'));
-
 
 % Define parameters.
 synthesis_parameters_2011_Neuron_paper;
