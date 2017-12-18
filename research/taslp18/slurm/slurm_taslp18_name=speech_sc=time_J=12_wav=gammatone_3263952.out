@@ -1,0 +1,411 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017a (9.2.0.556344) 64-bit (glnxa64)
+                               March 27, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+it = 002  ;  S_m distances = [ 95.07%   92.05% ]  ;  Loss = 94.16%
+Learning rate = 0.11
+Elapsed time is 1.145570 seconds.
+it = 003  ;  S_m distances = [ 82.64%   85.21% ]  ;  Loss = 83.43%
+Learning rate = 0.121
+Elapsed time is 1.115478 seconds.
+it = 004  ;  S_m distances = [ 65.79%   75.06% ]  ;  Loss = 68.75%
+Learning rate = 0.1331
+Elapsed time is 1.135584 seconds.
+it = 005  ;  S_m distances = [ 47.84%   63.52% ]  ;  Loss = 53.12%
+Learning rate = 0.14641
+Elapsed time is 1.023089 seconds.
+it = 006  ;  S_m distances = [ 35.35%   52.98% ]  ;  Loss = 41.53%
+Learning rate = 0.16105
+Elapsed time is 0.898603 seconds.
+it = 007  ;  S_m distances = [ 33.37%   44.94% ]  ;  Loss = 37.28%
+Learning rate = 0.17716
+Elapsed time is 0.869403 seconds.
+Learning rate = 0.088578
+Learning rate = 0.044289
+it = 008  ;  S_m distances = [ 33.93%   43.26% ]  ;  Loss = 37.03%
+Learning rate = 0.048718
+Elapsed time is 1.562385 seconds.
+it = 009  ;  S_m distances = [ 34.15%   41.47% ]  ;  Loss = 36.54%
+Learning rate = 0.05359
+Elapsed time is 0.860912 seconds.
+it = 010  ;  S_m distances = [ 33.89%   39.61% ]  ;  Loss = 35.73%
+Learning rate = 0.058949
+Elapsed time is 0.874483 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+it = 011  ;  S_m distances = [ 33.06%   37.77% ]  ;  Loss = 34.57%
+Learning rate = 0.064844
+Elapsed time is 10.326654 seconds.
+it = 012  ;  S_m distances = [ 31.72%   36.06% ]  ;  Loss = 33.11%
+Learning rate = 0.071328
+Elapsed time is 0.923691 seconds.
+it = 013  ;  S_m distances = [ 29.93%   34.50% ]  ;  Loss = 31.40%
+Learning rate = 0.078461
+Elapsed time is 0.908087 seconds.
+it = 014  ;  S_m distances = [ 27.79%   33.09% ]  ;  Loss = 29.51%
+Learning rate = 0.086307
+Elapsed time is 0.932174 seconds.
+it = 015  ;  S_m distances = [ 25.42%   31.82% ]  ;  Loss = 27.53%
+Learning rate = 0.094937
+Elapsed time is 0.916949 seconds.
+it = 016  ;  S_m distances = [ 23.05%   30.60% ]  ;  Loss = 25.59%
+Learning rate = 0.10443
+Elapsed time is 0.935510 seconds.
+it = 017  ;  S_m distances = [ 20.93%   29.52% ]  ;  Loss = 23.88%
+Learning rate = 0.11487
+Elapsed time is 0.942345 seconds.
+it = 018  ;  S_m distances = [ 19.24%   28.60% ]  ;  Loss = 22.51%
+Learning rate = 0.12636
+Elapsed time is 1.136937 seconds.
+it = 019  ;  S_m distances = [ 18.06%   27.81% ]  ;  Loss = 21.51%
+Learning rate = 0.139
+Elapsed time is 1.016114 seconds.
+it = 020  ;  S_m distances = [ 17.28%   27.04% ]  ;  Loss = 20.75%
+Learning rate = 0.1529
+Elapsed time is 0.937777 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+it = 021  ;  S_m distances = [ 16.69%   26.26% ]  ;  Loss = 20.10%
+Learning rate = 0.16819
+Elapsed time is 2.875913 seconds.
+it = 022  ;  S_m distances = [ 16.08%   25.50% ]  ;  Loss = 19.45%
+Learning rate = 0.18501
+Elapsed time is 0.947221 seconds.
+it = 023  ;  S_m distances = [ 15.35%   24.71% ]  ;  Loss = 18.71%
+Learning rate = 0.20351
+Elapsed time is 0.876488 seconds.
+it = 024  ;  S_m distances = [ 14.57%   23.86% ]  ;  Loss = 17.92%
+Learning rate = 0.22386
+Elapsed time is 0.875257 seconds.
+it = 025  ;  S_m distances = [ 13.87%   23.01% ]  ;  Loss = 17.19%
+Learning rate = 0.24624
+Elapsed time is 0.875800 seconds.
+it = 026  ;  S_m distances = [ 13.35%   22.17% ]  ;  Loss = 16.55%
+Learning rate = 0.27087
+Elapsed time is 0.898731 seconds.
+it = 027  ;  S_m distances = [ 12.96%   21.35% ]  ;  Loss = 15.99%
+Learning rate = 0.29795
+Elapsed time is 0.876849 seconds.
+it = 028  ;  S_m distances = [ 12.63%   20.58% ]  ;  Loss = 15.50%
+Learning rate = 0.32775
+Elapsed time is 0.879885 seconds.
+it = 029  ;  S_m distances = [ 12.13%   19.89% ]  ;  Loss = 14.94%
+Learning rate = 0.36052
+Elapsed time is 0.901983 seconds.
+it = 030  ;  S_m distances = [ 11.52%   19.33% ]  ;  Loss = 14.36%
+Learning rate = 0.39658
+Elapsed time is 0.897893 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+it = 031  ;  S_m distances = [ 10.83%   18.74% ]  ;  Loss = 13.74%
+Learning rate = 0.43624
+Elapsed time is 2.553541 seconds.
+it = 032  ;  S_m distances = [ 10.29%   18.33% ]  ;  Loss = 13.27%
+Learning rate = 0.47986
+Elapsed time is 0.894841 seconds.
+it = 033  ;  S_m distances = [ 9.78%   17.77% ]  ;  Loss = 12.76%
+Learning rate = 0.52784
+Elapsed time is 0.879091 seconds.
+it = 034  ;  S_m distances = [ 9.47%   17.41% ]  ;  Loss = 12.44%
+Learning rate = 0.58063
+Elapsed time is 0.881530 seconds.
+it = 035  ;  S_m distances = [ 9.12%   16.87% ]  ;  Loss = 12.03%
+Learning rate = 0.63869
+Elapsed time is 0.880058 seconds.
+it = 036  ;  S_m distances = [ 8.96%   16.35% ]  ;  Loss = 11.72%
+Learning rate = 0.70256
+Elapsed time is 0.880130 seconds.
+it = 037  ;  S_m distances = [ 8.73%   15.71% ]  ;  Loss = 11.32%
+Learning rate = 0.77282
+Elapsed time is 0.923114 seconds.
+it = 038  ;  S_m distances = [ 8.59%   15.22% ]  ;  Loss = 11.05%
+Learning rate = 0.8501
+Elapsed time is 0.944428 seconds.
+it = 039  ;  S_m distances = [ 8.15%   14.65% ]  ;  Loss = 10.57%
+Learning rate = 0.93511
+Elapsed time is 0.921142 seconds.
+it = 040  ;  S_m distances = [ 7.83%   14.20% ]  ;  Loss = 10.21%
+Learning rate = 1.0286
+Elapsed time is 0.927483 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+it = 041  ;  S_m distances = [ 7.40%   13.64% ]  ;  Loss = 9.74%
+Learning rate = 1.1315
+Elapsed time is 2.527241 seconds.
+it = 042  ;  S_m distances = [ 6.99%   13.00% ]  ;  Loss = 9.25%
+Learning rate = 1.2446
+Elapsed time is 0.897142 seconds.
+it = 043  ;  S_m distances = [ 6.71%   12.49% ]  ;  Loss = 8.88%
+Learning rate = 1.3691
+Elapsed time is 0.919382 seconds.
+it = 044  ;  S_m distances = [ 6.29%   11.95% ]  ;  Loss = 8.43%
+Learning rate = 1.506
+Elapsed time is 0.904134 seconds.
+it = 045  ;  S_m distances = [ 6.11%   11.71% ]  ;  Loss = 8.23%
+Learning rate = 1.6566
+Elapsed time is 0.905992 seconds.
+it = 046  ;  S_m distances = [ 5.81%   11.43% ]  ;  Loss = 7.96%
+Learning rate = 1.8223
+Elapsed time is 0.905514 seconds.
+it = 047  ;  S_m distances = [ 5.67%   11.08% ]  ;  Loss = 7.73%
+Learning rate = 2.0045
+Elapsed time is 0.925721 seconds.
+it = 048  ;  S_m distances = [ 5.57%   10.67% ]  ;  Loss = 7.51%
+Learning rate = 2.2049
+Elapsed time is 0.940094 seconds.
+it = 049  ;  S_m distances = [ 5.48%   10.50% ]  ;  Loss = 7.38%
+Learning rate = 2.4254
+Elapsed time is 0.899142 seconds.
+it = 050  ;  S_m distances = [ 5.16%   10.29% ]  ;  Loss = 7.13%
+Learning rate = 2.668
+Elapsed time is 0.897736 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+it = 051  ;  S_m distances = [ 5.21%   10.01% ]  ;  Loss = 7.03%
+Learning rate = 2.9348
+Elapsed time is 3.055200 seconds.
+Learning rate = 1.4674
+it = 052  ;  S_m distances = [ 4.54%    9.40% ]  ;  Loss = 6.42%
+Learning rate = 1.6141
+Elapsed time is 1.211191 seconds.
+Learning rate = 0.80706
+it = 053  ;  S_m distances = [ 4.36%    9.20% ]  ;  Loss = 6.25%
+Learning rate = 0.88777
+Elapsed time is 1.204707 seconds.
+it = 054  ;  S_m distances = [ 4.34%    9.05% ]  ;  Loss = 6.17%
+Learning rate = 0.97655
+Elapsed time is 0.849283 seconds.
+it = 055  ;  S_m distances = [ 4.26%    8.85% ]  ;  Loss = 6.04%
+Learning rate = 1.0742
+Elapsed time is 0.833551 seconds.
+it = 056  ;  S_m distances = [ 4.28%    8.74% ]  ;  Loss = 6.00%
+Learning rate = 1.1816
+Elapsed time is 0.826353 seconds.
+it = 057  ;  S_m distances = [ 4.14%    8.52% ]  ;  Loss = 5.83%
+Learning rate = 1.2998
+Elapsed time is 0.840394 seconds.
+Learning rate = 0.64989
+it = 058  ;  S_m distances = [ 4.02%    8.40% ]  ;  Loss = 5.72%
+Learning rate = 0.71488
+Elapsed time is 1.215239 seconds.
+it = 059  ;  S_m distances = [ 3.97%    8.32% ]  ;  Loss = 5.67%
+Learning rate = 0.78637
+Elapsed time is 0.861732 seconds.
+it = 060  ;  S_m distances = [ 3.92%    8.22% ]  ;  Loss = 5.60%
+Learning rate = 0.865
+Elapsed time is 0.854436 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+it = 061  ;  S_m distances = [ 3.87%    8.15% ]  ;  Loss = 5.54%
+Learning rate = 0.95151
+Elapsed time is 2.331640 seconds.
+it = 062  ;  S_m distances = [ 3.87%    8.05% ]  ;  Loss = 5.49%
+Learning rate = 1.0467
+Elapsed time is 0.907876 seconds.
+it = 063  ;  S_m distances = [ 3.83%    7.99% ]  ;  Loss = 5.45%
+Learning rate = 1.1513
+Elapsed time is 0.860782 seconds.
+it = 064  ;  S_m distances = [ 3.81%    7.93% ]  ;  Loss = 5.41%
+Learning rate = 1.2665
+Elapsed time is 0.829485 seconds.
+it = 065  ;  S_m distances = [ 3.75%    7.86% ]  ;  Loss = 5.35%
+Learning rate = 1.3931
+Elapsed time is 0.894384 seconds.
+it = 066  ;  S_m distances = [ 3.68%    7.76% ]  ;  Loss = 5.27%
+Learning rate = 1.5324
+Elapsed time is 0.885905 seconds.
+Learning rate = 0.7662
+it = 067  ;  S_m distances = [ 3.53%    7.63% ]  ;  Loss = 5.14%
+Learning rate = 0.84282
+Elapsed time is 1.182005 seconds.
+Learning rate = 0.42141
+it = 068  ;  S_m distances = [ 3.48%    7.58% ]  ;  Loss = 5.09%
+Learning rate = 0.46355
+Elapsed time is 1.229638 seconds.
+it = 069  ;  S_m distances = [ 3.45%    7.54% ]  ;  Loss = 5.06%
+Learning rate = 0.50991
+Elapsed time is 0.848491 seconds.
+it = 070  ;  S_m distances = [ 3.46%    7.50% ]  ;  Loss = 5.05%
+Learning rate = 0.5609
+Elapsed time is 0.838429 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+it = 071  ;  S_m distances = [ 3.42%    7.45% ]  ;  Loss = 5.01%
+Learning rate = 0.61699
+Elapsed time is 2.328527 seconds.
+it = 072  ;  S_m distances = [ 3.41%    7.41% ]  ;  Loss = 4.98%
+Learning rate = 0.67869
+Elapsed time is 0.847707 seconds.
+it = 073  ;  S_m distances = [ 3.39%    7.36% ]  ;  Loss = 4.95%
+Learning rate = 0.74656
+Elapsed time is 0.849117 seconds.
+it = 074  ;  S_m distances = [ 3.36%    7.30% ]  ;  Loss = 4.91%
+Learning rate = 0.82121
+Elapsed time is 0.832783 seconds.
+it = 075  ;  S_m distances = [ 3.34%    7.24% ]  ;  Loss = 4.88%
+Learning rate = 0.90333
+Elapsed time is 0.830222 seconds.
+it = 076  ;  S_m distances = [ 3.37%    7.21% ]  ;  Loss = 4.87%
+Learning rate = 0.99367
+Elapsed time is 0.823646 seconds.
+it = 077  ;  S_m distances = [ 3.32%    7.12% ]  ;  Loss = 4.81%
+Learning rate = 1.093
+Elapsed time is 0.832524 seconds.
+Learning rate = 0.54652
+it = 078  ;  S_m distances = [ 3.25%    7.04% ]  ;  Loss = 4.74%
+Learning rate = 0.60117
+Elapsed time is 1.137340 seconds.
+it = 079  ;  S_m distances = [ 3.24%    7.01% ]  ;  Loss = 4.72%
+Learning rate = 0.66129
+Elapsed time is 0.836877 seconds.
+it = 080  ;  S_m distances = [ 3.23%    6.98% ]  ;  Loss = 4.70%
+Learning rate = 0.72741
+Elapsed time is 0.831747 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+it = 081  ;  S_m distances = [ 3.22%    6.93% ]  ;  Loss = 4.68%
+Learning rate = 0.80016
+Elapsed time is 2.184293 seconds.
+it = 082  ;  S_m distances = [ 3.20%    6.90% ]  ;  Loss = 4.65%
+Learning rate = 0.88017
+Elapsed time is 0.832460 seconds.
+it = 083  ;  S_m distances = [ 3.20%    6.87% ]  ;  Loss = 4.64%
+Learning rate = 0.96819
+Elapsed time is 0.816929 seconds.
+it = 084  ;  S_m distances = [ 3.18%    6.83% ]  ;  Loss = 4.61%
+Learning rate = 1.065
+Elapsed time is 0.806372 seconds.
+it = 085  ;  S_m distances = [ 3.20%    6.81% ]  ;  Loss = 4.61%
+Learning rate = 1.1715
+Elapsed time is 0.797985 seconds.
+it = 086  ;  S_m distances = [ 3.18%    6.76% ]  ;  Loss = 4.58%
+Learning rate = 1.2887
+Elapsed time is 0.807743 seconds.
+Learning rate = 0.64433
+it = 087  ;  S_m distances = [ 3.10%    6.69% ]  ;  Loss = 4.51%
+Learning rate = 0.70876
+Elapsed time is 1.115669 seconds.
+it = 088  ;  S_m distances = [ 3.09%    6.65% ]  ;  Loss = 4.49%
+Learning rate = 0.77964
+Elapsed time is 0.808402 seconds.
+Learning rate = 0.38982
+it = 089  ;  S_m distances = [ 3.06%    6.62% ]  ;  Loss = 4.46%
+Learning rate = 0.4288
+Elapsed time is 1.140578 seconds.
+it = 090  ;  S_m distances = [ 3.02%    6.57% ]  ;  Loss = 4.42%
+Learning rate = 0.47168
+Elapsed time is 0.803279 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+Learning rate = 0.23584
+it = 091  ;  S_m distances = [ 3.00%    6.55% ]  ;  Loss = 4.40%
+Learning rate = 0.25942
+Elapsed time is 2.553015 seconds.
+it = 092  ;  S_m distances = [ 2.99%    6.54% ]  ;  Loss = 4.39%
+Learning rate = 0.28537
+Elapsed time is 0.824751 seconds.
+it = 093  ;  S_m distances = [ 2.98%    6.52% ]  ;  Loss = 4.38%
+Learning rate = 0.3139
+Elapsed time is 0.835357 seconds.
+it = 094  ;  S_m distances = [ 2.98%    6.51% ]  ;  Loss = 4.37%
+Learning rate = 0.34529
+Elapsed time is 0.834668 seconds.
+it = 095  ;  S_m distances = [ 2.97%    6.49% ]  ;  Loss = 4.36%
+Learning rate = 0.37982
+Elapsed time is 0.815043 seconds.
+it = 096  ;  S_m distances = [ 2.97%    6.49% ]  ;  Loss = 4.36%
+Learning rate = 0.41781
+Elapsed time is 0.827680 seconds.
+it = 097  ;  S_m distances = [ 2.96%    6.47% ]  ;  Loss = 4.34%
+Learning rate = 0.45959
+Elapsed time is 0.833601 seconds.
+it = 098  ;  S_m distances = [ 2.96%    6.46% ]  ;  Loss = 4.34%
+Learning rate = 0.50555
+Elapsed time is 0.823757 seconds.
+it = 099  ;  S_m distances = [ 2.95%    6.44% ]  ;  Loss = 4.32%
+Learning rate = 0.5561
+Elapsed time is 0.825469 seconds.
+it = 100  ;  S_m distances = [ 2.95%    6.43% ]  ;  Loss = 4.32%
+Learning rate = 0.61171
+Elapsed time is 0.862422 seconds.
+[Warning: MATLAB cannot use OpenGL for printing when started with the
+'-nodisplay' option.] 
+[> In inputcheck
+  In print (line 41)
+  In print2array>read_tif_img (line 224)
+  In print2array (line 179)
+  In export_fig (line 537)
+  In taslp18_reconstructions (line 195)
+  In run (line 86)] 
+it = 101  ;  S_m distances = [ 2.95%    6.41% ]  ;  Loss = 4.31%
+Learning rate = 0.67288
+Elapsed time is 2.263326 seconds.
