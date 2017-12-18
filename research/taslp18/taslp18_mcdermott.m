@@ -8,6 +8,7 @@ P.orig_sound_filename = [audio_name_str, '.wav'];
 P.orig_sound_folder = 'media/';
 P.output_folder = 'media/';
 P.constraint_set.sub_kurt = 1;
+P.leave_out_convergence_criterion_db = inf;
 P.compression_option=0;
 P.audio_sr = 20000;
 P.hi_audio_f = 10000;
