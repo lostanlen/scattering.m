@@ -3,6 +3,8 @@
 
 % Define parameters.
 N = 131072;
+mcdermott_sr = 20000;
+target_sr = 22050;
 
 
 % Construct wavelet filter bank for visualization.
@@ -11,7 +13,9 @@ vis_archs = taslp18_setup_visualization(24, N);
 
 % Load waveform.
 audio_path = ['media/', audio_name_str, '_11111110111.wav'];
-[target_waveform, sample_rate] = taslp18_load(audio_path, N / 2);
+target_waveform = taslp18_load(audio_path, mcdermott_sr / target_sr * N / 2);
+target_waveform = resample(target_waveform, target_sr, mcdermott_sr);
+sample_rate = mcdermott_sr;
 
 
 % Compute scalogram.
