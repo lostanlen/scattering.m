@@ -15,13 +15,13 @@ mother_xi = bank_spec.mother_xi;
 
 % We want the squared modulus of each Gabor filter psi_lambda to cross
 % the filters psi_(lambda-1) and psi_(lambda+1) at half maximum. Hence the
-% following full width at half maximum (FWHM) for the mother wavelet. The
+% following half width at half maximum (HWHM) for the mother wavelet. The
 % corresponding variance of the mother Gaussian is derived proportionnally.
 quality_factors = [bank_metas.quality_factor];
 quality_ratios = 2.^(-1./quality_factors);
-full_widths = (1-quality_ratios)./(1+quality_ratios) * mother_xi;
+half_widths = (1-quality_ratios)./(1+quality_ratios) * mother_xi;
 cutoff = 10^(-bank_spec.cutoff_in_dB/20);
-frequential_sigmas = full_widths / sqrt(2*log(1/cutoff));
+frequential_sigmas = half_widths / sqrt(2*log(1/cutoff));
 spatial_sigmas = 1./(2*pi*frequential_sigmas);
 
 %% Computation of Morlet wavelets in the time domain
