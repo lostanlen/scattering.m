@@ -45,7 +45,7 @@ U1 = Y_to_U(Y1{end}, vis_archs{1}.nonlinearity);
 scalogram = display_scalogram(U1);
 spectral_flux = sum(diff(log1p(scalogram), 1, 2), 1);
 [~, argmax] = max(spectral_flux);
-registered_scalogram = circshift(log1p(scalogram),
+registered_scalogram = circshift(log1p(scalogram), ...
     (target_argmax - argmax), 2);
 
 imagesc(log1p(registered_scalogram));
