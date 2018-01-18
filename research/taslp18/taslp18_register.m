@@ -59,7 +59,7 @@ export_fig([
     '_J=', num2str(J),
     '_sc=', scattering_str,
     '_wvlt=', wavelet_str,
-    'it=100_registered.png']
+    '_it=100_registered.png']
 );
 
 end
