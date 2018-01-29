@@ -5,10 +5,24 @@
 % 4: same, up to the scale of 2 octaves
 % 5: same, up to the scale of 4 octaves
 
-function mlsp_synthesize_scattering(method_index)
+function mlsp_synthesize_scattering(target_signal, method_index)
 N = 65536;
 sample_rate =  22050;
 T = N/8;
+
+% Convert to mono
+if size(y, 2) == 2
+    y = 0.5 * sum(y, 2);
+end
+
+% Pad or trim to length N.
+if N > 0
+    if length(y) < N
+        y = cat(1, y, zeros(N - length(y), 1));
+    else
+        y = y(1:N);
+    end
+end
 
 opts{1}.time.size = N;
 opts{1}.time.T = T;
@@ -39,9 +53,6 @@ if method_index>2
 end
 
 archs = sc_setup(opts);
-
-%%
-target_signal = audioread('accipiter_original.wav');
 
 %% Initialization
 cutoff_frequency = 500; % in Hertz
