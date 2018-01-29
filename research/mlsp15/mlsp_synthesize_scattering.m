@@ -16,6 +16,9 @@ opts{1}.time.max_Q = 16;
 opts{1}.time.nFilters_per_octave = 16;
 opts{1}.time.has_duals = true;
 opts{1}.time.gamma_bounds = [1 64];
+opts{1}.time.is_chunked = false;
+
+
 if method_index>1
     opts{2}.time.T = T;
     opts{2}.time.max_scale = Inf;
@@ -38,8 +41,7 @@ end
 archs = sc_setup(opts);
 
 %%
-[target_signal] = audioread('accipiter_original.wav');
-[target_S,target_U,target_Y] = sc_propagate(target_signal,archs);
+target_signal = audioread('accipiter_original.wav');
 
 %% Initialization
 cutoff_frequency = 500; % in Hertz
@@ -55,39 +57,28 @@ initial_signal = initial_signal * norm(target_signal)/norm(initial_signal);
 initial_signal = initial_signal + mean(target_signal);
 
 %%
+rec_opt.is_regularized = false;
+rec_opt.initial_signal = initial_signal;
 rec_opt.verbosity_period = 1;
 rec_opt.signal_display_period = 10;
-nIterations = 100;
+rec_opt.nIterations = 100;
 rec_opt.learning_rate = 0.1;
 rec_opt.momentum = 0.9;
 rec_opt.bold_driver_accelerator = 1.1;
 rec_opt.bold_driver_brake = 0.5;
-[signal,summary] = ...
-    sc_reconstruct(target_S,archs,rec_opt,nIterations,initial_signal);
+rec_opt.is_verbose = true;
+signal = sc_reconstruct(target_signal,archs,rec_opt);
+
 switch method_index
     case 1
-        firstorder_summary = summary;
-        save('accipiter_summary_firstorder','firstorder_summary');
         audiowrite('accipiter_firstorder.wav',signal,sample_rate);
-        target_summary.U = target_U;
-        target_summary.S = target_S;
-        target_summary.signal = target_signal;
-        save('accipiter_target','target_summary');
     case 2
-        plain_summary = summary;
-        save('accipiter_summary_plain','plain_summary');
         audiowrite('accipiter_plain.wav',signal,sample_rate);
     case 3
-        joint1oct_summary = summary;
-        save('accipiter_summary_joint1oct','joint1oct_summary');
         audiowrite('accipiter_joint1oct.wav',signal,sample_rate);
     case 4
-        joint2oct_summary = summary;
-        save('accipiter_summary_joint2oct','joint2oct_summary');
         audiowrite('accipiter_joint2oct.wav',signal,sample_rate);
     case 5
-        joint4oct_summary = summary;
-        save('accipiter_summary_joint4oct','joint4oct_summary');
         audiowrite('accipiter_joint4oct.wav',signal,sample_rate);
 end
 end
