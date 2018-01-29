@@ -46,6 +46,7 @@ end
 signal = signal - mean(signal);
 signal = signal * norm(target_signal)/norm(signal);
 signal = signal + mean(target_signal);
+learning_rate = reconstruction_opt.initial_learning_rate;
 signal_update = zeros(size(signal));
 
 %% First forward
