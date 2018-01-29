@@ -25,12 +25,12 @@ for layer = 1:nLayers
     else
         target_Y{layer} = target_U(1+previous_layer);
     end
-    
+
     % Apply nonlinearity to last sub-layer Y to get layer U
     if isfield(arch, 'nonlinearity')
         target_U{1+layer} = Y_to_U(target_Y{layer}{end}, arch.nonlinearity);
     end
-    
+
     % Blur/pool first layer Y to get layer S
     if isfield(arch, 'invariants')
         target_S{1+previous_layer} = Y_to_S(target_Y{layer}, arch);
@@ -101,9 +101,12 @@ iteration = 0;
 tic();
 while iteration < reconstruction_opt.nIterations
     %% Signal update
-    [signal,reconstruction_opt] = ...
-        update_reconstruction(previous_signal,delta_signal,reconstruction_opt);
-    
+    [signal, signal_update] = ...
+        update_reconstruction(
+            previous_signal, delta_signal,
+            signal_update, learning_rate,
+            reconstruction_opt);
+
     %% Scattering propagation
     S = cell(1, nLayers);
     U = cell(1,nLayers);
@@ -125,32 +128,32 @@ while iteration < reconstruction_opt.nIterations
             S{1+previous_layer} = Y_to_S(Y{layer}, arch);
         end
     end
-    
+
     %% Measurement of distance to target in the scattering domain
     delta_S = sc_substract(target_S,S);
-    
+
     %% If loss has increased, step retraction and bold driver "brake"
     [loss,layer_absolute_distances] = sc_norm(delta_S);
     if loss>previous_loss
-        reconstruction_opt.learning_rate = ...
+        learning_rate = ...
             reconstruction_opt.bold_driver_brake * ...
-            reconstruction_opt.learning_rate;
-        reconstruction_opt.signal_update = ...
+            learning_rate;
+        signal_update = ...
             reconstruction_opt.bold_driver_brake * ...
-            reconstruction_opt.signal_update;
+            signal_update;
         continue
     end
-    
+
     %% If loss has decreased, step confirmation and bold driver "acceleration"
     iteration = iteration + 1;
     relative_loss_chart(iteration) = 100 * loss / target_norm;
     previous_signal = signal;
     previous_loss = loss;
-    reconstruction_opt.learning_rate = ...
+    learning_rate = ...
         reconstruction_opt.bold_driver_accelerator * ...
-        reconstruction_opt.learning_rate;
+        learning_rate;
     delta_signal = sc_backpropagate(delta_S, U, Y, archs);
-    
+
     %% Pretty-printing of scattering distances and loss function
     if reconstruction_opt.is_verbose
         mod_iteration = mod(iteration,reconstruction_opt.verbosity_period);
