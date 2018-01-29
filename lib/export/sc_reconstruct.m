@@ -101,10 +101,9 @@ iteration = 0;
 tic();
 while iteration < reconstruction_opt.nIterations
     %% Signal update
-    [signal, signal_update] = ...
-        update_reconstruction(
-            previous_signal, delta_signal,
-            signal_update, learning_rate,
+    [signal, signal_update] = update_reconstruction( ...
+            previous_signal, delta_signal, ...
+            signal_update, learning_rate, ...
             reconstruction_opt);
 
     %% Scattering propagation
