@@ -46,6 +46,7 @@ end
 signal = signal - mean(signal);
 signal = signal * norm(target_signal)/norm(signal);
 signal = signal + mean(target_signal);
+signal_update = zeros(size(signal));
 
 %% First forward
 reconstruction_opt.signal_update = zeros(signal_sizes);
