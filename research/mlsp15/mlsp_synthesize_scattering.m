@@ -5,7 +5,7 @@
 % 4: same, up to the scale of 2 octaves
 % 5: same, up to the scale of 4 octaves
 
-function mlsp_synthesize_scattering(target_signal, method_index)
+function mlsp_synthesize_scattering(y, method_index)
 N = 65536;
 sample_rate =  22050;
 T = N/8;
