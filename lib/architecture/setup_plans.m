@@ -85,7 +85,8 @@ nNames = length(ordered_names);
 for layer = 2:nLayers
     plan = struct();
     opt = opts{layer};
-    has_custom_invariants = isfield(opt, 'banks') || isfield(opt, 'invariants');
+    has_custom_invariants = ...
+        isfield(opt, 'banks') || isfield(opt, 'invariants');
     if has_custom_invariants
         has_banks = isfield(opt, 'banks');
         if has_banks
@@ -122,8 +123,8 @@ for layer = 2:nLayers
                 field.size = enforce(field, 'size', root_plan.spec.size);
                 field.dimension = previous_plan.behavior.output_dimension;
                 field.is_U_blurred = false;
-                field.wavelet_handle = default(field, 'wavelet_handle', ...
-                    @gammatone_1d);
+                field.wavelet_handle = ...
+                    default(field, 'wavelet_handle', @gammatone_1d);
                 field.output_dimension = ...
                     field.dimension + (layer==2) + (signal_dimension==2);
                 field.subscripts = default(field, 'subscripts', ...
@@ -135,16 +136,17 @@ for layer = 2:nLayers
                 % 1 octave of chroma filtering by default
                 field.T = default(field, 'T', pow2(nextpow2(nChromas)));
                 field.dimension = banks{end}.behavior.output_dimension + 1;
-                field.invariance = default(field, 'invariance', 'bypassed');
+                field.invariance = ...
+                    default(field, 'invariance', 'bypassed');
                 field.is_spinned = enforce(field, 'is_spinned', true);
                 field.has_multiple_support = ...
                     enforce(field, 'has_multiple_support', true);
                 field.key.(root_name){1}.gamma = cell(1);
                 field.output_dimension = field.dimension + 1;
-                field.size = enforce(field,'size', ...
-                    pow2(nextpow2(nGammas + field.T)));
-                field.subscripts = ...
-                    default(field, 'subscripts', banks{1}.behavior.dimension + 1);
+                field.size = ...
+                    enforce(field, 'size', pow2(nextpow2(nGammas + field.T)));
+                field.subscripts = default( ...
+                    field, 'subscripts', banks{1}.behavior.dimension + 1);
                 banks{1}.behavior.gamma_padding_length = field.T / 2;
             case 'j'
                 field.wavelet_handle = ...
@@ -236,7 +238,8 @@ for layer = 2:nLayers
                     break
                 end
             end
-            invariant.behavior = fill_invariant_behavior(field, bank.behavior);
+            invariant.behavior = ...
+                fill_invariant_behavior(field, bank.behavior);
             invariant.spec = fill_invariant_spec(field, bank.spec);
         else
             invariant.behavior = fill_invariant_behavior(field);
