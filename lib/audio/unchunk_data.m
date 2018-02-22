@@ -35,7 +35,8 @@ else
             subsref_structure.subs{1} = (2-chunk_start):chunk_length;
             chunk_start = 1;
         elseif chunk_stop > unchunked_length
-            subsref_structure.subs{1} = 1:(chunk_length-chunk_stop+unchunked_length);
+            subsref_structure.subs{1} = ...
+                1:(chunk_length-chunk_stop+unchunked_length);
             chunk_stop = unchunked_length;
         else
             subsref_structure.subs{1} = ':';
