@@ -1,17 +1,22 @@
 %% Setup wavelet filterbanks.
 % Import toolboxes.
+clc();
+clear();
+
 addpath(genpath('~/scattering.m'));
 addpath(genpath('~/export_fig'));
 
+N = 131072;
 Q1 = 24;
-J = 10;
+J = 11;
 T = 2^J;
-opts = chirp_reversal_opts(Q1, J);
-archs = sc_setup(opts);
 
+% Synthesize chirps.
+x = cat(1, ...
+    repmat(dafx_synthesize_chirps(N/8), 7, 1), zeros(N/8, 1));
 
-%% Synthesize chirps.
-x = synthesize_chirps();
+% Setup time-frequency scattering operators.
+archs = dafx_setup(N, Q1, T);
 
 % Compute time-frequency scattering.
 [S, U] = sc_propagate(x, archs);
@@ -20,15 +25,47 @@ x = synthesize_chirps();
 %% Reverse chirps.
 S_rev = S;
 nTemporal_scales = length(S{1+2}{1,1}.data);
+sigma = 2.0;
+        
 for j2_tm = 1:nTemporal_scales
     nFrequency_scales = length(S{1+2}{1,1}.data{j2_tm});
     
     for j_fr = 1:nFrequency_scales
-        %S_rev{1+2}{1,1}.data{j2_tm}{j_fr} = ...
-        %    S{1+2}{1,1}.data{j2_tm}{j_fr}(:, :, 2:-1:1);
+        forward_slice = S{1+2}{1,1}.data{j2_tm}{j_fr};
+        backward_slice = S_rev{1+2}{1,1}.data{j2_tm}{j_fr}(:, :, 2:-1:1);
+        
+        n_times = size(forward_slice, 1);
+        sigmoid = 1 ./ (1 + exp(- 2.0 * linspace(-2.5, 5.5, n_times).'));
+        
+        sigmoid_slice = ...
+            bsxfun(@times, (1-sigmoid), forward_slice) + ...
+            bsxfun(@times, sigmoid, backward_slice);
+        
+
+        sigmoid_slice_ft = fft(sigmoid_slice, [], 2);
+        omega = 0:(size(sigmoid_slice, 2)-1);
+        gauss_ft = exp(-omega.*omega / (2*sigma^2));
+        gauss_ft(2:end) = (gauss_ft(2:end) + gauss_ft(end:-1:2));
+        
+        sigmoid_slice_ft = bsxfun(@times, sigmoid_slice_ft, gauss_ft);
+        blurred_slice = ifft(sigmoid_slice_ft, [], 2);
+        
+        %S_rev{1+2}{1,1}.data{j2_tm}{j_fr} = blurred_slice;
+        %S_rev{1+2}{1,1}.data{j2_tm}{j_fr} = sigmoid_slice;
+            
     end
 end
 
+
+omega = 0:(size(S{1+1}.data, 2)-1);
+gauss_ft = exp(-omega.*omega / (2*sigma^2));
+gauss_ft(2:end) = (gauss_ft(2:end) + gauss_ft(end:-1:2));
+
+S1_slice_ft = fft(S{1+1}.data, [], 2);
+S1_slice_ft = bsxfun(@times, S1_slice_ft, gauss_ft);
+S1_slice = ifft(S1_slice_ft, [], 2);
+
+S_rev{1+1}.data = S1_slice;
 
 %% Reconstruct signal.
 target_S = S_rev;
@@ -37,7 +74,8 @@ target_S = S_rev;
 rec_opts = struct();
 rec_opts.is_spectrogram_displayed = true;
 rec_opts.is_sonified = false;
-rec_opts.sample_rate = 4000;
+rec_opts.sample_rate = 8192;
+rec_opts.nIterations = 300;
 rec_opts = fill_reconstruction_opt(rec_opts);
 
 % Computation of norm.
@@ -45,8 +83,16 @@ rec_opts = fill_reconstruction_opt(rec_opts);
 nLayers = length(archs);
 
 % Initialization
-[y, previous_loss, delta_signal] = ...
+[x_noise, previous_loss, delta_signal] = ...
     eca_init(x, target_S, archs, rec_opts);
+x_ft = fft(x);
+x_ft((1+(end/2)):end) = 0;
+x_hilbert = 2 * ifft(x_ft);
+x_amplitude = abs(x_hilbert);
+x_modulated = x_amplitude .* x_noise;
+y = x_modulated / norm(x);
+
+%
 iterations = cell(1, rec_opts.nIterations);
 iterations{1+0} = y;
 previous_signal = iterations{1+0};
@@ -58,7 +104,7 @@ max_nDigits = 1 + floor(log10(rec_opts.nIterations));
 sprintf_format = ['%0.', num2str(max_nDigits), 'd'];
 
 
-%% Iterated reconstruction
+% Iterated reconstruction
 iteration = 1;
 failure_counter = 0;
 is_display_active = rec_opts.is_spectrogram_displayed;
@@ -73,12 +119,27 @@ end
 while (iteration <= rec_opts.nIterations) && ...
         (~rec_opts.is_spectrogram_displayed || is_display_active)
     % Signal update
-    iterations{1+iteration} = ...
+    y = ...
         update_reconstruction(previous_signal, ...
         delta_signal, ...
         signal_update, ...
         learning_rate, ...
         rec_opts);
+    
+    % Griffin-Lim.
+    if mod(iteration, 10) == 0
+        %iterations{1+iteration} = y;
+        y_ft = fft(y);
+        y_ft((1+(end/2)):end) = 0;
+        y_hilbert = 2 * ifft(y_ft);
+        y_amplitude = abs(y_hilbert);
+        y = (0.5 + 0.5 * (x_amplitude ./ y_amplitude)) .* y;
+        iterations{1+iteration} = y * norm(x) / norm(y);
+        %soundsc(y);
+        
+    else
+        iterations{1+iteration} = y;
+    end
 
     % Scattering propagation
     S = cell(1, nLayers);
@@ -179,3 +240,18 @@ end
 if rec_opts.is_verbose
     toc();
 end
+
+
+%%
+figure();
+
+subplot(211);
+[S, target_U] = sc_propagate(x, archs);
+orig_scalogram = display_scalogram(target_U{1+1});
+imagesc(log1p(orig_scalogram(10:50, 1:(8192*5))./100.0));
+axis off;
+subplot(212);
+scalogram = display_scalogram(U{1+1});
+imagesc(log1p(scalogram(10:50, 1:(8192*5))./100.0));
+axis off;
+colormap rev_magma
