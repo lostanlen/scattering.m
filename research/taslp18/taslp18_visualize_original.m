@@ -26,4 +26,5 @@ imagesc(log1p(target_scalogram));
 colormap rev_hot;
 axis off;
 drawnow();
+save(['media/', audio_name_str, '_original.mat', 'target_scalogram');
 export_fig(['media/', audio_name_str, '_original.png']);
