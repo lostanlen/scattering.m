@@ -189,7 +189,7 @@ while (iteration <= opts.nIterations)
         rec_U1 = Y_to_U(rec_Y1{end}, vis_archs{1}.nonlinearity);
         rec_scalogram = display_scalogram(rec_U1);
         imagesc(log1p(rec_scalogram));
-        colormap rev_magma;
+        colormap rev_hot;
         axis off;
         drawnow();
         export_fig([ ...

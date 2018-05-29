@@ -23,7 +23,7 @@ target_U1 = Y_to_U(target_Y1{end}, vis_archs{1}.nonlinearity);
 % Display original scalogram.
 target_scalogram = display_scalogram(target_U1);
 imagesc(log1p(target_scalogram));
-colormap rev_magma;
+colormap rev_hot;
 axis off;
 drawnow();
 export_fig(['media/', audio_name_str, '_original.png']);
