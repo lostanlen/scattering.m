@@ -15,6 +15,9 @@ if length(gamma_bounds)==1
 end
 behavior.gamma_bounds = gamma_bounds;
 behavior.is_chunked = default(opt, 'is_chunked', false);
+if behavior.is_chunked
+    behavior.is_windowed = default(opt, 'is_windowed', true);
+end
 behavior.is_sibling_padded = default(opt, 'is_sibling_padded', false);
 behavior.is_parallel = default(opt, 'is_parallel', false);
 behavior.key = opt.key; % provided in caller setup_plans

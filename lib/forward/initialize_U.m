@@ -45,7 +45,14 @@ elseif isequal(subscripts,1) && unpadded_signal_size>hop_signal_size
     rhs_indices = ((1-(bank_spec.size-bank_spec.T)):0) + padded_signal_size;
     chunked_tensor(lhs_indices,nChunks,:) = tensor(rhs_indices,:);
     
-    tensor = chunked_tensor;
+    % Window with Hann.
+    if bank_behavior.is_windowed
+        tensor = bsxfun(@times, hann(bank_spec.size), chunked_tensor);
+    else
+        tensor = chunked_tensor;
+    end
+    
+    
     if ismatrix(chunked_tensor)
         variable_names = {'time', 'chunk'};
     else
