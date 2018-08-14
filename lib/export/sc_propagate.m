@@ -10,15 +10,15 @@ U0 = initialize_U(signal, archs{1}.banks{1});
 if is_minibatch
     nChunks = size(U0.data, 2);
     max_minibatch_size = archs{1}.banks{1}.behavior.max_minibatch_size;
-    nBatches = nChunks / max_minibatch_size;
+    nBatches = ceil(nChunks / max_minibatch_size);
     U0_batches = cell(1, nBatches);
     for batch_id = 1:nBatches
         U0_batch = U0;
         chunk_start = 1 + (batch_id-1) * max_minibatch_size;
-        chunk_stop = min(nChunks, chunk_start + max_minibatch_size);
+        chunk_stop = min(nChunks, chunk_start + max_minibatch_size - 1);
         U0_batch.data = U0.data(:, chunk_start:chunk_stop);
-        U0_batch.ranges{1}(1,2) = chunk_start;
-        U0_batch.ranges{1}(3,2) = chunk_stop;
+        %U0_batch.ranges{1}(1,2) = chunk_start;
+        %U0_batch.ranges{1}(3,2) = chunk_stop;
         U0_batches{batch_id} = U0_batch;
     end
     S_batches = cell(1, nBatches);
@@ -69,12 +69,16 @@ for batch_id = 1:nBatches
     elseif is_chunked
         S = sc_unchunk(S);
     end
+    
+    if batch_id == 1
+        whos_output = whos('Y');
+        fprintf('Memory usage = %5.2f Mb\n', 2*whos_output.bytes / 1e6);
+    end
         
 end
 
 if is_minibatch
-    %S = aggregate_minibatch(S_batches);
-    S = S_batches{1};
+    S = reduce_minibatch(S_batches);
     S = sc_unchunk(S);
 end
 

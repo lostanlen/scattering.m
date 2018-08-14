@@ -9,7 +9,7 @@ if iscell(data)
         formatted_cells{cell_index} = ...
             format_data(data_cell, spatial_subscripts, ranges_cell);
     end
-    formatted_data = [formatted_cells{:}];
+    formatted_data = cat(2, formatted_cells{:});
     return
 end
 
