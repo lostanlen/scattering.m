@@ -69,11 +69,7 @@ for batch_id = 1:nBatches
     elseif is_chunked
         S = sc_unchunk(S);
     end
-    
-    if batch_id == 1
-        whos_output = whos('Y');
-        fprintf('Memory usage = %5.2f Mb\n', 2*whos_output.bytes / 1e6);
-    end
+   
         
 end
 
