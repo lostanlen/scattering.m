@@ -33,3 +33,4 @@ modulation_scale_index = 4;
 scattergram = U_unchunked{1+2}.data{modulation_scale_index}.';
 subplot(212);
 imagesc(scattergram);
+colormap rev_magma;
