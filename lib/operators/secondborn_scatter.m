@@ -1,4 +1,5 @@
-function [data,ranges] = secondborn_scatter(data_ft,bank,ranges,sibling)
+function [data,ranges] = ...
+    secondborn_scatter(data_ft,bank,ranges,sibling, keys)
 %% Deep map across levels
 level_counter = length(ranges) - sibling.level - 2;
 input_sizes = drop_trailing(size(data_ft));
@@ -86,9 +87,10 @@ data = cell(nEnabled_gammas,nCousins);
 ref_colons = bank.behavior.colons;
 asgn_colons.type = '()';
 first_input_sizes = drop_trailing(size(data_ft{1}));
-tensor_sizes = [first_input_sizes,2,bank.spec.nThetas];
-nInput_dimensions = length(first_input_sizes);
+nInput_dimensions = length(keys{1});
 downgraded_sibling_subscript = nInput_dimensions + 1;
+tensor_sizes = [ ...
+    first_input_sizes, ones(1, nInput_dimensions-1), bank.spec.nThetas];
 subscripts = bank.behavior.subscripts;
 signal_sizes = bank.spec.size;
 is_sibling_padded = isfield(bank.behavior,'gamma_padding_length');
