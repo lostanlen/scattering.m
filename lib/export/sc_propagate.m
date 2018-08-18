@@ -69,8 +69,7 @@ for batch_id = 1:nBatches
     elseif is_chunked
         S = sc_unchunk(S);
     end
-   
-        
+     
 end
 
 if is_minibatch
