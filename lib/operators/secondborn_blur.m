@@ -52,7 +52,7 @@ end
 
 %% Update of ranges at zeroth level (tensor level)
 sibling_subscript = sibling.subscripts;
-if isfield(bank_behavior,'gamma_padding_length');
+if isfield(bank_behavior,'gamma_padding_length')
     gamma_padding_length = bank_behavior.gamma_padding_length;
     nPadded_gammas = pow2(nextpow2(nSibling_gammas + gamma_padding_length));
 else
