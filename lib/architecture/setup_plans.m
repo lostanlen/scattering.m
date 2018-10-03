@@ -158,6 +158,7 @@ for layer = 2:nLayers
                         strcmp(wavelet_handle_str, 'RLC_1d')
                     field.is_ift_flipped = ...
                         default(field, 'is_ift_flipped', true);
+                    field.is_spinned = enforce(field, 'is_flipped', true);
                 end
                 % If wavelets are replaced by finite differences
                 if strcmp(wavelet_handle_str, 'finitediff_1d')
