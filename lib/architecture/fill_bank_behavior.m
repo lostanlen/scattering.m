@@ -17,7 +17,7 @@ behavior.gamma_bounds = gamma_bounds;
 behavior.is_chunked = default(opt, 'is_chunked', false);
 if behavior.is_chunked
     behavior.is_windowed = default(opt, 'is_windowed', true);
-    behavior.max_minibatch_size = default(opt, 'max_minibatch_size', Inf);
+    behavior.max_minibatch_size = default(opt, 'max_minibatch_size', 64);
 end
 behavior.is_sibling_padded = default(opt, 'is_sibling_padded', false);
 behavior.is_parallel = default(opt, 'is_parallel', false);
