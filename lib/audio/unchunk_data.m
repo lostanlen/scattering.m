@@ -42,10 +42,14 @@ else
             subsref_structure.subs{1} = ':';
         end
         subsasgn_structure.subs{1} = chunk_start:chunk_stop;
-        chunk = subsref(data, subsref_structure) + ...
+        chunk_subsref = subsref(data, subsref_structure);
+        chunk_subsref_sizes = size(chunk_subsref);
+        chunk_subsref = reshape(chunk_subsref, ....
+            [chunk_subsref_sizes(1), chunk_subsref_sizes(3:end), 1]);
+        chunk_subsasgn = chunk_subsref + ...
             subsref(unchunked_data, subsasgn_structure);
         unchunked_data = ...
-            subsasgn(unchunked_data, subsasgn_structure, chunk);
+            subsasgn(unchunked_data, subsasgn_structure, chunk_subsasgn);
     end
 end
 end
