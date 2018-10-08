@@ -46,10 +46,13 @@ elseif isequal(subscripts,1) && unpadded_signal_size>hop_signal_size
     chunked_tensor(lhs_indices,nChunks,:) = tensor(rhs_indices,:);
     
     % Window with Hann.
-    if bank_behavior.is_windowed
-        tensor = bsxfun(@times, hann(bank_spec.size), chunked_tensor);
-    else
-        tensor = chunked_tensor;
+    switch bank_behavior.windowing
+        case 'hann'
+            tensor = bsxfun(@times, hann(bank_spec.size), chunked_tensor);
+        case 'tukey'
+            tensor = bsxfun(@times, tukeywin(bank_spec.size), chunked_tensor);
+        case 'none'
+            tensor = chunked_tensor;
     end
     
     
