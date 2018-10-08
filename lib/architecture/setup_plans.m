@@ -24,7 +24,8 @@ if has_custom_invariants
     root_bank_field = opts{1}.banks.(root_name);
     root_bank_field.key.(root_name) = cell(1);
     root_bank_field.name = root_name;
-    root_bank_field.is_chunked = default(root_bank_field, 'is_chunked', true);
+    root_bank_field.is_chunked = ...
+        default(root_bank_field, 'is_chunked', true);
     if root_bank_field.is_chunked
         root_bank_field.windowing = ...
             default(root_bank_field, 'windowing', 'tukey');
