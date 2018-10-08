@@ -50,7 +50,8 @@ elseif isequal(subscripts,1) && unpadded_signal_size>hop_signal_size
         case 'hann'
             tensor = bsxfun(@times, hann(bank_spec.size), chunked_tensor);
         case 'tukey'
-            tensor = bsxfun(@times, tukeywin(bank_spec.size), chunked_tensor);
+            tensor = ...
+                bsxfun(@times, tukeywin(bank_spec.size), chunked_tensor);
         case 'none'
             tensor = chunked_tensor;
     end
