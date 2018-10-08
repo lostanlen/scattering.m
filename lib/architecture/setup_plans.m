@@ -217,8 +217,7 @@ for layer = 2:nLayers
         if strcmp(opt_name, 'nonlinearity')
             continue
         end
-        items = strfind(invariant_names, opt_name);
-        if all(cellfun(@isempty, items))
+        if ~contains(invariant_names, opt_name)
             continue
         end
         field = invariants_opt.(opt_name);
