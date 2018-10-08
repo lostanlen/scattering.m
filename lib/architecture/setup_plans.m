@@ -9,7 +9,8 @@ has_custom_invariants = ...
 if has_custom_invariants
     if isfield(opts{1}.banks, 'time') && ~isfield(opts{1}.banks, 'space')
         root_name = 'time';
-    elseif ~isfield(opts{1}.banks, 'time') && isfield(opts{1}.banks, 'space')
+    elseif ~isfield(opts{1}.banks, 'time') && ...
+            isfield(opts{1}.banks, 'space')
         root_name = 'space';
     end
 else
@@ -36,7 +37,8 @@ if has_custom_invariants
         default(root_bank_field, 'is_U_blurred', true);
     plans{1}.banks{1}.spec = fill_bank_spec(root_bank_field);
     plans{1}.banks{1}.behavior = fill_bank_behavior(root_bank_field);
-    plans{1}.invariants{1}.spec = fill_invariant_spec(root_invariant_field);
+    plans{1}.invariants{1}.spec = ...
+        fill_invariant_spec(root_invariant_field);
     plans{1}.invariants{1}.behavior = ...
         fill_invariant_behavior(root_invariant_field);
 else
@@ -142,8 +144,8 @@ for layer = 2:nLayers
                     enforce(field, 'has_multiple_support', true);
                 field.key.(root_name){1}.gamma = cell(1);
                 field.output_dimension = field.dimension + 1;
-                field.size = ...
-                    enforce(field, 'size', pow2(nextpow2(nGammas + field.T)));
+                field.size = enforce(field, 'size', ...
+                    pow2(nextpow2(nGammas + field.T)));
                 field.subscripts = default( ...
                     field, 'subscripts', banks{1}.behavior.dimension + 1);
                 banks{1}.behavior.gamma_padding_length = field.T / 2;
@@ -179,7 +181,8 @@ for layer = 2:nLayers
                 nOctaves_bound = ceil(nGammas_bound / nFilters_per_octave);
                 nOctaves = min(plans{1}.banks{1}.spec.J, nOctaves_bound);
                 field.dimension = banks{end}.behavior.dimension+1;
-                field.invariance = default(field, 'invariance', 'bypassed');
+                field.invariance = ...
+                    default(field, 'invariance', 'bypassed');
                 field.is_spinned = default(field, 'is_spinned', true);
                 field.has_multiple_support = ...
                     enforce(field, 'has_multiple_support', true);
