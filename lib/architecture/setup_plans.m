@@ -31,6 +31,9 @@ if has_custom_invariants
             default(root_bank_field, 'windowing', 'tukey');
         root_bank_field.max_minibatch_size = ...
             default(root_bank_field, 'max_minibatch_size', 64);
+    else
+        root_bank_field.windowing = ...
+            enforce(root_bank_field, 'windowing', 'none');
     end
     signal_dimension = 1;
     root_bank_field.output_dimension = 1;
@@ -51,11 +54,12 @@ else
     root_field = opts{1}.(root_name);
     root_field.name = root_name;
     root_field.is_chunked = default(root_field, 'is_chunked', true);
-    if root_bank_field.is_chunked
-        root_bank_field.windowing = ...
-            default(root_bank_field, 'windowing', 'tukey');
-        root_bank_field.max_minibatch_size = ...
-            default(root_bank_field, 'max_minibatch_size', 64);
+    if root_field.is_chunked
+        root_field.windowing = default(root_field, 'windowing', 'tukey');
+        root_field.max_minibatch_size = ...
+            default(root_field, 'max_minibatch_size', 64);
+    else
+        root_field.windowing = enforce(root_field, 'windowing', 'none');
     end
     root_field.is_U_blurred = ...
         default(root_field, 'is_U_blurred', false);
