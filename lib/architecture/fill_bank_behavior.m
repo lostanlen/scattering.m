@@ -25,6 +25,11 @@ if isfield(opt,'spiral')
     behavior.spiral = opt.spiral;
 end
 behavior.subscripts = opt.subscripts; % provided in caller setup_plans
+if isfield(opt, 'windowing')
+    behavior.is_chunked = opt.is_chunked;
+    behavior.windowing = opt.windowing;
+    behavior.max_minibatch_size = opt.max_minibatch_size;
+end
 
 %% Alphanumeric ordering of field names
 behavior = orderfields(behavior);
