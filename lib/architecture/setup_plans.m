@@ -109,8 +109,7 @@ for layer = 2:nLayers
     banks = {};
     for bank_name_index = 1:nNames
         opt_name = ordered_names{bank_name_index};
-        items = strfind(bank_names, opt_name);
-        if all(cellfun(@isempty, items))
+        if all(~contains(bank_names, opt_name))
             continue
         end
         field = banks_opt.(opt_name);
