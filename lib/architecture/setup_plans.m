@@ -24,8 +24,13 @@ if has_custom_invariants
     root_bank_field = opts{1}.banks.(root_name);
     root_bank_field.key.(root_name) = cell(1);
     root_bank_field.name = root_name;
-    root_bank_field.is_chunked = ...
-        default(root_bank_field, 'is_chunked', false);
+    root_bank_field.is_chunked = default(root_bank_field, 'is_chunked', true);
+    if root_bank_field.is_chunked
+        root_bank_field.windowing = ...
+            default(root_bank_field, 'windowing', 'tukey');
+        root_bank_field.max_minibatch_size = ...
+            default(root_bank_field, 'max_minibatch_size', 64);
+    end
     signal_dimension = 1;
     root_bank_field.output_dimension = 1;
     root_bank_field.subscripts = 1;
@@ -44,8 +49,13 @@ if has_custom_invariants
 else
     root_field = opts{1}.(root_name);
     root_field.name = root_name;
-    root_field.is_chunked = ...
-        default(root_field, 'is_chunked', true);
+    root_field.is_chunked = default(root_field, 'is_chunked', true);
+    if root_bank_field.is_chunked
+        root_bank_field.windowing = ...
+            default(root_bank_field, 'windowing', 'tukey');
+        root_bank_field.max_minibatch_size = ...
+            default(root_bank_field, 'max_minibatch_size', 64);
+    end
     root_field.is_U_blurred = ...
         default(root_field, 'is_U_blurred', false);
     if isfield(root_field, 'size') && ~isfield(root_field, 'T')
