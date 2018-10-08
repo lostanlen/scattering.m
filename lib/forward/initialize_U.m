@@ -67,6 +67,7 @@ elseif isequal(subscripts,1) && unpadded_signal_size>hop_signal_size
 end
 
 U0.variable_tree.time{1}.leaf.T = first_bank.spec.T;
+U0.variable_tree.time{1}.leaf.windowing = first_bank.behavior.windowing;
 
 %% Data storage and unpadding tree initialization
 U0.data = tensor;
