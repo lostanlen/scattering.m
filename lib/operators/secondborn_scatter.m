@@ -97,7 +97,7 @@ is_sibling_padded = isfield(bank.behavior,'gamma_padding_length');
 nData_dimensions = length(input_sizes);
 sibling_subscript = sibling.subscripts;
 
-%% If data is multidimensional, reshape it to a matrix
+%% If input is multidimensional, reshape it to a matrix
 % The rows are the sibling gammas ("gamma_1")
 % The columns are the "cousins" (e.g. gammas across other variables)
 % This happens e.g. for videos
