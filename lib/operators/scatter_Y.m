@@ -47,7 +47,7 @@ if isempty(uncle)
             sub_Y.data_ft, bank, ranges, sibling, sub_Y.keys);
     else
         [next_sub_Y.data,next_sub_Y.ranges] = ...
-            sibling_scatter(sub_Y.data_ft,bank,ranges,sibling);
+            sibling_scatter(sub_Y.data_ft,bank,ranges,sibling, sub_Y.keys);
     end
 else
     [next_sub_Y.data,next_sub_Y.ranges] = ...
