@@ -18,7 +18,7 @@ elseif isequal(subscripts,1) && unpadded_signal_size<=hop_signal_size
     U0 = initialize_variables_auto(tensor_size);
     U0.variable_tree.time{1}.leaf.unpadded_size = unpadded_signal_size;
 elseif isequal(subscripts,1) && unpadded_signal_size>hop_signal_size
-    nChunks = ceil(unpadded_signal_size/hop_signal_size);
+    nChunks = ceil((2*bank_spec.T+unpadded_signal_size)/hop_signal_size);
     padded_signal_size = nChunks * hop_signal_size;
     padding_signal_size = padded_signal_size - unpadded_signal_size;
     padding_zeros = zeros([padding_signal_size,tensor_size(2:end)]);
@@ -67,6 +67,7 @@ elseif isequal(subscripts,1) && unpadded_signal_size>hop_signal_size
 end
 
 U0.variable_tree.time{1}.leaf.T = first_bank.spec.T;
+U0.variable_tree.time{1}.leaf.size = first_bank.spec.size;
 U0.variable_tree.time{1}.leaf.windowing = first_bank.behavior.windowing;
 
 %% Data storage and unpadding tree initialization
