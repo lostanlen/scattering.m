@@ -11,7 +11,8 @@ if iscell(layer)
         if isempty(layer_cell)
             continue
         end
-        unchunked_layer{cell_index} = unchunk_layer(layer_cell);
+        unchunked_layer{cell_index} = ...
+            unchunk_layer(layer_cell);
     end
 else
     unchunked_layer = layer;
@@ -21,7 +22,8 @@ else
         return
     end
     chunk_subscript = chunk_variable.subscripts;
-    unchunked_layer.data = unchunk_data(layer.data);
+    root_leaf = layer.variable_tree.time{1}.leaf;
+    unchunked_layer.data = unchunk_data(layer.data, root_leaf);
     unchunked_layer.ranges{1+0} = ...
         unchunk_ranges(layer.ranges{1+0}, chunk_subscript);
 end
