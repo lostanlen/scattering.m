@@ -12,8 +12,8 @@ if iscell(S_data_batches{1})
     end
     return
 end
-%%
 
+%% Tail call.
 S_data = cat(chunk_subscript, S_data_batches{:});
 end
 
