@@ -70,12 +70,13 @@ end
 %% Initialization
 colons = bank_behavior.colons;
 data = cell([nCousins,1]);
-first_input_sizes = drop_trailing(size(data_ft{1}));
-nInput_dimensions = length(first_input_sizes);
-tensor_sizes = [first_input_sizes, nPadded_gammas];
+nOutput_dimensions = size(ranges{1}, 2);
+tensor_sizes = [size(data_ft{1}), ...
+    ones(1, nOutput_dimensions-length(size(data_ft{1})))];
 tensor_sizes(subscripts) = bank.spec.size * pow2(log2_sampling);
 tensor_sizes(end) = nPadded_gammas;
-local_subsasgn_structure = substruct('()',replicate_colon(nInput_dimensions+1));
+local_subsasgn_structure = ...
+    substruct('()',replicate_colon(nOutput_dimensions));
 local_tensor = zeros(tensor_sizes);
 
 %% Blurring implementation
