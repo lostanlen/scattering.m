@@ -8,6 +8,14 @@ is_minibatch = ...
 
 U0 = initialize_U(signal, archs{1}.banks{1});
 if is_minibatch
+    if archs{1}.etc.is_waitbar_shown
+        f = waitbar(0, 'Chunking ...');
+        if archs{1}.etc.is_waitbar_docked
+            set(f, 'WindowStyle', 'docked');
+        end
+        drawnow();
+        cumulative_time = 0;
+    end
     nChunks = size(U0.data, 2);
     max_minibatch_size = archs{1}.banks{1}.behavior.max_minibatch_size;
     nBatches = ceil(nChunks / max_minibatch_size);
@@ -25,8 +33,8 @@ if is_minibatch
 else
     nBatches = 1;
 end
-    
-    
+
+
 % Loop over mini-batches.
 nLayers = length(archs);
 for batch_id = 1:nBatches
@@ -38,6 +46,7 @@ for batch_id = 1:nBatches
     
     if is_minibatch
         U{1+0} = U0_batches{batch_id};
+        tic();
     else
         U{1+0} = U0;
     end
@@ -66,15 +75,31 @@ for batch_id = 1:nBatches
 
     if is_minibatch
         S_batches{batch_id} = S;
+        if archs{1}.etc.is_waitbar_shown
+            iteration_time = toc();
+            cumulative_time = cumulative_time + iteration_time;
+            cumulative_time_str = datestr(datetime( ...
+                0,0,0,0,0, cumulative_time), 'HH:MM:SS');
+            remaining_time = (nBatches-batch_id) * iteration_time;
+            remaining_time_str = datestr(datetime( ...
+                0,0,0,0,0, remaining_time), 'HH:MM:SS');
+            waitbar(batch_id/nBatches, f, ... 
+                ['Scattering. ', ...
+                 'Elapsed time: ', cumulative_time_str, '. ', ...
+                 'Remaining time: ', remaining_time_str, '.']);
+            tic();
+        end
     elseif is_chunked
         S = sc_unchunk(S);
     end
-     
+    
 end
 
 if is_minibatch
+    waitbar(1, f, 'Unchunking ...');
     S = reduce_minibatch(S_batches);
     S = sc_unchunk(S);
+    close(f);
 end
 
 end
