@@ -26,4 +26,6 @@ end
 if is_lastlayer_implicit && isfield(architectures{end-1}, 'invariants')
     architectures{end}.invariants = architectures{end-1}.invariants;
 end
+
+architectures{1}.etc = opts{1}.etc;
 end
