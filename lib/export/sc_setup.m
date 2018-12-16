@@ -27,5 +27,9 @@ if is_lastlayer_implicit && isfield(architectures{end-1}, 'invariants')
     architectures{end}.invariants = architectures{end-1}.invariants;
 end
 
-architectures{1}.etc = opts{1}.etc;
+if ~isfield(opts{1}, 'etc')
+    opts{1}.etc = struct();
+end
+architectures{1}.etc = fill_etc(opts{1}.etc);
+
 end
