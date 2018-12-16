@@ -24,7 +24,7 @@ if is_minibatch
         U0_batch = U0;
         chunk_start = 1 + (batch_id-1) * max_minibatch_size;
         chunk_stop = min(nChunks, chunk_start + max_minibatch_size - 1);
-        U0_batch.data = U0.data(:, chunk_start:chunk_stop);
+        U0_batch.data = U0.data(:, chunk_start:chunk_stop, :);
         %U0_batch.ranges{1}(1,2) = chunk_start;
         %U0_batch.ranges{1}(3,2) = chunk_stop;
         U0_batches{batch_id} = U0_batch;
@@ -96,10 +96,14 @@ for batch_id = 1:nBatches
 end
 
 if is_minibatch
-    waitbar(1, f, 'Unchunking ...');
+    if archs{1}.etc.is_waitbar_shown
+        waitbar(1, f, 'Unchunking ...');
+    end
     S = reduce_minibatch(S_batches);
     S = sc_unchunk(S);
-    close(f);
+    if archs{1}.etc.is_waitbar_shown
+        close(f);
+    end
 end
 
 end
