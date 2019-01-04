@@ -31,7 +31,7 @@ support_index = log2(bank.spec.size/signal_support) + 1;
 psis = bank.psis{support_index};
 
 %% Selection of filter indices ("gamma")
-sibling_gamma_lower_bound = max(sibling.behavior.gamma_bounds(1),1);
+sibling_gamma_lower_bound = ranges{2}(1, sibling.subscripts);
 sibling_gamma_upper_bound = ...
     min(sibling.behavior.gamma_bounds(2),length(sibling.metas));
 sibling_gamma_range = ...
@@ -114,24 +114,70 @@ if nData_dimensions>1
     data_ft = reshape(data_ft,[nSibling_gammas,nCousins]);
 end
 
-%% Update ranges at zeroth level
-if bank.spec.nThetas > 1
-    disp('Third-order scattering with oriented wavelets not ready yet');
+%% Initialize output ranges.
+input_ranges = ranges;
+output_ranges = cell(1, length(ranges)+(nCousins==1));
+
+%% Raise exception in case of fourth-order scattering
+if length(input_ranges) > 2
+    error('Scattering beyond third order not ready yet');
 end
-% TODO: append a theta_3 range to the zeroth level if necessary.
+% TODO: implement upper-order scattering by writing a deep map across
+% nested levels of input ranges.
 
-
-%% Update ranges at penultimate level
-% (gamma_2 level in third-order scattering)
-
-
-%% Update ranges at topmost level
-% (gamma_3 level in third-order scattering)
-if nCousins > 1
-    ranges{end} = cat(1, ranges{end}, gamma_range);
-else
-    ranges = cat(2, ranges, {gamma_range});
+%% Raise exception in case of multi-variable scattering
+if nCousins> 1
+    error('Multivariable third-order scattering not ready yet');
 end
+
+%% Update ranges.
+output_ranges{1+0} = cell(nEnabled_gammas,1);
+output_ranges{1+1} = cell(nEnabled_gammas, 1);
+
+% Update range at the topmost level (j2).
+% NB: this line needs to be changed in case nCousins > 1.
+output_ranges{1+2} = gamma_range;
+
+% Loop over j3.
+for enabled_index = 1:nEnabled_gammas
+    % Define hop size.
+    step = pow2(-log2_samplings(enabled_index));
+    
+    % Get ranges for sibling.
+    gamma = gammas(enabled_index);
+    min_sibling_gamma = input_ranges{1+1}(1,sibling_subscript);
+    max_sibling_gamma = min(input_ranges{1+1}(3,sibling_subscript), ...
+        bank.metas(gamma).max_sibling_gamma);
+    
+    % Update range at the first level (j1)
+    output_ranges{1+1}{enabled_index} = ...
+        [min_sibling_gamma,1,max_sibling_gamma].';
+    
+    % Initialize output ranges for the current enabled scale index.
+    nSiblings = max_sibling_gamma - min_sibling_gamma + 1;
+    output_ranges{1+0}{enabled_index} = cell(1,nSiblings);
+    
+    % Loop over j2.
+    for sibling_index = 1:nSiblings
+        
+        % Load input range.
+        input_zeroth_range = input_ranges{1+0}{sibling_index};
+
+        % Append theta_3 variable if necessary.
+        output_zeroth_range = ...
+            cat(2,input_zeroth_range,zeros(3,bank.spec.nThetas>1));
+        if bank.spec.nThetas>1
+            output_zeroth_range(:,end) = [1,1,bank.spec.nThetas].';
+        end
+        
+        % Update step.
+        output_zeroth_range(2,subscripts) = step;
+
+        output_ranges{1+0}{enabled_index}{sibling_index} = ...
+            output_zeroth_range;
+    end
+end
+
 
 %% Scattering
 if bank.spec.nThetas==1
