@@ -115,21 +115,11 @@ if nData_dimensions>1
 end
 
 %% Update ranges at zeroth level
-input_zeroth_range = ranges{1+0}{1};
-output_zeroth_range = ...
-    cat(2,input_zeroth_range,zeros(3,(bank.spec.nThetas>1)));
-ranges{1+0} = cell(nEnabled_gammas,1);
-for enabled_index = 1:nEnabled_gammas
-    step = pow2(-log2_samplings(enabled_index));
-    output_zeroth_range(2,subscripts) = step;
-    gamma = gammas(enabled_index);
-    output_zeroth_range(:,nInput_dimensions+1) = ...
-        [min_sibling_gamma,1,max_sibling_gamma].';
-    if bank.spec.nThetas>1
-        output_zeroth_range(:,end) = [1,1,bank.spec.nThetas].';
-    end
-    ranges{1+0}{enabled_index} = output_zeroth_range;
+if bank.spec.nThetas > 1
+    disp('Third-order scattering with oriented wavelets not ready yet');
 end
+% TODO: append a theta_3 range to the zeroth level if necessary.
+
 
 %% Update ranges at penultimate level
 % (gamma_2 level in third-order scattering)
