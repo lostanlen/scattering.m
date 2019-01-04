@@ -178,6 +178,8 @@ for enabled_index = 1:nEnabled_gammas
     end
 end
 
+ranges = output_ranges;
+
 
 %% Scattering
 if bank.spec.nThetas==1
