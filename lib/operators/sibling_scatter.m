@@ -184,45 +184,25 @@ ranges = output_ranges;
 %% Scattering
 if bank.spec.nThetas==1
     %% Case when there is only one orientation (nThetas==1)
-    asgn_colons.subs = replicate_colon(nInput_dimensions+1);
-    data_slice = cell(1, nCousins);
+    data = cell(1, nEnabled_gammas);
+    
     % This loop can be parallelized
     for enabled_index = 1:nEnabled_gammas
         % Definition of downsampled size for transformed variable
         local_log2_resamplings = log2_resamplings{enabled_index};
         nSibling_gammas = length(local_log2_resamplings);
-        log2_sampling = log2_samplings(enabled_index);
-        local_tensor_sizes = tensor_sizes;
-        local_tensor_sizes(subscripts) = signal_sizes * pow2(log2_sampling);
-        % Definition of padded size for downgraded sibling gamma_1
-        if is_sibling_padded
-            local_tensor_sizes(downgraded_sibling_subscript) = ...
-                pow2(nextpow2(nSibling_gammas+ ...
-                    bank_behavior.gamma_padding_length));
-        else
-            local_tensor_sizes(downgraded_sibling_subscript) = ...
-                nSibling_gammas;
-        end
-        % Initialization of input tensor, band-pass filter, and output slice
-        local_tensor = zeros(local_tensor_sizes);
         local_psi = psis(gammas(enabled_index));
-        local_subsasgn_structure = asgn_colons;
-        local_data_slice = data_slice;
-        % Computationally intensive loop
-        for cousin_index = 1:nCousins
-            for sibling_index = 1:nSibling_gammas
-                log2_resampling = local_log2_resamplings(sibling_index);
-                local_data_ft = data_ft{sibling_index,cousin_index};
-                local_subsasgn_structure.subs{downgraded_sibling_subscript} = ...
-                    sibling_index;
-                local_tensor = subsasgn(local_tensor,local_subsasgn_structure, ...
-                    ifft_multiply(local_data_ft,local_psi, ...
-                    log2_resampling,ref_colons,subscripts));
-            end
-            local_data_slice{cousin_index} = local_tensor;
+        data_slice = cell(1, nSibling_gammas);
+        for sibling_index = 1:nSibling_gammas
+            log2_resampling = local_log2_resamplings(sibling_index);
+            local_data_ft = data_ft{sibling_index};
+            local_tensor = ifft_multiply( ...
+                local_data_ft, local_psi, log2_resampling, ...
+                ref_colons, subscripts);
+            data_slice{sibling_index} = local_tensor;
         end
         % Output storage
-        data(enabled_index,:) = local_data_slice;
+        data{enabled_index} = data_slice;
     end
 else
     %% Case when there is more than one orientation (nThetas>1)
