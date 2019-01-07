@@ -132,7 +132,7 @@ end
 
 %% Update ranges.
 output_ranges{1+0} = cell(nEnabled_gammas,1);
-output_ranges{1+1} = cell(nEnabled_gammas, 1);
+output_ranges{1+1} = cell(nEnabled_gammas,1);
 
 % Update range at the topmost level (j2).
 % NB: this line needs to be changed in case nCousins > 1.
@@ -184,7 +184,7 @@ ranges = output_ranges;
 %% Scattering
 if bank.spec.nThetas==1
     %% Case when there is only one orientation (nThetas==1)
-    data = cell(1, nEnabled_gammas);
+    data = cell(nEnabled_gammas, 1);
     
     % This loop can be parallelized
     for enabled_index = 1:nEnabled_gammas
