@@ -1,5 +1,3 @@
-clear(); clc();
-
 sample_rate = 200; % in Hertz
 min_frequency_in_Hertz = 0.1; % in seconds
 hop_size_in_seconds = 0.5; % in seconds
