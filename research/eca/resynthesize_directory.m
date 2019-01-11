@@ -1,6 +1,6 @@
 % Replace these paths
-toolbox_path = '~/scattering.m';
-sounds_folder = '~/datasets/eca';
+toolbox_path = '~/Documents/MATLAB/scattering.m';
+sounds_folder = '~/datasets/janferreira';
 
 addpath(genpath(toolbox_path));
 
@@ -18,7 +18,7 @@ clear opts;
 opts.nChunks_per_batch = 2; % must be > 1
 opts.export_mode = 'all'; % should be 'all' or 'last'
 opts.nIterations = 20;
-opts.generate_text = true; % will work only with time-frequency scattering
+opts.generate_text = false; % "true" will work only with time-frequency scattering
 
 % Do not change the parameters below
 opts.is_sonified = false;
