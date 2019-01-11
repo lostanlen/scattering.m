@@ -27,6 +27,7 @@ end
 behavior.subscripts = opt.subscripts; % provided in caller setup_plans
 if isfield(opt, 'windowing') && ~strcmp(opt.windowing, 'none')
     behavior.is_chunked = opt.is_chunked;
+    behavior.is_unchunked = opt.is_unchunked;
     behavior.windowing = opt.windowing;
     behavior.max_minibatch_size = opt.max_minibatch_size;
 end

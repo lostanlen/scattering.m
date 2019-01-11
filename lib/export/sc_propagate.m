@@ -1,6 +1,7 @@
 function [S, U, Y] = sc_propagate(signal, archs)
 
 is_chunked = archs{1}.banks{1}.behavior.is_chunked;
+is_unchunked = archs{1}.banks{1}.behavior.is_unchunked;
 is_minibatch = ...
     (nargout == 1) && ...
     is_chunked && ...
@@ -43,14 +44,16 @@ for batch_id = 1:nBatches
     S = cell(1, nLayers);
     U = cell(1, nLayers);
     Y = cell(1, nLayers);
-    
+
     if is_minibatch
         U{1+0} = U0_batches{batch_id};
-        tic();
+        if archs{1}.etc.is_waitbar_shown
+            tic();
+        end
     else
         U{1+0} = U0;
     end
-    
+
     % Propagation cascade
     for layer = 1:nLayers
         arch = archs{layer};
@@ -63,7 +66,7 @@ for batch_id = 1:nBatches
         end
 
         % Apply nonlinearity to last sub-layer Y to get layer U
-        if isfield(arch, 'nonlinearity') 
+        if isfield(arch, 'nonlinearity')
             U{1+layer} = Y_to_U(Y{layer}{end}, arch.nonlinearity);
         end
 
@@ -83,24 +86,28 @@ for batch_id = 1:nBatches
             remaining_time = (nBatches-batch_id) * iteration_time;
             remaining_time_str = datestr(datetime( ...
                 0,0,0,0,0, remaining_time), 'HH:MM:SS');
-            waitbar(batch_id/nBatches, f, ... 
+            waitbar(batch_id/nBatches, f, ...
                 ['Scattering. ', ...
                  'Elapsed time: ', cumulative_time_str, '. ', ...
                  'Remaining time: ', remaining_time_str, '.']);
             tic();
         end
-    elseif is_chunked
+    elseif is_unchunked
         S = sc_unchunk(S);
     end
-    
+
 end
 
 if is_minibatch
-    if archs{1}.etc.is_waitbar_shown
-        waitbar(1, f, 'Unchunking ...');
+    if is_unchunked
+        if archs{1}.etc.is_waitbar_shown
+            waitbar(1, f, 'Unchunking ...');
+        end
+        S = reduce_minibatch(S_batches);
+        S = sc_unchunk(S);
+    else
+        S = cat(1, S_batches{:});
     end
-    S = reduce_minibatch(S_batches);
-    S = sc_unchunk(S);
     if archs{1}.etc.is_waitbar_shown
         close(f);
     end
