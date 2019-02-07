@@ -14,8 +14,9 @@ function archs = eca_setup(Q1, T, modulations, wavelets)
 opts{1}.time.nFilters_per_octave = Q1;
 opts{1}.time.T = T;
 opts{1}.time.max_scale = 8192;
-opts{1}.time.size = 2 * 2^nextpow2(Q1 * T);
+opts{1}.time.size = 2^(10 + nextpow2(Q1));
 opts{1}.time.is_chunked = true;
+opts{1}.time.is_unchunked = true;
 opts{1}.time.gamma_bounds = [1 Q1*9];
 opts{1}.time.duality = 'hermitian';
 switch wavelets
