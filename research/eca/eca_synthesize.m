@@ -140,8 +140,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         for gamma1_index = 1:size(U{1+1}.data, 1)
             U{1+1}.data{gamma1_index} = [U1_batches{gamma1_index, :}];
         end
-        U = sc_unchunk(U(1:2));
-        scalogram = display_scalogram(U{1+1});
+        scalogram = display_scalogram(sc_unchunk(U(2)));
         imagesc(log1p(scalogram./10.0));
         colormap rev_gray;
         drawnow();
