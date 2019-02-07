@@ -60,6 +60,8 @@ else
         root_field.windowing = default(root_field, 'windowing', 'tukey');
         root_field.max_minibatch_size = ...
             default(root_field, 'max_minibatch_size', 64);
+        root_field.is_unchunked = ...
+            default(root_field, 'is_unchunked', true);
     else
         root_field.windowing = enforce(root_field, 'windowing', 'none');
     end

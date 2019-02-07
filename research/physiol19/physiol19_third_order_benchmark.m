@@ -1,10 +1,17 @@
 %% PART 1. WITHOUT ACCELERATION.
 clc(); clear all;
 
-signal_lengths = [6e6];
-%signal_lengths = ...
-%    [1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6, 1e7];
+signal_lengths = [1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6, 6e6, 1e7];
+
 n_signals = length(signal_lengths);
+
+xs = cell(1, n_signals);
+for signal_id = 1:n_signals
+    signal_length = signal_lengths(signal_id);
+    x = randn(signal_length, 1);
+    xs{signal_id} = x;
+end
+
 delta_ts = zeros(n_signals, 2);
 
 sample_rate = 200; % in Hertz
@@ -51,11 +58,12 @@ opts{4}.invariants.time.size = opts{1}.banks.time.size;
 opts{4}.invariants.time.subscripts = 1;
 
 archs = sc_setup(opts);
+S_plain = cell(1, n_signals);
 
 for signal_id = 1:n_signals
     tic();
     N = signal_lengths(signal_id);
-    x = randn(N, 1);
+    x = xs{signal_id};
     S = sc_propagate(x, archs);
     
     % Get first order.
@@ -80,7 +88,9 @@ for signal_id = 1:n_signals
     fprintf('Elapsed time: %05.3f seconds\n', delta_t);
     fprintf('Speed: %dx real time\n', floor(N/(delta_t*200)));
     fprintf('\n');
+    S_plain{signal_id} = S_mat;
 end
+
 
 
 
@@ -123,11 +133,12 @@ opts{4}.invariants.time.size = opts{1}.banks.time.size;
 opts{4}.invariants.time.subscripts = 1;
 
 archs = sc_setup(opts);
+S_fast = cell(1, n_signals);
 
 for signal_id = 1:n_signals
     tic();
     N = signal_lengths(signal_id);
-    x = randn(N, 1);
+    x = xs{signal_id};
     S_batches = sc_propagate(x, archs);
     
     % Custom post-processing loop: fused reduction, unchunking, and formatting
@@ -168,6 +179,10 @@ for signal_id = 1:n_signals
         S_mats{layer_id} =  cat(1, S_cell{:, layer_id});
     end
     S_mat = [S_mats{:}];
+    
+    % Unpadding.
+    n_frames = round(2*length(x)/opts{1}.invariants.time.T);
+    S_mat = S_mat(1:n_frames, :);
 
     delta_t = toc();
     delta_ts(signal_id, 2) = delta_t;
@@ -175,6 +190,8 @@ for signal_id = 1:n_signals
     fprintf('Elapsed time: %05.3f seconds\n', delta_t);
     fprintf('Speed: %dx real time\n', floor(N/(delta_t*200)));
     fprintf('\n');
+    
+    S_fast{signal_id} = S_mat;
 end
 
 
