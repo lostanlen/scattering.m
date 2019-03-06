@@ -3,7 +3,8 @@
 /usr
 /Make-user
 /research/finitediffs/local/
-/research/taslp18/media/*
+/research/tsp19/sbatch/*
+/research/tsp19/slurm/*
 
 *.m~
 
