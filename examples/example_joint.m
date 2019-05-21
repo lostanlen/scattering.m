@@ -10,9 +10,9 @@ signal = y(1:N);
 %% Take default values for auditory transform
 opts{1} = default_auditory(N,Fs,Q);
 % This line adds a second-order transform on top
-opts{2}.time = struct();
+opts{2}.time = struct('nFilters_per_octave', 1);
 % This line enables joint time-frequency scattering
-opts{2}.gamma = struct(); % gamma means log-frequency
+opts{2}.gamma = struct('nFilters_per_octave', 1); % gamma means log-frequency
 
 %% Build "architectures" (filter banks)
 archs = sc_setup(opts);
@@ -35,3 +35,4 @@ scattergram =  U_unchunked{1+2}{1,1}.data{ ...
     :, :, frequential_modulation_sign).';
 subplot(212);
 imagesc(scattergram);
+colormap rev_magma;
