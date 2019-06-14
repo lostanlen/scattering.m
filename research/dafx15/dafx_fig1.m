@@ -167,7 +167,7 @@ color_green = [0,135,68]/255;
 color_red = [214,45,32]/255;
 color_gray = 0.7 * [1,1,1];
 
-linewidth = 1.2;
+linewidth = 1.0;
 
 line(real_wavetime_x,real_wavetime_y,real_wavetime_z, ...
     'Color',color_blue,'LineWidth',linewidth);
@@ -199,7 +199,6 @@ line(spiral_x,spiral_y,spiral_z,'Color',color_gray);
 axis off;
 axis equal;
 view([0 34]);
-zoom(3)
 
-%%
-export_fig dafx_fig1.png -transparent
+%
+export_fig dafx_fig1_large.png -m8 -transparent
