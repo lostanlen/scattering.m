@@ -54,5 +54,5 @@ Documentation can be browsed on [Read The Docs](http://scatteringm.readthedocs.o
 
 
 ## License and contact
-All files in the Scattering.m toolbox are licensed under the GNU GPL v3, of which you can find a copy [here](https://github.com/lostanlen/scattering.m/blob/master/LICENSE.md).
+All files in the Scattering.m toolbox are licensed under the MIT license, of which you can find a copy [here](https://github.com/lostanlen/scattering.m/blob/master/LICENSE.md).
 The toolbox is ran by Vincent Lostanlen, a PhD student in the team of Stéphane Mallat at École normale supérieure in Paris. Ideas for academic collaboration are welcome.
