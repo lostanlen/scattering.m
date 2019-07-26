@@ -1,5 +1,6 @@
 Q1 = 24;
-T = 2^13;
+T = 2^13; % you can try 2^(14), 2^(15), 2^(16)
+is_sonified = true;
 modulations = 'time-frequency';
 wavelets = 'morlet';
 N = 2^17;
@@ -7,11 +8,11 @@ archs = eca_setup_1chunk(Q1, T, modulations, wavelets, N);
 archs{1}.banks{1}.behavior.gamma_bounds = [1, 128];
 
 %%
-[x, sr] = audioread('jf_wind.wav');
-[Sx, Ux] = sc_propagate(x.*planck_taper(N), archs);
+[x, sr] = audioread('jf_voice.wav');
+[Sx, Ux] = sc_propagate(x, archs);
 
-[y, ~] = audioread('jf_voice.wav');
-[Sy, Uy] = sc_propagate(y, archs);
+[y, ~] = audioread('jf_wind.wav');
+[Sy, Uy] = sc_propagate(y.*planck_taper(N), archs);
 
 %%
 Sz = Sx;
@@ -37,8 +38,8 @@ Sz{1+2} = Sy{1+2};
 
 %% Default options
 opts = struct( ...
-    'is_spectrogram_displayed', true, 'is_sonified', true, ...
-    'nIterations', 100, 'sample_rate', 22050);
+    'is_spectrogram_displayed', true, 'is_sonified', is_sonifiedonifie, ...
+    'nIterations', 25, 'sample_rate', 22050);
 opts = fill_reconstruction_opt(opts);
 
 % Forward propagation of target signal
@@ -48,7 +49,7 @@ nLayers = length(archs);
 
 %% Initialization
 [init, previous_loss, delta_signal] = ...
-    eca_init(x, target_S, archs, opts);
+    eca_init(y, target_S, archs, opts);
 iterations = cell(1, opts.nIterations);
 iterations{1+0} = init;
 previous_signal = iterations{1+0};
