@@ -17,24 +17,6 @@ archs{1}.banks{1}.behavior.gamma_bounds = [1, 128];
 %%
 Sz = Sx;
 Sz{1+2} = Sy{1+2};
-% for j2 = 1:length(Sz{1+2}{1}.data)
-%     for j_fr = 1:length(Sz{1+2}{1,1}.data{j2})
-%         j1_bounds = Sx{1+2}{1,1}.ranges{1}{j2}{j_fr}(:, 2);
-%         j1_range = j1_bounds(1):j1_bounds(2):j1_bounds(3);
-%         s1_x = Sx{1+1}.data(:, j1_range);
-%         s1_y = Sy{1+1}.data(:, j1_range);
-%         s2_x = Sx{1+2}{1,1}.data{j2}{j_fr}(:, 1:length(j1_range), :);
-%         Sz{1+2}{1,1}.data{j2}{j_fr}(:, 1:length(j1_range), :) = ...
-%             bsxfun(@times, s2_x, s1_y./s1_x);
-%     end
-%     j1_bounds = Sx{1+2}{1,2}.ranges{1}{j2}(:, 2);
-%     j1_range = j1_bounds(1):j1_bounds(2):j1_bounds(3);
-%     s1_x = Sx{1+1}.data(:, j1_range);
-%     s1_y = Sy{1+1}.data(:, j1_range);
-%     s2_x = Sx{1+2}{1,2}.data{j2}(:, 1:length(j1_range), :);
-%     Sz{1+2}{1,2}.data{j2}(:, 1:length(j1_range), :) = ...
-%         bsxfun(@times, s2_x, s1_y./s1_x);
-% end
 
 %% Default options
 opts = struct( ...
