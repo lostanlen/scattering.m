@@ -8,10 +8,10 @@ archs = eca_setup_1chunk(Q1, T, modulations, wavelets, N);
 archs{1}.banks{1}.behavior.gamma_bounds = [1, 128];
 
 %%
-[x, sr] = audioread('jf_voice.wav');
+[x, sr] = eca_load('jf_voice.wav', N);
 [Sx, Ux] = sc_propagate(x, archs);
 
-[y, ~] = audioread('jf_wind.wav');
+[y, ~] = eca_load('jf_wind.wav', N);
 [Sy, Uy] = sc_propagate(y.*planck_taper(N), archs);
 
 %%
