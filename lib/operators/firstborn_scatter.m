@@ -138,6 +138,14 @@ if is_deepest && is_oriented && is_spiraled
                 ifft_multiply(data_ft,psi, ...
                 log2_resampling,colons,subscripts));
         end
+        
+        totalScale = spiraled_sizes{gamma_index}(2)*spiraled_sizes{gamma_index}(3);
+        if ~(size(y,2)==totalScale)
+            diffScale = size(y,2) - totalScale;
+            y(:,1:diffScale/2,:)=[];
+            y(:,end-diffScale/2+1:end,:)=[];
+        end
+        
         data{gamma_index} = reshape(y,spiraled_sizes{gamma_index});
     end
     return

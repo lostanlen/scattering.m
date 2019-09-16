@@ -10,7 +10,7 @@ if isfield(opt, 'wavelet_handle') && ...
         strcmp(func2str(opt.wavelet_handle), 'finitediff_1d')
     spec.J = opt.J;
 else
-    spec.J = enforce(opt, 'J', log2(spec.T));
+    spec.J = enforce(opt, 'J', round(log2(spec.T)));
 end
 spec.max_Q = default(opt, 'max_Q', default(opt, 'nFilters_per_octave', 1));
 spec.max_scale = default(opt, 'max_scale', spec.T);
