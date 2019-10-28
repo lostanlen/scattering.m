@@ -29,9 +29,9 @@ target_S = sc_propagate(target_signal,archs);
 
 %% Reconstruction
 rec_opt.verbosity_period = 1;
-nIterations = 50;
+rec_opt.nIterations = 50;
 [rec_signal,rec_summary] = ...
-    sc_reconstruct(target_S,archs,rec_opt,nIterations);
+    sc_reconstruct(target_S,archs,rec_opt);
 
 %% Export
 audiowrite(['sequenza_spiral_J',num2str(J),'.wav'],rec_signal,sample_rate);
