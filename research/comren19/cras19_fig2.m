@@ -8,19 +8,18 @@ T = N;
 opts = cell(2, 1);
 opts{1}.time.nFilters_per_octave = Q1;
 opts{1}.time.T = T;
-opts{1}.time.max_scale = Inf;
+opts{1}.time.max_scale = 4096;
 opts{1}.time.size = N;
 opts{1}.time.is_chunked = false;
 opts{1}.time.gamma_bounds = [1+round(Q1*1.5), round(Q1*7.5)];
 
-opts{2}.time.nFilters_per_octave = 8;
-opts{2}.time.max_Q = 4;
+opts{2}.time.nFilters_per_octave = 4;
 opts{2}.time.sibling_mask_factor = 1;
 
 opts{2}.gamma.nFilters_per_octave = 1;
 opts{2}.gamma.is_U_blurred = true;
-opts{2}.gamma.is_U_scattered = false;
-opts{2}.gamma.log2_U_oversampling = Inf;
+opts{2}.gamma.is_U_scattered = true;
+opts{2}.gamma.U_log2_oversampling = Inf;
 
 
 archs = sc_setup(opts);
@@ -30,11 +29,33 @@ archs = sc_setup(opts);
 scalogram = display_scalogram(U{2});
 
 %%
-imagesc(log1p(scalogram*0.01));
+dur = length(y)/sample_rate;
+times = linspace(0, dur, size(scalogram, 2));
+scales = opts{1}.time.gamma_bounds(1):opts{1}.time.gamma_bounds(2);
+lambdas = [archs{1}.banks{1}.metas(scales).resolution];
+mother_xi = sample_rate * archs{1}.banks{1}.spec.mother_xi;
+xis = mother_xi * lambdas;
+tick_xis = [200, 500, 1000, 2000, 5000];
+[~, tick_indices] = min(abs(tick_xis.'./xis - 1), [], 2);
+
+figure(1);
+set(gcf,'Position',[100 100 450 165])
+%set(gcf(), 'WindowStyle', 'docked')
+imagesc(times, scales, log1p(scalogram(:, 1:(end))*0.01));
+yticks(sort(scales(tick_indices)));
+yticklabels(tick_xis(end:-1:1)/1000);
+colormap rev_hot;
+
+xlabel('Time $t$ (s)');
+ylabel('Acoustic frequency $\lambda$ (kHz)');
+title({'', 'Wavelet scalogram'});
+
+%export_fig cras19_fig2a.png -m4 -transparent
 
 %%
 J2s = 5:45;
 J1s = [119];
+
 S2_slice = zeros(length(J1s), length(J2s));
 for j1_id = 1:length(J1s)
     j1 = J1s(j1_id);
@@ -50,32 +71,45 @@ xi = sample_rate * archs{2}.banks{1}.spec.mother_xi;
 all_resolutions = [archs{2}.banks{1}.metas.resolution];
 J2_range = J2s + S{3}{1,1}.ranges{3}(1) - 1;
 alphas = xi * all_resolutions(J2_range);
-plot(alphas, S2_slice.', '-', 'LineWidth', 2.0);
+
+set(0,'DefaultLegendInterpreter','latex') 
+set(0,'DefaultTextInterpreter','latex')
+set(0,'defaultAxesTickLabelInterpreter','latex')
+
+figure(2);
+set(gcf,'Position',[100 100 165 165])
+hold on;
+plot(alphas, S2_slice.', '-', ...
+    'Color', 'k', 'LineWidth', 2.0);
+plot([6, 6], [0, 29], ...
+    'LineStyle', '--', 'Color', '#CB0003', 'LineWidth', 1.5);
+plot([0, 30], [0, 0], 'k');
+plot([0, 0], [0, 29], 'k');
+hold off;
+
+text(8, 23, 'Trill rate = 6 Hz', 'Color', '#CB0003');
+
 xlim([0, 30]);
-ylim([0, 30]);
+ylim([0, 27]);
+xlabel('Modulation frequency $\alpha$ (Hz)');
+ylabel('Scattered energy');
+title({'Time--frequency scattering', '$\lambda=530$ Hz, $\beta=14$ c/o'})
+yticks([]);
+box off;
+
+%export_fig cras19_fig2b.png -m4 -transparent
+%export_fig cras19_fig2b.pdf
 
 %%
 
+j2 = 33;
+j1 = 119;
 
-%%
-clc();
+beta_psi_slice = zeros(6, 2);
 
-J2s = 12:80;
-J1s = [2];
-S2_slice = zeros(length(J1s), length(J2s));
-for j1_id = 1:length(J1s)
-    j1 = J1s(j1_id);
-    for j2_id = 1:length(J2s)
-        j2 = J2s(j2_id);
-        S2_slice(j1_id, j2_id) = ...
-            S{3}{1,2}.data{j2}(2, j1);
-    end
+for j_fr = 1:6
+    beta_psi_slice(j_fr, 1) = S{1+2}{1, 1}.data{j2}{j_fr}(1, j1, 1);
+    beta_psi_slice(j_fr, 2) = S{1+2}{1, 1}.data{j2}{j_fr}(1, j1, 2);
 end
 
-xi = sample_rate * archs{2}.banks{1}.spec.mother_xi;
-
-all_resolutions = [archs{2}.banks{1}.metas.resolution];
-J2_range = J2s + S{3}{1,2}.ranges{2}(1) - 1;
-alphas = xi * all_resolutions(J2_range);
-plot(alphas, S2_slice.', '-', 'LineWidth', 2.0);
-%xlim([0, 25]);
+plot(cat(1, beta_psi_slice(end:-1:1, 1), beta_psi_slice(:, 2)));
