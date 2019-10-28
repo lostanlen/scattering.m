@@ -50,7 +50,7 @@ reconstruction_opt.bold_driver_accelerator = 1.1;
 reconstruction_opt.bold_driver_brake = 0.5;
 
 %% Forward propagation
-nLayers = length(archs);
+nLayers = length(archs) - 1;
 target_S = cell(1,1+nLayers);
 target_U = cell(1,1+nLayers);
 target_Y = cell(1,1+nLayers);
@@ -60,14 +60,14 @@ for layer = 1:nLayers
     arch = archs{layer};
     previous_layer = layer - 1;
     % Scatter iteratively layer U to get sub-layers Y
-    target_Y{layer} = U_to_Y(target_U{1+previous_layer},arch);
+    target_Y{layer} = U_to_Y(target_U{1+previous_layer},arch.banks);
     % Apply non-linearity to last sub-layer Y to get layer U
-    target_U{1+layer} = Y_to_U(target_Y{layer}{end},arch);
+    target_U{1+layer} = Y_to_U(target_Y{layer}{end},arch.nonlinearity);
     % Blur/pool first sub-layer Y to get layer S
     target_S{1+previous_layer} = Y_to_S(target_Y{layer},arch);
 end
 target_Y{1+nLayers}{1+0} = initialize_Y(target_U{1+nLayers},arch.banks);
-target_S{1+nLayers} = Y_to_S(target_Y{1+nLayers},arch);
+target_S{1+nLayers} = Y_to_S(target_Y{1+nLayers},archs{end});
 
 %% Initialization
 signal = generate_pink_noise(N);
@@ -89,23 +89,24 @@ reconstruction_opt.learning_rate = reconstruction_opt.initial_learning_rate;
 [target_norm,layer_target_norms] = sc_norm(target_S);
 
 %
+nLayers = length(archs) - 1;
 S = cell(1,1+nLayers);
 U = cell(1,1+nLayers);
 Y = cell(1,1+nLayers);
-U{1+0} = initialize_variables_auto(size(signal));
-U{1+0}.data = signal;
+U{1+0} = initialize_variables_auto(size(target_signal));
+U{1+0}.data = target_signal;
 for layer = 1:nLayers
     arch = archs{layer};
     previous_layer = layer - 1;
     % Scatter iteratively layer U to get sub-layers Y
-    Y{layer} = U_to_Y(U{1+previous_layer},arch);
+    Y{layer} = U_to_Y(U{1+previous_layer},arch.banks);
     % Apply non-linearity to last sub-layer Y to get layer U
-    U{1+layer} = Y_to_U(Y{layer}{end},arch);
+    U{1+layer} = Y_to_U(Y{layer}{end},arch.nonlinearity);
     % Blur/pool first sub-layer Y to get layer S
     S{1+previous_layer} = Y_to_S(Y{layer},arch);
 end
 Y{1+nLayers}{1+0} = initialize_Y(U{1+nLayers},arch.banks);
-S{1+nLayers} = Y_to_S(Y{1+nLayers},arch);
+S{1+nLayers} = Y_to_S(Y{1+nLayers},archs{end});
 
 %%
 delta_S = sc_substract(target_S,S);
@@ -127,14 +128,14 @@ while iteration < nIterations
         arch = archs{layer};
         previous_layer = layer - 1;
         % Scatter iteratively layer U to get sub-layers Y
-        Y{layer} = U_to_Y(U{1+previous_layer},arch);
+        Y{layer} = U_to_Y(U{1+previous_layer},arch.banks);
         % Apply non-linearity to last sub-layer Y to get layer U
-        U{1+layer} = Y_to_U(Y{layer}{end},arch);
+        U{1+layer} = Y_to_U(Y{layer}{end},arch.nonlinearity);
         % Blur/pool first sub-layer Y to get layer S
         S{1+previous_layer} = Y_to_S(Y{layer},arch);
     end
     Y{1+nLayers}{1+0} = initialize_Y(U{1+nLayers},arch.banks);
-    S{1+nLayers} = Y_to_S(Y{1+nLayers},arch);
+    S{1+nLayers} = Y_to_S(Y{1+nLayers},archs{end});
     
     %% Measurement of distance to target in the scattering domain
     delta_S = sc_substract(target_S,S);
