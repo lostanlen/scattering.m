@@ -8,6 +8,7 @@ T = 2^15;
 
 %% Creation of wavelet filterbank
 opts{1}.time.size = length(target_signal);
+opts{1}.time.is_chunked = false;
 opts{1}.time.nFilters_per_octave = 16;
 opts{1}.time.gamma_bounds = [1 128];
 opts{1}.time.T = T;
@@ -30,8 +31,7 @@ target_S = sc_propagate(target_signal,archs);
 %% Reconstruction
 rec_opt.verbosity_period = 1;
 rec_opt.nIterations = 50;
-[rec_signal,rec_summary] = ...
-    sc_reconstruct(target_S,archs,rec_opt);
+rec_signal = sc_reconstruct(target_signal,archs,rec_opt);
 
 %% Export
 audiowrite('tbnote_plain.wav',rec_signal,sample_rate);
