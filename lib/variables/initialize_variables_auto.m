@@ -8,8 +8,8 @@ variable_tree = struct();
 keys{1+0} = cell(1,nDimensions);
 ranges{1+0} = zeros(3,nDimensions);
 signal_variable.level = 0;
-% Images typically have an aspect ratio of at most 4
-if sorted_sizes(1)/sorted_sizes(2) < 4
+% Images typically have an aspect ratio of at most 2
+if sorted_sizes(1)/sorted_sizes(2) < 2
     signal_subscripts = sorting_indices(1:2);
     signal_variable.subscripts = sorting_indices(1:2);
     signal_head_name = 'space';
