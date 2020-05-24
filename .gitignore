@@ -5,6 +5,7 @@
 /research/finitediffs/local/
 /research/tsp19/sbatch/*
 /research/tsp19/slurm/*
+/research/jasmp20/data/*
 
 *.m~
 
