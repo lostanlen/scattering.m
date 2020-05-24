@@ -1,5 +1,12 @@
 function eca_export(sounds, texts, folder, name, opts, sample_rate, ...
     bit_depth, archs)
+%% Renormalize sounds
+renormalizer = 2 * max([cellfun(@max, sounds), -cellfun(@min, sounds)]);
+nSounds = length(sounds);
+for sound_id = 1:nSounds
+    sounds{sound_id} = sounds{sound_id} / renormalizer;
+end
+
 %% Retrieve parameters
 Q1 = archs{1}.banks{1}.spec.nFilters_per_octave;
 T = archs{1}.banks{1}.spec.T;
