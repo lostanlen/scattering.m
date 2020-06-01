@@ -1,5 +1,8 @@
 function eca_export(sounds, texts, folder, name, opts, sample_rate, ...
-    bit_depth, archs)
+    bit_depth, archs, varargin)
+%% Remove empty sounds
+sounds = sounds(~cellfun(@isempty, sounds));
+
 %% Renormalize sounds
 renormalizer = 2 * max([cellfun(@max, sounds), -cellfun(@min, sounds)]);
 nSounds = length(sounds);
