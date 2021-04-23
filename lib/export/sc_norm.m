@@ -1,4 +1,4 @@
-function scattering_norm = sc_norm(S, spatial_subscripts, layers)
+function [total_norm, layer_norms] = sc_norm(S, spatial_subscripts, layers)
 nLayers = length(S);
 if nargin<3
     layers = (1:nLayers);
@@ -7,7 +7,13 @@ if nargin<2
     spatial_subscripts = 1;
 end
 
-formatted_S = sc_format(S, spatial_subscripts, layers);
+[formatted_S, formatted_layers] = sc_format(S, spatial_subscripts, layers);
 
-scattering_norm = sum(abs(formatted_S(:)));
+layer_norms = zeros(1, nLayers);
+for layer_id = 1:nLayers
+    layer_norms(layer_id) = sum(abs(formatted_layers{layer_id}(:))) * ...
+        2^(1-layer_id);
+end
+
+total_norm = sum(layer_norms);
 end
