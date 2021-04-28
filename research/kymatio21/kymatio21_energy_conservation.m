@@ -1,6 +1,5 @@
 Q = 1;
 
-J = 10;
 N = 2^12;
 Fs = 8000;
 
@@ -10,11 +9,32 @@ opts{2}.time = struct();
 
 archs = sc_setup(opts);
 
+%%
+archbis = archs;
+archbis{1}.invariants{1}.behavior.S.log2_oversampling = inf;
+archbis{1}.banks{1}.behavior.S.log2_oversampling = inf;
+archbis{1}.banks{1}.behavior.U.log2_oversampling = inf;
+archbis{2}.banks{1}.behavior.S.log2_oversampling = inf;
+archbis{2}.banks{1}.behavior.U.log2_oversampling = inf;
+
+signal = zeros(N, 1);
+signal(1) = 1;
+
+[S, U, Y] = sc_propagate(signal, archbis);
+
+plot(Y{1}{1}.data)
+psi1 = [Y{1}{2}.data{:}];
+phi1 = S{1}.data;
+scatteringm_filterbank_Q1_J8_N4096 = cat(2, psi1, phi1);
+
+%%
 t = linspace(0, 1-1/N, N).';
 
-M = J;
+M = archs{1}.banks{1}.spec.J;
 norms_in = zeros(M, 1);
 norms_out = zeros(M, 1);
+
+Smat = cell(3, M);
 
 for fig_id = 1:3
     for m = 1:M
@@ -25,7 +45,9 @@ for fig_id = 1:3
         elseif fig_id ==2
             signal = randn(N, 1);
         else
-            signal = cos(2*pi * t * 2^(m));
+            signal = zeros(N, 1);
+            signal(1, :) = 1;
+            %signal = cos(2*pi * t * 2^(m));
         end
 
         
@@ -33,6 +55,8 @@ for fig_id = 1:3
 
         norms_in(m) = norm(signal, 2);
         norms_out(m) = sc_norm(S);
+        
+        Smat{fig_id, m} = sc_format(S, 1, 1:3);
     end
 
     bar((1:M)-1, norms_out/norms_in, 5)
@@ -50,6 +74,7 @@ for fig_id = 1:3
     grid();
 end
     
+%Smat = reshape(cat(3, Smat{:}), [37, 32, 3, 10])
 %%
 set(gcf, 'Color', 'w');
 export_fig("kymatio21_energy_conservation.png", "-m4", "-transparent");
