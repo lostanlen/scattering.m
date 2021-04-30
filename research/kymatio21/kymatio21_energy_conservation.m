@@ -34,20 +34,23 @@ M = archs{1}.banks{1}.spec.J;
 norms_in = zeros(M, 1);
 norms_out = zeros(M, 1);
 
-Smat = cell(3, M);
+n_signals = 5;
+Smat = cell(5, M);
 
-for fig_id = 1:3
+for fig_id = 1:n_signals
     for m = 1:M
 
-        subplot(3, 1, fig_id);
         if fig_id == 1
             signal = rand(N,1) - 0.5;
-        elseif fig_id ==2
+        elseif fig_id == 2
             signal = randn(N, 1);
-        else
+        elseif fig_id == 3
+            signal = cos(2*pi * t * 2^(m));
+        elseif fig_id == 4
             signal = zeros(N, 1);
             signal(1, :) = 1;
-            %signal = cos(2*pi * t * 2^(m));
+        elseif fig_id == 5
+            signal = cos(2*pi * (20480.^t - 1) * .01);
         end
 
         
@@ -58,20 +61,21 @@ for fig_id = 1:3
         
         Smat{fig_id, m} = sc_format(S, 1, 1:3);
     end
-
-    bar((1:M)-1, norms_out/norms_in, 5)
-    xlim([-0.5, M]);
-    ylim([0, 7]);
-    
-    if fig_id == 1
-        xlabel('Repeated trials of uniform noise');
-    elseif fig_id == 2
-        xlabel('Repeated trials of Gaussian noise');
-    else
-        xlabel('Fundamental frequency of input (log2 scale)');
-    end
-    ylabel('Output-to-input energy ratio');
-    grid();
+%     subplot(3, 1, fig_id);
+%     
+%     bar((1:M)-1, norms_out/norms_in, 5)
+%     xlim([-0.5, M]);
+%     ylim([0, 7]);
+%     
+%     if fig_id == 1
+%         xlabel('Repeated trials of uniform noise');
+%     elseif fig_id == 2
+%         xlabel('Repeated trials of Gaussian noise');
+%     else
+%         xlabel('Fundamental frequency of input (log2 scale)');
+%     end
+%     ylabel('Output-to-input energy ratio');
+%     grid();
 end
     
 %Smat = reshape(cat(3, Smat{:}), [37, 32, 3, 10])
