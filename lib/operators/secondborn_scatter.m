@@ -49,13 +49,12 @@ for gamma = nGammas:-1:1
         bank.metas(gamma).max_sibling_j = ...
             1 + floor((max_sibling_gamma-1) / nFilters_per_octave);
     else
-        bank.metas(gamma).max_sibling_gamma = 0;
-        bank.metas(gamma).max_sibling_j = 0;
+        break
     end
 end
 gamma_bounds = bank_behavior.gamma_bounds;
 gamma_range = ...
-    [max(gamma_bounds(1),1),1,min(gamma_bounds(2),nGammas)].';
+    [max(gamma_bounds(1),gamma),1,min(gamma_bounds(2),nGammas)].';
 sibling_log2_samplings = - log2(cellfun(@(x) x(2,subscripts),ranges{1+0}));
 log2_oversampling = bank_behavior.U.log2_oversampling;
 log2_factor = ceil(log2(sibling_mask_factor));
