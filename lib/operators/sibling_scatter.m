@@ -52,7 +52,8 @@ for gamma = nGammas:-1:1
         bank.metas(gamma).max_sibling_j = ...
             1 + floor((max_sibling_gamma-1) / nFilters_per_octave);
     else
-        break
+        bank.metas(gamma).max_sibling_gamma = 0;
+        bank.metas(gamma).max_sibling_j = 0;
     end
 end
 gamma_bounds = bank_behavior.gamma_bounds;
@@ -142,24 +143,24 @@ output_ranges{1+2} = gamma_range;
 for enabled_index = 1:nEnabled_gammas
     % Define hop size.
     step = pow2(-log2_samplings(enabled_index));
-    
+
     % Get ranges for sibling.
     gamma = gammas(enabled_index);
     min_sibling_gamma = input_ranges{1+1}(1,sibling_subscript);
     max_sibling_gamma = min(input_ranges{1+1}(3,sibling_subscript), ...
         bank.metas(gamma).max_sibling_gamma);
-    
+
     % Update range at the first level (j1)
     output_ranges{1+1}{enabled_index} = ...
         [min_sibling_gamma,1,max_sibling_gamma].';
-    
+
     % Initialize output ranges for the current enabled scale index.
     nSiblings = max_sibling_gamma - min_sibling_gamma + 1;
     output_ranges{1+0}{enabled_index} = cell(1,nSiblings);
-    
+
     % Loop over j2.
     for sibling_index = 1:nSiblings
-        
+
         % Load input range.
         input_zeroth_range = input_ranges{1+0}{sibling_index};
 
@@ -169,7 +170,7 @@ for enabled_index = 1:nEnabled_gammas
         if bank.spec.nThetas>1
             output_zeroth_range(:,end) = [1,1,bank.spec.nThetas].';
         end
-        
+
         % Update step.
         output_zeroth_range(2,subscripts) = step;
 
@@ -185,7 +186,7 @@ ranges = output_ranges;
 if bank.spec.nThetas==1
     %% Case when there is only one orientation (nThetas==1)
     data = cell(nEnabled_gammas, 1);
-    
+
     % This loop can be parallelized
     for enabled_index = 1:nEnabled_gammas
         % Definition of downsampled size for transformed variable

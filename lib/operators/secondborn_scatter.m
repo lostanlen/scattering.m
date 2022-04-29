@@ -49,7 +49,8 @@ for gamma = nGammas:-1:1
         bank.metas(gamma).max_sibling_j = ...
             1 + floor((max_sibling_gamma-1) / nFilters_per_octave);
     else
-        break
+        bank.metas(gamma).max_sibling_gamma = 0;
+        bank.metas(gamma).max_sibling_j = 0;
     end
 end
 gamma_bounds = bank_behavior.gamma_bounds;
