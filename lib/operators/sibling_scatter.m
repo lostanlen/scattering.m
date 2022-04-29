@@ -57,7 +57,7 @@ for gamma = nGammas:-1:1
 end
 gamma_bounds = bank_behavior.gamma_bounds;
 gamma_range = ...
-    [max(gamma_bounds(1),1+gamma),1,min(gamma_bounds(2),nGammas)].';
+    [max(gamma_bounds(1),1),1,min(gamma_bounds(2),nGammas)].';
 sibling_log2_samplings = - log2(cellfun(@(x) x(2,subscripts),ranges{1+0}));
 log2_oversampling = bank_behavior.U.log2_oversampling;
 log2_factor = ceil(log2(sibling_mask_factor));
@@ -222,4 +222,3 @@ if nCousins>1
     end
 end
 
-end
