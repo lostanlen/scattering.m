@@ -77,6 +77,7 @@ for batch_index = 0:(nBatches-1)
 
     % Reverse
     target_S_rev = target_S;
+    nTemporal_scales = length(target_S{1+2}{1,1}.data);
     for j2_tm = 1:nTemporal_scales
         nFrequency_scales = length(target_S{1+2}{1,1}.data{j2_tm});
         for j_fr = 1:nFrequency_scales
