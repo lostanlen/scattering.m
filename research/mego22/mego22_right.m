@@ -81,7 +81,7 @@ for batch_index = 0:(nBatches-1)
     for j2_tm = 1:nTemporal_scales
         nFrequency_scales = length(target_S{1+2}{1,1}.data{j2_tm});
         for j_fr = 1:nFrequency_scales
-            backward_slice = target_S{1+2}{1,1}.data{j2_tm}{j_fr}(:, :, 2:-1:1);
+            backward_slice = target_S{1+2}{1,1}.data{j2_tm}{j_fr}(:, :, :, 2:-1:1);
             target_S_rev{1+2}{1,1}.data{j2_tm}{j_fr} = backward_slice;
         end
     end
