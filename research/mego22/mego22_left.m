@@ -28,7 +28,7 @@ opts.sample_rate = sr;
 opts.is_sonified = false;
 opts.is_spectrogram_displayed = false;
 % (close Figure 1 to abort early)
-opts.is_verbose = true;
+opts.verbose = true;
 opts.initial_learning_rate = 0.1;
 
 
@@ -156,7 +156,7 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
     sounds{1+iteration} = eca_overlap_add(chunks);
 
     %% Pretty-printing of scattering distances and loss function
-     if opts.is_verbose
+     if opts.verbose
          if opts.adapt_learning_rate
             average_learning_rate = mean(learning_rate_batches);
             average_learning_rate_str = ...
