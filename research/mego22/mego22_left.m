@@ -5,14 +5,32 @@ opts = struct();
 
 %%
 Q1 = 12; % number of filters per octave at first order
-T = 2^12; % amount of invariance with respect to time translation
-% The modulation setting is either 'none', 'time', or 'time-frequency'
-% The wavelets setting is either 'morlet' or 'gammatone'
-modulations = 'time-frequency';
-wavelets = 'morlet';
-archs = eca_setup(Q1, T, modulations, wavelets);
+T = 2^14; % amount of invariance with respect to time translation
+
+opts{1}.time.nFilters_per_octave = Q1;
+opts{1}.time.T = T;
+opts{1}.time.max_scale = 8192;
+opts{1}.time.size = max(4*T, 2^(10 + nextpow2(Q1)));
+opts{1}.time.is_chunked = true;
+opts{1}.time.is_unchunked = true;
+opts{1}.time.gamma_bounds = [1 Q1*9];
+opts{1}.time.duality = 'hermitian';
+opts{1}.time.wavelet_handle = @morlet_1d;
+
+opts{2}.time.nFilters_per_octave = 1;
+opts{2}.time.wavelet_handle = @morlet_1d;
+opts{2}.time.duality = 'hermitian';
+opts{2}.time.wavelet_handle = @morlet_1d;
+opts{2}.gamma.T = 32; % 32 semitones of gamma filtering
+opts{2}.gamma.invariance = 'blurred';
+opts{2}.gamma.duality = 'hermitian';
+opts{2}.gamma.nFilters_per_octave = 1;
+opts{2}.gamma.subscripts = 3;
+
+archs = sc_setup(opts);
 
 % Setup reconstruction options
+opts = struct();
 opts.nChunks_per_batch = 2; % must be > 1
 opts.export_folder = file_dir;
 opts.export_mode = 'all'; % should be 'all' or 'last'
@@ -131,11 +149,17 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         batch = batches{1+batch_index};
         % Forward propagation
         [S, U, Y] = eca_propagate(batch, archs);
+
         if generate_text
             S_batches{1+batch_index} = S;
         end
         U_batches{1+batch_index} = U(1:2);
         target_S = target_S_batches{1+batch_index};
+
+        % Cancel first-order!
+        target_S{1+1}.data = 0 * target_S{1+1}.data;
+        S{1+1}.data = 0 * S{1+1}.data;
+
         % Substraction
         delta_S = sc_substract(target_S, S);
         % Backpropagation
