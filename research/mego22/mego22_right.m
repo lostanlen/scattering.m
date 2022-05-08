@@ -87,9 +87,6 @@ end
 % Forward propagation of target
 target_S_batches = cell(1, nBatches);
 for batch_index = 0:(nBatches-1)
-    if opts.verbose
-        disp(batch_index);
-    end
     target_S = eca_propagate(target_batches{1+batch_index}, archs);
 
     % Reverse
@@ -135,6 +132,10 @@ U_batches = cell(1, nBatches);
 figure_handle = gcf();
 tic();
 while (iteration <= opts.nIterations) && ishandle(figure_handle)
+    if opts.verbose
+        disp(iteration);toc(); tic();
+    end
+
     %% Split into chunks
     chunks = eca_split(sounds{iteration}, N);
 
@@ -153,9 +154,6 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         S_batches = cell(1, nBatches);
     end
     for batch_index = 0:(nBatches-1)
-        if opts.verbose
-            disp([iteration, batch_index, nBatches]);
-        end
 
         % Load batch
         batch = batches{1+batch_index};
