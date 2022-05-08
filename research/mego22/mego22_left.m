@@ -13,7 +13,6 @@ wavelets = 'morlet';
 archs = eca_setup(Q1, T, modulations, wavelets);
 
 % Setup reconstruction options
-clear opts;
 opts.nChunks_per_batch = 2; % must be > 1
 opts.export_folder = file_dir;
 opts.export_mode = 'all'; % should be 'all' or 'last'
