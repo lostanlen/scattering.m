@@ -1,5 +1,5 @@
 file_dir = '/scratch/vl1019/stocha';
-file_str = 'Stocha Acid Zlook_m48_R.wav';
+file_str = 'Stocha_Acid_Zlook_m48_R.wav';
 opts = struct();
 [y, sr] = audioread(fullfile(file_dir, file_str));
 
