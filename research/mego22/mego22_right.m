@@ -36,7 +36,7 @@ opts.export_mode = 'all'; % should be 'all' or 'last'
 opts.nIterations = 20;
 opts.generate_text = false; % "true" will work only with time-frequency scattering
 opts.bit_depth = 24;
-opts.is_initialization_localized = true;
+opts.is_initialization_localized = false;
 opts.sample_rate = sr;
 
 
@@ -121,7 +121,8 @@ if opts.is_initialization_localized
     end
     sounds{1+0} = eca_overlap_add(chunks);
 else
-    sounds{1+0} = generate_colored_noise(y);
+    y_init = randn(size(y));
+    sounds{1+0} = y_init * norm(y)/norm(y_init);
 end
 
 %% Iterated reconstruction
