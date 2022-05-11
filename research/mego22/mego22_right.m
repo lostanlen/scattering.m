@@ -36,7 +36,7 @@ opts.export_mode = 'all'; % should be 'all' or 'last'
 opts.nIterations = 50;
 opts.generate_text = false; % "true" will work only with time-frequency scattering
 opts.bit_depth = 24;
-opts.is_initialization_localized = false;
+opts.is_initialization_localized = true;
 opts.sample_rate = sr;
 
 
@@ -165,8 +165,8 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         U_batches{1+batch_index} = U(1:2);
         target_S = target_S_batches{1+batch_index};
         % Cancel first-order!
-        target_S{1+1}.data = 0 * target_S{1+1}.data;
-        S{1+1}.data = 0 * S{1+1}.data;
+        %target_S{1+1}.data = 0 * target_S{1+1}.data;
+        %S{1+1}.data = 0 * S{1+1}.data;
         % Substraction
         delta_S = sc_substract(target_S, S);
         % Backpropagation
