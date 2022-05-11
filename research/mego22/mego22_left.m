@@ -1,6 +1,7 @@
 file_dir = '/scratch/vl1019/stocha';
 file_str = 'Stocha_Acid_Zlook_m48_L.wav';
 [y, sr] = audioread(fullfile(file_dir, file_str));
+max_y = max(abs(y));
 
 %%
 Q1 = 12; % number of filters per octave at first order
@@ -210,8 +211,9 @@ while (iteration <= opts.nIterations) && ishandle(figure_handle)
         export_file_str = [file_str(1:(end-4)), '_it', ...
             sprintf('%0.2d', iteration), '.wav'];
         export_path_str = fullfile(opts.export_folder, export_file_str);
-        audiowrite(export_path_str, sounds{1+iteration}, opts.sample_rate, ...
-            'BitsPerSample', opts.bit_depth);
+        audiowrite(export_path_str, ...
+            sounds{1+iteration}/max(abs(sounds{1+iteration})) * max_y, ...
+            opts.sample_rate, 'BitsPerSample', opts.bit_depth);
     end
 
     %% Clock tick
@@ -228,6 +230,7 @@ if opts.export_mode == "last"
     export_file_str = [file_str(1:(end-4)), '_it', ...
         sprintf('%0.2d', iteration), '.wav'];
     export_path_str = fullfile(opts.export_folder, export_file_str);
-    audiowrite(export_path_str, sounds{1+iteration}, opts.sample_rate, ...
-        'BitsPerSample', opts.bit_depth);
+    audiowrite(export_path_str, ...
+        sounds{1+iteration}/max(abs(sounds{1+iteration})) * max_y, ...
+        opts.sample_rate, 'BitsPerSample', opts.bit_depth);
 end
