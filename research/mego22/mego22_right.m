@@ -1,6 +1,7 @@
 file_dir = '/scratch/vl1019/stocha';
 file_str = 'Stocha_Acid_Zlook_m48_R.wav';
 [y, sr] = audioread(fullfile(file_dir, file_str));
+max_y = max(abs(y));
 
 %%
 Q1 = 12; % number of filters per octave at first order
